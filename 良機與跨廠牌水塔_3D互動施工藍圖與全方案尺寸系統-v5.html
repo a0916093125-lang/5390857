@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>【全方案 3D 工程施工藍圖 v5.0 工程完美修正版】冷卻水塔無軸文丘里空化除垢系統（良機 LRC-N / LUC-C / LDC-N 工程合規版）</title>
+<style>
+  :root {
+    --bg-dark: #0b1120;
+    --panel-bg: #1e293b;
+    --border-col: #334155;
+    --accent-cyan: #06b6d4;
+    --accent-amber: #f59e0b;
+    --accent-emerald: #10b981;
+    --accent-rose: #f43f5e;
+    --accent-purple: #a855f7;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Inter", "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif; }
+  body { background-color: var(--bg-dark); color: var(--text-main); line-height: 1.5; padding: 14px; }
+  .header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border: 1px solid var(--border-col);
+    border-left: 6px solid var(--accent-cyan);
+    border-radius: 10px;
+    padding: 14px 20px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .header h1 { font-size: 1.28rem; color: #fff; letter-spacing: 0.5px; }
+  .header p { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
+  .badge-bar { display: flex; gap: 8px; flex-wrap: wrap; }
+  .badge {
+    background: rgba(6, 182, 212, 0.15);
+    border: 1px solid var(--accent-cyan);
+    color: #67e8f9;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+  .badge-emerald {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid var(--accent-emerald);
+    color: #6ee7b7;
+  }
+  .controls-bar {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-col);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .bar-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .group-label { font-size: 0.82rem; color: var(--accent-amber); font-weight: 700; margin-right: 4px; }
+  .model-tabs, .scheme-tabs { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .tab-btn, .scheme-btn {
+    background: #0f172a;
+    color: var(--text-muted);
+    border: 1px solid var(--border-col);
+    padding: 7px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.82rem;
+    transition: all 0.18s;
+  }
+  .tab-btn:hover, .scheme-btn:hover { border-color: var(--accent-cyan); color: #fff; }
+  .tab-btn.active {
+    background: var(--accent-cyan);
+    color: #0f172a;
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.4);
+  }
+  .scheme-btn.active {
+    background: var(--accent-emerald);
+    color: #0f172a;
+    border-color: var(--accent-emerald);
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+  }
+  .view-toggles { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .toggle-btn {
+    background: #334155;
+    color: #fff;
+    border: 1px solid #475569;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+  .toggle-btn.active { background: var(--accent-amber); color: #0f172a; border-color: var(--accent-amber); font-weight: 700; }
+  .print-btn {
+    background: #38bdf8;
+    color: #0f172a;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.82rem;
+  }
+  .grid-main {
+    display: grid;
+    grid-template-columns: 1.42fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  @media (max-width: 1100px) { .grid-main { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-col);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .card-header {
+    background: rgba(15, 23, 42, 0.75);
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border-col);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .card-header h2 { font-size: 0.98rem; color: #38bdf8; display: flex; align-items: center; gap: 8px; }
+  .card-header span { font-size: 0.78rem; color: var(--text-muted); }
+  .canvas-wrap {
+    position: relative;
+    width: 100%;
+    height: 490px;
+    background: radial-gradient(circle at center, #162238 0%, #070b14 100%);
+    cursor: grab;
+    user-select: none;
+  }
+  .canvas-wrap:active { cursor: grabbing; }
+  canvas { width: 100%; height: 100%; display: block; }
+  .preset-bar {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    z-index: 5;
+  }
+  .preset-btn {
+    background: rgba(15, 23, 42, 0.88);
+    color: #e2e8f0;
+    border: 1px solid #475569;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .preset-btn:hover { border-color: #38bdf8; color: #38bdf8; }
+  .canvas-overlay {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(15, 23, 42, 0.88);
+    border: 1px solid var(--border-col);
+    padding: 7px 12px;
+    border-radius: 8px;
+    font-size: 0.76rem;
+    color: #cbd5e1;
+    pointer-events: none;
+  }
+  .legend-overlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid var(--border-col);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.76rem;
+    pointer-events: none;
+  }
+  .legend-item { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; }
+  .legend-dot { width: 11px; height: 11px; border-radius: 3px; flex-shrink: 0; }
+  .spec-body { padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .spec-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  .spec-table th, .spec-table td {
+    border: 1px solid var(--border-col);
+    padding: 6px 10px;
+    text-align: left;
+  }
+  .spec-table th { background: rgba(15, 23, 42, 0.75); color: var(--text-muted); width: 34%; }
+  .spec-table td { color: #fff; font-weight: 600; }
+  .highlight-val { color: var(--accent-amber) !important; font-size: 0.88rem; }
+  .cyan-val { color: #38bdf8 !important; }
+  .emerald-val { color: #34d399 !important; }
+  .alert-box {
+    background: rgba(245, 158, 11, 0.12);
+    border-left: 4px solid var(--accent-amber);
+    padding: 9px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+  }
+  .alert-box strong { color: var(--accent-amber); display: block; margin-bottom: 3px; }
+  .grid-bottom {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 1100px) { .grid-bottom { grid-template-columns: 1fr; } }
+  .svg-container {
+    width: 100%;
+    background: #070b14;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  svg { width: 100%; height: auto; max-height: 380px; }
+  @media print {
+    body { background: #fff; color: #000; padding: 0; }
+    .controls-bar, .preset-bar { display: none; }
+    .card, .header { border: 1px solid #000; background: #fff; color: #000; margin-bottom: 10px; }
+    .spec-table th, .spec-table td { border: 1px solid #000; color: #000 !important; background: #fff; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>【全方案 3D 工程施工藍圖 v5.0 工程完美修正版】冷卻水塔無軸文丘里空化除垢系統（良機 LRC-N / LUC-C / LDC-N 工程合規版）</h1>
+    <p>支援切換：【方案A 極短雙現成大小頭萬用版(含快拆直管袖管段)】、【方案B2 自帶90°彎頭消能盤版(塔頂首推)】、【長錐緩擴復壓版】｜含前/後緣精準插深與真實阻塞流速</p>
+  </div>
+  <div class="badge-bar">
+    <span class="badge">100% 中空無軸不堵塞</span>
+    <span class="badge">標明吸氣嘴前緣/後緣精準插深</span>
+    <span class="badge badge-emerald">新增快拆夾持直管袖管段 (Stub-End) 防脫落</span>
+  </div>
+</div>
+
+<div class="controls-bar">
+  <div class="bar-row">
+    <div class="scheme-tabs">
+      <span class="group-label">① 選擇構型方案：</span>
+      <button class="scheme-btn active" onclick="selectScheme('SHORT', this)">【方案A】極短雙現成大小頭萬用版 (縮擴24~33.5cm＋兩端55mm快拆袖管)</button>
+      <button class="scheme-btn" onclick="selectScheme('ELBOW', this)">【方案B2】極短主體＋自帶 90° 彎頭消能盤版 (★塔頂首推：切舊彎頭單端快拆直上)</button>
+      <button class="scheme-btn" onclick="selectScheme('LONG', this)">【長錐版】後段 9.5°~11.9° 雷射捲圓長錐版 (48~67cm 低壓損含展開圖)</button>
+    </div>
+    <div class="view-toggles">
+      <button class="toggle-btn active" id="btnCutaway" onclick="toggleCutaway()">🔪 剖面透視</button>
+      <button class="toggle-btn active" id="btnDim3D" onclick="toggleDim3D()">📏 3D 尺寸標註</button>
+      <button class="toggle-btn" id="btnExplode" onclick="toggleExplode()">💥 爆炸分解</button>
+      <button class="print-btn" onclick="window.print()">🖨️ 列印圖紙</button>
+    </div>
+  </div>
+  <div class="bar-row">
+    <div class="model-tabs">
+      <span class="group-label">② 選擇水塔管徑與分流型號：</span>
+      <button class="tab-btn active" onclick="selectModel('HC-100S', this)">HC-100S（4寸×2支｜良機 LRC-N-125~175）</button>
+      <button class="tab-btn" onclick="selectModel('HC-125L', this)">HC-125L（5寸×4支增速｜良機 LRC-N-300~350）</button>
+      <button class="tab-btn" onclick="selectModel('HC-125S', this)">HC-125S（5寸標準｜LRC-N-200~250雙管 / 400~500四管）</button>
+      <button class="tab-btn" onclick="selectModel('HC-150S', this)">HC-150S（6寸｜LRC-N-600~800四管 / 300~400RT雙管）</button>
+      <button class="tab-btn" onclick="selectModel('HC-150H', this)">HC-150H（6寸高流｜LDC-N-200~250單母管 / 500RT雙管）</button>
+    </div>
+  </div>
+</div>
+
+<div class="grid-main">
+  <!-- Left: 3D Interactive Canvas -->
+  <div class="card">
+    <div class="card-header">
+      <h2>🧊 3D 互動工程實體與尺寸圖（左鍵旋轉 / 右鍵平移 / 滾輪縮放）</h2>
+      <span id="modelTitleBadge">目前顯示：方案A 極短萬用版 - HC-100S (縮擴本體 240mm)</span>
+    </div>
+    <div class="canvas-wrap" id="canvasContainer">
+      <div class="preset-bar">
+        <button class="preset-btn" onclick="setCameraPreset(-0.38, 0.22, 1.1, 0, 0)">📐 等角立體視角</button>
+        <button class="preset-btn" onclick="setCameraPreset(0.0, 0.0, 1.2, 0, 0)">🔍 正視剖面圖 (對準尺寸)</button>
+        <button class="preset-btn" onclick="setCameraPreset(-0.15, 0.12, 1.9, 30, -15)">🎯 45°吸氣嘴前/後緣插深特寫</button>
+        <button class="preset-btn" onclick="setCameraPreset(0.0, 1.55, 1.1, 0, 0)">⬇️ 俯視圖</button>
+      </div>
+      <canvas id="cad3dCanvas"></canvas>
+      <div class="legend-overlay">
+        <div class="legend-item"><span class="legend-dot" style="background:#f59e0b;"></span>① 前端無擋環滑套快拆 (Slip-type Straub) ＋ 55mm直管袖管</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#38bdf8;"></span>② 前段現成標準同心大小頭 (縮口加速段)</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#f43f5e;"></span>③ 中段喉管 ＋ 45°內插斜切引射吸氣嘴 (標明前/後緣插深)</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#10b981;"></span>④ 後段擴張復壓管 (現成大小頭 或 長錐管)</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#a855f7;"></span>⑤ 尾端組件 (90°彎頭消能盤 / 尾端袖管快拆 / 支撐腳)</div>
+      </div>
+      <div class="canvas-overlay">
+        💡 <strong>工程修正重點：</strong>雙螺栓快拆接頭嚴禁直接夾在大小頭斜錐面上！前端已增設 55mm 同口徑直管袖管段（Stub-End），確保 16 bar 咬合不脫落！
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: Dimension Table & Welding Instructions -->
+  <div class="card">
+    <div class="card-header">
+      <h2>📋 師傅下料尺寸與良機/跨廠牌水塔匹配明細表（單位：mm）</h2>
+      <span>公差：長度 ±1.5mm / 快拆管端間隙 5~15mm</span>
+    </div>
+    <div class="spec-body">
+      <table class="spec-table">
+        <tr><th>當前構型方案</th><td id="td_scheme" class="emerald-val">【方案A】極短雙現成大小頭萬用版 (含兩端55mm快拆直管袖管)</td></tr>
+        <tr><th>產品型號 / 匹配水塔</th><td id="td_name" class="cyan-val">HC-100S (良機 LRC-N / LUC-C 125~175 雙分管 50% 分流)</td></tr>
+        <tr><th>水量 / 空管與真實阻塞流速</th><td id="td_hydraulics" class="emerald-val">48.8~68.3 m³/h｜空管 5.8~8.1 m/s (有效截面 7.2~10.1 m/s)｜負壓 -0.10~-0.22 bar</td></tr>
+        <tr><th>母管外徑 / 焊接總長</th><td id="td_total" class="highlight-val">Ø114.3 mm (4寸) ／ 縮擴本體 240 mm (含兩端55mm快拆袖管總長 350 mm)</td></tr>
+        <tr><th>① 快拆接頭與直管袖管段</th><td id="td_coupling">SUS304 無擋環滑套快拆 (適用 Ø114.3mm，夾持前端 55mm 直管袖管，容許間隙 5~15mm)</td></tr>
+        <tr><th>② 前段縮口 (現成大小頭)</th><td id="td_reducer">4寸 × 2寸 標準同心大小頭 (Ø114.3 → Ø60.5)，長 100 mm</td></tr>
+        <tr><th>③ 中段喉部直管</th><td id="td_throat">2寸 不鏽鋼無縫管 (外徑 Ø60.5 × 厚3.0mm，內徑 54.5mm)，長 40 mm</td></tr>
+        <tr><th>④ 內插 45° 吸氣嘴精準插深</th><td id="td_injector" class="highlight-val">1/2"管(Ø21.3)自內壁起算：前緣長尖端深 32 mm / 後緣短邊深 11 mm (中心深21.5mm)</td></tr>
+        <tr><th>⑤ 後段復壓段規格</th><td id="td_cone">2寸 × 4寸 標準同心大小頭 (Ø60.5 → Ø114.3)，長 100 mm</td></tr>
+        <tr><th>⑥ 尾端銜接與太陽能臭氧組</th><td id="td_bracket">太陽能版配 12V 自吸石英臭氧組 (3~5 g/h，針閥節流 2.5~4 L/min)＋矽膠乾燥筒</td></tr>
+      </table>
+
+      <div class="alert-box">
+        <strong>⚠️ 交代鐵工廠師傅與現場安裝 3 大防呆鐵律（v5.0 工程完美修正版）：</strong>
+        1. <strong>吸氣嘴前緣/後緣精準量測：</strong>因 Ø21.3mm 管切 45° 斜角有 21mm 高低差，請師傅自喉管內壁起算，確認<strong>「前緣長尖端深入 32mm、後緣短邊深入 11mm（2"喉管）」</strong>，確保後緣破口完全露出管內壁不被焊道堵死！<br>
+        2. <strong>快拆接頭必夾直管袖管（Stub-End）：</strong>Straub-Grip 快拆嚴禁直接夾在大小頭斜錐面！請在大小頭前端（及方案A尾端）對焊一段 <strong>55mm 長同口徑直管袖管</strong>（或切現場舊直管焊上）；塔頂水平段首推<strong>【方案 B2】切掉舊彎頭單端快拆直上</strong>！<br>
+        3. <strong>進氣量分級管理：</strong>純吸空氣標準版單支最大進氣 8~20 L/min；太陽能臭氧版由 LZM-6T 針閥節流控制在單路 <strong>2.5~4.0 L/min</strong>，確保高臭氧濃度並於針閥下游建立穩定負壓。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom: 2D Cross-Section Blueprint & Sheet Metal Flat Pattern -->
+<div class="grid-bottom">
+  <div class="card">
+    <div class="card-header">
+      <h2>📐 2D 軸向剖面施工藍圖（含 55mm 快拆直管袖管與吸氣嘴前/後緣插深標註）</h2>
+      <span>支援直接 A4 列印交給焊接師傅</span>
+    </div>
+    <div class="svg-container" id="svgBlueprintWrap"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2>🔥 加工下料指南 ／ 長錐版「1:1 雷射鈑金扇形展開圖」</h2>
+      <span id="unfoldBadge">板厚 2.0 mm 中立軸展開</span>
+    </div>
+    <div class="svg-container" id="svgUnfoldWrap"></div>
+  </div>
+</div>
+
+<script>
+const MODELS = {
+  "HC-100S": {
+    id: "HC-100S",
+    title: "HC-100S (良機 LRC-N / LUC-C 125~175 雙分管 50% 分流 / 4寸管×2支)",
+    hydraulics: "單管 48.8~68.3 m³/h｜空管 5.8~8.1 m/s (有效截面 7.2~10.1 m/s)｜負壓 -0.10~-0.22 bar",
+    pipeInch: '4"',
+    t_pipeInch: '2"',
+    D1: 114.3,
+    Dt: 60.5,
+    Dt_ID: 54.5,
+    L_stub: 55,
+    L_red: 100,
+    L_thr_short: 40,
+    L_thr_long: 60,
+    L_cone_short: 100,
+    L_cone_long: 320,
+    t_cone: 2.0,
+    t_thr: 3.0,
+    injPipe: '1/2" PT (Ø21.3mm)',
+    injOD: 21.3,
+    injDepth: 22,
+    injTip: 32,
+    injHeel: 11,
+    o3Spec: "3~5 g/h (18W/間歇4.5W，雙路針閥節流各 2.5~4.0 L/min)",
+    R1: 349.2,
+    R2: 670.3,
+    s: 321.1,
+    theta: 30.16,
+    arc1: 183.8,
+    arc2: 352.8,
+    coneDegLong: 9.61,
+    coneDegShort: 30.1
+  },
+  "HC-125L": {
+    id: "HC-125L",
+    title: "HC-125L (良機 LRC-N / LUC-C 300~350 四分管 25% 分流專用增速型 / 5寸管×4支)",
+    hydraulics: "單管 58.5~68.3 m³/h｜空管 7.0~8.1 m/s (有效截面 8.7~10.1 m/s)｜負壓 -0.14~-0.22 bar",
+    pipeInch: '5"',
+    t_pipeInch: '2"',
+    D1: 139.8,
+    Dt: 60.5,
+    Dt_ID: 54.5,
+    L_stub: 55,
+    L_red: 125,
+    L_thr_short: 40,
+    L_thr_long: 60,
+    L_cone_short: 125,
+    L_cone_long: 380,
+    t_cone: 2.0,
+    t_thr: 3.0,
+    injPipe: '1/2" PT (Ø21.3mm)',
+    injOD: 21.3,
+    injDepth: 22,
+    injTip: 32,
+    injHeel: 11,
+    o3Spec: "6~10 g/h 四路太陽能箱 (四路針閥節流各 2.5~3.5 L/min)",
+    R1: 281.8,
+    R2: 663.9,
+    s: 382.1,
+    theta: 37.36,
+    arc1: 183.8,
+    arc2: 432.9,
+    coneDegLong: 11.91,
+    coneDegShort: 35.2
+  },
+  "HC-125S": {
+    id: "HC-125S",
+    title: "HC-125S (良機 LRC-N 200~250 雙分管×2支 ／ LRC-N 400~500 四分管×4支)",
+    hydraulics: "單管 78.0~97.5 m³/h｜空管 5.6~7.0 m/s (有效截面 6.9~8.6 m/s)｜負壓 -0.08~-0.16 bar",
+    pipeInch: '5"',
+    t_pipeInch: '2.5"',
+    D1: 139.8,
+    Dt: 76.3,
+    Dt_ID: 70.3,
+    L_stub: 55,
+    L_red: 125,
+    L_thr_short: 45,
+    L_thr_long: 70,
+    L_cone_short: 125,
+    L_cone_long: 380,
+    t_cone: 2.0,
+    t_thr: 3.0,
+    injPipe: '1/2" PT (Ø21.3mm)',
+    injOD: 21.3,
+    injDepth: 28,
+    injTip: 38,
+    injHeel: 17,
+    o3Spec: "雙管配 3~5 g/h；四管配 6~10 g/h (針閥節流各 3.0~4.0 L/min)",
+    R1: 446.2,
+    R2: 827.5,
+    s: 381.3,
+    theta: 29.97,
+    arc1: 233.4,
+    arc2: 432.9,
+    coneDegLong: 9.55,
+    coneDegShort: 28.5
+  },
+  "HC-150S": {
+    id: "HC-150S",
+    title: "HC-150S (良機 LRC-N 600~800 四分管×4支 ／ 跨廠牌 300~400RT 6寸雙分管×2支)",
+    hydraulics: "單管 117.0~156.0 m³/h｜空管 6.1~8.2 m/s (有效截面 7.6~10.2 m/s)｜負壓 -0.11~-0.22 bar",
+    pipeInch: '6"',
+    t_pipeInch: '3"',
+    D1: 165.2,
+    Dt: 89.1,
+    Dt_ID: 82.1,
+    L_stub: 60,
+    L_red: 140,
+    L_thr_short: 50,
+    L_thr_long: 80,
+    L_cone_short: 140,
+    L_cone_long: 450,
+    t_cone: 2.5,
+    t_thr: 3.5,
+    injPipe: '3/4" PT (Ø27.2mm)',
+    injOD: 27.2,
+    injDepth: 34,
+    injTip: 47,
+    injHeel: 20,
+    o3Spec: "6~10 g/h 太陽能臭氧組 (針閥節流各 3.5~4.5 L/min)＋矽膠乾燥筒",
+    R1: 513.9,
+    R2: 965.5,
+    s: 451.6,
+    theta: 30.33,
+    arc1: 272.1,
+    arc2: 511.1,
+    coneDegLong: 9.67,
+    coneDegShort: 30.4
+  },
+  "HC-150H": {
+    id: "HC-150H",
+    title: "HC-150H (良機 LDC-N 200~250 逆流塔單一 6寸母管 ／ 跨廠牌 500RT 6寸雙分管)",
+    hydraulics: "單管 156.0~195.0 m³/h｜空管 6.2~7.7 m/s (有效截面 7.5~9.4 m/s)｜負壓 -0.11~-0.20 bar",
+    pipeInch: '6"',
+    t_pipeInch: '3.5"',
+    D1: 165.2,
+    Dt: 101.6,
+    Dt_ID: 94.6,
+    L_stub: 60,
+    L_red: 140,
+    L_thr_short: 55,
+    L_thr_long: 80,
+    L_cone_short: 140,
+    L_cone_long: 360,
+    t_cone: 2.5,
+    t_thr: 3.5,
+    injPipe: '3/4" PT (Ø27.2mm)',
+    injOD: 27.2,
+    injDepth: 38,
+    injTip: 51,
+    injHeel: 24,
+    o3Spec: "6~10 g/h 太陽能臭氧組 (若為有背壓噴嘴塔則改配市電微正壓注氣箱)",
+    R1: 563.1,
+    R2: 924.5,
+    s: 361.4,
+    theta: 31.68,
+    arc1: 311.3,
+    arc2: 511.1,
+    coneDegLong: 10.10,
+    coneDegShort: 25.6
+  }
+};
+
+let currentModel = MODELS["HC-100S"];
+let currentScheme = "SHORT"; // SHORT, ELBOW, LONG
+let isCutaway = true;
+let showDim3D = true;
+let isExploded = false;
+let rotY = -0.38;
+let rotX = 0.22;
+let zoom = 1.08;
+let panX = 0, panY = 0;
+let isDragging = false;
+let dragButton = 0;
+let lastMouseX = 0, lastMouseY = 0;
+let animTick = 0;
+
+function selectScheme(schemeKey, btnEl) {
+  currentScheme = schemeKey;
+  document.querySelectorAll('.scheme-btn').forEach(b => b.classList.remove('active'));
+  if (btnEl) btnEl.classList.add('active');
+  updateUI();
+}
+
+function selectModel(modelKey, btnEl) {
+  currentModel = MODELS[modelKey];
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  if (btnEl) btnEl.classList.add('active');
+  updateUI();
+}
+
+function toggleCutaway() {
+  isCutaway = !isCutaway;
+  document.getElementById('btnCutaway').classList.toggle('active', isCutaway);
+}
+
+function toggleDim3D() {
+  showDim3D = !showDim3D;
+  document.getElementById('btnDim3D').classList.toggle('active', showDim3D);
+}
+
+function toggleExplode() {
+  isExploded = !isExploded;
+  document.getElementById('btnExplode').classList.toggle('active', isExploded);
+}
+
+function setCameraPreset(ry, rx, zm, px, py) {
+  rotY = ry;
+  rotX = rx;
+  zoom = zm;
+  panX = px || 0;
+  panY = py || 0;
+}
+
+function getActiveDims(m) {
+  const isLong = (currentScheme === "LONG");
+  const L_thr = isLong ? m.L_thr_long : m.L_thr_short;
+  const L_cone = isLong ? m.L_cone_long : m.L_cone_short;
+  const total_L = m.L_red + L_thr + L_cone;
+  const total_with_stubs = (currentScheme === "ELBOW") ? (total_L + m.L_stub) : (total_L + m.L_stub * 2);
+  const coneDeg = isLong ? m.coneDegLong : m.coneDegShort;
+  return { isLong, L_thr, L_cone, total_L, total_with_stubs, coneDeg };
+}
+
+function updateUI() {
+  const m = currentModel;
+  const d = getActiveDims(m);
+
+  let schemeName = "";
+  if (currentScheme === "SHORT") {
+    schemeName = `【方案A】極短雙現成大小頭萬用版 (縮擴本體 ${d.total_L}mm ＋ 兩端 ${m.L_stub}mm 快拆袖管)`;
+    document.getElementById('td_cone').textContent = `${m.t_pipeInch} × ${m.pipeInch} 現成標準同心大小頭 (Ø${m.Dt} → Ø${m.D1} mm)，長 ${d.L_cone} mm ＋ 尾端 ${m.L_stub}mm 袖管`;
+    document.getElementById('td_bracket').textContent = `搭配無擋環滑套快拆接頭；${m.o3Spec}`;
+  } else if (currentScheme === "ELBOW") {
+    schemeName = `【方案B2】極短主體＋尾端焊死全新 SUS304 90° 下水彎頭與消能盤 (★塔頂首推最易安裝)`;
+    document.getElementById('td_cone').textContent = `${m.t_pipeInch} × ${m.pipeInch} 現成大小頭 (長 ${d.L_cone} mm) ＋ 直接對焊 90° 不鏽鋼下水彎頭`;
+    document.getElementById('td_bracket').textContent = `一刀切掉舊生鏽彎頭！前端焊 ${m.L_stub}mm 袖管僅鎖 1 顆快拆；${m.o3Spec}`;
+  } else {
+    schemeName = `【長錐版】後段 9.5°~11.9° 雷射鈑金捲圓緩擴版 (最低壓損構型，兩端含 ${m.L_stub}mm 快拆袖管)`;
+    document.getElementById('td_cone').textContent = `雷射鈑金捲圓長錐管 Ø${m.Dt} → Ø${m.D1} mm，長 ${d.L_cone} mm (板厚 ${m.t_cone}mm / 錐角 ${d.coneDeg}°)`;
+    document.getElementById('td_bracket').textContent = `尾端底部點焊 SUS304 倒T型支撐座 + M10 高低調整螺絲；${m.o3Spec}`;
+  }
+
+  document.getElementById('modelTitleBadge').textContent = `目前顯示：${m.id} ｜ 縮擴本體 ${d.total_L}mm (含快拆袖管 ${d.total_with_stubs}mm)`;
+  document.getElementById('td_scheme').textContent = schemeName;
+  document.getElementById('td_name').textContent = m.title;
+  document.getElementById('td_hydraulics').textContent = m.hydraulics;
+  document.getElementById('td_total').textContent = `Ø${m.D1} mm (${m.pipeInch}) ／ 縮擴本體 ${d.total_L} mm (含快拆直管袖管總長 ${d.total_with_stubs} mm)`;
+  document.getElementById('td_coupling').textContent = `SUS304 無擋環滑套型雙螺栓快拆 (夾持 ${m.L_stub}mm 直管袖管段，容許管端間隙 5~15mm)`;
+  document.getElementById('td_reducer').textContent = `${m.pipeInch} × ${m.t_pipeInch} 標準同心大小頭 (Ø${m.D1} → Ø${m.Dt} mm)，長 ${m.L_red} mm`;
+  document.getElementById('td_throat').textContent = `${m.t_pipeInch} 不鏽鋼無縫管 (外徑 Ø${m.Dt} × 厚 ${m.t_thr} mm，內徑 ${m.Dt_ID} mm)，長 ${d.L_thr} mm`;
+  document.getElementById('td_injector').textContent = `${m.injPipe} 自管內壁起算：前緣長尖端深 ${m.injTip} mm / 後緣短邊深 ${m.injHeel} mm (中心深 ${m.injDepth} mm)`;
+  document.getElementById('unfoldBadge').textContent = d.isLong ? `板厚 ${m.t_cone} mm 中立軸展開｜扇形夾角 ${m.theta}°` : `五金行現成標準管件買料清單（免雷射切板捲圓）`;
+
+  render2DBlueprint(m, d);
+  renderUnfoldSVG(m, d);
+}
+
+function render2DBlueprint(m, d) {
+  const coneEndX = d.isLong ? 650 : 455;
+  const thrEndX = d.isLong ? 355 : 335;
+  const tailSVG = (currentScheme === "ELBOW") ? `
+    <path d="M ${coneEndX} 115 Q ${coneEndX+95} 115 ${coneEndX+95} 210 L ${coneEndX+95} 285 L ${coneEndX+15} 285 L ${coneEndX+15} 255 Z"
+          fill="rgba(168,85,247,0.22)" stroke="#a855f7" stroke-width="2.5"/>
+    <ellipse cx="${coneEndX+55}" cy="292" rx="52" ry="8" fill="rgba(168,85,247,0.45)" stroke="#d8b4fe" stroke-width="2"/>
+    <text x="${coneEndX+55}" y="314" fill="#d8b4fe" font-size="11" text-anchor="middle" font-weight="bold">⑤焊死 90° 彎頭+傘狀消能盤</text>
+  ` : `
+    <rect x="${coneEndX}" y="115" width="38" height="140" fill="rgba(56,189,248,0.18)" stroke="#38bdf8" stroke-width="2"/>
+    <rect x="${coneEndX+10}" y="106" width="52" height="158" fill="rgba(245,158,11,0.16)" stroke="#f59e0b" stroke-width="1.8" stroke-dasharray="4,3" rx="4"/>
+    <text x="${coneEndX+36}" y="98" fill="#f59e0b" font-size="10.5" text-anchor="middle">尾端袖管(${m.L_stub}mm)+滑套快拆</text>
+    ${d.isLong ? `<rect x="${coneEndX-25}" y="255" width="14" height="38" fill="#a855f7"/><rect x="${coneEndX-40}" y="293" width="44" height="7" fill="#a855f7"/>` : ''}
+  `;
+
+  const svg = `
+  <svg viewBox="0 0 820 365" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arrowCyan" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8"/>
+      </marker>
+      <marker id="arrowAmber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 10 5 L 0 9 z" fill="#f59e0b"/>
+      </marker>
+    </defs>
+
+    <rect width="820" height="365" fill="#070b14"/>
+    <line x1="35" y1="185" x2="785" y2="185" stroke="#334155" stroke-width="1.5" stroke-dasharray="10,5"/>
+    <text x="40" y="178" fill="#64748b" font-size="10.5">管中心軸線 (Centerline)</text>
+
+    <line x1="38" y1="185" x2="88" y2="185" stroke="#38bdf8" stroke-width="4" marker-end="url(#arrowCyan)"/>
+    <text x="42" y="206" fill="#38bdf8" font-size="11.5" font-weight="bold">進水</text>
+
+    <!-- Front Stub-End Pipe + Slip-type Straub Coupling -->
+    <rect x="112" y="115" width="38" height="140" fill="rgba(56,189,248,0.22)" stroke="#38bdf8" stroke-width="2"/>
+    <rect x="92" y="106" width="54" height="158" fill="rgba(245,158,11,0.2)" stroke="#f59e0b" stroke-width="2" rx="4"/>
+    <text x="122" y="96" fill="#f59e0b" font-size="10.5" text-anchor="middle" font-weight="bold">①滑套快拆+袖管(${m.L_stub}mm)</text>
+
+    <!-- Front Reducer -->
+    <polygon points="150,115 270,148 270,222 150,255" fill="rgba(56,189,248,0.14)" stroke="#38bdf8" stroke-width="2.5"/>
+    <line x1="270" y1="143" x2="270" y2="227" stroke="#f43f5e" stroke-width="2.5" stroke-dasharray="3,2"/>
+
+    <!-- Center Throat -->
+    <rect x="270" y="148" width="${thrEndX-270}" height="74" fill="rgba(244,63,94,0.14)" stroke="#f43f5e" stroke-width="2.5"/>
+    <line x1="${thrEndX}" y1="143" x2="${thrEndX}" y2="227" stroke="#f43f5e" stroke-width="2.5" stroke-dasharray="3,2"/>
+
+    <!-- Pitot Nozzle with explicit Tip & Heel bevel -->
+    <polygon points="296,72 314,72 314,164 296,184" fill="rgba(245,158,11,0.4)" stroke="#f59e0b" stroke-width="2.2"/>
+    <text x="305" y="62" fill="#f59e0b" font-size="11.5" text-anchor="middle" font-weight="bold">${m.injPipe} 吸氣嘴</text>
+    <circle cx="325" cy="176" r="3" fill="#67e8f9"/>
+    <circle cx="338" cy="184" r="3.5" fill="#67e8f9"/>
+    <circle cx="355" cy="172" r="4" fill="#67e8f9"/>
+    <circle cx="372" cy="190" r="3.5" fill="#67e8f9"/>
+
+    <!-- Rear Diffuser / Cone -->
+    <polygon points="${thrEndX},148 ${coneEndX},115 ${coneEndX},255 ${thrEndX},222" fill="rgba(16,185,129,0.14)" stroke="#10b981" stroke-width="2.5"/>
+    <text x="${(thrEndX+coneEndX)/2}" y="182" fill="#10b981" font-size="12" text-anchor="middle" font-weight="bold">④ 復壓段 (${d.L_cone}mm)</text>
+
+    ${tailSVG}
+
+    <line x1="150" y1="265" x2="150" y2="305" stroke="#64748b" stroke-width="1"/>
+    <line x1="270" y1="230" x2="270" y2="305" stroke="#64748b" stroke-width="1"/>
+    <line x1="155" y1="295" x2="265" y2="295" stroke="#38bdf8" stroke-width="1.8" marker-start="url(#arrowCyan)" marker-end="url(#arrowCyan)"/>
+    <text x="210" y="288" fill="#38bdf8" font-size="11.5" text-anchor="middle" font-weight="bold">縮口 ${m.L_red}mm</text>
+
+    <line x1="${thrEndX}" y1="230" x2="${thrEndX}" y2="305" stroke="#64748b" stroke-width="1"/>
+    <line x1="275" y1="295" x2="${thrEndX-5}" y2="295" stroke="#f43f5e" stroke-width="1.8" marker-start="url(#arrowAmber)" marker-end="url(#arrowAmber)"/>
+    <text x="${(270+thrEndX)/2}" y="288" fill="#f43f5e" font-size="11.5" text-anchor="middle" font-weight="bold">喉部 ${d.L_thr}mm</text>
+
+    <line x1="${coneEndX}" y1="260" x2="${coneEndX}" y2="305" stroke="#64748b" stroke-width="1"/>
+    <line x1="${thrEndX+5}" y1="295" x2="${coneEndX-5}" y2="295" stroke="#10b981" stroke-width="1.8" marker-start="url(#arrowCyan)" marker-end="url(#arrowCyan)"/>
+    <text x="${(thrEndX+coneEndX)/2}" y="288" fill="#10b981" font-size="11.5" text-anchor="middle" font-weight="bold">擴張段 ${d.L_cone}mm</text>
+
+    <line x1="155" y1="336" x2="${coneEndX-5}" y2="336" stroke="#f59e0b" stroke-width="2" marker-start="url(#arrowAmber)" marker-end="url(#arrowAmber)"/>
+    <text x="${(150+coneEndX)/2}" y="354" fill="#f59e0b" font-size="12.5" text-anchor="middle" font-weight="bold">縮擴本體長：${d.total_L} mm（含快拆直管袖管總長：${d.total_with_stubs} mm）</text>
+
+    <text x="86" y="145" fill="#fff" font-size="11.5" text-anchor="end" font-weight="bold">母管外徑</text>
+    <text x="86" y="162" fill="#38bdf8" font-size="12.5" text-anchor="end" font-weight="bold">Ø${m.D1}mm</text>
+    <text x="${(270+thrEndX)/2}" y="140" fill="#fb7185" font-size="11.5" text-anchor="middle" font-weight="bold">喉部 Ø${m.Dt}mm</text>
+
+    <rect x="420" y="10" width="388" height="88" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.8"/>
+    <line x1="314" y1="168" x2="420" y2="55" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4,4"/>
+    <text x="432" y="31" fill="#f59e0b" font-size="12" font-weight="bold">🔍 吸氣嘴前/後緣插深與袖管防呆（師傅必看）：</text>
+    <text x="432" y="52" fill="#f8fafc" font-size="11.5">• 自喉管內壁起算：<tspan fill="#38bdf8" font-weight="bold">前緣長尖端深 ${m.injTip}mm ／ 後緣短邊深 ${m.injHeel}mm</tspan></text>
+    <text x="432" y="72" fill="#f8fafc" font-size="11.5">• 45°斜口朝右下游；兩端必焊 <tspan fill="#34d399" font-weight="bold">${m.L_stub}mm 直管袖管</tspan> 供快拆水平夾持！</text>
+    <text x="432" y="90" fill="#94a3b8" font-size="10.5">• 快拆選用無擋環滑套型 (Slip-type)，管端切口間隙控制在 5~15mm</text>
+  </svg>`;
+  document.getElementById('svgBlueprintWrap').innerHTML = svg;
+}
+
+function renderUnfoldSVG(m, d) {
+  const svg = `
+  <svg viewBox="0 0 680 365" xmlns="http://www.w3.org/2000/svg">
+    <rect width="680" height="365" fill="#070b14"/>
+    <circle cx="75" cy="175" r="4.5" fill="#f59e0b"/>
+    <text x="75" y="200" fill="#f59e0b" font-size="12" text-anchor="middle" font-weight="bold">展開圓心 O</text>
+
+    <line x1="75" y1="175" x2="545" y2="50" stroke="#475569" stroke-width="1.5" stroke-dasharray="6,4"/>
+    <line x1="75" y1="175" x2="545" y2="300" stroke="#475569" stroke-width="1.5" stroke-dasharray="6,4"/>
+
+    <path d="M 275 122 A 202 202 0 0 1 275 228 L 520 295 A 456 456 0 0 0 520 55 Z"
+          fill="rgba(16,185,129,0.2)" stroke="#10b981" stroke-width="3"/>
+
+    <path d="M 162 152 A 88 88 0 0 1 162 198" fill="none" stroke="#f59e0b" stroke-width="2"/>
+    <text x="205" y="179" fill="#f59e0b" font-size="13" font-weight="bold">夾角 θ = ${m.theta}°</text>
+
+    <text x="178" y="122" fill="#38bdf8" font-size="12.5" font-weight="bold" transform="rotate(-15 178,122)">內弧半徑 R1 = ${m.R1} mm</text>
+    <text x="395" y="66" fill="#10b981" font-size="12.5" font-weight="bold" transform="rotate(-15 395,66)">展開斜邊長 L = ${m.s} mm</text>
+    <text x="360" y="280" fill="#f8fafc" font-size="12.5" font-weight="bold" transform="rotate(15 360,280)">外弧總半徑 R2 = ${m.R2} mm</text>
+
+    <text x="302" y="179" fill="#67e8f9" font-size="12" font-weight="bold">內弧長 ${m.arc1} mm</text>
+    <text x="532" y="179" fill="#6ee7b7" font-size="13" font-weight="bold">外弧長 ${m.arc2} mm</text>
+
+    <rect x="18" y="242" width="380" height="112" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+    <text x="30" y="263" fill="#34d399" font-size="12" font-weight="bold">💡 方案A/B2 免切板！直接買現成管件：</text>
+    <text x="30" y="283" fill="#f8fafc" font-size="11.5">• 買 2 顆現成 <tspan fill="#38bdf8" font-weight="bold">${m.pipeInch}×${m.t_pipeInch} SUS304 同心大小頭</tspan> ＋ 兩端 ${m.L_stub}mm 直管袖管對焊！</text>
+    <text x="30" y="305" fill="#f59e0b" font-size="11.5" font-weight="bold">📋 若做【長錐版】雷射切板參數 (${m.id})：</text>
+    <text x="30" y="325" fill="#cbd5e1" font-size="11">• 板厚 ${m.t_cone}mm｜R1=${m.R1} / R2=${m.R2}mm｜展開角 θ=${m.theta}°</text>
+    <text x="30" y="343" fill="#94a3b8" font-size="10.5">• 捲圓後大頭端同樣對焊 ${m.L_stub}mm 直管袖管供雙螺栓快拆夾持</text>
+  </svg>`;
+  document.getElementById('svgUnfoldWrap').innerHTML = svg;
+}
+
+const canvas = document.getElementById('cad3dCanvas');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+window.addEventListener('resize', resizeCanvas);
+
+const container = document.getElementById('canvasContainer');
+container.addEventListener('contextmenu', e => e.preventDefault());
+container.addEventListener('mousedown', e => {
+  isDragging = true;
+  dragButton = e.button;
+  lastMouseX = e.clientX;
+  lastMouseY = e.clientY;
+});
+window.addEventListener('mouseup', () => isDragging = false);
+window.addEventListener('mousemove', e => {
+  if (!isDragging) return;
+  const dx = e.clientX - lastMouseX;
+  const dy = e.clientY - lastMouseY;
+  if (dragButton === 2) {
+    panX += dx;
+    panY += dy;
+  } else {
+    rotY += dx * 0.008;
+    rotX = Math.max(-1.45, Math.min(1.45, rotX + dy * 0.008));
+  }
+  lastMouseX = e.clientX;
+  lastMouseY = e.clientY;
+});
+container.addEventListener('wheel', e => {
+  e.preventDefault();
+  zoom = Math.max(0.5, Math.min(2.6, zoom - e.deltaY * 0.0012));
+}, { passive: false });
+
+container.addEventListener('touchstart', e => {
+  if (e.touches.length === 1) {
+    isDragging = true;
+    dragButton = 0;
+    lastMouseX = e.touches[0].clientX;
+    lastMouseY = e.touches[0].clientY;
+  }
+});
+window.addEventListener('touchend', () => isDragging = false);
+window.addEventListener('touchmove', e => {
+  if (!isDragging || e.touches.length !== 1) return;
+  const dx = e.touches[0].clientX - lastMouseX;
+  const dy = e.touches[0].clientY - lastMouseY;
+  rotY += dx * 0.008;
+  rotX = Math.max(-1.45, Math.min(1.45, rotX + dy * 0.008));
+  lastMouseX = e.touches[0].clientX;
+  lastMouseY = e.touches[0].clientY;
+});
+
+function project3D(x, y, z, cx, cy, scale) {
+  const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
+  const x1 = x * cosY - z * sinY;
+  const z1 = x * sinY + z * cosY;
+  const cosX = Math.cos(rotX), sinX = Math.sin(rotX);
+  const y2 = y * cosX - z1 * sinX;
+  const z2 = y * sinX + z1 * cosX;
+
+  const fov = 950;
+  const dist = 720;
+  const p = fov / (dist + z2);
+  return {
+    sx: cx + panX + x1 * scale * p,
+    sy: cy + panY - y2 * scale * p,
+    z: z2
+  };
+}
+
+function draw3DLine(p1, p2, cx, cy, scale, color, width, dash) {
+  const a = project3D(p1.x, p1.y, p1.z, cx, cy, scale);
+  const b = project3D(p2.x, p2.y, p2.z, cx, cy, scale);
+  ctx.save();
+  ctx.beginPath();
+  if (dash) ctx.setLineDash(dash);
+  ctx.moveTo(a.sx, a.sy);
+  ctx.lineTo(b.sx, b.sy);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = width || 1.5;
+  ctx.stroke();
+  ctx.restore();
+  return { a, b };
+}
+
+function draw3DDimension(pStart, pEnd, offsetVec, labelText, color, cx, cy, scale) {
+  const p1Ext = { x: pStart.x + offsetVec.x, y: pStart.y + offsetVec.y, z: pStart.z + offsetVec.z };
+  const p2Ext = { x: pEnd.x + offsetVec.x, y: pEnd.y + offsetVec.y, z: pEnd.z + offsetVec.z };
+  draw3DLine(pStart, p1Ext, cx, cy, scale, "rgba(148,163,184,0.55)", 1, [3, 3]);
+  draw3DLine(pEnd, p2Ext, cx, cy, scale, "rgba(148,163,184,0.55)", 1, [3, 3]);
+  const seg = draw3DLine(p1Ext, p2Ext, cx, cy, scale, color, 2, null);
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.arc(seg.a.sx, seg.a.sy, 3, 0, Math.PI * 2);
+  ctx.arc(seg.b.sx, seg.b.sy, 3, 0, Math.PI * 2);
+  ctx.fill();
+
+  const mx = (seg.a.sx + seg.b.sx) / 2;
+  const my = (seg.a.sy + seg.b.sy) / 2;
+  ctx.font = "bold 12px 'Microsoft JhengHei', sans-serif";
+  const tw = ctx.measureText(labelText).width;
+  ctx.fillStyle = "rgba(15, 23, 42, 0.9)";
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.roundRect(mx - tw / 2 - 6, my - 10, tw + 12, 20, 4);
+  ctx.fill();
+  ctx.stroke();
+  ctx.fillStyle = color;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(labelText, mx, my);
+}
+
+function generateFrustumPolys(xStart, xEnd, rStart, rEnd, colorRGB, alpha, cutaway) {
+  const polys = [];
+  const segX = 10;
+  const segTheta = 28;
+  for (let i = 0; i < segX; i++) {
+    const t0 = i / segX;
+    const t1 = (i + 1) / segX;
+    const x0 = xStart + (xEnd - xStart) * t0;
+    const x1 = xStart + (xEnd - xStart) * t1;
+    const r0 = rStart + (rEnd - rStart) * t0;
+    const r1 = rStart + (rEnd - rStart) * t1;
+
+    for (let j = 0; j < segTheta; j++) {
+      const a0 = (j / segTheta) * Math.PI * 2;
+      const a1 = ((j + 1) / segTheta) * Math.PI * 2;
+      const midA = (a0 + a1) / 2;
+      if (cutaway && Math.sin(midA) < -0.05) continue;
+
+      const p1 = { x: x0, y: r0 * Math.cos(a0), z: r0 * Math.sin(a0) };
+      const p2 = { x: x1, y: r1 * Math.cos(a0), z: r1 * Math.sin(a0) };
+      const p3 = { x: x1, y: r1 * Math.cos(a1), z: r1 * Math.sin(a1) };
+      const p4 = { x: x0, y: r0 * Math.cos(a1), z: r0 * Math.sin(a1) };
+
+      polys.push({ pts: [p1, p2, p3, p4], color: colorRGB, alpha: alpha, nx: 0, ny: Math.cos(midA), nz: Math.sin(midA) });
+    }
+  }
+  return polys;
+}
+
+function draw3DScene() {
+  animTick += 0.04;
+  const rect = canvas.parentElement.getBoundingClientRect();
+  const W = rect.width;
+  const H = rect.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const m = currentModel;
+  const d = getActiveDims(m);
+  const cx = W / 2;
+  const cy = H / 2 + 5;
+  const scale = (Math.min(W, H) / 530) * zoom;
+
+  const expGap = isExploded ? 38 : 0;
+  const totalLen = d.total_L;
+  const xOrigin = -totalLen / 2 - (currentScheme === "ELBOW" ? 25 : 0);
+
+  const rMain = m.D1 / 2;
+  const rThroat = m.Dt / 2;
+
+  const xStub0 = xOrigin - m.L_stub - expGap * 0.6;
+  const xRed0 = xOrigin - expGap * 0.6;
+  const xRed1 = xRed0 + m.L_red;
+  const xCoup0 = xStub0 - 30 - expGap * 0.8;
+  const xCoup1 = xStub0 + 35 - expGap * 0.8;
+  const xThr0 = xOrigin + m.L_red;
+  const xThr1 = xThr0 + d.L_thr;
+  const xCone0 = xThr1 + expGap * 0.6;
+  const xCone1 = xCone0 + d.L_cone;
+  const xTailStub1 = xCone1 + m.L_stub;
+
+  draw3DLine({ x: xCoup0 - 30, y: 0, z: 0 }, { x: xCone1 + 110, y: 0, z: 0 }, cx, cy, scale, "rgba(100,116,139,0.5)", 1.2, [6, 4]);
+
+  let allPolys = [];
+  // Front Straight Stub-End Pipe + Slip-type Straub Coupling
+  allPolys.push(...generateFrustumPolys(xStub0, xRed0, rMain, rMain, [56, 189, 248], 0.9, isCutaway));
+  allPolys.push(...generateFrustumPolys(xCoup0, xCoup1, rMain * 1.12, rMain * 1.12, [245, 158, 11], 0.88, isCutaway));
+
+  // Main Venturi Sections
+  allPolys.push(...generateFrustumPolys(xRed0, xRed1, rMain, rThroat, [56, 189, 248], 0.86, isCutaway));
+  allPolys.push(...generateFrustumPolys(xThr0, xThr1, rThroat, rThroat, [244, 63, 94], 0.88, isCutaway));
+  allPolys.push(...generateFrustumPolys(xCone0, xCone1, rThroat, rMain, [16, 185, 129], 0.85, isCutaway));
+
+  // Internal 45-degree Pitot Injector Pipe
+  const xInjCenter = (xThr0 + xThr1) / 2;
+  const rInj = m.injOD / 2;
+  const yTop = rThroat + 56 + (isExploded ? 30 : 0);
+  const yBotBase = rThroat - m.injDepth + (isExploded ? 30 : 0);
+  const segInj = 20;
+  for (let j = 0; j < segInj; j++) {
+    const a0 = (j / segInj) * Math.PI * 2;
+    const a1 = ((j + 1) / segInj) * Math.PI * 2;
+    const dx0 = rInj * Math.cos(a0), dz0 = rInj * Math.sin(a0);
+    const dx1 = rInj * Math.cos(a1), dz1 = rInj * Math.sin(a1);
+    const yBot0 = yBotBase + dx0 * 1.0;
+    const yBot1 = yBotBase + dx1 * 1.0;
+    const p1 = { x: xInjCenter + dx0, y: yTop, z: dz0 };
+    const p2 = { x: xInjCenter + dx0, y: yBot0, z: dz0 };
+    const p3 = { x: xInjCenter + dx1, y: yBot1, z: dz1 };
+    const p4 = { x: xInjCenter + dx1, y: yTop, z: dz1 };
+    allPolys.push({ pts: [p1, p2, p3, p4], color: [251, 191, 36], alpha: 0.98, nx: Math.cos(a0), ny: 0, nz: Math.sin(a0) });
+  }
+
+  // Scheme-specific tail component
+  if (currentScheme === "ELBOW") {
+    const xElb = xCone1 + expGap * 0.6;
+    allPolys.push(...generateFrustumPolys(xElb, xElb + rMain * 1.3, rMain, rMain * 0.95, [168, 85, 247], 0.86, isCutaway));
+    const xVert = xElb + rMain * 0.85;
+    allPolys.push(...generateFrustumPolys(0, 110, rMain * 0.95, rMain * 1.05, [168, 85, 247], 0.86, isCutaway).map(poly => ({
+      ...poly,
+      pts: poly.pts.map(pt => ({ x: xVert + pt.y, y: -pt.x, z: pt.z }))
+    })));
+    allPolys.push(...generateFrustumPolys(118, 124, rMain * 1.45, rMain * 0.2, [216, 180, 254], 0.92, false).map(poly => ({
+      ...poly,
+      pts: poly.pts.map(pt => ({ x: xVert + pt.y, y: -pt.x, z: pt.z }))
+    })));
+  } else {
+    // Rear Straight Stub-End Pipe for Coupling
+    allPolys.push(...generateFrustumPolys(xCone1, xTailStub1, rMain, rMain, [16, 185, 129], 0.9, isCutaway));
+    if (currentScheme === "LONG") {
+      const xFoot = xCone1 - 28;
+      const yFootTop = -rMain - (isExploded ? 25 : 0);
+      allPolys.push(...generateFrustumPolys(xFoot - 8, xFoot + 8, 8, 8, [168, 85, 247], 0.95, false).map(poly => ({
+        ...poly,
+        pts: poly.pts.map(pt => ({ x: xFoot + pt.y, y: yFootTop - (pt.x - (xFoot - 8)) * 3.2, z: pt.z }))
+      })));
+    }
+  }
+
+  const projectedPolys = allPolys.map(poly => {
+    const projPts = poly.pts.map(pt => project3D(pt.x, pt.y, pt.z, cx, cy, scale));
+    const avgZ = projPts.reduce((acc, p) => acc + p.z, 0) / projPts.length;
+    return { ...poly, projPts, avgZ };
+  });
+
+  projectedPolys.sort((a, b) => b.avgZ - a.avgZ);
+
+  for (const poly of projectedPolys) {
+    const shade = 0.65 + 0.35 * Math.max(-0.5, (poly.ny * 0.6 - poly.nz * 0.5));
+    const r = Math.min(255, Math.floor(poly.color[0] * shade));
+    const g = Math.min(255, Math.floor(poly.color[1] * shade));
+    const b = Math.min(255, Math.floor(poly.color[2] * shade));
+
+    ctx.beginPath();
+    ctx.moveTo(poly.projPts[0].sx, poly.projPts[0].sy);
+    for (let k = 1; k < poly.projPts.length; k++) {
+      ctx.lineTo(poly.projPts[k].sx, poly.projPts[k].sy);
+    }
+    ctx.closePath();
+    ctx.fillStyle = `rgba(${r},${g},${b},${poly.alpha})`;
+    ctx.fill();
+    ctx.strokeStyle = `rgba(255,255,255,0.13)`;
+    ctx.lineWidth = 0.6;
+    ctx.stroke();
+  }
+
+  // Animated Micro-Nano Bubbles
+  for (let b = 0; b < 30; b++) {
+    const progress = ((animTick * 0.45 + b * 0.033) % 1.0);
+    const bx = xInjCenter + 8 + progress * (xCone1 - xInjCenter - 10);
+    const spreadR = (rThroat * 0.65) * progress;
+    const angle = b * 2.4 + animTick * 2.0;
+    const by = Math.cos(angle) * spreadR;
+    const bz = Math.sin(angle) * spreadR;
+    const pt = project3D(bx, by, bz, cx, cy, scale);
+    ctx.beginPath();
+    ctx.arc(pt.sx, pt.sy, 2.2 + progress * 2.6, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(103, 232, 249, ${0.88 - progress * 0.5})`;
+    ctx.fill();
+  }
+
+  if (showDim3D) {
+    draw3DDimension(
+      { x: xStub0, y: -rMain, z: 0 },
+      { x: xRed0, y: -rMain, z: 0 },
+      { x: 0, y: -42, z: 0 },
+      `袖管 ${m.L_stub}mm`,
+      "#f59e0b", cx, cy, scale
+    );
+    draw3DDimension(
+      { x: xRed0, y: -rMain, z: 0 },
+      { x: xRed1, y: -rThroat, z: 0 },
+      { x: 0, y: -42, z: 0 },
+      `縮口 ${m.L_red}mm`,
+      "#38bdf8", cx, cy, scale
+    );
+    draw3DDimension(
+      { x: xThr0, y: -rThroat, z: 0 },
+      { x: xThr1, y: -rThroat, z: 0 },
+      { x: 0, y: -65, z: 0 },
+      `喉部 ${d.L_thr}mm (Ø${m.Dt})`,
+      "#fb7185", cx, cy, scale
+    );
+    draw3DDimension(
+      { x: xCone0, y: -rThroat, z: 0 },
+      { x: xCone1, y: -rMain, z: 0 },
+      { x: 0, y: -42, z: 0 },
+      `擴張段 ${d.L_cone}mm`,
+      "#34d399", cx, cy, scale
+    );
+    draw3DDimension(
+      { x: xRed0, y: -rMain, z: 0 },
+      { x: xCone1, y: -rMain, z: 0 },
+      { x: 0, y: -96, z: 0 },
+      `縮擴本體 ${d.total_L}mm (含快拆袖管 ${d.total_with_stubs}mm)`,
+      "#fbbf24", cx, cy, scale
+    );
+    draw3DDimension(
+      { x: xStub0, y: rMain, z: 0 },
+      { x: xStub0, y: -rMain, z: 0 },
+      { x: -55, y: 0, z: 0 },
+      `母管 Ø${m.D1}mm`,
+      "#e2e8f0", cx, cy, scale
+    );
+    const lblNozzle = project3D(xInjCenter, yTop + 18, 0, cx, cy, scale);
+    ctx.font = "bold 12px 'Microsoft JhengHei', sans-serif";
+    ctx.fillStyle = "#fbbf24";
+    ctx.textAlign = "center";
+    ctx.fillText(`▼ 吸氣嘴前緣深 ${m.injTip}mm / 後緣深 ${m.injHeel}mm (45°朝右下游)`, lblNozzle.sx, lblNozzle.sy);
+  }
+
+  requestAnimationFrame(draw3DScene);
+}
+
+window.onload = function() {
+  resizeCanvas();
+  updateUI();
+  requestAnimationFrame(draw3DScene);
+};
+</script>
+</body>
+</html>
