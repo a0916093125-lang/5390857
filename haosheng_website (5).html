@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>皓盛有限公司 | 專業冷卻水處理與空調機電工程</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        industrial: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                            dark: '#0f172a',
+                            slate: '#1e293b',
+                            blue: '#0284c7',
+                            darkblue: '#0369a1'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .hero-pattern {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.92) 0%, rgba(15, 118, 110, 0.85) 100%), url('https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+
+    <!-- 一鍵快速聯絡與加入 LINE 浮動按鈕 -->
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col space-y-3">
+        <a href="https://line.me/ti/p/~0916093125" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-2xl transition transform hover:scale-110" title="一鍵加 LINE 好友">
+            <i class="fa-brands fa-line"></i>
+        </a>
+        <a href="tel:0916093125" class="bg-teal-600 hover:bg-teal-700 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-xl transition transform hover:scale-110" title="撥打電話">
+            <i class="fa-solid fa-phone"></i>
+        </a>
+    </div>
+
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+    <!-- 頂部導覽列 -->
+    <header class="sticky top-0 z-50 bg-slate-900/95 backdrop-blur border-b border-slate-800 text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-lg bg-teal-600 flex items-center justify-center text-white font-bold text-xl shadow">
+                    皓
+                </div>
+                <div>
+                    <span class="text-xl font-bold tracking-wider block">皓盛有限公司</span>
+                    <span class="text-xs text-teal-400 tracking-widest uppercase">Haosheng Engineering</span>
+                </div>
+            </div>
+            
+            <!-- 桌面版選單 -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
+                <a href="#about" class="hover:text-teal-400 transition">關於皓盛</a>
+                <a href="#services" class="hover:text-teal-400 transition">核心服務</a>
+                <a href="#projects" class="hover:text-teal-400 transition">工程實績</a>
+                <a href="#faq" class="hover:text-teal-400 transition">常見問題</a>
+                <a href="#contact" class="bg-teal-600 hover:bg-teal-700 text-white px-5 py-2.5 rounded-lg shadow transition">聯絡我們</a>
+            </nav>
+
+            <!-- 手機版漢堡按鈕 -->
+            <button id="menu-btn" class="md:hidden text-slate-300 hover:text-white focus:outline-none">
+                <i class="fa-solid fa-bars text-2xl"></i>
+            </button>
+        </div>
+
+        <!-- 手機版下拉選單 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-900 border-b border-slate-800 px-4 pt-2 pb-4 space-y-3">
+            <a href="#about" class="block py-2 text-slate-300 hover:text-white">關於皓盛</a>
+            <a href="#services" class="block py-2 text-slate-300 hover:text-white">核心服務</a>
+            <a href="#projects" class="block py-2 text-slate-300 hover:text-white">工程實績</a>
+            <a href="#faq" class="block py-2 text-slate-300 hover:text-white">常見問題</a>
+            <a href="#contact" class="block text-center bg-teal-600 text-white py-2 rounded-lg font-medium">聯絡我們</a>
+        </div>
+    </header>
+
+
+    <!-- LINE 快速加好友與一鍵分享列 -->
+    <section class="bg-emerald-600 text-white py-4 shadow-inner">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-3 text-center sm:text-left">
+                <i class="fa-brands fa-line text-3xl"></i>
+                <div>
+                    <h3 class="font-bold text-base">廠務現場快速諮詢？歡迎一鍵加 LINE 好友</h3>
+                    <p class="text-xs text-emerald-100">公司電話 / LINE ID：0916093125（點擊右側按鈕立即新增）</p>
+                </div>
+            </div>
+            <a href="https://line.me/ti/p/~0916093125" target="_blank" class="bg-white text-emerald-700 hover:bg-emerald-50 font-bold px-6 py-2.5 rounded-xl shadow transition text-sm flex items-center space-x-2 shrink-0">
+                <i class="fa-brands fa-line text-lg text-emerald-600"></i>
+                <span>一鍵加 LINE 好友</span>
+            </a>
+        </div>
+    </section>
+
+
+    <!-- 主視覺區 (Hero) -->
+    <section class="hero-pattern text-white py-24 lg:py-32 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="max-w-3xl">
+                <span class="inline-block bg-teal-500/20 text-teal-300 border border-teal-500/30 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide uppercase mb-6 backdrop-blur-sm">
+                    專業冷卻水處理與空調機電工程
+                </span>
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight mb-6">
+                    精準控溫、高效散熱<br><span class="text-teal-400">廠務設備的最佳技術後盾</span>
+                </h1>
+                <p class="text-lg text-slate-300 mb-8 leading-relaxed">
+                    專注於商業大樓與工業廠房之冷卻水塔維護、空調管線工程、自動控制設備及配管配線。以嚴謹工藝與專業技術，確保您的廠務系統全天候穩定運轉。
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#contact" class="bg-teal-600 hover:bg-teal-700 text-white font-medium px-8 py-4 rounded-xl shadow-lg transition text-center flex items-center justify-center space-x-2">
+                        <span>立即諮詢工程報價</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <a href="#services" class="bg-slate-800/80 hover:bg-slate-800 border border-slate-700 text-white font-medium px-8 py-4 rounded-xl backdrop-blur transition text-center">
+                        探索服務項目
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 數據信任指標 -->
+    <section class="bg-white border-b border-slate-200 py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="p-4">
+                    <div class="text-3xl lg:text-4xl font-black text-teal-600 mb-1">90221911</div>
+                    <div class="text-sm font-medium text-slate-500">公司統一編號</div>
+                </div>
+                <div class="p-4">
+                    <div class="text-3xl lg:text-4xl font-black text-slate-900 mb-1">台北市士林</div>
+                    <div class="text-sm font-medium text-slate-500">營運總部據點</div>
+                </div>
+                <div class="p-4">
+                    <div class="text-3xl lg:text-4xl font-black text-teal-600 mb-1">50+</div>
+                    <div class="text-sm font-medium text-slate-500">專業營業與工程項目</div>
+                </div>
+                <div class="p-4">
+                    <div class="text-3xl lg:text-4xl font-black text-slate-900 mb-1">100%</div>
+                    <div class="text-sm font-medium text-slate-500">廠務安全與法規合規</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 關於皓盛 -->
+    <section id="about" class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <span class="text-teal-600 font-semibold text-sm tracking-wider uppercase">About Haosheng</span>
+                    <h2 class="text-3xl font-bold text-slate-900 mt-2 mb-6">扎實工程根基，成就卓越廠務</h2>
+                    <p class="text-slate-600 leading-relaxed mb-4">
+                        <strong>皓盛有限公司</strong>成立於台北市士林區，登記資本額新台幣 50 萬元，由董事李思遠帶領具備豐富實務經驗的工程團隊，專精於商業空間、工業廠房之冷凍空調、水器材料、自動控制與配管工程。
+                    </p>
+                    <p class="text-slate-600 leading-relaxed mb-6">
+                        我們深刻理解現代廠務與商業大樓對冷卻水系統、散熱設備與水電管線的高標準需求。從前期規劃、設備安裝、管線配裝到日常檢驗維護，皓盛始終堅持嚴謹安全、工期精準與最高品質。
+                    </p>
+                    <div class="grid grid-cols-2 gap-4 pt-2 border-t border-slate-200">
+                        <div>
+                            <span class="block font-bold text-slate-900 text-lg">負責人</span>
+                            <span class="text-slate-600">李思遠 先生</span>
+                        </div>
+                        <div>
+                            <span class="block font-bold text-slate-900 text-lg">登記地址</span>
+                            <span class="text-slate-600">台北市士林區社正路45巷4弄1號1樓</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="bg-teal-900 rounded-2xl overflow-hidden shadow-2xl relative aspect-video flex items-center justify-center p-8 text-white">
+                        <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#0d9488_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                        <div class="relative z-10 text-center">
+                            <i class="fa-solid fa-industry text-6xl text-teal-400 mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-2">工業級機電與水冷技術</h3>
+                            <p class="text-teal-200 text-sm">提供冷卻水塔維護、配管工程、自動控制與消防機電全方位解決方案</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 核心服務項目 (卡片式編排) -->
+    <section id="services" class="py-20 bg-white border-t border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-teal-600 font-semibold text-sm tracking-wider uppercase">Core Services</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-2">專業服務項目</h2>
+                <p class="text-slate-600 mt-3">涵蓋水冷系統、配管工程、電器承裝與自動控制，滿足多元廠務工程需求。</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 卡片 1 -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-8 hover:shadow-xl hover:border-teal-500 transition duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center text-2xl font-bold mb-6">
+                            <i class="fa-solid fa-water"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3">冷卻水塔與配管工程</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            專精冷卻水塔清洗、水質處理、配管工程（E599010）及水器材料批發零售（F106040/F206040），確保循環水流暢與高效散熱。
+                        </p>
+                    </div>
+                    <ul class="space-y-2 text-xs text-slate-500 border-t border-slate-200 pt-4">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-teal-600 mr-2"></i>冷卻水塔定期清洗保養</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-teal-600 mr-2"></i>工業配管與閥門安裝換新</li>
+                    </ul>
+                </div>
+
+                <!-- 卡片 2 -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-8 hover:shadow-xl hover:border-teal-500 transition duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center text-2xl font-bold mb-6">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3">電器承裝與機電維護</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            提供電器承裝業（E601010）、用電設備檢驗維護（E606010）、電線電纜與發輸配電機械製造安裝，確保廠區用電安全穩定。
+                        </p>
+                    </div>
+                    <ul class="space-y-2 text-xs text-slate-500 border-t border-slate-200 pt-4">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-teal-600 mr-2"></i>用電設備定期檢驗維護</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-teal-600 mr-2"></i>變壓器與配電盤檢修</li>
+                    </ul>
+                </div>
+
+                <!-- 卡片 3 -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-8 hover:shadow-xl hover:border-teal-500 transition duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center text-2xl font-bold mb-6">
+                            <i class="fa-solid fa-microchip"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3">自動控制與儀表工程</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            自動控制設備工程（E603050）與儀器儀表安裝工程（EZ05010），提供空調溫控、變頻器與自動化監控系統整合。
+                        </p>
+                    </div>
+                    <ul class="space-y-2 text-xs text-slate-500 border-t border-slate-200 pt-4">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-teal-600 mr-2"></i>PLC與溫控自動化設定</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-teal-600 mr-2"></i>感測儀器安裝與校正</li>
+                    </ul>
+                </div>
+
+                <!-- 卡片 4 -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-8 hover:shadow-xl hover:border-teal-500 transition duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center text-2xl font-bold mb-6">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3">消防安全設備工程</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            消防安全設備檢修業（IF01010）與安裝工程（E603040），為廠辦大樓提供符合法規的消防安全保障與定期申報檢修。
+                        </p>
+                    </div>
+                    <ul class="space-y-2 text-xs text-slate-500 border-t border-slate-200 pt-4">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-teal-600 mr-2"></i>消防設備定期申報檢修</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-teal-600 mr-2"></i>消防管線與警報系統安裝</li>
+                    </ul>
+                </div>
+
+                <!-- 卡片 5 -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-8 hover:shadow-xl hover:border-teal-500 transition duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center text-2xl font-bold mb-6">
+                            <i class="fa-solid fa-gear"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3">機械設備與五金批發</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            機械設備製造安裝（CB01010/E604010）與五金機械器具批發零售，提供各類工業耗材、閥門、耐火材料及專業零組件。
+                        </p>
+                    </div>
+                    <ul class="space-y-2 text-xs text-slate-500 border-t border-slate-200 pt-4">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-teal-600 mr-2"></i>工業閥門與五金零配件</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-teal-600 mr-2"></i>機械設備安裝與調校</li>
+                    </ul>
+                </div>
+
+                <!-- 卡片 6 -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-8 hover:shadow-xl hover:border-teal-500 transition duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center text-2xl font-bold mb-6">
+                            <i class="fa-solid fa-building-shield"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3">廠務清潔與環保工程</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            建築物清潔服務（J101010）與廢棄物清除處理（J101030/J101040），為企業廠區提供全方位的環境維護與廢棄物合規處理。
+                        </p>
+                    </div>
+                    <ul class="space-y-2 text-xs text-slate-500 border-t border-slate-200 pt-4">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-teal-600 mr-2"></i>廠區與機房專業清潔</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-teal-600 mr-2"></i>事業廢棄物合規清運</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 工程實績與案例展示 -->
+    <section id="projects" class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-teal-600 font-semibold text-sm tracking-wider uppercase">Project Track Record</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-2">精選工程實績</h2>
+                <p class="text-slate-600 mt-3">以高標準工藝服務各大科技廠房、商業大樓與機電系統更新。</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-2xl overflow-hidden shadow border border-slate-200">
+                    <div class="h-48 bg-teal-800 flex items-center justify-center text-white relative">
+                        <i class="fa-solid fa-industry text-5xl opacity-40"></i>
+                        <span class="absolute bottom-3 left-3 bg-teal-900/80 text-teal-200 text-xs px-3 py-1 rounded-md">水塔與管線更新</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg text-slate-900 mb-2">電子廠冷卻水塔清洗與閥門更換</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">執行大型工業水塔全面清洗保養，並更換 8 吋 10K 齒輪式蝶閥與管線檢修，確保夏季高負載運轉穩定。</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl overflow-hidden shadow border border-slate-200">
+                    <div class="h-48 bg-slate-800 flex items-center justify-center text-white relative">
+                        <i class="fa-solid fa-bolt text-5xl opacity-40"></i>
+                        <span class="absolute bottom-3 left-3 bg-slate-900/80 text-teal-200 text-xs px-3 py-1 rounded-md">機電與自動控制</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg text-slate-900 mb-2">商業大樓空調變頻器故障排除</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">提供夜間緊急搶修與自動控制系統調校，精準解決空調冰水主機循環異常，恢復大樓舒適環境。</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl overflow-hidden shadow border border-slate-200">
+                    <div class="h-48 bg-teal-900 flex items-center justify-center text-white relative">
+                        <i class="fa-solid fa-shield-heart text-5xl opacity-40"></i>
+                        <span class="absolute bottom-3 left-3 bg-teal-900/80 text-teal-200 text-xs px-3 py-1 rounded-md">消防與配管工程</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg text-slate-900 mb-2">廠辦大樓消防安全設備檢修與配管</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">完成消防安全設備檢修申報及燃料導管安裝工程，全面提升企業廠辦之公共安全合規性。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 服務客戶 (Clients & Partners) -->
+    <section class="py-16 bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-teal-600 font-semibold text-sm tracking-wider uppercase">Trusted Partners</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-2">服務客戶與實績信賴</h2>
+                <p class="text-slate-600 mt-3">感謝各大知名科技廠房、商業設施與指標企業長期對皓盛工程的信賴與支持。</p>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center hover:border-teal-500 hover:shadow transition flex items-center justify-center">
+                    <span class="font-bold text-slate-800 text-sm md:text-base">台灣美光記憶體</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center hover:border-teal-500 hover:shadow transition flex items-center justify-center">
+                    <span class="font-bold text-slate-800 text-sm md:text-base">金像電子</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center hover:border-teal-500 hover:shadow transition flex items-center justify-center">
+                    <span class="font-bold text-slate-800 text-sm md:text-base">景碩科技</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center hover:border-teal-500 hover:shadow transition flex items-center justify-center">
+                    <span class="font-bold text-slate-800 text-sm md:text-base">ATT 4 FUN</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center hover:border-teal-500 hover:shadow transition flex items-center justify-center">
+                    <span class="font-bold text-slate-800 text-sm md:text-base">迪卡儂</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center hover:border-teal-500 hover:shadow transition flex items-center justify-center">
+                    <span class="font-bold text-slate-800 text-sm md:text-base">萬家福</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center hover:border-teal-500 hover:shadow transition flex items-center justify-center">
+                    <span class="font-bold text-slate-800 text-sm md:text-base">創價美術館</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center hover:border-teal-500 hover:shadow transition flex items-center justify-center">
+                    <span class="font-bold text-slate-800 text-sm md:text-base">佳瑪</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center hover:border-teal-500 hover:shadow transition flex items-center justify-center">
+                    <span class="font-bold text-slate-800 text-sm md:text-base">客多美</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center hover:border-teal-500 hover:shadow transition flex items-center justify-center">
+                    <span class="font-bold text-slate-800 text-sm md:text-base">老虎世界</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+        <!-- 常見問題 (FAQ 折疊條列) -->
+    <section id="faq" class="py-20 bg-white border-t border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-teal-600 font-semibold text-sm tracking-wider uppercase">FAQ</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-2">常見問題與解答</h2>
+                <p class="text-slate-600 mt-3">快速了解工程預約、水塔維護與報價流程。</p>
+            </div>
+
+            <div class="space-y-4">
+                <!-- FAQ 1 -->
+                <div class="border border-slate-200 rounded-xl overflow-hidden bg-slate-50">
+                    <button class="faq-btn w-full px-6 py-4 text-left font-bold text-slate-900 flex justify-between items-center focus:outline-none">
+                        <span>Q1: 皓盛主要服務哪些地區與產業？</span>
+                        <i class="fa-solid fa-chevron-down text-teal-600 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4 text-slate-600 text-sm leading-relaxed border-t border-slate-200 pt-3">
+                        我們以台北市士林區為營運總部，服務範圍涵蓋大台北地區及全台商業大樓、科技廠房、工業區工廠。主要服務對象包含廠務人員、物業管理公司及機電工程統包商。
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="border border-slate-200 rounded-xl overflow-hidden bg-slate-50">
+                    <button class="faq-btn w-full px-6 py-4 text-left font-bold text-slate-900 flex justify-between items-center focus:outline-none">
+                        <span>Q2: 冷卻水塔大約需要多久清洗維護一次？</span>
+                        <i class="fa-solid fa-chevron-down text-teal-600 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4 text-slate-600 text-sm leading-relaxed border-t border-slate-200 pt-3">
+                        一般建議商業大樓與工業廠房的冷卻水塔至少每季（3個月）進行一次全面清洗與水質檢測，若環境落塵較多或氣溫偏高時期，建議縮短至每 2 個月保養一次，以防止退伍軍人菌滋生並維持最佳散熱效率。
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="border border-slate-200 rounded-xl overflow-hidden bg-slate-50">
+                    <button class="faq-btn w-full px-6 py-4 text-left font-bold text-slate-900 flex justify-between items-center focus:outline-none">
+                        <span>Q3: 如何預約工程堪查與索取報價？</span>
+                        <i class="fa-solid fa-chevron-down text-teal-600 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4 text-slate-600 text-sm leading-relaxed border-t border-slate-200 pt-3">
+                        您可以透過本網站下方的「聯絡我們」表單填寫您的需求與聯絡方式，或直接撥打公司電話。我們將由專業工程師與您對接，並安排現場勘查與提供詳細工程報價單。
+                    </div>
+                </div>
+
+                <!-- FAQ 4 -->
+                <div class="border border-slate-200 rounded-xl overflow-hidden bg-slate-50">
+                    <button class="faq-btn w-full px-6 py-4 text-left font-bold text-slate-900 flex justify-between items-center focus:outline-none">
+                        <span>Q4: 公司的營業項目與資質是否齊全？</span>
+                        <i class="fa-solid fa-chevron-down text-teal-600 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4 text-slate-600 text-sm leading-relaxed border-t border-slate-200 pt-3">
+                        皓盛有限公司為合法立案之工程公司（統一編號：90221911），具備完整之電器承裝、配管工程、消防安全設備檢修及自動控制等多項合法營業項目，完全符合政府法規與廠務合規要求。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 聯絡我們與表單 -->
+    <section id="contact" class="py-20 bg-slate-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div>
+                    <span class="text-teal-400 font-semibold text-sm tracking-wider uppercase">Contact Us</span>
+                    <h2 class="text-3xl font-bold mt-2 mb-6">立即與皓盛工程團隊聯繫</h2>
+                    <p class="text-slate-300 mb-8 leading-relaxed">
+                        無論是冷卻水塔保養、空調管線工程、機電檢修或工程詢價，我們的技術團隊隨時為您提供專業解答與服務。
+                    </p>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 rounded-xl bg-teal-600/20 border border-teal-500/30 flex items-center justify-center text-teal-400 text-xl shrink-0">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-white">公司地址</h3>
+                                <p class="text-slate-300 text-sm mt-1">台北市士林區社正路45巷4弄1號1樓</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 rounded-xl bg-teal-600/20 border border-teal-500/30 flex items-center justify-center text-teal-400 text-xl shrink-0">
+                                <i class="fa-solid fa-id-card"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-white">統一編號</h3>
+                                <p class="text-slate-300 text-sm mt-1">90221911 | 負責人：李思遠</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 rounded-xl bg-teal-600/20 border border-teal-500/30 flex items-center justify-center text-teal-400 text-xl shrink-0">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-white">公司電話 / LINE ID</h3>
+                                <p class="text-slate-300 text-sm mt-1"><a href="tel:0916093125" class="hover:text-teal-400">0916-093-125</a> (LINE ID 同號)</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 rounded-xl bg-teal-600/20 border border-teal-500/30 flex items-center justify-center text-teal-400 text-xl shrink-0">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-white">公司信箱</h3>
+                                <p class="text-slate-300 text-sm mt-1"><a href="mailto:ssuyuam@kimo.com" class="hover:text-teal-400">ssuyuam@kimo.com</a></p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 rounded-xl bg-teal-600/20 border border-teal-500/30 flex items-center justify-center text-teal-400 text-xl shrink-0">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-white">服務時間</h3>
+                                <p class="text-slate-300 text-sm mt-1">週一至週五 08:30 - 18:00（提供緊急廠務支援）</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 聯絡表單 -->
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-8 shadow-xl">
+                    <h3 class="text-xl font-bold mb-6 text-white">發送工程諮詢訊息</h3>
+                    <form id="contact-form" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1">您的姓名 / 稱謂</label>
+                            <input type="text" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-teal-500" placeholder="例如：陳經理">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1">聯絡電話</label>
+                            <input type="tel" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-teal-500" placeholder="例如：0912-345678">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1">諮詢項目</label>
+                            <select class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-teal-500">
+                                <option>冷卻水塔清洗與水質處理</option>
+                                <option>空調配管與閥門工程</option>
+                                <option>用電設備檢驗與電器承裝</option>
+                                <option>自動控制與儀表工程</option>
+                                <option>消防安全設備檢修</option>
+                                <option>其他工程與詢價</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1">需求說明</label>
+                            <textarea rows="4" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-teal-500" placeholder="請簡述您的廠務需求、設備狀況或預計施工時間..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-3.5 rounded-lg transition shadow-lg">
+                            送出諮詢需求
+                        </button>
+                    </form>
+                    <div id="form-success" class="hidden mt-4 p-4 bg-teal-900/50 border border-teal-500 text-teal-200 text-sm rounded-lg text-center">
+                        感謝您的諮詢！我們已收到您的訊息，將盡快由專人與您聯繫。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 頁尾 -->
+    <footer class="bg-slate-950 text-slate-500 py-12 border-t border-slate-900 text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded bg-teal-600 flex items-center justify-center text-white font-bold">
+                    皓
+                </div>
+                <div>
+                    <span class="text-white font-bold">皓盛有限公司</span>
+                    <span class="text-xs ml-2 text-slate-400">統一編號：90221911</span>
+                </div>
+            </div>
+            <div class="text-center md:text-right text-xs text-slate-400">
+                <p>&copy; 2026 Haosheng Engineering Co., Ltd. All Rights Reserved.</p>
+                <p class="mt-1">地址：台北市士林區社正路45巷4弄1號1樓 | 負責人：李思遠</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript 互動功能 -->
+    <script>
+        // 手機版選單切換
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // FAQ 折疊展開
+        const faqBtns = document.querySelectorAll('.faq-btn');
+        faqBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const content = btn.nextElementSibling;
+                const icon = btn.querySelector('fa-chevron-down');
+                content.classList.toggle('hidden');
+                btn.classList.toggle('text-teal-400');
+            });
+        });
+
+        // 聯絡表單送出：打包資料並透過 mailto 寄送到 ssuyuam@kimo.com
+        const contactForm = document.getElementById('contact-form');
+        const formSuccess = document.getElementById('form-success');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = contactForm.querySelector('input[type="text"]').value;
+            const phone = contactForm.querySelector('input[type="tel"]').value;
+            const service = contactForm.querySelector('select').value;
+            const message = contactForm.querySelector('textarea').value;
+
+            const subject = encodeURIComponent(`【網站諮詢】來自 ${name} 的工程需求`);
+            const body = encodeURIComponent(`姓名/稱謂：${name}\n聯絡電話：${phone}\n諮詢項目：${service}\n\n需求說明：\n${message}`);
+            
+            // 觸發郵件客戶端寄送到 ssuyuam@kimo.com
+            window.location.href = `mailto:ssuyuam@kimo.com?subject=${subject}&body=${body}`;
+
+            contactForm.reset();
+            formSuccess.classList.remove('hidden');
+            setTimeout(() => {
+                formSuccess.classList.add('hidden');
+            }, 6000);
+        });
+    </script>
+</body>
+</html>
