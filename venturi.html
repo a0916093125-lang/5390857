@@ -490,41 +490,41 @@ details.hs-accordion:not([open]) > summary .acc-hint-open {
         </a>
     </div>
 
-    <!-- 手機版專屬：底部固定四合一拇指快捷列 (撥電話 / 加LINE / 分享名片 / 地圖導航) -->
-    <div class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-md border-t border-slate-800 px-2 py-2 shadow-[0_-8px_25px_rgba(0,0,0,0.6)]">
+    <!-- 手機版專屬：底部固定四合一流線型拇指快捷列 (瘦身35%不遮擋主畫面按鈕) -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-md border-t border-slate-800 px-2 py-1.5 shadow-[0_-6px_20px_rgba(0,0,0,0.55)]" style="padding-bottom: max(0.375rem, env(safe-area-inset-bottom));">
         <div class="grid grid-cols-4 gap-1.5 max-w-md mx-auto">
-            <a href="tel:0916093125" class="bg-teal-600 active:bg-teal-700 text-white rounded-xl py-2 flex flex-col items-center justify-center shadow">
-                <i class="fa-solid fa-phone text-base mb-0.5"></i>
-                <span class="text-[11px] font-bold leading-tight">撥打電話</span>
+            <a href="tel:0916093125" class="bg-teal-600 active:bg-teal-700 text-white rounded-lg py-2 px-1 flex items-center justify-center gap-1 shadow">
+                <i class="fa-solid fa-phone text-xs shrink-0"></i>
+                <span class="text-[11px] font-bold whitespace-nowrap">撥打電話</span>
             </a>
-            <a href="https://line.me/ti/p/~0916093125" target="_blank" rel="noopener noreferrer" class="bg-emerald-600 active:bg-emerald-700 text-white rounded-xl py-2 flex flex-col items-center justify-center shadow">
-                <i class="fa-brands fa-line text-lg mb-0.5 leading-none"></i>
-                <span class="text-[11px] font-bold leading-tight">加 LINE</span>
+            <a href="https://line.me/ti/p/~0916093125" target="_blank" rel="noopener noreferrer" class="bg-emerald-600 active:bg-emerald-700 text-white rounded-lg py-2 px-1 flex items-center justify-center gap-1 shadow">
+                <i class="fa-brands fa-line text-sm shrink-0"></i>
+                <span class="text-[11px] font-bold whitespace-nowrap">加 LINE</span>
             </a>
-            <button type="button" onclick="shareToClient()" class="bg-sky-600 active:bg-sky-700 text-white rounded-xl py-2 flex flex-col items-center justify-center shadow">
-                <i class="fa-solid fa-share-nodes text-base mb-0.5"></i>
-                <span class="text-[11px] font-bold leading-tight">分享LINE</span>
+            <button type="button" onclick="shareToClient()" class="bg-sky-600 active:bg-sky-700 text-white rounded-lg py-2 px-1 flex items-center justify-center gap-1 shadow">
+                <i class="fa-solid fa-share-nodes text-xs shrink-0"></i>
+                <span class="text-[11px] font-bold whitespace-nowrap">分享LINE</span>
             </button>
-            <a href="https://maps.app.goo.gl/EdtkRo6q5h3CBqtg7?g_st=il" target="_blank" rel="noopener noreferrer" class="bg-amber-400 active:bg-amber-500 text-slate-950 rounded-xl py-2 flex flex-col items-center justify-center shadow">
-                <i class="fa-solid fa-location-dot text-base mb-0.5"></i>
-                <span class="text-[11px] font-black leading-tight">地圖導航</span>
+            <a href="https://maps.app.goo.gl/EdtkRo6q5h3CBqtg7?g_st=il" target="_blank" rel="noopener noreferrer" class="bg-amber-400 active:bg-amber-500 text-slate-950 rounded-lg py-2 px-1 flex items-center justify-center gap-1 shadow">
+                <i class="fa-solid fa-location-dot text-xs shrink-0"></i>
+                <span class="text-[11px] font-black whitespace-nowrap">地圖導航</span>
             </a>
         </div>
     </div>
 
     <!-- 頂部導覽列 -->
     <header class="sticky top-0 z-50 bg-slate-900/95 backdrop-blur border-b border-slate-800 text-white shadow-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-lg bg-teal-600 flex items-center justify-center text-white font-bold text-xl shadow">
+        <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
+                <a href="index.html" class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-teal-600 flex items-center justify-center text-white font-bold text-lg sm:text-xl shadow shrink-0">
                     皓
-                </div>
-                <div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-xl font-bold tracking-wider">皓盛有限公司</span>
-                        <span class="bg-amber-400 text-slate-950 text-xs font-black px-2.5 py-0.5 rounded-full shadow-sm">會轉的都會修！</span>
+                </a>
+                <div class="min-w-0">
+                    <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                        <a href="index.html" class="text-lg sm:text-xl font-bold tracking-wider hover:text-teal-300 transition whitespace-nowrap">皓盛有限公司</a>
+                        <span class="bg-amber-400 text-slate-950 text-[11px] sm:text-xs font-black px-2 sm:px-2.5 py-0.5 rounded-full shadow-sm whitespace-nowrap">會轉的都會修！</span>
                     </div>
-                    <span class="text-xs text-teal-400 tracking-widest uppercase block">Haosheng Cooling Tower &amp; Rotating Equipment Expert</span>
+                    <span class="text-[10px] sm:text-xs text-teal-400 tracking-wider sm:tracking-widest uppercase block truncate">Haosheng Cooling Tower &amp; Rotating Equipment Expert</span>
                 </div>
             </div>
 
@@ -542,9 +542,9 @@ details.hs-accordion:not([open]) > summary .acc-hint-open {
                 <a href="#contact" class="bg-amber-400 hover:bg-amber-300 text-slate-950 px-4 py-2.5 rounded-lg shadow transition font-black">申請 14 天免費試裝</a>
             </nav>
 
-            <!-- 手機版頂部快捷加LINE與漢堡選單按鈕 -->
-            <div class="flex items-center gap-2 lg:hidden">
-                <a href="https://line.me/ti/p/~0916093125" target="_blank" rel="noopener noreferrer" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-1 shadow">
+            <!-- 手機版漢堡選單按鈕 -->
+            <div class="flex items-center gap-2 lg:hidden shrink-0">
+                <a href="https://line.me/ti/p/~0916093125" target="_blank" rel="noopener noreferrer" class="hidden sm:flex bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold px-3 py-2 rounded-lg items-center gap-1 shadow whitespace-nowrap">
                     <i class="fa-brands fa-line text-sm"></i>
                     <span>加LINE</span>
                 </a>
@@ -1960,7 +1960,7 @@ details.hs-accordion:not([open]) > summary .acc-hint-open {
     </main>
 
     <!-- 頁尾 -->
-    <footer class="bg-slate-950 text-slate-500 py-10 border-t border-slate-900 text-sm">
+    <footer class="bg-slate-950 text-slate-500 pt-10 pb-20 md:py-10 border-t border-slate-900 text-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
             <div class="flex items-center space-x-3">
                 <div class="w-8 h-8 rounded bg-teal-600 flex items-center justify-center text-white font-bold">

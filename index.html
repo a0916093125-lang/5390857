@@ -581,41 +581,41 @@ details.hs-accordion:not([open]) > summary .acc-hint-open {
         </a>
     </div>
 
-    <!-- 手機版專屬：底部固定四合一拇指快捷列 -->
-    <div class="md:hidden fixed bottom-0 inset-x-0 z-50 bg-slate-950/95 backdrop-blur border-t border-slate-800 px-2 py-2 shadow-2xl no-print">
+    <!-- 手機版專屬：底部固定四合一流線型拇指快捷列 (瘦身35%不遮擋主畫面按鈕) -->
+    <div class="md:hidden fixed bottom-0 inset-x-0 z-50 bg-slate-950/95 backdrop-blur-md border-t border-slate-800 px-2 py-1.5 shadow-[0_-6px_20px_rgba(0,0,0,0.55)] no-print" style="padding-bottom: max(0.375rem, env(safe-area-inset-bottom));">
         <div class="grid grid-cols-4 gap-1.5 max-w-md mx-auto">
-            <a href="tel:0916093125" class="bg-teal-600 active:bg-teal-700 text-white rounded-xl py-2 flex flex-col items-center justify-center shadow">
-                <i class="fa-solid fa-phone-volume text-sm mb-0.5"></i>
-                <span class="text-[11px] font-bold">撥打電話</span>
+            <a href="tel:0916093125" class="bg-teal-600 active:bg-teal-700 text-white rounded-lg py-2 px-1 flex items-center justify-center gap-1 shadow">
+                <i class="fa-solid fa-phone-volume text-xs shrink-0"></i>
+                <span class="text-[11px] font-bold whitespace-nowrap">撥打電話</span>
             </a>
-            <a href="https://line.me/ti/p/~0916093125" target="_blank" rel="noopener noreferrer" class="bg-emerald-500 active:bg-emerald-600 text-white rounded-xl py-2 flex flex-col items-center justify-center shadow">
-                <i class="fa-brands fa-line text-base mb-0.5"></i>
-                <span class="text-[11px] font-bold">加LINE估價</span>
+            <a href="https://line.me/ti/p/~0916093125" target="_blank" rel="noopener noreferrer" class="bg-emerald-500 active:bg-emerald-600 text-white rounded-lg py-2 px-1 flex items-center justify-center gap-1 shadow">
+                <i class="fa-brands fa-line text-sm shrink-0"></i>
+                <span class="text-[11px] font-bold whitespace-nowrap">加LINE</span>
             </a>
-            <button type="button" onclick="shareToClient()" class="bg-sky-600 active:bg-sky-700 text-white rounded-xl py-2 flex flex-col items-center justify-center shadow">
-                <i class="fa-solid fa-share-nodes text-sm mb-0.5"></i>
-                <span class="text-[11px] font-bold">傳給客戶</span>
+            <button type="button" onclick="shareToClient()" class="bg-sky-600 active:bg-sky-700 text-white rounded-lg py-2 px-1 flex items-center justify-center gap-1 shadow">
+                <i class="fa-solid fa-share-nodes text-xs shrink-0"></i>
+                <span class="text-[11px] font-bold whitespace-nowrap">傳給客戶</span>
             </button>
-            <a href="https://maps.app.goo.gl/EdtkRo6q5h3CBqtg7?g_st=il" target="_blank" rel="noopener noreferrer" class="bg-amber-400 active:bg-amber-500 text-slate-950 rounded-xl py-2 flex flex-col items-center justify-center shadow">
-                <i class="fa-solid fa-location-dot text-sm mb-0.5"></i>
-                <span class="text-[11px] font-black">地圖導航</span>
+            <a href="https://maps.app.goo.gl/EdtkRo6q5h3CBqtg7?g_st=il" target="_blank" rel="noopener noreferrer" class="bg-amber-400 active:bg-amber-500 text-slate-950 rounded-lg py-2 px-1 flex items-center justify-center gap-1 shadow">
+                <i class="fa-solid fa-location-dot text-xs shrink-0"></i>
+                <span class="text-[11px] font-black whitespace-nowrap">地圖導航</span>
             </a>
         </div>
     </div>
 
     <!-- 頂部導覽列 -->
     <header class="sticky top-0 z-50 bg-slate-900/95 backdrop-blur border-b border-slate-800 text-white shadow-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-lg bg-sky-500 flex items-center justify-center text-slate-950 font-black text-xl shadow">
+        <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-sky-500 flex items-center justify-center text-slate-950 font-black text-lg sm:text-xl shadow shrink-0">
                     皓
                 </div>
-                <div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-xl font-bold tracking-wider">皓盛有限公司</span>
-                        <span class="bg-amber-400 text-slate-950 text-xs font-black px-2.5 py-0.5 rounded-full shadow-sm">會轉的都會修！</span>
+                <div class="min-w-0">
+                    <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                        <span class="text-lg sm:text-xl font-bold tracking-wider whitespace-nowrap">皓盛有限公司</span>
+                        <span class="bg-amber-400 text-slate-950 text-[11px] sm:text-xs font-black px-2 sm:px-2.5 py-0.5 rounded-full shadow-sm whitespace-nowrap">會轉的都會修！</span>
                     </div>
-                    <span class="text-xs text-sky-400 tracking-widest uppercase block">Water Tank &amp; Cooling Tower Cleaning • Pump &amp; Motor Expert</span>
+                    <span class="text-[10px] sm:text-xs text-sky-400 tracking-wider sm:tracking-widest uppercase block truncate">Water Tank &amp; Cooling Tower • Pump &amp; Motor Expert</span>
                 </div>
             </div>
 
@@ -638,9 +638,9 @@ details.hs-accordion:not([open]) > summary .acc-hint-open {
                 <a href="#contact" class="bg-sky-500 hover:bg-sky-400 text-slate-950 px-4 py-2.5 rounded-lg shadow transition font-black">預約洗水塔</a>
             </nav>
 
-            <!-- 手機版頂部快捷加LINE與漢堡選單按鈕 -->
-            <div class="flex items-center gap-2 lg:hidden">
-                <a href="https://line.me/ti/p/~0916093125" target="_blank" rel="noopener noreferrer" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-1 shadow">
+            <!-- 手機版漢堡選單按鈕（手機已有底部常駐加LINE，僅於平板sm以上顯示頂部加LINE避免擠壓） -->
+            <div class="flex items-center gap-2 lg:hidden shrink-0">
+                <a href="https://line.me/ti/p/~0916093125" target="_blank" rel="noopener noreferrer" class="hidden sm:flex bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold px-3 py-2 rounded-lg items-center gap-1 shadow whitespace-nowrap">
                     <i class="fa-brands fa-line text-sm"></i>
                     <span>加LINE估價</span>
                 </a>
@@ -689,43 +689,43 @@ details.hs-accordion:not([open]) > summary .acc-hint-open {
     </section>
 
     <!-- 主視覺區 (Hero) — 洗自來水塔為主 × 空調水塔為輔 × 會轉的都會修 -->
-    <section class="hero-pattern text-white py-9 sm:py-16 lg:py-24 relative overflow-hidden">
+    <section class="hero-pattern text-white pt-5 pb-7 sm:py-16 lg:py-24 relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-7 lg:gap-10 items-center">
                 <div class="lg:col-span-7">
-                    <div class="flex flex-wrap gap-2 mb-5">
-                        <span class="inline-flex items-center gap-1.5 bg-sky-400 text-slate-950 px-3.5 py-1.5 rounded-full text-xs font-black tracking-wide shadow-md">
+                    <div class="flex flex-wrap gap-1.5 sm:gap-2 mb-3.5 sm:mb-5">
+                        <span class="inline-flex items-center gap-1.5 bg-sky-400 text-slate-950 px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-black tracking-wide shadow-md">
                             <i class="fa-solid fa-faucet-drip"></i> 營運主力 NO.1：自來水塔 ＆ 地下室蓄水池清洗
                         </span>
-                        <span class="inline-flex items-center gap-1.5 bg-teal-500/25 text-teal-200 border border-teal-400/50 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wide">
+                        <span class="inline-flex items-center gap-1.5 bg-teal-500/25 text-teal-200 border border-teal-400/50 px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-bold tracking-wide">
                             <i class="fa-solid fa-fan"></i> 營運主力 NO.2：空調冷卻水塔清洗保養
                         </span>
-                        <span class="inline-flex items-center gap-1.5 bg-amber-400 text-slate-950 px-3.5 py-1.5 rounded-full text-xs font-black tracking-wide shadow-md">
+                        <span class="inline-flex items-center gap-1.5 bg-amber-400 text-slate-950 px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-black tracking-wide shadow-md">
                             <i class="fa-solid fa-screwdriver-wrench"></i> 口碑招牌：會轉的都會修！
                         </span>
                     </div>
 
-                    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight mb-4">
-                        自來水塔・蓄水池無死角精洗<br>
-                        <span class="text-sky-400">空調冷卻水塔保養 ×「會轉的都會修！」</span>
+                    <h1 class="text-[26px] sm:text-5xl lg:text-6xl font-black tracking-tight leading-snug sm:leading-tight mb-3 sm:mb-4">
+                        <span class="whitespace-nowrap">自來水塔・蓄水池無死角精洗</span><br>
+                        <span class="text-sky-400">空調冷卻水塔保養 × <span class="whitespace-nowrap">「會轉的都會修！」</span></span>
                     </h1>
 
-                    <div class="inline-flex items-center gap-2 bg-slate-800/90 border-l-4 border-amber-400 px-4 py-2.5 rounded-r-xl mb-6">
-                        <i class="fa-solid fa-gear fa-spin text-amber-400"></i>
-                        <span class="text-xs sm:text-base font-bold text-amber-300">洗自來水塔免費送「抽水揚水馬達、恆壓加壓泵、61F液位、浮球閥」5大機電健檢與排氣復水！</span>
+                    <div class="inline-flex items-center gap-2 bg-slate-800/90 border-l-4 border-amber-400 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-r-xl mb-4 sm:mb-6">
+                        <i class="fa-solid fa-gear fa-spin text-amber-400 shrink-0"></i>
+                        <span class="text-xs sm:text-base font-bold text-amber-300 leading-snug">洗自來水塔免費送「抽水揚水馬達、恆壓加壓泵、61F液位、浮球閥」5大機電健檢與排氣復水！</span>
                     </div>
 
-                    <p class="text-base sm:text-lg text-slate-200 mb-8 leading-relaxed">
+                    <p class="text-sm sm:text-lg text-slate-200 mb-5 sm:mb-8 leading-relaxed">
                         <strong>皓盛有限公司</strong>（統編：90221911）具備政府核准之建築物清潔、電器承裝、配管與自控完整證照。我們以<strong>「社區大樓、商辦、透天與廠房之自來水塔／地下室 RC 蓄水池定期清洗消毒」為第一主力</strong>，徹底解決一般清潔行洗完水塔後馬達氣鎖不出水或浮球溢水痛點；同時專精<strong>「空調冷卻水塔高低壓水刀精洗、散熱片更新與風車馬達水泵減速機檢修」</strong>，做您最安心的水塔與機電總管！
                     </p>
 
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="#tank-calculator" class="bg-sky-400 hover:bg-sky-300 text-slate-950 font-black px-7 py-4 rounded-xl shadow-lg transition text-center flex items-center justify-center space-x-2">
+                    <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                        <a href="#tank-calculator" class="bg-sky-400 hover:bg-sky-300 text-slate-950 font-black px-5 py-3.5 sm:px-7 sm:py-4 rounded-xl shadow-lg transition text-center flex items-center justify-center space-x-2 text-sm sm:text-base">
                             <i class="fa-solid fa-faucet-drip"></i>
                             <span>立即試算自來水塔噸數 / 預約清洗</span>
                             <i class="fa-solid fa-arrow-right"></i>
                         </a>
-                        <button type="button" data-plan="空調冷卻水塔定期清洗保養 ／ 散熱材（填料）更新" class="plan-select-btn bg-teal-600 hover:bg-teal-500 text-white font-bold px-7 py-4 rounded-xl shadow-lg transition text-center flex items-center justify-center space-x-2">
+                        <button type="button" data-plan="空調冷卻水塔定期清洗保養 ／ 散熱材（填料）更新" class="plan-select-btn bg-teal-600 hover:bg-teal-500 text-white font-bold px-5 py-3.5 sm:px-7 sm:py-4 rounded-xl shadow-lg transition text-center flex items-center justify-center space-x-2 text-sm sm:text-base">
                             <i class="fa-solid fa-water"></i>
                             <span>預約「空調冷卻水塔」清洗保養</span>
                         </button>
