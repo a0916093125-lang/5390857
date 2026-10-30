@@ -419,6 +419,57 @@ input[type="range"].roi-range::-webkit-slider-thumb:hover {
     }
 }
 
+
+/* ==========================================================================
+   A + B 手機極速瀏覽與單手拇指操作強化樣式 (Mobile UX Optimization)
+   ========================================================================== */
+/* 隱藏原生 details 三角形箭頭並美化手風琴 */
+details.hs-accordion > summary {
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+}
+details.hs-accordion > summary::-webkit-details-marker {
+    display: none;
+}
+details.hs-accordion[open] > summary .acc-chevron {
+    transform: rotate(180deg);
+}
+details.hs-accordion[open] > summary .acc-hint-closed {
+    display: none;
+}
+details.hs-accordion:not([open]) > summary .acc-hint-open {
+    display: none;
+}
+
+/* 手機橫向滑動撲克牌 (Snap Carousel) 視覺回饋 */
+.mobile-snap-row {
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+}
+.mobile-snap-card {
+    scroll-snap-align: center;
+}
+
+/* 手機端縮減過長區塊垂直留白，減少無謂滑動距離 */
+@media (max-width: 639px) {
+    .py-20 {
+        padding-top: 2.75rem !important;
+        padding-bottom: 2.75rem !important;
+    }
+    .py-16 {
+        padding-top: 2.25rem !important;
+        padding-bottom: 2.25rem !important;
+    }
+    .mb-16 {
+        margin-bottom: 2rem !important;
+    }
+    .mb-14 {
+        margin-bottom: 1.75rem !important;
+    }
+}
+
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased overflow-x-hidden">
@@ -519,7 +570,7 @@ input[type="range"].roi-range::-webkit-slider-thumb:hover {
     <main id="main-content">
 
     <!-- LINE 快速加好友與 14 天免費試裝提示列 -->
-    <section class="bg-emerald-600 text-white py-3.5 shadow-inner">
+    <section class="hidden sm:block bg-emerald-600 text-white py-3.5 shadow-inner">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
             <div class="flex items-center space-x-3 text-center sm:text-left">
                 <i class="fa-brands fa-line text-3xl shrink-0"></i>
@@ -541,7 +592,7 @@ input[type="range"].roi-range::-webkit-slider-thumb:hover {
     </section>
 
     <!-- 商品專頁主視覺區 (Product Flagship Hero) -->
-    <section class="hero-pattern text-white py-16 lg:py-24 relative overflow-hidden">
+    <section class="hero-pattern text-white py-9 sm:py-16 lg:py-24 relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="mb-6">
                 <a href="index.html" class="inline-flex items-center gap-2 text-xs sm:text-sm text-teal-300 hover:text-white bg-slate-900/80 border border-teal-500/40 px-4 py-2 rounded-full font-bold transition shadow">
@@ -694,7 +745,41 @@ input[type="range"].roi-range::-webkit-slider-thumb:hover {
                 <h3 class="text-center text-2xl font-black text-white mb-8">
                     <i class="fa-solid fa-shield-halved text-teal-400 mr-2"></i>工業級防呆設計・六大防呆鐵律（解決頂樓拉電與氣鎖痛點）
                 </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 手機版專屬：6 大工程防呆鐵律極簡速覽（點擊按鈕可展開完整技術說明） -->
+                <div class="sm:hidden mb-4">
+                    <div class="grid grid-cols-2 gap-2.5 text-xs">
+                        <div class="bg-slate-800/90 border border-teal-500/40 rounded-xl p-3">
+                            <span class="text-teal-400 font-black block">01｜50W太陽能免拉線</span>
+                            <span class="text-slate-300 text-[11px]">256Wh鋰鐵・無日照續航2天+</span>
+                        </div>
+                        <div class="bg-slate-800/90 border border-amber-400/40 rounded-xl p-3">
+                            <span class="text-amber-400 font-black block">02｜停水0.5秒自動斷電</span>
+                            <span class="text-slate-300 text-[11px]">針閥下游負壓感測防空燒</span>
+                        </div>
+                        <div class="bg-slate-800/90 border border-purple-400/40 rounded-xl p-3">
+                            <span class="text-purple-400 font-black block">03｜常壓石英管+乾燥筒</span>
+                            <span class="text-slate-300 text-[11px]">外掛400g變色矽膠防硝酸</span>
+                        </div>
+                        <div class="bg-slate-800/90 border border-emerald-400/40 rounded-xl p-3">
+                            <span class="text-emerald-400 font-black block">04｜雙單向閥OR防串氣</span>
+                            <span class="text-slate-300 text-[11px]">面板雙路流量計獨立平衡</span>
+                        </div>
+                        <div class="bg-slate-800/90 border border-cyan-400/40 rounded-xl p-3">
+                            <span class="text-cyan-400 font-black block">05｜三重逆止防回水</span>
+                            <span class="text-slate-300 text-[11px]">PTFE鐵氟龍硬管耐蝕抗UV</span>
+                        </div>
+                        <div class="bg-slate-800/90 border border-rose-400/40 rounded-xl p-3">
+                            <span class="text-rose-400 font-black block">06｜55mm直管快拆袖管</span>
+                            <span class="text-slate-300 text-[11px]">16 bar水平咬合+精準插深</span>
+                        </div>
+                    </div>
+                    <button type="button" onclick="const g=this.parentElement.nextElementSibling; g.classList.toggle('hidden'); g.classList.toggle('grid'); this.querySelector('span').textContent=g.classList.contains('hidden')?'點此展開 6 大防呆鐵律完整工程細節':'收合 6 大防呆鐵律詳細說明';" class="mt-3 w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-teal-300 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 border border-teal-500/40">
+                        <i class="fa-solid fa-sliders"></i>
+                        <span>點此展開 6 大防呆鐵律完整工程細節</span>
+                    </button>
+                </div>
+
+                <div class="hidden sm:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-6 hover:border-teal-400 transition">
                         <div class="text-teal-400 font-black text-sm mb-2">防呆鐵律 01｜免拉頂樓電源線省施工費</div>
                         <h4 class="font-bold text-white text-base mb-2">50W 太陽能 18° 遮陽頂蓋＋256Wh 鋰鐵</h4>
@@ -866,8 +951,8 @@ input[type="range"].roi-range::-webkit-slider-thumb:hover {
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6 items-center">
-                        <!-- 左側：3 大參數控制 -->
-                        <div class="lg:col-span-7 space-y-6">
+                        <!-- 左側：3 大參數控制（手機版置於結果看板下方 order-2，方便邊滑動邊看上方節費數字跳動） -->
+                        <div class="lg:col-span-7 space-y-4 sm:space-y-6 order-2 lg:order-1">
                             <div class="bg-slate-900/80 border border-slate-700/80 rounded-2xl p-5">
                                 <div class="flex justify-between items-center mb-2">
                                     <label for="roiRtRange" class="text-sm font-bold text-slate-200">① 冷卻水塔總冷凍噸數（RT）</label>
@@ -911,8 +996,8 @@ input[type="range"].roi-range::-webkit-slider-thumb:hover {
                             </div>
                         </div>
 
-                        <!-- 右側：即時試算結果看板與一鍵帶入預約 -->
-                        <div class="lg:col-span-5 bg-slate-950/90 border-2 border-amber-400/70 rounded-2xl p-6 shadow-xl flex flex-col justify-between space-y-5">
+                        <!-- 右側：即時試算結果看板與一鍵帶入預約（手機版置頂 order-1，拉動下方滑桿時即時呈現） -->
+                        <div class="lg:col-span-5 bg-slate-950/90 border-2 border-amber-400/70 rounded-2xl p-5 sm:p-6 shadow-xl flex flex-col justify-between space-y-4 sm:space-y-5 order-1 lg:order-2">
                             <div>
                                 <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
                                     <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">Estimated Annual Savings</span>
@@ -999,15 +1084,15 @@ input[type="range"].roi-range::-webkit-slider-thumb:hover {
                 <!-- 控制列 -->
                 <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-4">
                     <div class="flex flex-wrap items-center justify-between gap-3">
-                        <div class="flex flex-wrap items-center gap-2">
-                            <span class="text-xs font-bold text-amber-400 mr-1">① 選擇安裝構型方案：</span>
-                            <button type="button" data-scheme="ELBOW" class="v-scheme-btn px-3.5 py-2 rounded-lg text-xs font-bold transition bg-emerald-500 text-slate-950 shadow">
+                        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 sm:pb-0 sm:flex-wrap w-full">
+                            <span class="text-xs font-bold text-amber-400 mr-1 shrink-0">① 構型方案(左右滑動)：</span>
+                            <button type="button" data-scheme="ELBOW" class="v-scheme-btn shrink-0 px-3.5 py-2 rounded-lg text-xs font-bold transition bg-emerald-500 text-slate-950 shadow">
                                 ★【方案B2】自帶 90° 彎頭消能盤版 (塔頂首推：切舊彎頭單端快拆直上)
                             </button>
-                            <button type="button" data-scheme="SHORT" class="v-scheme-btn px-3.5 py-2 rounded-lg text-xs font-bold transition bg-slate-800 text-slate-300 border border-slate-700 hover:border-cyan-400">
+                            <button type="button" data-scheme="SHORT" class="v-scheme-btn shrink-0 px-3.5 py-2 rounded-lg text-xs font-bold transition bg-slate-800 text-slate-300 border border-slate-700 hover:border-cyan-400">
                                 【方案A】極短雙現成大小頭萬用版 (含兩端 55mm 快拆袖管)
                             </button>
-                            <button type="button" data-scheme="LONG" class="v-scheme-btn px-3.5 py-2 rounded-lg text-xs font-bold transition bg-slate-800 text-slate-300 border border-slate-700 hover:border-cyan-400">
+                            <button type="button" data-scheme="LONG" class="v-scheme-btn shrink-0 px-3.5 py-2 rounded-lg text-xs font-bold transition bg-slate-800 text-slate-300 border border-slate-700 hover:border-cyan-400">
                                 【長錐版】後段 9.5°~11.9° 雷射捲圓低壓損版
                             </button>
                         </div>
@@ -1018,21 +1103,21 @@ input[type="range"].roi-range::-webkit-slider-thumb:hover {
                         </div>
                     </div>
 
-                    <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-800">
-                        <span class="text-xs font-bold text-cyan-400 mr-1">② 選擇水塔噸數與分管口徑：</span>
-                        <button type="button" data-model="HC-100S" class="v-model-btn px-3.5 py-2 rounded-lg text-xs font-bold transition bg-cyan-400 text-slate-950 shadow">
+                    <div class="flex items-center gap-2 pt-2 border-t border-slate-800 overflow-x-auto no-scrollbar pb-1 sm:pb-0 sm:flex-wrap">
+                        <span class="text-xs font-bold text-cyan-400 mr-1 shrink-0">② 水塔噸數(左右滑動)：</span>
+                        <button type="button" data-model="HC-100S" class="v-model-btn shrink-0 px-3.5 py-2 rounded-lg text-xs font-bold transition bg-cyan-400 text-slate-950 shadow">
                             HC-100S（4"×2支｜良機 125~175 RT）
                         </button>
-                        <button type="button" data-model="HC-125L" class="v-model-btn px-3.5 py-2 rounded-lg text-xs font-bold transition bg-slate-800 text-slate-300 border border-slate-700 hover:border-cyan-400">
+                        <button type="button" data-model="HC-125L" class="v-model-btn shrink-0 px-3.5 py-2 rounded-lg text-xs font-bold transition bg-slate-800 text-slate-300 border border-slate-700 hover:border-cyan-400">
                             HC-125L（5"×4支增速｜良機 300~350 RT）
                         </button>
-                        <button type="button" data-model="HC-125S" class="v-model-btn px-3.5 py-2 rounded-lg text-xs font-bold transition bg-slate-800 text-slate-300 border border-slate-700 hover:border-cyan-400">
+                        <button type="button" data-model="HC-125S" class="v-model-btn shrink-0 px-3.5 py-2 rounded-lg text-xs font-bold transition bg-slate-800 text-slate-300 border border-slate-700 hover:border-cyan-400">
                             HC-125S（5"標準｜200~250雙管 / 400~500四管）
                         </button>
-                        <button type="button" data-model="HC-150S" class="v-model-btn px-3.5 py-2 rounded-lg text-xs font-bold transition bg-slate-800 text-slate-300 border border-slate-700 hover:border-cyan-400">
+                        <button type="button" data-model="HC-150S" class="v-model-btn shrink-0 px-3.5 py-2 rounded-lg text-xs font-bold transition bg-slate-800 text-slate-300 border border-slate-700 hover:border-cyan-400">
                             HC-150S（6"｜600~800四管 / 300~400RT雙管）
                         </button>
-                        <button type="button" data-model="HC-150H" class="v-model-btn px-3.5 py-2 rounded-lg text-xs font-bold transition bg-slate-800 text-slate-300 border border-slate-700 hover:border-cyan-400">
+                        <button type="button" data-model="HC-150H" class="v-model-btn shrink-0 px-3.5 py-2 rounded-lg text-xs font-bold transition bg-slate-800 text-slate-300 border border-slate-700 hover:border-cyan-400">
                             HC-150H（6"高流｜LDC-200~250單母管）
                         </button>
                     </div>
@@ -1067,6 +1152,11 @@ input[type="range"].roi-range::-webkit-slider-thumb:hover {
                                 <span class="text-xs text-slate-400">材質：SUS304 酸洗鈍化</span>
                             </div>
                             <div class="p-4">
+                                <details class="hs-accordion" open>
+                                    <summary class="sm:hidden mb-2 bg-slate-800/90 border border-cyan-500/40 rounded-lg px-3 py-2 text-xs font-bold text-cyan-300 flex items-center justify-between">
+                                        <span>📋 點此收合 / 展開「10 項下料與水塔匹配明細表」</span>
+                                        <i class="fa-solid fa-chevron-down transition-transform duration-300 acc-chevron"></i>
+                                    </summary>
                                 <table class="w-full text-xs border-collapse">
                                     <tbody>
                                         <tr class="border-b border-slate-800"><th class="py-2.5 pr-2 text-left text-slate-400 w-1/3">當前構型方案</th><td id="td_scheme" class="py-2.5 text-emerald-400 font-bold"></td></tr>
@@ -1081,6 +1171,7 @@ input[type="range"].roi-range::-webkit-slider-thumb:hover {
                                         <tr><th class="py-2.5 pr-2 text-left text-slate-400">⑥ 尾端與臭氧配置</th><td id="td_bracket" class="py-2.5 text-slate-200"></td></tr>
                                     </tbody>
                                 </table>
+                                </details>
                             </div>
                         </div>
                         <div class="p-4 pt-0">
@@ -1273,9 +1364,10 @@ input[type="range"].roi-range::-webkit-slider-thumb:hover {
                 <p class="text-slate-600 text-sm mt-2">可單獨預約「水塔定期清洗保養」，或搭配以下文丘里除垢系統專案升級（點擊按鈕可直接帶入下方詢價表單）。</p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+            <div class="md:hidden flex items-center justify-between text-xs text-slate-500 mb-2.5 px-1"><span class="font-bold text-teal-700"><i class="fa-solid fa-hand-pointer mr-1"></i>左右滑動比較 3 大標準化配置方案</span><span>支援 14 天試裝</span></div>
+            <div class="flex overflow-x-auto pb-4 -mx-4 px-4 gap-4 no-scrollbar mobile-snap-row lg:grid lg:grid-cols-3 lg:gap-8 lg:overflow-visible lg:p-0 lg:m-0 mb-16">
                 <!-- 方案卡 1 -->
-                <div class="bg-white border border-slate-200 rounded-2xl p-7 shadow-md hover:shadow-xl transition flex flex-col justify-between">
+                <div class="min-w-[85%] sm:min-w-[65%] lg:min-w-0 mobile-snap-card bg-white border border-slate-200 rounded-2xl p-6 sm:p-7 shadow-md hover:shadow-xl transition flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-4">
                             <span class="bg-slate-100 text-slate-700 text-xs font-bold px-3 py-1 rounded-full">125 ~ 250 RT 雙分管適用</span>
@@ -1304,7 +1396,7 @@ input[type="range"].roi-range::-webkit-slider-thumb:hover {
                 </div>
 
                 <!-- 方案卡 2：主力推薦 -->
-                <div class="bg-slate-900 text-white border-2 border-amber-400 rounded-2xl p-7 shadow-2xl transform lg:-translate-y-2 flex flex-col justify-between relative">
+                <div class="min-w-[85%] sm:min-w-[65%] lg:min-w-0 mobile-snap-card bg-slate-900 text-white border-2 border-amber-400 rounded-2xl p-6 sm:p-7 shadow-2xl transform lg:-translate-y-2 flex flex-col justify-between relative">
                     <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-amber-400 text-slate-950 text-xs font-black px-4 py-1 rounded-full shadow">
                         ★ 廠務人氣首選・支援 14 天單邊免費試裝
                     </div>
@@ -1337,7 +1429,7 @@ input[type="range"].roi-range::-webkit-slider-thumb:hover {
                 </div>
 
                 <!-- 方案卡 3 -->
-                <div class="bg-white border border-slate-200 rounded-2xl p-7 shadow-md hover:shadow-xl transition flex flex-col justify-between">
+                <div class="min-w-[85%] sm:min-w-[65%] lg:min-w-0 mobile-snap-card bg-white border border-slate-200 rounded-2xl p-6 sm:p-7 shadow-md hover:shadow-xl transition flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-4">
                             <span class="bg-teal-100 text-teal-800 text-xs font-bold px-3 py-1 rounded-full">300 ~ 800 RT 四分管大型塔</span>
@@ -1482,7 +1574,42 @@ input[type="range"].roi-range::-webkit-slider-thumb:hover {
                 </p>
             </div>
 
-            <div class="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden">
+            <!-- 手機版專屬：5 大文丘里工程型號左右滑動速查卡 -->
+            <div class="md:hidden mb-4">
+                <div class="flex items-center justify-between text-xs text-slate-500 mb-2 px-1">
+                    <span class="font-bold text-teal-700"><i class="fa-solid fa-hand-pointer mr-1"></i>左右滑動查看 5 大型號水力參數</span>
+                    <span>HC-100S ~ 150H</span>
+                </div>
+                <div class="flex overflow-x-auto gap-3 pb-3 -mx-4 px-4 no-scrollbar mobile-snap-row text-xs">
+                    <div class="min-w-[80%] bg-white border-2 border-teal-500/40 rounded-2xl p-4 shadow mobile-snap-card">
+                        <div class="flex justify-between items-center mb-1.5"><span class="font-black text-base text-slate-900">HC-100S (4"雙管)</span><span class="bg-teal-100 text-teal-800 font-bold px-2 py-0.5 rounded">125~175 RT</span></div>
+                        <p class="text-slate-600 mb-2">4"×2" 大小頭 (Ø114.3→Ø60.5mm)｜喉管 2"｜1/2"吸氣嘴前緣深 32 / 後緣深 11mm</p>
+                        <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 font-semibold text-teal-900">水量 48.8~68.3 m³/h｜有效流速 7.2~10.1 m/s｜負壓 -0.10~-0.22 bar</div>
+                    </div>
+                    <div class="min-w-[80%] bg-white border-2 border-teal-500/40 rounded-2xl p-4 shadow mobile-snap-card">
+                        <div class="flex justify-between items-center mb-1.5"><span class="font-black text-base text-slate-900">HC-125L (5"四管增速)</span><span class="bg-teal-100 text-teal-800 font-bold px-2 py-0.5 rounded">300~350 RT</span></div>
+                        <p class="text-slate-600 mb-2">5"×2" 大小頭 (Ø139.8→Ø60.5mm)｜喉管 2"｜1/2"吸氣嘴前緣深 32 / 後緣深 11mm</p>
+                        <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 font-semibold text-teal-900">水量 58.5~68.3 m³/h｜有效流速 8.7~10.1 m/s｜負壓 -0.14~-0.22 bar</div>
+                    </div>
+                    <div class="min-w-[80%] bg-slate-900 text-white border-2 border-amber-400 rounded-2xl p-4 shadow mobile-snap-card">
+                        <div class="flex justify-between items-center mb-1.5"><span class="font-black text-base text-amber-300">HC-125S (5"標準主力)</span><span class="bg-amber-400 text-slate-950 font-black px-2 py-0.5 rounded">200~250/400~500RT</span></div>
+                        <p class="text-slate-300 mb-2">5"×2.5" 大小頭 (Ø139.8→Ø76.3mm)｜喉管 2.5"｜1/2"嘴前緣深 38 / 後緣深 17mm</p>
+                        <div class="bg-slate-800 p-2.5 rounded-lg border border-slate-700 font-semibold text-emerald-300">水量 78.0~97.5 m³/h｜有效流速 6.9~8.6 m/s｜負壓 -0.08~-0.16 bar</div>
+                    </div>
+                    <div class="min-w-[80%] bg-white border-2 border-teal-500/40 rounded-2xl p-4 shadow mobile-snap-card">
+                        <div class="flex justify-between items-center mb-1.5"><span class="font-black text-base text-slate-900">HC-150S (6"大型)</span><span class="bg-teal-100 text-teal-800 font-bold px-2 py-0.5 rounded">600~800 RT</span></div>
+                        <p class="text-slate-600 mb-2">6"×3" 大小頭 (Ø165.2→Ø89.1mm)｜喉管 3"｜3/4"吸氣嘴前緣深 47 / 後緣深 20mm</p>
+                        <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 font-semibold text-teal-900">水量 117~156 m³/h｜有效流速 7.6~10.2 m/s｜負壓 -0.11~-0.22 bar</div>
+                    </div>
+                    <div class="min-w-[80%] bg-white border-2 border-teal-500/40 rounded-2xl p-4 shadow mobile-snap-card">
+                        <div class="flex justify-between items-center mb-1.5"><span class="font-black text-base text-slate-900">HC-150H (6"高流)</span><span class="bg-teal-100 text-teal-800 font-bold px-2 py-0.5 rounded">LDC-200~250/500RT</span></div>
+                        <p class="text-slate-600 mb-2">6"×3.5" 大小頭 (Ø165.2→Ø101.6mm)｜喉管 3.5"｜3/4"嘴前緣深 51 / 後緣深 24mm</p>
+                        <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 font-semibold text-teal-900">水量 156~195 m³/h｜有效流速 7.5~9.4 m/s｜負壓 -0.11~-0.20 bar</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hidden md:block bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse text-xs sm:text-sm">
                         <thead>
@@ -1792,7 +1919,12 @@ input[type="range"].roi-range::-webkit-slider-thumb:hover {
                 </span>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 leading-relaxed">
+            <details class="hs-accordion group">
+                <summary class="md:hidden bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-slate-300 font-bold flex items-center justify-between">
+                    <span><i class="fa-solid fa-magnifying-glass-location text-sky-400 mr-2"></i>點此展開「支援水塔/馬達廠牌 ＆ 服務行政區明細」</span>
+                    <i class="fa-solid fa-chevron-down text-sky-400 transition-transform duration-300 acc-chevron"></i>
+                </summary>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 leading-relaxed mt-4 md:mt-0">
                 <div class="bg-slate-900/70 border border-slate-800/90 rounded-xl p-4">
                     <h3 class="text-white font-bold text-sm mb-2 flex items-center gap-1.5">
                         <i class="fa-solid fa-water text-teal-400"></i> 支援冷卻水塔廠牌與型號
@@ -1820,7 +1952,8 @@ input[type="range"].roi-range::-webkit-slider-thumb:hover {
                         <strong>中南部科技廠專案支援：</strong>苗栗、台中（中部科學園區、台中工業區、精密機械園區）、台南（南部科學園區）、高雄各大工業區與百貨商辦大樓。
                     </p>
                 </div>
-            </div>
+                </div>
+            </details>
         </div>
     </section>
 
@@ -2131,6 +2264,21 @@ ${shareData.text}
             }
             updateWaterTankCalculator();
         }
+
+        // 桌面版自動展開折疊區塊（手機版預設收合省空間）
+        function syncResponsiveAccordions() {
+            const isDesktop = window.innerWidth >= 768;
+            document.querySelectorAll('details.hs-accordion').forEach(d => {
+                if (isDesktop) d.setAttribute('open', '');
+                else if (!d.dataset.userToggled) d.removeAttribute('open');
+            });
+        }
+        document.querySelectorAll('details.hs-accordion').forEach(d => {
+            d.addEventListener('toggle', () => { d.dataset.userToggled = '1'; });
+        });
+        syncResponsiveAccordions();
+        window.addEventListener('resize', syncResponsiveAccordions);
+
 
         if (document.getElementById('cad3dCanvas') && document.getElementById('box3dCanvas')) {
         // =========================================================================
