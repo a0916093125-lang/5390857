@@ -234,3 +234,36 @@ details.hs-accordion:not([open]) > summary .acc-hint-open {
         margin-bottom: 1.75rem !important;
     }
 }
+
+
+/* ==========================================================================
+   方案 C + B 全站極速秒按引擎：消除觸控延遲、瞬時按壓回饋、精準錨點定位與目標閃爍提示
+   ========================================================================== */
+html {
+    scroll-padding-top: 108px;
+}
+body {
+    scroll-behavior: auto !important; /* 移除慢速長滾動卡頓，改由智慧瞬時定位接管 */
+}
+section[id], div[id="tank-calculator"], div[id="roi-calculator"] {
+    scroll-margin-top: 108px;
+}
+button, a, summary, input[type="button"], input[type="submit"], .plan-select-btn, .wt-type-btn, .wt-ton-preset, .roi-rt-preset, .roi-scale-btn, .quick-note-chip, .faq-btn, .v-scheme-btn, .v-model-btn, .v-cam-btn, .b-cam-btn, .tab-btn, .scheme-btn, .toggle-btn, .preset-btn, .sim-btn {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: pointer;
+    transition: transform 0.08s cubic-bezier(0.2, 0, 0, 1), background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease !important;
+}
+button:active, a:active, summary:active, .quick-note-chip:active {
+    transform: scale(0.96) !important;
+}
+@keyframes hsTargetPulse {
+    0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.75); }
+    50% { box-shadow: 0 0 0 10px rgba(56, 189, 248, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
+}
+.hs-jump-highlight {
+    animation: hsTargetPulse 0.75s ease-out;
+}

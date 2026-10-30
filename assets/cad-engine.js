@@ -67,7 +67,7 @@
                 }
                 const contactSection = document.getElementById('contact');
                 if (contactSection) {
-                    contactSection.scrollIntoView({ behavior: 'smooth' });
+                    if (window.hsJumpTo) window.hsJumpTo(contactSection); else contactSection.scrollIntoView({ behavior: 'smooth' });
                 }
             });
         });
@@ -260,7 +260,7 @@
 • 預估作業模式：${downtime}
 請協助評估報價與安排清洗時間！`;
                     }
-                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                    if (window.hsJumpTo) window.hsJumpTo('#contact');
                 });
             }
             updateWaterTankCalculator();
@@ -587,7 +587,7 @@
             if (messageInput) {
                 messageInput.value = `您好，我們現場水塔欲評估安裝「${m.title}（構型：${currentScheme === 'ELBOW' ? '方案B2 自帶90度彎頭消能盤版' : currentScheme === 'SHORT' ? '方案A 極短雙大小頭版' : '長錐緩擴版'}）」及冷卻水塔清洗保養，請協助安排現場勘查或 14 天免費試裝。`;
             }
-            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+            if (window.hsJumpTo) window.hsJumpTo('#contact');
         });
 
         function render2DBlueprint(m, d) {
@@ -1661,14 +1661,14 @@
                     if (messageInput) {
                         messageInput.value = `您好，我透過官網節能試算器評估現場水塔：約 ${rt} RT（每日運轉 ${hours} 小時，工況：${currentScaleLabel}，預估維持潔淨每年可減少約 ${savedNtd} 額外耗電損耗）。推薦匹配型號為「${recModel}」，想預約水塔清洗保養與 14 天單邊散水盤免費試裝評估！`;
                     }
-                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                    if (window.hsJumpTo) window.hsJumpTo('#contact');
                 });
             }
             updateRoiCalculator();
         }
 
         function masterLoop() {
-            if (!document.hidden && is3DSectionVisible) {
+            if (!document.hidden && is3DSectionVisible && performance.now() > (window.__HS_UI_BUSY_UNTIL__ || 0)) {
                 animTick += 0.04;
                 if (active3DTab === 'VENTURI') {
                     drawVenturiScene();
@@ -1704,9 +1704,53 @@
         } // end 3D canvas guard
 
     // =========================================================================
-    // 方案 B 手機極速操作強化：試算器 [-]/[+] 按鈕、首屏客群直達分流、預約表單免打字標籤
+    // 方案 C + B 極速秒按與瞬時定位引擎（0 語法錯誤、觸控讓路、瞬時跳轉微光回饋）
     // =========================================================================
+    window.__HS_UI_BUSY_UNTIL__ = 0;
+    const markUiBusy = () => { window.__HS_UI_BUSY_UNTIL__ = performance.now() + 180; };
+    window.addEventListener('pointerdown', markUiBusy, { passive: true });
+    window.addEventListener('scroll', markUiBusy, { passive: true });
+
+    // 智慧瞬時定位函式（手機端零延遲瞬移定位＋微光閃爍提示，消除長距離滾動卡頓與頂部遮擋）
+    window.hsJumpTo = function(targetSelectorOrEl) {
+        const el = typeof targetSelectorOrEl === 'string'
+            ? document.querySelector(targetSelectorOrEl)
+            : targetSelectorOrEl;
+        if (!el) return;
+        markUiBusy();
+        const headerOffset = window.innerWidth < 1024 ? 104 : 84;
+        const rect = el.getBoundingClientRect();
+        const top = rect.top + window.pageYOffset - headerOffset;
+        const isMobile = window.innerWidth < 768;
+        window.scrollTo({
+            top: Math.max(0, top),
+            behavior: isMobile ? 'auto' : 'smooth'
+        });
+        el.classList.remove('hs-jump-highlight');
+        void el.offsetWidth;
+        el.classList.add('hs-jump-highlight');
+    };
+
+    // 攔截頁內錨點連結 (#xxx)，改用零遮擋極速定位並自動收合手機選單
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (!href || href === '#') return;
+            const target = document.querySelector(href);
+            if (target) {
+                e.preventDefault();
+                const mMenu = document.getElementById('mobile-menu');
+                if (mMenu && !mMenu.classList.contains('hidden')) {
+                    mMenu.classList.add('hidden');
+                }
+                window.hsJumpTo(target);
+            }
+        });
+    });
+
+    // 試算器 [-]/[+] 微調按鈕（支援單點與快速連按零延遲）
     window.stepRangeValue = function(rangeId, delta) {
+        markUiBusy();
         const el = document.getElementById(rangeId);
         if (!el) return;
         const min = parseFloat(el.min) || 0;
@@ -1716,7 +1760,9 @@
         el.dispatchEvent(new Event('input', { bubbles: true }));
     };
 
+    // 手機首屏「我是哪一類客戶？」一鍵直達分流
     window.quickRouteRole = function(roleType) {
+        markUiBusy();
         const typeBtn = document.querySelector(`.wt-type-btn[data-wttype="${roleType}"]`);
         const tonRange = document.getElementById('wtTonRange');
         const countRange = document.getElementById('wtCountRange');
@@ -1734,23 +1780,29 @@
         else if (tonRange) tonRange.dispatchEvent(new Event('input', { bubbles: true }));
 
         const calcEl = document.getElementById('tank-calculator') || document.getElementById('roi-calculator');
-        if (calcEl) calcEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (calcEl) window.hsJumpTo(calcEl);
     };
 
-    // 當點選常見規模快選按鈕時，同步切換對應的場所類型按鈕
+    // 當點選常見規模快選按鈕時，同步切換對應的場所類型按鈕並高亮選中按鈕
     document.querySelectorAll('.wt-ton-preset').forEach(btn => {
         btn.addEventListener('click', () => {
+            markUiBusy();
             const pType = btn.getAttribute('data-presettype');
             if (pType) {
                 const tBtn = document.querySelector(`.wt-type-btn[data-wttype="${pType}"]`);
                 if (tBtn) tBtn.click();
             }
+            document.querySelectorAll('.wt-ton-preset').forEach(b => {
+                b.classList.remove('ring-2', 'ring-amber-400', 'bg-sky-400', 'text-slate-950');
+            });
+            btn.classList.add('ring-2', 'ring-amber-400');
         });
     });
 
-    // 預約單免打字快速標籤 (一鍵勾選/取消並自動寫入說明欄)
+    // 預約單免打字快速標籤 (一鍵勾選/取消並自動寫入說明欄，100% 轉義換行防呆)
     document.querySelectorAll('.quick-note-chip').forEach(chip => {
         chip.addEventListener('click', () => {
+            markUiBusy();
             const msgBox = document.getElementById('input-message');
             if (!msgBox) return;
             const tagText = chip.getAttribute('data-tag');
@@ -1765,18 +1817,15 @@
                 chip.textContent = `✓ ${rawLabel}`;
                 const curVal = msgBox.value.trim();
                 if (!curVal.includes(tagText)) {
-                    msgBox.value = curVal ? `${curVal}
-${bullet}` : bullet;
+                    msgBox.value = curVal ? `${curVal}\n${bullet}` : bullet;
                 }
             } else {
                 chip.setAttribute('data-selected', '0');
                 chip.className = "quick-note-chip bg-slate-900 hover:bg-sky-500/20 text-slate-300 border border-slate-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1";
                 const rawLabel = chip.textContent.replace(/^[➕✓]\s*/, '');
                 chip.textContent = `➕ ${rawLabel}`;
-                const lines = msgBox.value.split('
-').filter(line => !line.includes(tagText));
-                msgBox.value = lines.join('
-').trim();
+                const lines = msgBox.value.split('\n').filter(line => !line.includes(tagText));
+                msgBox.value = lines.join('\n').trim();
             }
         });
     });
