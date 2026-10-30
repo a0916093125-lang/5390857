@@ -1,0 +1,185 @@
+/* ==========================================================================
+   皓盛有限公司｜空調冷卻水塔清洗保養 × 無軸文丘里太陽能除垢系統
+   模組化主樣式表 (assets/style.css) - 方案 C 極速載入與高轉換率版
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+
+:root {
+    --hs-teal: #0d9488;
+    --hs-teal-light: #2dd4bf;
+    --hs-amber: #f59e0b;
+    --hs-dark: #0f172a;
+    --hs-darker: #070b14;
+}
+
+body {
+    font-family: 'Inter', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", sans-serif;
+    scroll-behavior: smooth;
+}
+
+.hero-pattern {
+    background-color: #0f172a;
+    background-image:
+        radial-gradient(at 18% 25%, rgba(13, 148, 136, 0.32) 0px, transparent 55%),
+        radial-gradient(at 82% 75%, rgba(2, 132, 199, 0.28) 0px, transparent 55%),
+        linear-gradient(135deg, rgba(15, 23, 42, 0.96) 0%, rgba(15, 118, 110, 0.88) 100%),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 2px, transparent 2px, transparent 12px);
+}
+
+/* 3D CAD 畫布容器與手機防卡手設計 */
+.cad-canvas-wrap {
+    position: relative;
+    width: 100%;
+    height: 360px;
+    background: radial-gradient(circle at center, #162238 0%, #070b14 100%);
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: pan-y; /* 手機預設允許單指垂直滑動頁面不卡手 */
+}
+
+.cad-canvas-wrap.touch-unlocked {
+    touch-action: none; /* 啟用單指 3D 旋轉時鎖定畫布觸控 */
+}
+
+@media (min-width: 640px) {
+    .cad-canvas-wrap {
+        height: 480px;
+        touch-action: none;
+    }
+}
+
+.cad-canvas-wrap:active {
+    cursor: grabbing;
+}
+
+.cad-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* 手機橫向滑動膠囊列隱藏捲軸 */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Before / After 散水盤除苔與精洗對比拉桿 */
+.ba-slider-wrap {
+    position: relative;
+    width: 100%;
+    height: 320px;
+    border-radius: 1rem;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    background: #090e1a;
+    border: 1px solid #334155;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+}
+@media (min-width: 640px) {
+    .ba-slider-wrap {
+        height: 400px;
+    }
+}
+.ba-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+.ba-before-clip {
+    position: absolute;
+    inset: 0;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 10;
+}
+.ba-handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 3px;
+    background: #fbbf24;
+    z-index: 20;
+    transform: translateX(-50%);
+    pointer-events: none;
+    box-shadow: 0 0 12px rgba(251, 191, 36, 0.8);
+}
+.ba-handle-knob {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 9999px;
+    background: #fbbf24;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+    border: 2px solid #ffffff;
+}
+.ba-range-input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: ew-resize;
+    z-index: 30;
+    margin: 0;
+}
+
+/* ROI 試算器滑桿美化 */
+input[type="range"].roi-range {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 8px;
+    border-radius: 999px;
+    background: #334155;
+    outline: none;
+}
+input[type="range"].roi-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #14b8a6;
+    border: 2px solid #ffffff;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(20, 184, 166, 0.5);
+    transition: transform 0.15s ease;
+}
+input[type="range"].roi-range::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+    background: #2dd4bf;
+}
+
+/* 手機底部常駐列安全距離 */
+@media (max-width: 767px) {
+    body {
+        padding-bottom: 76px;
+    }
+}
+
+/* 列印最佳化 */
+@media print {
+    header, footer, .no-print {
+        display: none !important;
+    }
+    body {
+        background: #ffffff !important;
+        color: #000000 !important;
+    }
+}

@@ -1,0 +1,40 @@
+# Haosheng Engineering Co., Ltd. (皓盛有限公司 - 會轉的都會修)
+# SEO + GEO + AEO Crawler Configuration
+
+User-agent: *
+Allow: /
+
+# Explicitly allow AI Answer & Generative Search Engines (GEO / AEO)
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# AI Knowledge Base & Sitemap References
+# LLMs Knowledge Base: /llms.txt and /llms-full.txt
+Sitemap: https://5390857.com.tw/sitemap.xml
