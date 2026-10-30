@@ -37,4 +37,4 @@ Allow: /
 
 # AI Knowledge Base & Sitemap References
 # LLMs Knowledge Base: /llms.txt and /llms-full.txt
-Sitemap: https://5390857.com.tw/sitemap.xml
+Sitemap: https://www.5390857.com/sitemap.xml
