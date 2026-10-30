@@ -266,6 +266,21 @@
             updateWaterTankCalculator();
         }
 
+        // 桌面版自動展開折疊區塊（手機版預設收合省空間）
+        function syncResponsiveAccordions() {
+            const isDesktop = window.innerWidth >= 768;
+            document.querySelectorAll('details.hs-accordion').forEach(d => {
+                if (isDesktop) d.setAttribute('open', '');
+                else if (!d.dataset.userToggled) d.removeAttribute('open');
+            });
+        }
+        document.querySelectorAll('details.hs-accordion').forEach(d => {
+            d.addEventListener('toggle', () => { d.dataset.userToggled = '1'; });
+        });
+        syncResponsiveAccordions();
+        window.addEventListener('resize', syncResponsiveAccordions);
+
+
         if (document.getElementById('cad3dCanvas') && document.getElementById('box3dCanvas')) {
         // =========================================================================
         // 5. 3D 互動工程藍圖系統 — 分頁切換 (Tab 1: 文丘里管 3D / Tab 2: 太陽能臭氧箱 3D)
@@ -1687,4 +1702,83 @@
         });
     
         } // end 3D canvas guard
+
+    // =========================================================================
+    // 方案 B 手機極速操作強化：試算器 [-]/[+] 按鈕、首屏客群直達分流、預約表單免打字標籤
+    // =========================================================================
+    window.stepRangeValue = function(rangeId, delta) {
+        const el = document.getElementById(rangeId);
+        if (!el) return;
+        const min = parseFloat(el.min) || 0;
+        const max = parseFloat(el.max) || 1000;
+        const cur = parseFloat(el.value) || 0;
+        el.value = Math.max(min, Math.min(max, cur + delta));
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+    };
+
+    window.quickRouteRole = function(roleType) {
+        const typeBtn = document.querySelector(`.wt-type-btn[data-wttype="${roleType}"]`);
+        const tonRange = document.getElementById('wtTonRange');
+        const countRange = document.getElementById('wtCountRange');
+        if (roleType === 'COMMUNITY') {
+            if (tonRange) tonRange.value = 50;
+            if (countRange) countRange.value = 2;
+        } else if (roleType === 'FACTORY') {
+            if (tonRange) tonRange.value = 200;
+            if (countRange) countRange.value = 4;
+        } else if (roleType === 'APARTMENT') {
+            if (tonRange) tonRange.value = 10;
+            if (countRange) countRange.value = 2;
+        }
+        if (typeBtn) typeBtn.click();
+        else if (tonRange) tonRange.dispatchEvent(new Event('input', { bubbles: true }));
+
+        const calcEl = document.getElementById('tank-calculator') || document.getElementById('roi-calculator');
+        if (calcEl) calcEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    // 當點選常見規模快選按鈕時，同步切換對應的場所類型按鈕
+    document.querySelectorAll('.wt-ton-preset').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const pType = btn.getAttribute('data-presettype');
+            if (pType) {
+                const tBtn = document.querySelector(`.wt-type-btn[data-wttype="${pType}"]`);
+                if (tBtn) tBtn.click();
+            }
+        });
+    });
+
+    // 預約單免打字快速標籤 (一鍵勾選/取消並自動寫入說明欄)
+    document.querySelectorAll('.quick-note-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            const msgBox = document.getElementById('input-message');
+            if (!msgBox) return;
+            const tagText = chip.getAttribute('data-tag');
+            if (!tagText) return;
+            const bullet = `• ${tagText}`;
+            const isSelected = chip.getAttribute('data-selected') === '1';
+
+            if (!isSelected) {
+                chip.setAttribute('data-selected', '1');
+                chip.className = "quick-note-chip bg-sky-400 text-slate-950 border border-sky-300 px-2.5 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1 shadow";
+                const rawLabel = chip.textContent.replace(/^[➕✓]\s*/, '');
+                chip.textContent = `✓ ${rawLabel}`;
+                const curVal = msgBox.value.trim();
+                if (!curVal.includes(tagText)) {
+                    msgBox.value = curVal ? `${curVal}
+${bullet}` : bullet;
+                }
+            } else {
+                chip.setAttribute('data-selected', '0');
+                chip.className = "quick-note-chip bg-slate-900 hover:bg-sky-500/20 text-slate-300 border border-slate-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1";
+                const rawLabel = chip.textContent.replace(/^[➕✓]\s*/, '');
+                chip.textContent = `➕ ${rawLabel}`;
+                const lines = msgBox.value.split('
+').filter(line => !line.includes(tagText));
+                msgBox.value = lines.join('
+').trim();
+            }
+        });
+    });
+
 })();

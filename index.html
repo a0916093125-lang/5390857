@@ -661,6 +661,16 @@ details.hs-accordion:not([open]) > summary .acc-hint-open {
             <a href="venturi.html" class="block py-2 px-3 bg-slate-800 border border-amber-400/40 text-amber-300 font-bold rounded-lg text-xs">☀️ 前往【無軸文丘里太陽能除垢系統】獨立商品專頁 ➔</a>
             <a href="#contact" class="mobile-nav-link block text-center bg-sky-500 text-slate-950 py-2.5 rounded-lg font-black">立即預約洗水塔 / 線上免費估價</a>
         </div>
+
+        <!-- 手機版專屬：頂部常駐章節快速跳轉列 (Sticky Sub-Nav) -->
+        <div class="lg:hidden bg-slate-950/95 border-t border-slate-800/90 px-2.5 py-1.5 overflow-x-auto no-scrollbar flex items-center gap-1.5 text-[11px] font-bold">
+            <a href="#tank-calculator" class="shrink-0 bg-sky-500/20 text-sky-300 border border-sky-400/40 px-2.5 py-1 rounded-full flex items-center gap-1 active:scale-95 transition">💰 價格/工時試算</a>
+            <a href="#pricing" class="shrink-0 bg-amber-400/15 text-amber-300 border border-amber-400/40 px-2.5 py-1 rounded-full flex items-center gap-1 active:scale-95 transition">📊 價目表</a>
+            <a href="#services" class="shrink-0 bg-slate-800 text-slate-200 border border-slate-700 px-2.5 py-1 rounded-full flex items-center gap-1 active:scale-95 transition">🛠️ 雙塔服務</a>
+            <a href="#sop" class="shrink-0 bg-slate-800 text-slate-200 border border-slate-700 px-2.5 py-1 rounded-full flex items-center gap-1 active:scale-95 transition">📋 8道SOP</a>
+            <a href="#contact" class="shrink-0 bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 px-2.5 py-1 rounded-full flex items-center gap-1 active:scale-95 transition">💬 免打字預約</a>
+            <a href="venturi.html" class="shrink-0 bg-teal-500/20 text-teal-300 border border-teal-400/40 px-2.5 py-1 rounded-full flex items-center gap-1 active:scale-95 transition">☀️ 文丘里除垢</a>
+        </div>
     </header>
 
     <main id="main-content">
@@ -715,9 +725,48 @@ details.hs-accordion:not([open]) > summary .acc-hint-open {
                         <span class="text-xs sm:text-base font-bold text-amber-300 leading-snug">洗自來水塔免費送「抽水揚水馬達、恆壓加壓泵、61F液位、浮球閥」5大機電健檢與排氣復水！</span>
                     </div>
 
-                    <p class="text-sm sm:text-lg text-slate-200 mb-5 sm:mb-8 leading-relaxed">
+                    <!-- 手機版專屬：3 秒掃描重點卡（取代 6 行長文文字牆，一眼秒懂） -->
+                    <div class="sm:hidden space-y-2 mb-4 text-xs">
+                        <div class="bg-slate-900/85 border border-sky-400/40 rounded-xl px-3 py-2 flex items-start gap-2.5">
+                            <span class="bg-sky-400 text-slate-950 font-black px-1.5 py-0.5 rounded text-[10px] shrink-0 mt-0.5">主力 1</span>
+                            <div><strong class="text-sky-300">自來水塔＆地下蓄水池精洗：</strong><span class="text-slate-200">遵循自來水處 8 道 SOP，免費送馬達排氣與液位 5 檢，杜絕洗後氣鎖沒水！</span></div>
+                        </div>
+                        <div class="bg-slate-900/85 border border-teal-400/40 rounded-xl px-3 py-2 flex items-start gap-2.5">
+                            <span class="bg-teal-400 text-slate-950 font-black px-1.5 py-0.5 rounded text-[10px] shrink-0 mt-0.5">主力 2</span>
+                            <div><strong class="text-teal-300">空調冷卻水塔專業保養：</strong><span class="text-slate-200">散熱片高低壓水刀精洗、散水盤除青苔、填料換新與太陽能除垢試裝。</span></div>
+                        </div>
+                        <div class="bg-slate-900/85 border border-amber-400/40 rounded-xl px-3 py-2 flex items-start gap-2.5">
+                            <span class="bg-amber-400 text-slate-950 font-black px-1.5 py-0.5 rounded text-[10px] shrink-0 mt-0.5">全證照</span>
+                            <div><strong class="text-amber-300">統編 90221911・會轉的都會修：</strong><span class="text-slate-200">具備清潔/電器承裝/配管/自控合法證照，抽水加壓馬達、水泵、減速機、蝶閥一站修好！</span></div>
+                        </div>
+                    </div>
+
+                    <!-- 桌面版維持完整專業敘述 -->
+                    <p class="hidden sm:block text-base sm:text-lg text-slate-200 mb-8 leading-relaxed">
                         <strong>皓盛有限公司</strong>（統編：90221911）具備政府核准之建築物清潔、電器承裝、配管與自控完整證照。我們以<strong>「社區大樓、商辦、透天與廠房之自來水塔／地下室 RC 蓄水池定期清洗消毒」為第一主力</strong>，徹底解決一般清潔行洗完水塔後馬達氣鎖不出水或浮球溢水痛點；同時專精<strong>「空調冷卻水塔高低壓水刀精洗、散熱片更新與風車馬達水泵減速機檢修」</strong>，做您最安心的水塔與機電總管！
                     </p>
+
+                    <!-- 手機版專屬：「請問您的場所類型？」一鍵直達分流導航 (Quick Role Router) -->
+                    <div class="sm:hidden mb-4 bg-slate-900/90 border border-slate-700/90 rounded-2xl p-2.5">
+                        <div class="text-[11px] font-bold text-sky-300 mb-2 flex items-center justify-between px-1">
+                            <span><i class="fa-solid fa-compass mr-1"></i>點選您的身分，1 秒直達專屬報價與試算：</span>
+                            <span class="text-[10px] text-slate-400">一鍵切換</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-1.5 text-center">
+                            <button type="button" onclick="window.quickRouteRole('COMMUNITY')" class="bg-sky-500/20 active:bg-sky-400 active:text-slate-950 border border-sky-400/50 text-white rounded-xl py-2 px-1 transition flex flex-col items-center justify-center">
+                                <span class="text-xs font-black">🏢 社區管委會</span>
+                                <span class="text-[10px] text-sky-300 mt-0.5">上下池 $6,000起</span>
+                            </button>
+                            <button type="button" onclick="window.quickRouteRole('FACTORY')" class="bg-teal-500/20 active:bg-teal-400 active:text-slate-950 border border-teal-400/50 text-white rounded-xl py-2 px-1 transition flex flex-col items-center justify-center">
+                                <span class="text-xs font-black">🏭 廠務/冷卻塔</span>
+                                <span class="text-[10px] text-teal-300 mt-0.5">雙塔保養/除垢</span>
+                            </button>
+                            <button type="button" onclick="window.quickRouteRole('APARTMENT')" class="bg-amber-400/20 active:bg-amber-400 active:text-slate-950 border border-amber-400/50 text-white rounded-xl py-2 px-1 transition flex flex-col items-center justify-center">
+                                <span class="text-xs font-black">🏠 透天/公寓</span>
+                                <span class="text-[10px] text-amber-300 mt-0.5">白鐵塔 $1,500起</span>
+                            </button>
+                        </div>
+                    </div>
 
                     <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
                         <a href="#tank-calculator" class="bg-sky-400 hover:bg-sky-300 text-slate-950 font-black px-5 py-3.5 sm:px-7 sm:py-4 rounded-xl shadow-lg transition text-center flex items-center justify-center space-x-2 text-sm sm:text-base">
@@ -921,12 +970,15 @@ details.hs-accordion:not([open]) > summary .acc-hint-open {
                                 點選您的場所類型與水塔噸數/座數，立即試算「洗水塔價格/費用區間」、預估停水時間與免費附贈之加壓馬達 5 大健檢！
                             </p>
                         </div>
-                        <div class="flex flex-wrap gap-1.5 shrink-0">
-                            <span class="text-xs text-slate-400 self-center mr-1">常見規模快選：</span>
-                            <button type="button" data-ton="10" data-count="2" class="wt-ton-preset bg-slate-800 hover:bg-sky-400 hover:text-slate-950 text-slate-200 border border-slate-600 px-3 py-1.5 rounded-lg text-xs font-bold transition">公寓 10噸 (2顆)</button>
-                            <button type="button" data-ton="50" data-count="2" class="wt-ton-preset bg-slate-800 hover:bg-sky-400 hover:text-slate-950 text-slate-200 border border-slate-600 px-3 py-1.5 rounded-lg text-xs font-bold transition">社區 50噸 (上下池)</button>
-                            <button type="button" data-ton="150" data-count="4" class="wt-ton-preset bg-slate-800 hover:bg-sky-400 hover:text-slate-950 text-slate-200 border border-slate-600 px-3 py-1.5 rounded-lg text-xs font-bold transition">大樓 150噸 (4座)</button>
-                            <button type="button" data-ton="300" data-count="4" class="wt-ton-preset bg-slate-800 hover:bg-sky-400 hover:text-slate-950 text-slate-200 border border-slate-600 px-3 py-1.5 rounded-lg text-xs font-bold transition">廠辦 300噸 (大型池)</button>
+                        <div class="w-full lg:w-auto">
+                            <span class="text-xs font-bold text-amber-300 block mb-2 lg:inline lg:mb-0 lg:mr-1"><i class="fa-solid fa-hand-pointer mr-1"></i>免拉滑桿・點選常見規模直接試算：</span>
+                            <div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-1.5">
+                                <button type="button" data-ton="5" data-count="1" data-presettype="APARTMENT" class="wt-ton-preset bg-slate-800 hover:bg-sky-400 hover:text-slate-950 text-slate-200 border border-slate-600 px-3 py-2 rounded-xl text-xs font-bold transition text-left sm:text-center">🏠 透天 1~2顆 (5噸)</button>
+                                <button type="button" data-ton="10" data-count="2" data-presettype="APARTMENT" class="wt-ton-preset bg-slate-800 hover:bg-sky-400 hover:text-slate-950 text-slate-200 border border-slate-600 px-3 py-2 rounded-xl text-xs font-bold transition text-left sm:text-center">🏠 公寓 2顆 (10噸)</button>
+                                <button type="button" data-ton="50" data-count="2" data-presettype="COMMUNITY" class="wt-ton-preset bg-sky-500/20 hover:bg-sky-400 hover:text-slate-950 text-sky-200 border border-sky-400/60 px-3 py-2 rounded-xl text-xs font-black transition text-left sm:text-center">🏢 社區上下池 (50噸)</button>
+                                <button type="button" data-ton="150" data-count="4" data-presettype="COMMUNITY" class="wt-ton-preset bg-slate-800 hover:bg-sky-400 hover:text-slate-950 text-slate-200 border border-slate-600 px-3 py-2 rounded-xl text-xs font-bold transition text-left sm:text-center">🏢 大型社區 (150噸)</button>
+                                <button type="button" data-ton="300" data-count="4" data-presettype="FACTORY" class="wt-ton-preset col-span-2 sm:col-span-1 bg-slate-800 hover:bg-sky-400 hover:text-slate-950 text-slate-200 border border-slate-600 px-3 py-2 rounded-xl text-xs font-bold transition text-center">🏭 科技廠辦大水池 (300噸+)</button>
+                            </div>
                         </div>
                     </div>
 
@@ -948,26 +1000,34 @@ details.hs-accordion:not([open]) > summary .acc-hint-open {
                                 </div>
                             </div>
 
-                            <div class="bg-slate-900/80 border border-slate-700/80 rounded-2xl p-5">
-                                <div class="flex justify-between items-center mb-2">
-                                    <label for="wtTonRange" class="text-sm font-bold text-slate-200">② 水塔 / 蓄水池預估總噸數（或對應戶數）</label>
-                                    <span id="wtTonValue" class="text-lg sm:text-xl font-black text-sky-400">約 50 噸（約 60 戶規模）</span>
+                            <div class="bg-slate-900/80 border border-slate-700/80 rounded-2xl p-4 sm:p-5">
+                                <div class="flex flex-wrap justify-between items-center gap-2 mb-2.5">
+                                    <label for="wtTonRange" class="text-xs sm:text-sm font-bold text-slate-200">② 水塔 / 蓄水池預估總噸數（可按 － / ＋ 微調）</label>
+                                    <span id="wtTonValue" class="text-base sm:text-xl font-black text-sky-400">約 50 噸（約 60 戶規模）</span>
                                 </div>
-                                <input id="wtTonRange" type="range" min="5" max="400" step="5" value="50" class="w-full roi-range">
+                                <div class="flex items-center gap-2.5">
+                                    <button type="button" onclick="window.stepRangeValue('wtTonRange', -10)" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 active:bg-sky-400 active:text-slate-950 border border-slate-600 text-white font-black text-lg flex items-center justify-center shrink-0 shadow" aria-label="減少噸數">－</button>
+                                    <input id="wtTonRange" type="range" min="5" max="400" step="5" value="50" class="w-full roi-range">
+                                    <button type="button" onclick="window.stepRangeValue('wtTonRange', 10)" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 active:bg-sky-400 active:text-slate-950 border border-slate-600 text-white font-black text-lg flex items-center justify-center shrink-0 shadow" aria-label="增加噸數">＋</button>
+                                </div>
                                 <div class="flex justify-between text-[11px] text-slate-400 mt-1.5">
                                     <span>5~15 噸 (公寓/透天)</span>
                                     <span>50~100 噸 (中大型社區)</span>
                                     <span>200 噸</span>
-                                    <span>400 噸+ (大型廠辦園區)</span>
+                                    <span>400 噸+ (大型廠辦)</span>
                                 </div>
                             </div>
 
-                            <div class="bg-slate-900/80 border border-slate-700/80 rounded-2xl p-5">
-                                <div class="flex justify-between items-center mb-2">
-                                    <label for="wtCountRange" class="text-sm font-bold text-slate-200">③ 水塔 / 蓄水池總座數（上塔＋下池合計）</label>
-                                    <span id="wtCountValue" class="text-lg sm:text-xl font-black text-amber-400">共 2 座水塔/水池</span>
+                            <div class="bg-slate-900/80 border border-slate-700/80 rounded-2xl p-4 sm:p-5">
+                                <div class="flex flex-wrap justify-between items-center gap-2 mb-2.5">
+                                    <label for="wtCountRange" class="text-xs sm:text-sm font-bold text-slate-200">③ 水塔 / 蓄水池總座數（上塔＋下池合計）</label>
+                                    <span id="wtCountValue" class="text-base sm:text-xl font-black text-amber-400">共 2 座水塔/水池</span>
                                 </div>
-                                <input id="wtCountRange" type="range" min="1" max="10" step="1" value="2" class="w-full roi-range">
+                                <div class="flex items-center gap-2.5">
+                                    <button type="button" onclick="window.stepRangeValue('wtCountRange', -1)" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 active:bg-amber-400 active:text-slate-950 border border-slate-600 text-white font-black text-lg flex items-center justify-center shrink-0 shadow" aria-label="減少座數">－</button>
+                                    <input id="wtCountRange" type="range" min="1" max="10" step="1" value="2" class="w-full roi-range">
+                                    <button type="button" onclick="window.stepRangeValue('wtCountRange', 1)" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 active:bg-amber-400 active:text-slate-950 border border-slate-600 text-white font-black text-lg flex items-center justify-center shrink-0 shadow" aria-label="增加座數">＋</button>
+                                </div>
                                 <div class="flex justify-between text-[11px] text-slate-400 mt-1.5">
                                     <span>1 座 (單顆水塔)</span>
                                     <span>2~4 座 (標準上下水池)</span>
@@ -1864,8 +1924,19 @@ details.hs-accordion:not([open]) > summary .acc-hint-open {
                             </select>
                         </div>
                         <div>
-                            <label for="input-message" class="block text-xs font-medium text-slate-300 mb-1">水塔類型 / 預估噸數或座數 / 現場狀況說明 *</label>
-                            <textarea id="input-message" rows="4" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white text-base sm:text-sm focus:outline-none focus:border-sky-400" placeholder="例如：社區大樓共約 60 戶（地下室蓄水池1座＋頂樓水塔2顆）、或冷卻水塔 200RT 需清洗保養，希望安排平日或週末施工..."></textarea>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <label for="input-message" class="block text-xs font-bold text-slate-200">現場狀況說明（👇 手機免打字：點選下方標籤自動帶入）*</label>
+                                <span class="text-[11px] text-sky-400 font-semibold">可複選</span>
+                            </div>
+                            <div class="flex flex-wrap gap-1.5 mb-2.5">
+                                <button type="button" data-tag="需開立三聯式統編報價單與發票" class="quick-note-chip bg-slate-900 hover:bg-sky-500/20 text-slate-300 border border-slate-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1">➕ 需統編報價單</button>
+                                <button type="button" data-tag="希望安排週六/週日假日施工" class="quick-note-chip bg-slate-900 hover:bg-sky-500/20 text-slate-300 border border-slate-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1">➕ 安排週末假日施工</button>
+                                <button type="button" data-tag="需提供管委會停水公告單與前後驗收照片報告" class="quick-note-chip bg-slate-900 hover:bg-sky-500/20 text-slate-300 border border-slate-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1">➕ 需管委會公告與驗收報告</button>
+                                <button type="button" data-tag="現場抽水/加壓馬達有異音或氣鎖不出水狀況需一併檢修" class="quick-note-chip bg-slate-900 hover:bg-sky-500/20 text-slate-300 border border-slate-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1">➕ 馬達異音/沒水檢修</button>
+                                <button type="button" data-tag="水塔進水浮球閥/61F液位電極棒疑似失靈溢水" class="quick-note-chip bg-slate-900 hover:bg-sky-500/20 text-slate-300 border border-slate-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1">➕ 浮球/液位溢水檢修</button>
+                                <button type="button" data-tag="加LINE後將直接傳送現場水塔與馬達銘牌照片估價" class="quick-note-chip bg-slate-900 hover:bg-sky-500/20 text-slate-300 border border-slate-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1">➕ 加LINE傳現場照片估價</button>
+                            </div>
+                            <textarea id="input-message" rows="4" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white text-base sm:text-sm focus:outline-none focus:border-sky-400" placeholder="點選上方標籤即可免打字自動填入！或補充例如：社區約 60 戶（地下蓄水池1座＋頂樓水塔2顆）..."></textarea>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                             <button type="submit" class="w-full bg-sky-400 hover:bg-sky-300 text-slate-950 font-black py-3.5 rounded-lg transition shadow-lg text-sm flex items-center justify-center gap-2">
@@ -2278,6 +2349,84 @@ details.hs-accordion:not([open]) > summary .acc-hint-open {
     });
     syncResponsiveAccordions();
     window.addEventListener('resize', syncResponsiveAccordions);
+
+    // =========================================================================
+    // 方案 B 手機極速操作強化：試算器 [-]/[+] 按鈕、首屏客群直達分流、預約表單免打字標籤
+    // =========================================================================
+    window.stepRangeValue = function(rangeId, delta) {
+        const el = document.getElementById(rangeId);
+        if (!el) return;
+        const min = parseFloat(el.min) || 0;
+        const max = parseFloat(el.max) || 1000;
+        const cur = parseFloat(el.value) || 0;
+        el.value = Math.max(min, Math.min(max, cur + delta));
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+    };
+
+    window.quickRouteRole = function(roleType) {
+        const typeBtn = document.querySelector(`.wt-type-btn[data-wttype="${roleType}"]`);
+        const tonRange = document.getElementById('wtTonRange');
+        const countRange = document.getElementById('wtCountRange');
+        if (roleType === 'COMMUNITY') {
+            if (tonRange) tonRange.value = 50;
+            if (countRange) countRange.value = 2;
+        } else if (roleType === 'FACTORY') {
+            if (tonRange) tonRange.value = 200;
+            if (countRange) countRange.value = 4;
+        } else if (roleType === 'APARTMENT') {
+            if (tonRange) tonRange.value = 10;
+            if (countRange) countRange.value = 2;
+        }
+        if (typeBtn) typeBtn.click();
+        else if (tonRange) tonRange.dispatchEvent(new Event('input', { bubbles: true }));
+
+        const calcEl = document.getElementById('tank-calculator') || document.getElementById('roi-calculator');
+        if (calcEl) calcEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    // 當點選常見規模快選按鈕時，同步切換對應的場所類型按鈕
+    document.querySelectorAll('.wt-ton-preset').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const pType = btn.getAttribute('data-presettype');
+            if (pType) {
+                const tBtn = document.querySelector(`.wt-type-btn[data-wttype="${pType}"]`);
+                if (tBtn) tBtn.click();
+            }
+        });
+    });
+
+    // 預約單免打字快速標籤 (一鍵勾選/取消並自動寫入說明欄)
+    document.querySelectorAll('.quick-note-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            const msgBox = document.getElementById('input-message');
+            if (!msgBox) return;
+            const tagText = chip.getAttribute('data-tag');
+            if (!tagText) return;
+            const bullet = `• ${tagText}`;
+            const isSelected = chip.getAttribute('data-selected') === '1';
+
+            if (!isSelected) {
+                chip.setAttribute('data-selected', '1');
+                chip.className = "quick-note-chip bg-sky-400 text-slate-950 border border-sky-300 px-2.5 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1 shadow";
+                const rawLabel = chip.textContent.replace(/^[➕✓]\s*/, '');
+                chip.textContent = `✓ ${rawLabel}`;
+                const curVal = msgBox.value.trim();
+                if (!curVal.includes(tagText)) {
+                    msgBox.value = curVal ? `${curVal}
+${bullet}` : bullet;
+                }
+            } else {
+                chip.setAttribute('data-selected', '0');
+                chip.className = "quick-note-chip bg-slate-900 hover:bg-sky-500/20 text-slate-300 border border-slate-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1";
+                const rawLabel = chip.textContent.replace(/^[➕✓]\s*/, '');
+                chip.textContent = `➕ ${rawLabel}`;
+                const lines = msgBox.value.split('
+').filter(line => !line.includes(tagText));
+                msgBox.value = lines.join('
+').trim();
+            }
+        });
+    });
 
 })();
     </script>

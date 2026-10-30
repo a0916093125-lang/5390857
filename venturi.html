@@ -565,6 +565,15 @@ details.hs-accordion:not([open]) > summary .acc-hint-open {
             <a href="#faq" class="mobile-nav-link block py-2 text-slate-300 hover:text-white">❓ 無軸文丘里產品常見問題</a>
             <a href="#contact" class="mobile-nav-link block text-center bg-amber-400 text-slate-950 py-2.5 rounded-lg font-black">立即申請 14 天免費試裝 / 詢價</a>
         </div>
+
+        <!-- 手機版專屬：頂部常駐章節快速跳轉列 (Sticky Sub-Nav) -->
+        <div class="lg:hidden bg-slate-950/95 border-t border-slate-800/90 px-2.5 py-1.5 overflow-x-auto no-scrollbar flex items-center gap-1.5 text-[11px] font-bold">
+            <a href="#roi-calculator" class="shrink-0 bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 px-2.5 py-1 rounded-full flex items-center gap-1 active:scale-95 transition">⚡ 節費試算</a>
+            <a href="#interactive-3d" class="shrink-0 bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 px-2.5 py-1 rounded-full flex items-center gap-1 active:scale-95 transition">🧊 3D藍圖選型</a>
+            <a href="#plans" class="shrink-0 bg-amber-400/15 text-amber-300 border border-amber-400/40 px-2.5 py-1 rounded-full flex items-center gap-1 active:scale-95 transition">📋 3大方案/SOP</a>
+            <a href="#contact" class="shrink-0 bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 px-2.5 py-1 rounded-full flex items-center gap-1 active:scale-95 transition">💬 免打字預約試裝</a>
+            <a href="index.html" class="shrink-0 bg-slate-800 text-slate-200 border border-slate-700 px-2.5 py-1 rounded-full flex items-center gap-1 active:scale-95 transition">🏠 回首頁</a>
+        </div>
     </header>
 
     <main id="main-content">
@@ -617,7 +626,23 @@ details.hs-accordion:not([open]) > summary .acc-hint-open {
                         無軸文丘里微氣泡<br>
                         <span class="text-amber-400">免插電太陽能除垢防苔系統</span>
                     </h1>
-                    <p class="text-base sm:text-lg text-slate-300 mb-8 leading-relaxed">
+                    <!-- 手機版專屬：3 秒掃描重點卡（取代長段落文字牆） -->
+                    <div class="sm:hidden space-y-2 mb-4 text-xs">
+                        <div class="bg-slate-900/85 border border-teal-400/40 rounded-xl px-3 py-2 flex items-start gap-2.5">
+                            <span class="bg-teal-400 text-slate-950 font-black px-1.5 py-0.5 rounded text-[10px] shrink-0 mt-0.5">無軸低阻</span>
+                            <div><strong class="text-teal-300">SUS304 中空無軸文丘里：</strong><span class="text-slate-200">落葉鐵鏽直接通過不憋水！45° 斜切嘴產生牛奶微米氣泡氣提脫碳防垢。</span></div>
+                        </div>
+                        <div class="bg-slate-900/85 border border-amber-400/40 rounded-xl px-3 py-2 flex items-start gap-2.5">
+                            <span class="bg-amber-400 text-slate-950 font-black px-1.5 py-0.5 rounded text-[10px] shrink-0 mt-0.5">免拉電線</span>
+                            <div><strong class="text-amber-300">50W 太陽能＋負壓自動啟停：</strong><span class="text-slate-200">省去頂樓拉線費！約 7~14 天白化散水盤青苔，停水約 0.5 秒補氣斷電。</span></div>
+                        </div>
+                        <div class="bg-slate-900/85 border border-emerald-400/40 rounded-xl px-3 py-2 flex items-start gap-2.5">
+                            <span class="bg-emerald-400 text-slate-950 font-black px-1.5 py-0.5 rounded text-[10px] shrink-0 mt-0.5">免費試裝</span>
+                            <div><strong class="text-emerald-300">開放單邊散水盤 14 天試裝：</strong><span class="text-slate-200">單管 15 分鐘無動火快拆，同框對比除苔防垢效果，滿意再採購！</span></div>
+                        </div>
+                    </div>
+
+                    <p class="hidden sm:block text-base sm:text-lg text-slate-300 mb-8 leading-relaxed">
                         洗完冷卻水塔後，散水盤不到 3 週又長滿綠青苔堵塞噴水孔？地下室冰水主機銅管持續結垢多耗電 10%~20%？<strong>皓盛有限公司</strong>專為商業大樓與科技廠房打造<strong>「SUS304 管內中空無軸文丘里 ＋ 50W 太陽能負壓自動啟停臭氧系統」</strong>——單管 15~30 分鐘無動火快拆直上、免拉頂樓半條電線，開水自動產氣抑苔緩垢、停水約 0.5~1.5 秒自動補氣斷電！
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4">
@@ -953,30 +978,38 @@ details.hs-accordion:not([open]) > summary .acc-hint-open {
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6 items-center">
                         <!-- 左側：3 大參數控制（手機版置於結果看板下方 order-2，方便邊滑動邊看上方節費數字跳動） -->
                         <div class="lg:col-span-7 space-y-4 sm:space-y-6 order-2 lg:order-1">
-                            <div class="bg-slate-900/80 border border-slate-700/80 rounded-2xl p-5">
-                                <div class="flex justify-between items-center mb-2">
-                                    <label for="roiRtRange" class="text-sm font-bold text-slate-200">① 冷卻水塔總冷凍噸數（RT）</label>
-                                    <span id="roiRtValue" class="text-xl font-black text-teal-400">250 RT</span>
+                            <div class="bg-slate-900/80 border border-slate-700/80 rounded-2xl p-4 sm:p-5">
+                                <div class="flex justify-between items-center mb-2.5">
+                                    <label for="roiRtRange" class="text-xs sm:text-sm font-bold text-slate-200">① 冷卻水塔總冷凍噸數（可按 － / ＋ 微調）</label>
+                                    <span id="roiRtValue" class="text-lg sm:text-xl font-black text-teal-400">250 RT</span>
                                 </div>
-                                <input id="roiRtRange" type="range" min="100" max="1000" step="25" value="250" class="w-full roi-range">
+                                <div class="flex items-center gap-2.5">
+                                    <button type="button" onclick="window.stepRangeValue('roiRtRange', -25)" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 active:bg-teal-400 active:text-slate-950 border border-slate-600 text-white font-black text-lg flex items-center justify-center shrink-0 shadow" aria-label="減少冷凍噸數">－</button>
+                                    <input id="roiRtRange" type="range" min="100" max="1000" step="25" value="250" class="w-full roi-range">
+                                    <button type="button" onclick="window.stepRangeValue('roiRtRange', 25)" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 active:bg-teal-400 active:text-slate-950 border border-slate-600 text-white font-black text-lg flex items-center justify-center shrink-0 shadow" aria-label="增加冷凍噸數">＋</button>
+                                </div>
                                 <div class="flex justify-between text-[11px] text-slate-400 mt-1.5">
-                                    <span>100 RT (中小型商辦)</span>
+                                    <span>100 RT (商辦)</span>
                                     <span>300 RT (中型廠辦)</span>
                                     <span>600 RT</span>
-                                    <span>1,000 RT (大型科技廠)</span>
+                                    <span>1,000 RT (科技廠)</span>
                                 </div>
                             </div>
 
-                            <div class="bg-slate-900/80 border border-slate-700/80 rounded-2xl p-5">
-                                <div class="flex justify-between items-center mb-2">
-                                    <label for="roiHoursRange" class="text-sm font-bold text-slate-200">② 每日平均運轉時數（小時/日）</label>
-                                    <span id="roiHoursValue" class="text-xl font-black text-amber-400">每日 16 小時</span>
+                            <div class="bg-slate-900/80 border border-slate-700/80 rounded-2xl p-4 sm:p-5">
+                                <div class="flex justify-between items-center mb-2.5">
+                                    <label for="roiHoursRange" class="text-xs sm:text-sm font-bold text-slate-200">② 每日平均運轉時數（小時/日）</label>
+                                    <span id="roiHoursValue" class="text-lg sm:text-xl font-black text-amber-400">每日 16 小時</span>
                                 </div>
-                                <input id="roiHoursRange" type="range" min="8" max="24" step="2" value="16" class="w-full roi-range">
+                                <div class="flex items-center gap-2.5">
+                                    <button type="button" onclick="window.stepRangeValue('roiHoursRange', -2)" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 active:bg-amber-400 active:text-slate-950 border border-slate-600 text-white font-black text-lg flex items-center justify-center shrink-0 shadow" aria-label="減少時數">－</button>
+                                    <input id="roiHoursRange" type="range" min="8" max="24" step="2" value="16" class="w-full roi-range">
+                                    <button type="button" onclick="window.stepRangeValue('roiHoursRange', 2)" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 active:bg-amber-400 active:text-slate-950 border border-slate-600 text-white font-black text-lg flex items-center justify-center shrink-0 shadow" aria-label="增加時數">＋</button>
+                                </div>
                                 <div class="flex justify-between text-[11px] text-slate-400 mt-1.5">
-                                    <span>8~10h (一般商辦大樓)</span>
-                                    <span>16h (兩班制工廠/商場)</span>
-                                    <span>24h (科技廠全天候無休)</span>
+                                    <span>8~10h (商辦大樓)</span>
+                                    <span>16h (兩班制工廠)</span>
+                                    <span>24h (科技廠全天候)</span>
                                 </div>
                             </div>
 
@@ -1886,8 +1919,19 @@ details.hs-accordion:not([open]) > summary .acc-hint-open {
                             </select>
                         </div>
                         <div>
-                            <label for="input-message" class="block text-xs font-medium text-slate-300 mb-1">現場水塔噸數 / 分管管徑或需求說明 *</label>
-                            <textarea id="input-message" rows="4" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white text-base sm:text-sm focus:outline-none focus:border-teal-500" placeholder="請簡述水塔廠牌噸數（如：良機 200RT 雙分管 5吋）、目前散水盤青苔或結垢狀況、或預計清洗保養時間..."></textarea>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <label for="input-message" class="block text-xs font-bold text-slate-200">現場水塔狀況說明（👇 手機免打字：點選下方標籤自動帶入）*</label>
+                                <span class="text-[11px] text-teal-400 font-semibold">可複選</span>
+                            </div>
+                            <div class="flex flex-wrap gap-1.5 mb-2.5">
+                                <button type="button" data-tag="想申請「單邊散水盤 14 天免費試裝」實測除苔防垢效果" class="quick-note-chip bg-slate-900 hover:bg-sky-500/20 text-slate-300 border border-slate-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1">➕ 申請14天免費試裝</button>
+                                <button type="button" data-tag="散水盤常長青苔堵塞噴水孔，需清洗保養＋除苔評估" class="quick-note-chip bg-slate-900 hover:bg-sky-500/20 text-slate-300 border border-slate-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1">➕ 散水盤青苔堵塞</button>
+                                <button type="button" data-tag="冰水主機高壓偏高/散熱溫差不足，需水塔清洗或換散熱片" class="quick-note-chip bg-slate-900 hover:bg-sky-500/20 text-slate-300 border border-slate-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1">➕ 主機散熱不良/洗水塔</button>
+                                <button type="button" data-tag="水塔風車馬達/減速機/水泵/蝶閥有異音或老化需一併檢修" class="quick-note-chip bg-slate-900 hover:bg-sky-500/20 text-slate-300 border border-slate-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1">➕ 風車馬達/減速機/蝶閥檢修</button>
+                                <button type="button" data-tag="希望安排週六/週日停機時段進場勘查或施作" class="quick-note-chip bg-slate-900 hover:bg-sky-500/20 text-slate-300 border border-slate-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1">➕ 安排週末假日施作</button>
+                                <button type="button" data-tag="加LINE後將直接傳送水塔銘牌與散水盤照片請工程師評估" class="quick-note-chip bg-slate-900 hover:bg-sky-500/20 text-slate-300 border border-slate-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1">➕ 加LINE傳水塔銘牌照片</button>
+                            </div>
+                            <textarea id="input-message" rows="4" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white text-base sm:text-sm focus:outline-none focus:border-teal-500" placeholder="點選上方標籤即可免打字自動填入！或補充例如：良機 200RT 雙分管 5吋..."></textarea>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                             <button type="submit" class="w-full bg-teal-500 hover:bg-teal-400 text-slate-950 font-black py-3.5 rounded-lg transition shadow-lg text-sm flex items-center justify-center gap-2">
@@ -3701,6 +3745,85 @@ ${shareData.text}
         });
     
         } // end 3D canvas guard
+
+    // =========================================================================
+    // 方案 B 手機極速操作強化：試算器 [-]/[+] 按鈕、首屏客群直達分流、預約表單免打字標籤
+    // =========================================================================
+    window.stepRangeValue = function(rangeId, delta) {
+        const el = document.getElementById(rangeId);
+        if (!el) return;
+        const min = parseFloat(el.min) || 0;
+        const max = parseFloat(el.max) || 1000;
+        const cur = parseFloat(el.value) || 0;
+        el.value = Math.max(min, Math.min(max, cur + delta));
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+    };
+
+    window.quickRouteRole = function(roleType) {
+        const typeBtn = document.querySelector(`.wt-type-btn[data-wttype="${roleType}"]`);
+        const tonRange = document.getElementById('wtTonRange');
+        const countRange = document.getElementById('wtCountRange');
+        if (roleType === 'COMMUNITY') {
+            if (tonRange) tonRange.value = 50;
+            if (countRange) countRange.value = 2;
+        } else if (roleType === 'FACTORY') {
+            if (tonRange) tonRange.value = 200;
+            if (countRange) countRange.value = 4;
+        } else if (roleType === 'APARTMENT') {
+            if (tonRange) tonRange.value = 10;
+            if (countRange) countRange.value = 2;
+        }
+        if (typeBtn) typeBtn.click();
+        else if (tonRange) tonRange.dispatchEvent(new Event('input', { bubbles: true }));
+
+        const calcEl = document.getElementById('tank-calculator') || document.getElementById('roi-calculator');
+        if (calcEl) calcEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    // 當點選常見規模快選按鈕時，同步切換對應的場所類型按鈕
+    document.querySelectorAll('.wt-ton-preset').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const pType = btn.getAttribute('data-presettype');
+            if (pType) {
+                const tBtn = document.querySelector(`.wt-type-btn[data-wttype="${pType}"]`);
+                if (tBtn) tBtn.click();
+            }
+        });
+    });
+
+    // 預約單免打字快速標籤 (一鍵勾選/取消並自動寫入說明欄)
+    document.querySelectorAll('.quick-note-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            const msgBox = document.getElementById('input-message');
+            if (!msgBox) return;
+            const tagText = chip.getAttribute('data-tag');
+            if (!tagText) return;
+            const bullet = `• ${tagText}`;
+            const isSelected = chip.getAttribute('data-selected') === '1';
+
+            if (!isSelected) {
+                chip.setAttribute('data-selected', '1');
+                chip.className = "quick-note-chip bg-sky-400 text-slate-950 border border-sky-300 px-2.5 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1 shadow";
+                const rawLabel = chip.textContent.replace(/^[➕✓]\s*/, '');
+                chip.textContent = `✓ ${rawLabel}`;
+                const curVal = msgBox.value.trim();
+                if (!curVal.includes(tagText)) {
+                    msgBox.value = curVal ? `${curVal}
+${bullet}` : bullet;
+                }
+            } else {
+                chip.setAttribute('data-selected', '0');
+                chip.className = "quick-note-chip bg-slate-900 hover:bg-sky-500/20 text-slate-300 border border-slate-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1";
+                const rawLabel = chip.textContent.replace(/^[➕✓]\s*/, '');
+                chip.textContent = `➕ ${rawLabel}`;
+                const lines = msgBox.value.split('
+').filter(line => !line.includes(tagText));
+                msgBox.value = lines.join('
+').trim();
+            }
+        });
+    });
+
 })();
 
     </script>

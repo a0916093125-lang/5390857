@@ -183,3 +183,54 @@ input[type="range"].roi-range::-webkit-slider-thumb:hover {
         color: #000000 !important;
     }
 }
+
+
+/* ==========================================================================
+   A + B 手機極速瀏覽與單手拇指操作強化樣式 (Mobile UX Optimization)
+   ========================================================================== */
+/* 隱藏原生 details 三角形箭頭並美化手風琴 */
+details.hs-accordion > summary {
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+}
+details.hs-accordion > summary::-webkit-details-marker {
+    display: none;
+}
+details.hs-accordion[open] > summary .acc-chevron {
+    transform: rotate(180deg);
+}
+details.hs-accordion[open] > summary .acc-hint-closed {
+    display: none;
+}
+details.hs-accordion:not([open]) > summary .acc-hint-open {
+    display: none;
+}
+
+/* 手機橫向滑動撲克牌 (Snap Carousel) 視覺回饋 */
+.mobile-snap-row {
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+}
+.mobile-snap-card {
+    scroll-snap-align: center;
+}
+
+/* 手機端縮減過長區塊垂直留白，減少無謂滑動距離 */
+@media (max-width: 639px) {
+    .py-20 {
+        padding-top: 2.75rem !important;
+        padding-bottom: 2.75rem !important;
+    }
+    .py-16 {
+        padding-top: 2.25rem !important;
+        padding-bottom: 2.25rem !important;
+    }
+    .mb-16 {
+        margin-bottom: 2rem !important;
+    }
+    .mb-14 {
+        margin-bottom: 1.75rem !important;
+    }
+}
