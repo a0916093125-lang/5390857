@@ -1,5 +1,5 @@
 /**
- * 皓盛有限公司 (5390857.com) - 核心互動引擎與防呆試算系統 (cad-engine.js v2.2)
+ * 皓盛有限公司 (5390857.com) - 核心互動引擎與防呆試算系統 (cad-engine.js v2.5 (Dual-Track 50% Priority & 35% Weekday Flexible Pricing Edition))
  * 功能涵蓋：
  * 1. Before/After 清洗前後視覺對比拉桿（支援 Pointer Events 與鍵盤無障礙操作）
  * 2. 自來水塔噸數費用與停水工時試算器 ＋ 一鍵帶參複製跳轉 LINE 閉環
@@ -116,85 +116,151 @@
     });
   }
 
-  /* 2. 初始化自來水塔噸數費用與停水工時試算器 */
+  /* 2. 初始化自來水塔噸數費用與停水工時試算器（ARGON v2.5 雙軌排程定價版：預設 50% 純益專車全責 vs 平日彈性併單 35% 純益） */
   function initWaterTankCalculator() {
     const form = document.getElementById("water-tank-calc-form");
     if (!form) return;
 
+    const scheduleSelect = document.getElementById("calc-schedule-mode");
     const tonSelect = document.getElementById("calc-tonnage");
     const matSelect = document.getElementById("calc-material");
+    const poolCountSelect = document.getElementById("calc-pool-count");
     const regionSelect = document.getElementById("calc-region");
-    const chkValve = document.getElementById("chk-valve");
+    const chkPvcValve = document.getElementById("chk-pvc-valve");
+    const chkButterfly = document.getElementById("chk-butterfly-valve");
     const chkLevel = document.getElementById("chk-level");
     const chkCool = document.getElementById("chk-cooling");
+    const chkTax = document.getElementById("chk-tax");
 
     const outPrice = document.getElementById("calc-price-output");
     const outHours = document.getElementById("calc-hours-output");
+    const outCrew = document.getElementById("calc-crew-output");
     const outSummary = document.getElementById("calc-summary-text");
     const btnCopyLine = document.getElementById("btn-calc-line");
 
     function calculate() {
+      const scheduleMode = scheduleSelect ? scheduleSelect.value : "priority_50"; // "priority_50" or "weekday_35"
+      const isPriority = (scheduleMode !== "weekday_35");
       const tonVal = parseInt(tonSelect ? tonSelect.value : "50", 10) || 50;
       const matVal = matSelect ? matSelect.value : "concrete";
-      const regionVal = regionSelect ? regionSelect.value : "雙北桃竹區";
+      const poolLevel = parseInt(poolCountSelect ? poolCountSelect.value : "0", 10) || 0;
+      const regionVal = regionSelect ? regionSelect.value : "台北市 / 新北市";
 
-      let basePrice = 3000;
-      let hours = "2.0 ~ 2.5 小時";
+      let basePrice = isPriority ? 13000 : 10500;
+      let hours = "2.5 ~ 3.0 小時";
+      let crewMode = isPriority
+        ? "【專車全責專案】法定局限空間3人標準編制（雙人施作戒護＋缺氧作業主管氣體測定簽證＋500萬職災團保＋價值4,500元給水機電深度健檢）"
+        : "【平日彈性併單檔期】法定局限空間3人標準編制（由本公司安排平日順路時段施作，同享缺氧作業主管＋雙人戒護＋500萬職災團保）";
 
       if (tonVal <= 10) {
-        basePrice = 3000;
-        hours = "1.5 ~ 2.0 小時";
+        if (matVal === "stainless" && poolLevel === 0) {
+          // 頂樓單顆不鏽鋼塔（免入槽塔外高壓沖洗）
+          basePrice = isPriority ? 4600 : 3800;
+          hours = "1.5 ~ 2.0 小時";
+          crewMode = isPriority
+            ? "【指定時段專車】頂樓免入槽單人快洗編制（正職勞健保技師＋長柄高壓水刀＋次氯酸鈉消毒；同棟多顆併洗享3,000起優惠）"
+            : "【平日順路併單】頂樓免入槽單人快洗編制（正職勞健保技師＋長柄高壓水刀＋次氯酸鈉消毒；同棟多顆併洗享3,000起優惠）";
+        } else {
+          // 地下室小型 RC 水泥池或 FRP（須入人孔局限空間作業，啟動全負擔保底價）
+          basePrice = isPriority ? 13000 : 10000;
+          hours = "2.0 ~ 2.5 小時";
+        }
       } else if (tonVal <= 50) {
-        basePrice = 6500;
+        // 20 ~ 50 噸中小型華廈上下池：預設 50% 純益 13,000 起 / 平日併單 10,500 起
+        basePrice = isPriority ? 13000 : 10500;
+        if (matVal === "stainless") basePrice = isPriority ? 12000 : 9800;
         hours = "2.5 ~ 3.0 小時";
       } else if (tonVal <= 120) {
-        basePrice = 11000;
+        // 60 ~ 120 噸標準社區大樓上下池：預設 50% 純益 23,000 起 / 平日併單 17,500 起
+        basePrice = isPriority ? 23000 : 17500;
+        if (matVal === "stainless") basePrice = isPriority ? 21500 : 16500;
         hours = "3.0 ~ 3.5 小時";
       } else {
-        basePrice = 16500;
-        hours = "3.5 ~ 4.0 小時（雙機同步抽水不隔夜）";
+        // 150 ~ 250 噸以上大型社區上下池：預設 50% 純益 27,000 起 / 平日併單 24,000 起
+        basePrice = isPriority ? 27000 : 24000;
+        if (matVal === "stainless") basePrice = isPriority ? 25500 : 22500;
+        hours = "3.5 ~ 4.0 小時（雙機同步高速抽排不隔夜）";
       }
 
-      if (matVal === "concrete") {
-        basePrice += 1000;
-      } else if (matVal === "frp") {
-        basePrice += 500;
+      // 跨棟/多池移機工資係數（依雙軌排程自動切換：雙棟 4,500 / 3,800；多棟 9,000 / 7,500）
+      let poolSurcharge = 0;
+      if (poolLevel === 1) {
+        poolSurcharge = isPriority ? 4500 : 3800;
+        if (tonVal >= 50) hours = "3.5 ~ 4.5 小時";
+      } else if (poolLevel === 2) {
+        poolSurcharge = isPriority ? 9000 : 7500;
+        hours = "4.0 ~ 5.5 小時（分棟分池輪流停水，不影響住戶全天用水）";
       }
+      basePrice += poolSurcharge;
 
-      const addons = ["免費 Omron 61F-G2 液位開關基礎檢測"];
-      if (chkValve && chkValve.checked) {
-        basePrice += 3500;
-        addons.push("加購 8吋/10吋蝴蝶閥或 PVC 球閥檢修更換預估");
+      const addons = ["免費附贈：Omron 61F-G2 液位迴路測試＋揚水泵浦電流檢測＋進水蝴蝶閥止水健檢（價值NT$4,500）"];
+      if (chkPvcValve && chkPvcValve.checked) {
+        const pvcPrice = isPriority ? 3800 : 3500;
+        basePrice += pvcPrice;
+        addons.push("加購 2吋內進水 PVC 球閥/青銅浮球閥更新 (+NT$" + pvcPrice.toLocaleString() + "起)");
+      }
+      if (chkButterfly && chkButterfly.checked) {
+        const bfPrice = isPriority ? 18000 : 16500;
+        basePrice += bfPrice;
+        addons.push("加購 6吋~10吋 FCD/SUS304 齒輪式蝴蝶閥更換 (+NT$" + bfPrice.toLocaleString() + "起)");
       }
       if (chkLevel && chkLevel.checked) {
-        basePrice += 2200;
-        addons.push("加購 Omron 61F-G2 液位控制器與電極棒更新");
+        const lvlPrice = isPriority ? 4500 : 4200;
+        basePrice += lvlPrice;
+        addons.push("加購 Omron 61F-G2 液位控制器＋304電極棒整組更新 (+NT$" + lvlPrice.toLocaleString() + ")");
       }
       if (chkCool && chkCool.checked) {
-        basePrice += 4500;
-        addons.push("加購商用空調冷卻水塔同步清洗保養");
+        const coolPrice = isPriority ? 6000 : 5500;
+        basePrice += coolPrice;
+        addons.push("加購商用空調冷卻水塔(50RT內基準)同步清洗保養 (+NT$" + coolPrice.toLocaleString() + "起)");
       }
 
-      const maxPrice = Math.round(basePrice * 1.18);
+      let maxPrice = Math.round(basePrice * 1.18);
+      let taxNote = "未稅";
+      if (chkTax && chkTax.checked) {
+        basePrice = Math.round(basePrice * 1.05);
+        maxPrice = Math.round(maxPrice * 1.05);
+        taxNote = "含 5% 統一發票營業稅";
+      }
+
+      const scheduleLabel = isPriority
+        ? "指定時段專車全責專案（含職安簽證＋機電深度健檢總包）"
+        : "平日彈性併單特惠檔期（由皓盛安排順路時段施作）";
+
       if (outPrice) {
-        outPrice.textContent = "NT$ " + basePrice.toLocaleString() + " ~ " + maxPrice.toLocaleString() + " 元";
+        outPrice.textContent = "NT$ " + basePrice.toLocaleString() + " ~ " + maxPrice.toLocaleString() + " 元（" + taxNote + "）";
       }
       if (outHours) {
         outHours.textContent = hours;
+      }
+      if (outCrew) {
+        outCrew.textContent = crewMode;
       }
 
       const matName = matSelect && matSelect.options[matSelect.selectedIndex]
         ? matSelect.options[matSelect.selectedIndex].text
         : "RC 水泥上下池";
+      const poolName = poolCountSelect && poolCountSelect.options[poolCountSelect.selectedIndex]
+        ? poolCountSelect.options[poolCountSelect.selectedIndex].text
+        : "標準單棟（1下池＋1上池）";
 
       const summary = "📍 地區：" + regionVal +
-        "\n💧 水塔規模：約 " + tonVal + " 噸（" + matName + "）" +
-        "\n⏱️ 預估停水工時：" + hours +
-        "\n🔧 檢修項目：" + addons.join("、") +
-        "\n💰 系統預估區間：NT$ " + basePrice.toLocaleString() + " ~ " + maxPrice.toLocaleString() + " 元";
+        "
+📅 排程方案：" + scheduleLabel +
+        "
+💧 水塔規模：約 " + tonVal + " 噸（" + matName + "｜" + poolName + "）" +
+        "
+👷 出勤編制：" + crewMode +
+        "
+⏱️ 預估停水工時：" + hours +
+        "
+🔧 檢修與加購：" + addons.join("、") +
+        "
+💰 系統預估區間：NT$ " + basePrice.toLocaleString() + " ~ " + maxPrice.toLocaleString() + " 元（" + taxNote + "）";
 
       if (outSummary) {
-        outSummary.textContent = summary.replace(/\n/g, " ｜ ");
+        outSummary.textContent = summary.replace(/
+/g, " ｜ ");
       }
       return summary;
     }

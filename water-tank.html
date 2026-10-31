@@ -49,7 +49,7 @@
         "url": "https://5390857.com/water-tank.html",
         "priceCurrency": "TWD",
         "lowPrice": "3000",
-        "highPrice": "22000",
+        "highPrice": "55000",
         "offerCount": "8",
         "availability": "https://schema.org/InStock",
         "priceValidUntil": "2027-12-31"
@@ -103,7 +103,7 @@
           "name": "大樓洗水塔費用怎麼算？多久需要清洗一次？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "小型水塔（10噸內）連工帶料 NT$3,000 起，社區大樓上下水池（50噸～200噸）約 NT$6,500～NT$18,000 起。依自來水處建議每半年（6個月）應定期清洗消毒一次，確保飲用水衛生並避免紅蟲與鐵鏽淤積。"
+            "text": "小型水塔（10噸內）連工帶料 NT$3,000 起，提供雙軌排程方案：【指定時段專車全責專案】中小型華廈（20～50噸）NT$13,000 起、標準社區大樓（60～120噸）NT$23,000 起、大型社區（150～250噸以上）NT$27,000 起；若選擇【平日彈性併單特惠檔期（由本公司安排順路時段）】則享華廈 NT$10,500 起、標準社區 NT$17,500 起、大型社區 NT$24,000 起（全方案均含法定缺氧作業主管、雙人戒護、勞健保、500萬職災團保與價值4,500元給水機電深度健檢）。依自來水處建議每半年（6個月）應定期清洗消毒一次，確保飲用水衛生並避免紅蟲與鐵鏽淤積。"
           }
         },
         {
@@ -176,7 +176,15 @@
         <p class="section-sub">選擇您的水塔規模與加購機電檢查項目，系統即時計算連工帶料預估區間：</p>
         <form id="water-tank-calc-form" onsubmit="return false;">
           <div class="calc-form-group">
-            <label class="calc-label" for="calc-region">1. 服務所在地區</label>
+            <label class="calc-label" for="calc-schedule-mode">1. 選擇排程方案（雙軌排程定價：專車指定時段 vs 平日順路併單特惠）</label>
+            <select id="calc-schedule-mode" class="calc-select" style="border-color:#38bdf8;font-weight:700;">
+              <option value="priority_50" selected>★ 指定時段專車全責專案（含職安簽證＋價值4,500元機電深度健檢總包｜華廈13,000 / 標準社區23,000 / 大型27,000起）</option>
+              <option value="weekday_35">⚡ 平日彈性併單特惠檔期（由本公司安排平日順路時段施作｜華廈10,500 / 標準社區17,500 / 大型24,000起）</option>
+            </select>
+          </div>
+
+          <div class="calc-form-group">
+            <label class="calc-label" for="calc-region">2. 服務所在地區</label>
             <select id="calc-region" class="calc-select">
               <option value="台北市 / 新北市">台北市 / 新北市（免車馬費快速排程）</option>
               <option value="桃園市 / 新竹縣市">桃園市 / 新竹縣市（社區與廠房專案）</option>
@@ -185,50 +193,72 @@
           </div>
 
           <div class="calc-form-group">
-            <label class="calc-label" for="calc-tonnage">2. 水塔總噸數規模（下水池＋頂樓水塔合計）</label>
+            <label class="calc-label" for="calc-tonnage">3. 水塔總噸數規模（下水池＋頂樓水塔合計）</label>
             <select id="calc-tonnage" class="calc-select">
-              <option value="10">10 噸以內（透天 / 小型店面不鏽鋼水塔）</option>
-              <option value="50" selected>20 ~ 50 噸（中小型華廈 / 獨棟商辦上下池）</option>
-              <option value="120">60 ~ 120 噸（標準社區大樓地下蓄水池＋頂樓水池）</option>
-              <option value="200">150 ~ 250 噸以上（大型多棟社區 / 商場廠房雙池系統）</option>
+              <option value="10">10 噸以內（頂樓單顆不鏽鋼塔專車 NT$4,600 / 平日併單 NT$3,800起；入槽RC池按局限空間編制計）</option>
+              <option value="50" selected>20 ~ 50 噸（中小型華廈 / 獨棟商辦上下池｜專車 NT$13,000 / 平日併單 NT$10,500起）</option>
+              <option value="120">60 ~ 120 噸（標準社區大樓地下蓄水池＋頂樓水池｜專車 NT$23,000 / 平日併單 NT$17,500起）</option>
+              <option value="200">150 ~ 250 噸以上（大型社區 / 商場廠房雙池系統｜專車 NT$27,000 / 平日併單 NT$24,000起）</option>
             </select>
           </div>
 
           <div class="calc-form-group">
-            <label class="calc-label" for="calc-material">3. 水池主要結構材質</label>
+            <label class="calc-label" for="calc-material">4. 水池主要結構材質（決定免入槽或法定局限空間入槽編制）</label>
             <select id="calc-material" class="calc-select">
-              <option value="stainless">SUS304 不鏽鋼圓形/方形水塔</option>
-              <option value="concrete" selected>RC 鋼筋水泥蓄水池（含磁磚或防水塗層）</option>
-              <option value="frp">FRP 玻璃纖維組合式水塔</option>
+              <option value="stainless">SUS304 不鏽鋼圓形/方形水塔（同棟頂樓多顆併洗享 NT$3,000 起優惠）</option>
+              <option value="concrete" selected>RC 鋼筋水泥蓄水池（須進入人孔，強制配置缺氧作業主管與雙人戒護）</option>
+              <option value="frp">FRP 玻璃纖維組合式水塔（須進入人孔局限空間作業）</option>
             </select>
           </div>
 
           <div class="calc-form-group">
-            <span class="calc-label">4. 同步機電閥件更換或空調水塔加購（可複選）</span>
+            <label class="calc-label" for="calc-pool-count">5. 社區棟數與水池格數配置（依排程方案自動計算跨棟移機費）</label>
+            <select id="calc-pool-count" class="calc-select">
+              <option value="0" selected>標準單棟配置（1下水池＋1頂樓水池，共2池內免移機費）</option>
+              <option value="1">雙棟或分區連通水池（共 3 ~ 4 池｜專車 +NT$4,500 / 平日併單 +NT$3,800）</option>
+              <option value="2">大型多棟社區連通池（共 5 池以上｜專車 +NT$9,000 / 平日併單 +NT$7,500）</option>
+            </select>
+          </div>
+
+          <div class="calc-form-group">
+            <span class="calc-label">6. 同步機電閥件更換、空調水塔加購與發票稅金（可複選）</span>
             <div class="calc-checkbox-grid">
               <label class="calc-check-item">
-                <input type="checkbox" id="chk-valve">
-                <span>進水蝴蝶閥（8吋/10吋）或 PVC 球閥更換預估</span>
+                <input type="checkbox" id="chk-pvc-valve">
+                <span>2吋內進水 PVC 球閥 / 青銅浮球閥更新（專車+3,800 / 平日+3,500起）</span>
+              </label>
+              <label class="calc-check-item">
+                <input type="checkbox" id="chk-butterfly-valve">
+                <span>6吋~10吋 FCD/304 齒輪式蝴蝶閥更換（專車+18,000 / 平日+16,500起）</span>
               </label>
               <label class="calc-check-item">
                 <input type="checkbox" id="chk-level">
-                <span>Omron 61F-G2 液位控制器＆電極棒更新</span>
+                <span>Omron 61F-G2 液位控制器＋電極棒整組更新（專車+4,500 / 平日+4,200）</span>
               </label>
               <label class="calc-check-item">
                 <input type="checkbox" id="chk-cooling">
-                <span>商用空調冷卻水塔同步清洗保養</span>
+                <span>商用空調冷卻水塔(50RT內)同步清洗保養（專車+6,000 / 平日+5,500起）</span>
+              </label>
+              <label class="calc-check-item">
+                <input type="checkbox" id="chk-tax">
+                <span>加計 5% 統一發票營業稅（皓盛統編 90221911）</span>
               </label>
             </div>
           </div>
 
           <div class="calc-result-box">
-            <div style="font-size:0.9rem;color:#a7f3d0;font-weight:700;">預估連工帶料費用區間（含免費液位與閥件基礎健檢）：</div>
-            <div id="calc-price-output" class="price-highlight">NT$ 7,500 ~ 8,850 元</div>
+            <div style="font-size:0.9rem;color:#a7f3d0;font-weight:700;">預估連工帶料總包費用區間（含三大高價值工程：水刀消毒＋職安簽證＋價值4,500元機電深度健檢）：</div>
+            <div id="calc-price-output" class="price-highlight">NT$ 13,000 ~ 15,340 元（未稅）</div>
             <div style="margin-top:8px;font-size:0.95rem;color:#e2e8f0;">
               ⏱️ 預估停水工時：<strong id="calc-hours-output" style="color:#38bdf8;">2.5 ~ 3.0 小時</strong>
             </div>
+            <div style="margin-top:6px;font-size:0.88rem;color:#fde68a;">
+              👷 法定出勤編制：<span id="calc-crew-output">法定局限空間標準編制（雙人施作戒護＋缺氧作業主管＋四用氣體偵測＋500萬職災團保）</span>
+            </div>
             <p id="calc-summary-text" style="margin-top:10px;font-size:0.84rem;color:#cbd5e1;background:rgba(7,13,25,0.6);padding:8px 12px;border-radius:8px;"></p>
-            <p style="margin-top:8px;font-size:0.8rem;color:#94a3b8;">* 註：實際報價依現場人孔高度、淤泥厚度與管線環境微調，可開立皓盛有限公司統一發票（統編 90221911）。</p>
+            <p style="margin-top:8px;font-size:0.82rem;color:#6ee7b7;font-weight:700;">
+              ✓ 職安合規免責保障：本報價由皓盛有限公司（統編 90221911）正職投保勞健保、500萬雇主職災團保團隊施作，並依法配置「缺氧作業主管」與四用氣體偵測器，讓社區管委會 100% 免除連帶職安罰則與賠償風險！
+            </p>
             <div class="btn-group">
               <button type="button" id="btn-calc-line" class="btn btn-line" style="width:100%;">
                 📋 一鍵複製上述試算規格 並開啟 LINE 詢價 (0916-093-125)
@@ -259,7 +289,7 @@
       <div class="faq-list">
         <div class="faq-item">
           <div class="faq-q">Q1：大樓洗水塔費用怎麼算？多久需要清洗一次？</div>
-          <div class="faq-a">小型水塔（10噸內）連工帶料 NT$3,000 起，社區大樓上下水池（50噸～200噸）約 NT$6,500～NT$18,000 起。依台灣自來水公司與環保局規範，每半年（6個月）應定期清洗消毒一次，確保住戶飲用水安全。</div>
+          <div class="faq-a">小型水塔（10噸內）連工帶料 NT$3,000 起，提供雙軌排程方案：【指定時段專車全責專案】中小型華廈（20～50噸）NT$13,000 起、標準社區大樓（60～120噸）NT$23,000 起、大型社區（150～250噸以上）NT$27,000 起；若選擇【平日彈性併單特惠檔期（由本公司安排順路時段）】則享華廈 NT$10,500 起、標準社區 NT$17,500 起、大型社區 NT$24,000 起（全方案均含法定缺氧作業主管、雙人戒護、勞健保、500萬職災團保與價值4,500元給水機電深度健檢）。依台灣自來水公司與環保局規範，每半年（6個月）應定期清洗消毒一次，確保住戶飲用水安全。</div>
         </div>
         <div class="faq-item">
           <div class="faq-q">Q2：社區大樓洗水塔要停水多久？住戶家裡的加壓馬達需要關嗎？</div>
