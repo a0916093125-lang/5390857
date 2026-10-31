@@ -155,13 +155,27 @@
         const wtBaBeforeClip = document.getElementById('wtBaBeforeClip');
         const wtBaHandle = document.getElementById('wtBaHandle');
         if (wtBaRange && wtBaBeforeClip && wtBaHandle) {
+            const wrapEl = wtBaBeforeClip.parentElement;
+            const innerSvg = wtBaBeforeClip.querySelector('svg, img');
+            const syncWtBaWidth = () => {
+                if (wrapEl && innerSvg) {
+                    const w = wrapEl.clientWidth;
+                    if (w > 0) {
+                        innerSvg.style.width = w + 'px';
+                        innerSvg.style.minWidth = w + 'px';
+                    }
+                }
+            };
             const updateWtBa = (val) => {
                 const pct = Math.max(5, Math.min(95, Number(val)));
                 wtBaBeforeClip.style.width = pct + '%';
                 wtBaHandle.style.left = pct + '%';
+                syncWtBaWidth();
             };
             wtBaRange.addEventListener('input', (e) => updateWtBa(e.target.value));
             wtBaRange.addEventListener('change', (e) => updateWtBa(e.target.value));
+            window.addEventListener('resize', syncWtBaWidth);
+            setTimeout(syncWtBaWidth, 30);
             updateWtBa(wtBaRange.value || 50);
         }
 
