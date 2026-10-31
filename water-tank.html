@@ -713,6 +713,99 @@ section tr.hover\:bg-sky-50\/60:hover, section tr.hover\:bg-sky-50\/80:hover, se
     filter: brightness(1.08);
 }
 
+
+
+/* ==========================================================================
+   【RWD UI/UX Architect 旗艦雙端大一統升級】
+   1. 零橫向溢出鐵律 (Zero Horizontal Overflow & Flex/Grid min-width: 0)
+   2. 行動端 44px 大拇指熱區、32px 試算滑桿圓鈕與底部 Safe-Area 手勢區留白
+   3. 高密度數據表格「固定首欄 (Sticky First-Column) ＋ 右側局部滑動」
+   4. 電腦版 (1024px+) 試算器「左側控制面板 ＋ 右側報價看板 Sticky 吸附對齊」
+   ========================================================================== */
+html, body {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+    -webkit-text-size-adjust: 100%;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+/* 防止 Flex 與 Grid 子元素在窄螢幕 (360px~430px) 撐破父容器 */
+.grid > *, .flex > *, section > div {
+    min-width: 0;
+}
+
+/* 放大 ROI 與水塔噸數試算器滑桿圓鈕：手機單手拖拉更精準不滑手 */
+input[type="range"].roi-range {
+    height: 10px !important;
+    border-radius: 999px;
+    background: #334155;
+    cursor: pointer;
+}
+input[type="range"].roi-range::-webkit-slider-thumb {
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #38bdf8 0%, #14b8a6 100%) !important;
+    border: 3px solid #ffffff !important;
+    box-shadow: 0 3px 12px rgba(20, 184, 166, 0.65) !important;
+}
+input[type="range"].roi-range::-moz-range-thumb {
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #38bdf8 0%, #14b8a6 100%) !important;
+    border: 3px solid #ffffff !important;
+    box-shadow: 0 3px 12px rgba(20, 184, 166, 0.65) !important;
+}
+
+@media (max-width: 767px) {
+    /* 手機底部常駐列安全距離 (適配 iPhone 橫條與三星手勢列) */
+    body {
+        padding-bottom: calc(82px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+    input[type="range"].roi-range::-webkit-slider-thumb {
+        width: 32px !important;
+        height: 32px !important;
+    }
+    /* 確保手機端快速選擇按鈕、方案切換按鈕具備舒適點擊熱區 */
+    .wt-ton-preset, .roi-rt-preset, .wt-type-btn, .roi-scale-btn, .v-scheme-btn, .v-model-btn, .quick-note-chip {
+        min-height: 42px;
+        display: inline-flex;
+        align-items: center;
+    }
+}
+
+/* 局部獨立橫向捲動表格：手機窄螢幕固定首欄 + 流暢慣性滑動 */
+.overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(56, 189, 248, 0.4) rgba(15, 23, 42, 0.6);
+}
+@media (max-width: 767px) {
+    .overflow-x-auto table th:first-child,
+    .overflow-x-auto table td:first-child {
+        position: sticky;
+        left: 0;
+        z-index: 15;
+        background-color: #0e131f !important;
+        box-shadow: 4px 0 12px -2px rgba(0, 0, 0, 0.65);
+    }
+}
+
+/* 電腦寬螢幕 (1024px+) 雙欄試算儀表板：右側結果卡片自動 Sticky 跟隨視線 */
+@media (min-width: 1024px) {
+    #tank-calculator .lg\:col-span-5,
+    #roi-calculator .lg\:col-span-5 {
+        position: sticky;
+        top: 104px;
+        align-self: start;
+    }
+}
+
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased overflow-x-hidden">

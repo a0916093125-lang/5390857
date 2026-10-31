@@ -310,6 +310,127 @@
   button:active, a:active {
     transform: scale(0.96) !important;
   }
+
+  /* ==========================================================================
+     【RWD UI/UX Architect 旗艦雙端升級 — 3D 工程藍圖專用】
+     電腦雙欄並排看圖對照 ⇄ 手機頂部吸附膠囊控制列 ＋ 防破版表格 ＋ 底部拇指快捷列
+     ========================================================================== */
+  html, body {
+    max-width: 100vw;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+  }
+  .grid-main > *, .grid-bottom > *, .card, .spec-body {
+    min-width: 0;
+  }
+  /* 頂部控制列常駐吸附 (Sticky Controls Bar)：切換型號或開關水模擬時免上下來回捲動 */
+  .controls-bar {
+    position: sticky;
+    top: 6px;
+    z-index: 40;
+    background: rgba(15, 23, 42, 0.94);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.65);
+  }
+  .model-tabs::-webkit-scrollbar, .scheme-tabs::-webkit-scrollbar, .sim-group::-webkit-scrollbar, .preset-bar::-webkit-scrollbar {
+    display: none;
+  }
+  .model-tabs, .scheme-tabs, .sim-group, .preset-bar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .spec-table {
+    width: 100%;
+    table-layout: fixed;
+    word-break: break-word;
+  }
+  /* 手機底部固定四合一拇指導覽列 (僅於 768px 以下顯示) */
+  .bp-mobile-bottom-bar {
+    display: none;
+  }
+  @media (max-width: 768px) {
+    body {
+      padding: 8px 8px calc(76px + env(safe-area-inset-bottom, 0px)) 8px !important;
+    }
+    .header h1 {
+      font-size: clamp(1rem, 4.2vw, 1.2rem);
+      line-height: 1.38;
+    }
+    .controls-bar {
+      padding: 8px 10px;
+      gap: 6px;
+      top: 4px;
+    }
+    .tab-btn, .scheme-btn, .sim-btn, .toggle-btn {
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 12px;
+      font-size: 0.78rem;
+    }
+    .preset-bar {
+      right: 10px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 2px;
+    }
+    .preset-btn {
+      flex-shrink: 0;
+      min-height: 34px;
+      padding: 5px 10px;
+    }
+    .canvas-wrap {
+      height: 340px;
+    }
+    .canvas-overlay {
+      right: 10px;
+      font-size: 0.72rem;
+      padding: 6px 9px;
+      line-height: 1.35;
+    }
+    .spec-body {
+      padding: 10px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .spec-table th, .spec-table td {
+      padding: 6px 8px;
+      font-size: 0.78rem;
+    }
+    .bp-mobile-bottom-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 60;
+      background: rgba(9, 14, 26, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid #334155;
+      padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px)) 8px;
+      box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.6);
+    }
+    .bp-mobile-bottom-bar a, .bp-mobile-bottom-bar button {
+      min-height: 40px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      border: none;
+      white-space: nowrap;
+    }
+  }
+
 </style>
 </head>
 <body>
