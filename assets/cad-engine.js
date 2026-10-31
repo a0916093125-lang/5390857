@@ -1845,36 +1845,66 @@
     });
 
 
+
     // =========================================================================
-    // 【AI 野心思維框架升级】高度(Altitude) 簽呈產生器 & 風險診斷引擎
+    // 【方案 C 雙效合一旗艦版】一鍵生成管委會/廠務 ESCO 簽呈（原地展開預覽＋100%全相容複製＋變色打勾＋同步寫入表單）
     // =========================================================================
-    window.updateWtRiskDiagnosis = function() {
-        const sel = document.getElementById('wtLastCleanMonths');
-        const box = document.getElementById('wtRiskAlertBox');
-        if (!sel || !box) return;
-        const m = parseInt(sel.value, 10) || 6;
-        if (m <= 6) {
-            box.innerHTML = '🟢 <strong>自來水處合規週期（滿 6 個月）：</strong>池底餘氯逐漸揮發並開始生成初期生物膜。現在預約定檢，可100%避免 61F 液位電極棒結垢失靈，省下未來抽水/加壓馬達空轉燒毀換新費（NT$ 8,000～18,000）。';
-            box.className = 'bg-blue-950/50 border border-blue-400/40 rounded-xl p-3 text-xs text-slate-200 leading-relaxed';
-        } else if (m <= 12) {
-            box.innerHTML = '🟡 <strong>逾期中度風險（超過 1 年未洗）：</strong>池底通常已累積 1～2 公分鐵鏽黃泥與搖蚊幼蟲（紅蟲），且 61F 電極棒與進水浮球閥極易附著水垢。建議立即排程清洗並執行免費 5 大機電排氣健檢！';
-            box.className = 'bg-amber-950/50 border border-amber-400/50 rounded-xl p-3 text-xs text-amber-100 leading-relaxed';
-        } else {
-            box.innerHTML = '🔴 <strong>高風險紅色預警（超過 2 年或不清楚）：</strong>水垢與生物黏泥已嚴重威脅飲水衛生，且隨時可能發生「電極棒絕緣失靈害地下室抽水馬達空轉燒毀」或「浮球關不住溢水暴增數萬元水費」！建議優先排入本週緊急清洗健檢。';
-            box.className = 'bg-rose-950/60 border border-rose-400/60 rounded-xl p-3 text-xs text-rose-100 leading-relaxed';
+    window.universalCopyText = async function(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+            try {
+                await navigator.clipboard.writeText(text);
+                return true;
+            } catch (e) {}
+        }
+        try {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.setAttribute('readonly', '');
+            ta.style.position = 'fixed';
+            ta.style.top = '-9999px';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            ta.setSelectionRange(0, text.length);
+            const ok = document.execCommand('copy');
+            document.body.removeChild(ta);
+            return !!ok;
+        } catch (err) {
+            return false;
         }
     };
 
-    window.copyWtProposalMemo = async function() {
+    window.showMemoToast = function(msg) {
+        let toast = document.getElementById('hsMemoFloatingToast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'hsMemoFloatingToast';
+            toast.className = 'fixed top-24 left-1/2 -translate-x-1/2 z-[9999] bg-emerald-500 text-slate-950 font-black text-xs sm:text-sm px-4 py-2.5 rounded-full shadow-2xl border-2 border-white flex items-center gap-2 transition-all duration-300 pointer-events-none';
+            document.body.appendChild(toast);
+        }
+        toast.innerHTML = `<i class="fa-solid fa-circle-check text-base"></i><span>${msg}</span>`;
+        toast.style.opacity = '1';
+        toast.style.transform = 'translate(-50%, 0) scale(1)';
+        clearTimeout(window.__hsToastTimer);
+        window.__hsToastTimer = setTimeout(() => {
+            if (toast) {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translate(-50%, -8px) scale(0.95)';
+            }
+        }, 3800);
+    };
+
+    window.buildWtProposalMemoText = function() {
         const tons = document.getElementById('wtTonRange')?.value || '50';
         const count = document.getElementById('wtCountRange')?.value || '2';
-        const price = document.getElementById('wtResPrice')?.textContent || 'NT$ 7,500 ~ 12,000 起';
-        const downtime = document.getElementById('wtResDowntime')?.textContent || '約 2.5 ~ 3.5 小時';
-        const crew = document.getElementById('wtResCrew')?.textContent || '2 ~ 3 名持證技師';
-        const months = document.getElementById('wtLastCleanMonths')?.selectedOptions?.[0]?.text || '滿 6 個月定期保養';
-        const memo = `【社區管委會 / 廠務部・自來水塔與蓄水池清洗暨機電健檢簽呈提案單】
+        const price = document.getElementById('wtResPrice')?.textContent?.trim() || 'NT$ 7,500 ~ 12,000 起';
+        const downtime = document.getElementById('wtResDowntime')?.textContent?.trim() || '約 2.5 ~ 3.5 小時';
+        const crew = document.getElementById('wtResCrew')?.textContent?.trim() || '2 ~ 3 名持證技師';
+        const months = document.getElementById('wtLastCleanMonths')?.selectedOptions?.[0]?.text?.trim() || '約 6 個月（自來水處標準週期）';
+        return `【社區管委會 / 廠務部・自來水塔與蓄水池清洗暨機電健檢簽呈提案單】
 ■ 承攬廠商：皓盛有限公司（統一編號：90221911｜會轉的都會修！）
-■ 法定資質：具備建築物清潔(J101010)、電器承裝(E601010)、用電設備檢驗維護(E606010)、配管工程(E599010)、自控工程(E603050)、能源技術服務(IG03010)等50項政府核准資質
+■ 法定資質：具備建築物清潔(J101010)、電器承裝(E601010)、用電設備檢驗維護(E606010)、配管工程(E599010)、自控工程(E603050)、機械安裝(E604010)、能源技術服務(IG03010)等50項政府核准資質
 ■ 評估規模：總儲水量約 ${tons} 噸（共 ${count} 座水塔/水池）｜距上次清洗：${months}
 ■ 預估費用：${price}（含稅開立統一發票）
 ■ 預計停水：${downtime}（派遣 ${crew}，雙高揚程沉水泵高速抽排）
@@ -1882,24 +1912,17 @@
   1. 遵循自來水處 8 道 SOP 與勞動部局限空間強制通風/四用氣體偵測規範，附完工前後彩色對比驗收報告。
   2. 獨家免費附贈「5 大給水機電健檢（價值 NT$3,500）」：含地下室揚水馬達電流檢測、61F-GP 液位電極棒除垢、雷達開關測試、進水浮球閥止水檢查、頂樓恆壓加壓馬達排氣復水，徹底杜絕一般清潔行洗完水塔後「管路氣鎖不出水」或「馬達空轉燒毀（換新需 $8,000~$18,000）」之隱形帳單風險！
 ■ 專線 / LINE 預約：0916-093-125（李思遠 負責人）｜官網：https://5390857.com/`;
-
-        if (navigator.clipboard && window.isSecureContext) {
-            try { await navigator.clipboard.writeText(memo); } catch(e) {}
-        }
-        const msgBox = document.getElementById('input-message');
-        if (msgBox) msgBox.value = memo;
-        alert('✅ 已為您生成並複製【管委會例會 / 廠務採購簽呈提案單】！\n可直接貼上至管委會 LINE 群組呈報主委/財委，或已同步帶入下方預約表單。');
     };
 
-    window.copyVenturiEscoMemo = async function() {
+    window.buildVenturiEscoMemoText = function() {
         const rt = document.getElementById('roiRtRange')?.value || '250';
         const hours = document.getElementById('roiHoursRange')?.value || '16';
-        const savedNtd = document.getElementById('roiSavedNtd')?.textContent || 'NT$ 491,400';
-        const savedKwh = document.getElementById('roiSavedKwh')?.textContent || '117,000 度/年';
-        const savedCo2 = document.getElementById('roiSavedCo2')?.textContent || '57.8 公噸 CO₂e';
-        const recModel = document.getElementById('roiRecModel')?.textContent || 'HC-125S';
-        const memo = `【廠務部 ESCO 節能減碳暨水塔除苔防垢專案簽呈（14天零風險試裝提案）】
-■ 提案廠商：皓盛有限公司（統編：90221911｜具備 IG03010 能源技術服務業、CB01010 機械設備製造業、E601010 電器承裝業等 50 項法定資質）
+        const savedNtd = document.getElementById('roiSavedNtd')?.textContent?.trim() || 'NT$ 491,400';
+        const savedKwh = document.getElementById('roiSavedKwh')?.textContent?.trim() || '117,000 度/年';
+        const savedCo2 = document.getElementById('roiSavedCo2')?.textContent?.trim() || '57.8 公噸 CO₂e';
+        const recModel = document.getElementById('roiRecModel')?.textContent?.trim() || 'HC-125S';
+        return `【廠務部 ESCO 節能減碳暨水塔除苔防垢專案簽呈（14天零風險試裝提案）】
+■ 提案廠商：皓盛有限公司（統編：90221911｜具備 IG03010 能源技術服務業、CB01010 機械設備製造業、E601010 電器承裝業、E606010 用電設備檢驗維護業等 50 項法定資質）
 ■ 評估水塔規模：冷卻水塔約 ${rt} RT（每日運轉 ${hours} 小時）
 ■ 推薦配置構型：${recModel}（SUS304 管內中空無軸文丘里 ＋ 50W 免插電太陽能負壓自動啟停臭氧系統）
 ■ 預估年度效益：
@@ -1911,13 +1934,157 @@
   2. 保護主機銅管：微量臭氧於塔頂敞開散水盤除苔後，經散熱片強風曝氣 100% 揮發還原為氧，進入地下室主機銅管殘留量 < 0.005 ppm。
   3. 零風險驗證：開放單邊散水盤 14 天免費試裝（單管 15 分鐘無動火滑套快拆），同框對比青苔白化與主機趨近溫度下降成效，滿意再採購！
 ■ 專線 / LINE：0916-093-125（李思遠 總工程師）｜網址：https://5390857.com/venturi.html`;
+    };
 
-        if (navigator.clipboard && window.isSecureContext) {
-            try { await navigator.clipboard.writeText(memo); } catch(e) {}
+    window.updateWtRiskDiagnosis = function() {
+        const sel = document.getElementById('wtLastCleanMonths');
+        const box = document.getElementById('wtRiskAlertBox');
+        if (!sel || !box) return;
+        const m = parseInt(sel.value, 10) || 6;
+        if (m <= 6) {
+            box.innerHTML = '🟢 <strong>自來水處合規週期（滿 6 個月）：</strong>池底餘氯逐漸揮發並開始生成初期生物膜。現在預約定檢，可100%避免 61F 液位電極棒結垢失靈，省下未來抽水/加壓馬達空轉燒毀換新費（NT$ 8,000～18,000）。';
+            box.className = 'bg-blue-950/50 border border-blue-400/40 rounded-xl p-2.5 text-[11px] text-slate-200 leading-relaxed';
+        } else if (m <= 12) {
+            box.innerHTML = '🟡 <strong>逾期中度風險（超過 1 年未洗）：</strong>池底通常已累積 1～2 公分鐵鏽黃泥與搖蚊幼蟲（紅蟲），且 61F 電極棒與進水浮球閥極易附著水垢。建議立即排程清洗並執行免費 5 大機電排氣健檢！';
+            box.className = 'bg-amber-950/50 border border-amber-400/50 rounded-xl p-2.5 text-[11px] text-amber-100 leading-relaxed';
+        } else {
+            box.innerHTML = '🔴 <strong>高風險紅色預警（超過 2 年或不清楚）：</strong>水垢與生物黏泥已嚴重威脅飲水衛生，且隨時可能發生「電極棒絕緣失靈害地下室抽水馬達空轉燒毀」或「浮球關不住溢水暴增數萬元水費」！建議優先排入本週緊急清洗健檢。';
+            box.className = 'bg-rose-950/60 border border-rose-400/60 rounded-xl p-2.5 text-[11px] text-rose-100 leading-relaxed';
         }
+        const drawerTa = document.getElementById('wtProposalMemoTextarea');
+        const drawer = document.getElementById('wtProposalPreviewDrawer');
+        if (drawerTa && drawer && !drawer.classList.contains('hidden')) {
+            drawerTa.value = window.buildWtProposalMemoText();
+        }
+    };
+    window.updateProposalCard = window.updateWtRiskDiagnosis;
+
+    window.copyWtProposalMemo = async function(btnEl) {
+        const memo = window.buildWtProposalMemoText();
+        await window.universalCopyText(memo);
         const msgBox = document.getElementById('input-message');
         if (msgBox) msgBox.value = memo;
-        alert('✅ 已生成並複製【廠務 ESCO 節能減碳暨 14 天免費試裝簽呈提案單】！\n可直接貼入內部簽呈或 LINE 轉傳給廠務主管，並已同步帶入下方申請單。');
+
+        const drawer = document.getElementById('wtProposalPreviewDrawer');
+        const drawerTa = document.getElementById('wtProposalMemoTextarea');
+        if (drawerTa) drawerTa.value = memo;
+        if (drawer) {
+            drawer.classList.remove('hidden');
+            drawer.classList.remove('hs-jump-highlight');
+            void drawer.offsetWidth;
+            drawer.classList.add('hs-jump-highlight');
+        }
+
+        const targetBtn = btnEl || document.getElementById('btnGenWtMemo');
+        const spanEl = document.getElementById('btnGenWtMemoText');
+        if (spanEl) {
+            spanEl.textContent = '✓ 已複製簽呈！(見下方預覽)';
+            setTimeout(() => { spanEl.textContent = '一鍵生成「管委會簽呈」'; }, 3500);
+        } else if (targetBtn) {
+            const origHtml = targetBtn.innerHTML;
+            targetBtn.innerHTML = '<i class="fa-solid fa-check"></i><span>✓ 已生成並複製簽呈！</span>';
+            setTimeout(() => { targetBtn.innerHTML = origHtml; }, 3500);
+        }
+        window.showMemoToast('已生成並複製【管委會/廠務簽呈】！下方已展開預覽並同步填入預約單');
     };
+    window.copyProposalMemo = window.copyWtProposalMemo;
+
+    window.copyVenturiEscoMemo = async function(btnEl) {
+        const memo = window.buildVenturiEscoMemoText();
+        await window.universalCopyText(memo);
+        const msgBox = document.getElementById('input-message');
+        if (msgBox) msgBox.value = memo;
+
+        const drawer = document.getElementById('venturiProposalPreviewDrawer');
+        const drawerTa = document.getElementById('venturiProposalMemoTextarea');
+        if (drawerTa) drawerTa.value = memo;
+        if (drawer) {
+            drawer.classList.remove('hidden');
+            drawer.classList.remove('hs-jump-highlight');
+            void drawer.offsetWidth;
+            drawer.classList.add('hs-jump-highlight');
+        }
+
+        const targetBtn = btnEl || document.getElementById('btnGenVenturiMemo');
+        const spanEl = document.getElementById('btnGenVenturiMemoText');
+        if (spanEl) {
+            spanEl.textContent = '✓ 已複製 ESCO 簽呈！(見預覽)';
+            setTimeout(() => { spanEl.textContent = '生成「廠務 ESCO 簽呈」'; }, 3500);
+        } else if (targetBtn) {
+            const origHtml = targetBtn.innerHTML;
+            targetBtn.innerHTML = '<i class="fa-solid fa-check"></i><span>✓ 已生成並複製 ESCO 簽呈！</span>';
+            setTimeout(() => { targetBtn.innerHTML = origHtml; }, 3500);
+        }
+        window.showMemoToast('已生成並複製【廠務 ESCO 節能簽呈】！下方已展開預覽並同步填入申請單');
+    };
+
+    window.reCopyMemoText = async function(textareaId, btnEl) {
+        const ta = document.getElementById(textareaId);
+        if (!ta) return;
+        await window.universalCopyText(ta.value);
+        const msgBox = document.getElementById('input-message');
+        if (msgBox) msgBox.value = ta.value;
+        if (btnEl) {
+            const orig = btnEl.innerHTML;
+            btnEl.innerHTML = '<i class="fa-solid fa-check"></i><span>✓ 複製成功！</span>';
+            setTimeout(() => { btnEl.innerHTML = orig; }, 2200);
+        }
+        window.showMemoToast('已再次複製最新簽呈內容至剪貼簿！');
+    };
+
+    window.sendMemoToLine = async function(textareaId) {
+        const ta = document.getElementById(textareaId);
+        const text = ta ? ta.value : '';
+        if (text) {
+            await window.universalCopyText(text);
+            const msgBox = document.getElementById('input-message');
+            if (msgBox) msgBox.value = text;
+        }
+        window.showMemoToast('已複製簽呈！正在為您開啟 LINE，直接「貼上」即可傳送');
+        setTimeout(() => {
+            window.open('https://line.me/ti/p/~0916093125', '_blank', 'noopener,noreferrer');
+        }, 350);
+    };
+
+    window.syncMemoAndJumpToForm = function(textareaId) {
+        const ta = document.getElementById(textareaId);
+        const msgBox = document.getElementById('input-message');
+        if (ta && msgBox) {
+            msgBox.value = ta.value;
+        }
+        const contactSec = document.getElementById('contact');
+        if (contactSec) {
+            if (typeof window.hsJumpTo === 'function') window.hsJumpTo(contactSec);
+            else contactSec.scrollIntoView({ behavior: 'smooth' });
+        }
+        if (msgBox) {
+            setTimeout(() => {
+                msgBox.focus();
+                msgBox.classList.remove('hs-jump-highlight');
+                void msgBox.offsetWidth;
+                msgBox.classList.add('hs-jump-highlight');
+            }, 250);
+        }
+    };
+
+    // 當滑桿或按鈕調整水塔噸數/RT時，若簽呈預覽面板已展開，自動即時同步簽呈數字！
+    ['wtTonRange', 'wtCountRange'].forEach(id => {
+        document.getElementById(id)?.addEventListener('input', () => {
+            const drawer = document.getElementById('wtProposalPreviewDrawer');
+            const drawerTa = document.getElementById('wtProposalMemoTextarea');
+            if (drawer && drawerTa && !drawer.classList.contains('hidden')) {
+                setTimeout(() => { drawerTa.value = window.buildWtProposalMemoText(); }, 10);
+            }
+        });
+    });
+    ['roiRtRange', 'roiHoursRange'].forEach(id => {
+        document.getElementById(id)?.addEventListener('input', () => {
+            const drawer = document.getElementById('venturiProposalPreviewDrawer');
+            const drawerTa = document.getElementById('venturiProposalMemoTextarea');
+            if (drawer && drawerTa && !drawer.classList.contains('hidden')) {
+                setTimeout(() => { drawerTa.value = window.buildVenturiEscoMemoText(); }, 10);
+            }
+        });
+    });
 
 })();
