@@ -109,22 +109,50 @@
       ],
       "hasCredential": [
         {
-          "@type": "EducationalOccupationalCredential",
-          "credentialCategory": "J101010 建築物清潔服務業"
+                "@type": "EducationalOccupationalCredential",
+                "credentialCategory": "IG03010 能源技術服務業 (ESCO)"
         },
         {
-          "@type": "EducationalOccupationalCredential",
-          "credentialCategory": "E601010 電器承裝業"
+                "@type": "EducationalOccupationalCredential",
+                "credentialCategory": "J101010 建築物清潔服務業"
         },
         {
-          "@type": "EducationalOccupationalCredential",
-          "credentialCategory": "E599010 配管工程業"
+                "@type": "EducationalOccupationalCredential",
+                "credentialCategory": "J101030 廢棄物清除業 / J101040 廢棄物處理業 / J101090 廢棄物清理業"
         },
         {
-          "@type": "EducationalOccupationalCredential",
-          "credentialCategory": "E603050 自動控制設備工程業"
+                "@type": "EducationalOccupationalCredential",
+                "credentialCategory": "E601010 電器承裝業 / E601020 電器安裝業"
+        },
+        {
+                "@type": "EducationalOccupationalCredential",
+                "credentialCategory": "E606010 用電設備檢驗維護業"
+        },
+        {
+                "@type": "EducationalOccupationalCredential",
+                "credentialCategory": "E599010 配管工程業"
+        },
+        {
+                "@type": "EducationalOccupationalCredential",
+                "credentialCategory": "E603050 自動控制設備工程業 / EZ05010 儀器、儀表安裝工程業"
+        },
+        {
+                "@type": "EducationalOccupationalCredential",
+                "credentialCategory": "CB01010 機械設備製造業 / E604010 機械安裝業"
+        },
+        {
+                "@type": "EducationalOccupationalCredential",
+                "credentialCategory": "E603100 電焊工程業 / E603110 冷作工程業 / E603120 噴砂工程業"
+        },
+        {
+                "@type": "EducationalOccupationalCredential",
+                "credentialCategory": "IF01010 消防安全設備檢修業 / E603040 消防安全設備安裝工程業"
+        },
+        {
+                "@type": "EducationalOccupationalCredential",
+                "credentialCategory": "EZ09010 靜電防護及消除工程業 / E801070 廚具、衛浴設備安裝工程業"
         }
-      ],
+],
       "url": "https://5390857.com/",
       "logo": "https://5390857.com/assets/favicon.svg"
     },
@@ -557,6 +585,134 @@ button:active, a:active, summary:active, .quick-note-chip:active {
     animation: hsTargetPulse 0.75s ease-out;
 }
 
+    
+
+/* ==========================================================================
+   【方案 C】Awwwards 極簡奢華與未來科技感 (Obsidian Glassmorphism & Bento Grid)
+   深邃太空黑 (#070709) × 曜石黑 (#111216) × 電光藍至極光紫漸層 (#3B82F6 -> #8B5CF6)
+   ========================================================================== */
+:root {
+    --obsidian-space: #070709;
+    --obsidian-card: #111216;
+    --electric-blue: #3B82F6;
+    --aurora-purple: #8B5CF6;
+    --glass-border: rgba(255, 255, 255, 0.10);
+    --glass-border-hover: rgba(139, 92, 246, 0.48);
+}
+
+body {
+    background-color: #070709 !important;
+    color: #e2e8f0 !important;
+    background-image:
+        radial-gradient(circle at 14% 12%, rgba(59, 130, 246, 0.16) 0px, transparent 42%),
+        radial-gradient(circle at 86% 24%, rgba(139, 92, 246, 0.15) 0px, transparent 44%),
+        radial-gradient(circle at 50% 82%, rgba(14, 165, 233, 0.11) 0px, transparent 48%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px) !important;
+    background-size: 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px !important;
+    background-attachment: fixed;
+}
+
+header {
+    background-color: rgba(7, 7, 9, 0.85) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10) !important;
+}
+
+.hero-pattern {
+    background-color: #070709 !important;
+    background-image:
+        radial-gradient(at 18% 18%, rgba(59, 130, 246, 0.28) 0px, transparent 52%),
+        radial-gradient(at 82% 28%, rgba(139, 92, 246, 0.24) 0px, transparent 54%),
+        radial-gradient(at 50% 88%, rgba(20, 184, 166, 0.15) 0px, transparent 52%),
+        linear-gradient(180deg, rgba(7, 7, 9, 0.92) 0%, rgba(17, 18, 22, 0.96) 100%) !important;
+}
+
+/* 將全站白底/淺灰底區塊升級為深邃太空黑與微光網格 */
+section.bg-white, section.bg-slate-50, section.bg-slate-900, section.bg-slate-950, footer.bg-slate-950 {
+    background-color: rgba(7, 7, 9, 0.84) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    color: #f1f5f9 !important;
+}
+
+/* 便當盒毛玻璃卡片 (Bento Glassmorphism) + 1px 微光細邊框 + Hover Glow */
+.bento-glass,
+section .bg-white,
+section .bg-slate-50,
+section .bg-slate-900,
+section .bg-slate-800 {
+    background-color: rgba(17, 18, 22, 0.78) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.10) !important;
+    color: #e2e8f0 !important;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.75), inset 0 1px 0 0 rgba(255, 255, 255, 0.09) !important;
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease, box-shadow 0.22s ease !important;
+}
+
+.bento-glass:hover,
+section .bg-white:hover,
+section .bg-slate-50:hover {
+    border-color: rgba(139, 92, 246, 0.48) !important;
+    box-shadow: 0 24px 48px -12px rgba(59, 130, 246, 0.22), 0 0 28px -4px rgba(139, 92, 246, 0.20), inset 0 1px 0 0 rgba(255, 255, 255, 0.18) !important;
+}
+
+/* 深色奢華模式下修正深色文字為冷調銀白與高對比色 */
+section .text-slate-900, section .text-slate-800, section th.text-slate-900, section td.text-slate-900 {
+    color: #f8fafc !important;
+}
+section .text-slate-700, section .text-slate-600 {
+    color: #cbd5e1 !important;
+}
+section .text-slate-500 {
+    color: #94a3b8 !important;
+}
+section .text-sky-900, section .text-sky-800, section .text-sky-700 {
+    color: #7dd3fc !important;
+}
+section .text-teal-900, section .text-teal-800, section .text-teal-700 {
+    color: #5eead4 !important;
+}
+section .text-emerald-700, section .text-emerald-800 {
+    color: #6ee7b7 !important;
+}
+section .text-amber-800, section .text-amber-700 {
+    color: #fcd34d !important;
+}
+section .text-rose-600 {
+    color: #fb7185 !important;
+}
+section .bg-sky-50\/40, section .bg-sky-50\/70, section .bg-teal-50\/30, section .bg-teal-50\/50, section .bg-amber-50\/70 {
+    background-color: rgba(30, 41, 59, 0.55) !important;
+    border-color: rgba(255, 255, 255, 0.10) !important;
+}
+section .bg-sky-100, section .bg-teal-100, section .bg-amber-100, section .bg-slate-100, section .bg-slate-200 {
+    background-color: rgba(59, 130, 246, 0.18) !important;
+    color: #e0f2fe !important;
+    border: 1px solid rgba(59, 130, 246, 0.35) !important;
+}
+section tr.hover\:bg-sky-50\/60:hover, section tr.hover\:bg-sky-50\/80:hover, section tr.hover\:bg-teal-50\/60:hover, section tr.hover\:bg-slate-50:hover {
+    background-color: rgba(59, 130, 246, 0.12) !important;
+}
+
+/* Awwwards 金屬與電光藍-極光紫漸層大標題 */
+.awwwards-title {
+    background: linear-gradient(135deg, #FFFFFF 0%, #E2E8F0 45%, #93C5FD 78%, #C4B5FD 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.awwwards-glow-btn {
+    background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.45) !important;
+}
+.awwwards-glow-btn:hover {
+    box-shadow: 0 14px 32px -4px rgba(59, 130, 246, 0.65) !important;
+    filter: brightness(1.08);
+}
+
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased overflow-x-hidden">
@@ -715,7 +871,7 @@ button:active, a:active, summary:active, .quick-note-chip:active {
                             <i class="fa-solid fa-shield-heart"></i> 食品級次氯酸鈉消毒・局限空間工安合規
                         </span>
                     </div>
-                    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight mb-4">
+                    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight mb-4 awwwards-title">
                         自來水塔無死角精洗<br>
                         <span class="text-sky-400">抽水・加壓馬達同步健檢！</span>
                     </h1>
@@ -1002,12 +1158,38 @@ button:active, a:active, summary:active, .quick-note-chip:active {
                                 </div>
                             </div>
 
-                            <div class="pt-2">
+
+                            <div class="pt-3 border-t border-white/10 space-y-3">
+                                <div class="bg-[#070709]/90 border border-blue-400/30 rounded-xl p-3 space-y-2">
+                                    <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+                                        <span class="text-blue-300 font-bold"><i class="fa-solid fa-clock-rotate-left mr-1"></i>【AI 風險診斷】距離上次洗水塔多久？</span>
+                                        <select id="wtLastCleanMonths" onchange="window.updateWtRiskDiagnosis && window.updateWtRiskDiagnosis()" class="bg-slate-900 border border-white/20 rounded-lg px-2.5 py-1 text-xs text-amber-300 font-bold focus:outline-none">
+                                            <option value="6">約 6 個月（自來水處標準週期）</option>
+                                            <option value="12">超過 1 年（底泥與水垢中度累積）</option>
+                                            <option value="24">超過 2 年或不清楚（高風險紅色預警！）</option>
+                                        </select>
+                                    </div>
+                                    <div id="wtRiskAlertBox" class="bg-blue-950/50 border border-blue-400/40 rounded-xl p-2.5 text-[11px] text-slate-200 leading-relaxed">
+                                        🟢 <strong>自來水處合規週期（滿 6 個月）：</strong>池底餘氯逐漸揮發並開始生成初期生物膜。現在預約定檢，可100%避免 61F 液位電極棒結垢失靈，省下未來抽水/加壓馬達空轉燒毀換新費（NT$ 8,000～18,000）。
+                                    </div>
+                                </div>
+
                                 <button type="button" id="btnApplyWtToForm" class="w-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-black py-3.5 px-4 rounded-xl shadow-lg transition text-xs sm:text-sm flex items-center justify-center gap-2">
                                     <i class="fa-solid fa-paper-plane"></i>
                                     <span>以此水塔規模預約清洗 / 索取精準報價</span>
                                 </button>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button type="button" onclick="window.copyWtProposalMemo && window.copyWtProposalMemo()" class="awwwards-glow-btn font-black py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5">
+                                        <i class="fa-solid fa-file-signature"></i>
+                                        <span>一鍵生成「管委會簽呈」</span>
+                                    </button>
+                                    <button type="button" onclick="window.print()" class="bg-white/10 hover:bg-white/15 border border-white/20 text-slate-200 font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5">
+                                        <i class="fa-solid fa-print"></i>
+                                        <span>列印 A4 比價提案單</span>
+                                    </button>
+                                </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -1255,6 +1437,106 @@ button:active, a:active, summary:active, .quick-note-chip:active {
                         <p class="text-slate-200 leading-relaxed">
                             我們每次洗水塔，標準流程包含<strong>「加壓馬達鬆開排氣塞強制排氣、壓力桶與微動開關點檢、地下室揚水馬達電流測試、浮球閥止水校正」</strong>，現場若發現木川、大井、葛蘭富加壓馬達或浮球老化故障，還能直接幫您檢修換新，絕不讓您洗完水塔變沒水可用！
                         </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <!-- ★【方案 C × AI 野心思維：深度 Depth ＆ 廣度 Range】政府核准 50 項王牌工程資質 Bento Grid ＆ 紅隊比價破局面板 -->
+    <section id="ai-ambition-credentials" class="py-20 bg-[#070709] text-white border-t border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest bg-gradient-to-r from-blue-500/20 to-violet-500/20 border border-violet-400/40 text-indigo-200 mb-3">
+                    <i class="fa-solid fa-award text-amber-400"></i> Government Certified 50+ Engineering Credentials
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-black awwwards-title">超越一般清潔行！《公司章程》核准 50 項法定機電與能源工程資質</h2>
+                <p class="text-slate-300 mt-3 text-sm sm:text-base leading-relaxed">
+                    上市科技大廠採購與大型社區管委會審標最重視<strong>「法定營業項目合規性」</strong>。皓盛有限公司（統編：90221911）具備北市府與經濟部核准之 50 項完整工程資質，從給水機電、自動控制到 ESCO 能源技術服務一站合法承攬：
+                </p>
+            </div>
+
+            <!-- Awwwards Bento Grid 便當盒毛玻璃網格 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12 text-xs">
+                <div class="bento-glass rounded-2xl p-5 lg:col-span-2 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="bg-blue-500/20 text-blue-300 border border-blue-400/40 px-2.5 py-1 rounded-lg font-black">IG03010 能源技術服務業 (ESCO)</span>
+                            <span class="text-amber-400 font-bold"><i class="fa-solid fa-bolt mr-1"></i>節能績效保證法定資格</span>
+                        </div>
+                        <h3 class="text-lg font-black text-white mb-2">科技廠房與商辦大樓 ESCO 節能減碳、冷卻水塔與冰水主機效率優化</h3>
+                        <p class="text-slate-300 leading-relaxed">具備政府核准能源技術服務業（IG03010）與機械設備製造業（CB01010）雙王牌資質，可為企業廠務開立正式節能效益評估簽呈、執行冰水主機趨近溫度改善與無軸文丘里微氣泡除垢專案。</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-white/10 text-indigo-300 font-semibold">✓ 支援企業 ESG 範疇二（Scope 2）節電減碳專案驗收與報帳</div>
+                </div>
+
+                <div class="bento-glass rounded-2xl p-5 flex flex-col justify-between">
+                    <div>
+                        <span class="inline-block bg-amber-400/20 text-amber-300 border border-amber-400/40 px-2.5 py-1 rounded-lg font-black mb-3">E601010 / E606010</span>
+                        <h3 class="text-base font-black text-white mb-1.5">電器承裝 ＆ 用電設備檢驗維護業</h3>
+                        <p class="text-slate-300 leading-relaxed">合法拆檢地下室揚水馬達、頂樓恆壓加壓泵、水塔防水風車馬達、線圈絕緣量測與雙泵自動交替控制盤（含 E601020 電器安裝業）。</p>
+                    </div>
+                    <div class="mt-3 pt-2.5 border-t border-white/10 text-amber-300 font-bold">★ 口碑招牌：會轉的都會修！</div>
+                </div>
+
+                <div class="bento-glass rounded-2xl p-5 flex flex-col justify-between">
+                    <div>
+                        <span class="inline-block bg-sky-500/20 text-sky-300 border border-sky-400/40 px-2.5 py-1 rounded-lg font-black mb-3">E599010 / E603100</span>
+                        <h3 class="text-base font-black text-white mb-1.5">配管工程 ＆ 電焊 / 冷作 / 機械安裝</h3>
+                        <p class="text-slate-300 leading-relaxed">涵蓋配管（E599010）、機械安裝（E604010）、電焊（E603100）、冷作（E603110）與噴砂（E603120），專精大口徑白鐵浮球閥與 4"~10" 蝶閥換新。</p>
+                    </div>
+                    <div class="mt-3 pt-2.5 border-t border-white/10 text-sky-300 font-bold">✓ 假日停機快速改管換閥</div>
+                </div>
+
+                <div class="bento-glass rounded-2xl p-5 flex flex-col justify-between">
+                    <div>
+                        <span class="inline-block bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 px-2.5 py-1 rounded-lg font-black mb-3">J101010 / J101030 / J101040</span>
+                        <h3 class="text-base font-black text-white mb-1.5">建築物清潔 ＆ 廢棄物清除處理業</h3>
+                        <p class="text-slate-300 leading-relaxed">具備建築清潔與廢棄物清除/處理/清理（J101090）完整環保資質，自來水塔與冷卻水塔底泥清運、食品級消毒 100% 合法合規。</p>
+                    </div>
+                    <div class="mt-3 pt-2.5 border-t border-white/10 text-emerald-300 font-bold">✓ 遵循自來水處 8 道 SOP</div>
+                </div>
+
+                <div class="bento-glass rounded-2xl p-5 flex flex-col justify-between">
+                    <div>
+                        <span class="inline-block bg-purple-500/20 text-purple-300 border border-purple-400/40 px-2.5 py-1 rounded-lg font-black mb-3">E603050 / EZ05010</span>
+                        <h3 class="text-base font-black text-white mb-1.5">自動控制 ＆ 儀器儀表安裝工程業</h3>
+                        <p class="text-slate-300 leading-relaxed">專精 Omron 61F-GP 液位控制器、SUS304 電極棒、雷達開關、變頻器（VFD）、真空負壓開關與流量計精密調校。</p>
+                    </div>
+                    <div class="mt-3 pt-2.5 border-t border-white/10 text-purple-300 font-bold">✓ 根絕水塔溢水與乾抽燒毀</div>
+                </div>
+
+                <div class="bento-glass rounded-2xl p-5 lg:col-span-2 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="bg-rose-500/20 text-rose-300 border border-rose-400/40 px-2.5 py-1 rounded-lg font-black">IF01010 / E603040 / E801070</span>
+                            <span class="text-slate-400">統編 90221911 全證照備查</span>
+                        </div>
+                        <h3 class="text-base sm:text-lg font-black text-white mb-1.5">消防安全設備檢修安裝、靜電防護（EZ09010）與五金機械批發零售</h3>
+                        <p class="text-slate-300 leading-relaxed">同步涵蓋地下室消防蓄水池清洗、消防泵浦檢修、廚具衛浴安裝（E801070）、水器材料與機械電器批發零售（F106040 / F113010 / F113020），一張統編發票滿足管委會與上市廠務所有採購科目需求！</p>
+                    </div>
+                    <div class="mt-3 pt-2.5 border-t border-white/10 text-rose-300 font-bold">✓ 可配合科技廠房提供完整公司章程、設立登記表與工安證照影本審核</div>
+                </div>
+            </div>
+
+            <!-- 【廣度 Range】紅隊壓力測試：為什麼找便宜清潔行洗水塔，反而讓管委會多賠上萬元？ -->
+            <div class="bento-glass rounded-3xl p-6 sm:p-8 border-2 border-amber-400/50">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                    <div class="lg:col-span-8 space-y-3">
+                        <div class="inline-flex items-center gap-2 bg-rose-500/20 text-rose-300 border border-rose-400/40 px-3 py-1 rounded-full text-xs font-black">
+                            <i class="fa-solid fa-triangle-exclamation"></i> 採購紅隊壓力測試（Red Team Pre-Mortem）：低價清潔行的「隱形維修帳單」
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-black text-white">為什麼省了 $500 洗水塔費，卻常害社區多花 NT$ 8,000～18,000 換馬達？</h3>
+                        <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                            許多社區財委比價時只看「表面清洗費」，卻忽略水塔排空重放水時，大量空氣會灌入出水幹管與頂樓加壓馬達葉輪室形成<strong>「管路氣鎖（Air Lock）」</strong>。一般純清潔工班不懂機電、洗完拍拍屁股就走，導致住戶水龍頭沒水、加壓馬達整夜乾轉高溫燒毀（換新動輒 <strong>NT$ 6,500～15,000</strong>），或未清除 61F 液位電極棒水垢導致地下室揚水馬達失靈溢水（水費暴增＋請水電查修 <strong>NT$ 3,500+</strong>）！
+                        </p>
+                    </div>
+                    <div class="lg:col-span-4 bg-[#070709]/90 border border-white/15 rounded-2xl p-5 text-xs space-y-2.5">
+                        <div class="text-amber-400 font-black text-sm border-b border-white/10 pb-2">📊 管委會真實總成本對照：</div>
+                        <div class="flex justify-between text-rose-300"><span>❌ 一般清潔行洗後氣鎖燒泵：</span><span class="font-black">損失 $8,000~$18,000</span></div>
+                        <div class="flex justify-between text-rose-300"><span>❌ 61F 電極棒結垢溢水查修：</span><span class="font-black">損失 $3,000~$6,000</span></div>
+                        <div class="flex justify-between text-emerald-300 pt-1 border-t border-white/10"><span>✅ 皓盛洗水塔免費送 5 大機電排氣健檢：</span><span class="font-black">現省 $3,500・零氣鎖風險</span></div>
                     </div>
                 </div>
             </div>

@@ -503,6 +503,134 @@ button:active, a:active, summary:active, .quick-note-chip:active {
     animation: hsTargetPulse 0.75s ease-out;
 }
 
+    
+
+/* ==========================================================================
+   【方案 C】Awwwards 極簡奢華與未來科技感 (Obsidian Glassmorphism & Bento Grid)
+   深邃太空黑 (#070709) × 曜石黑 (#111216) × 電光藍至極光紫漸層 (#3B82F6 -> #8B5CF6)
+   ========================================================================== */
+:root {
+    --obsidian-space: #070709;
+    --obsidian-card: #111216;
+    --electric-blue: #3B82F6;
+    --aurora-purple: #8B5CF6;
+    --glass-border: rgba(255, 255, 255, 0.10);
+    --glass-border-hover: rgba(139, 92, 246, 0.48);
+}
+
+body {
+    background-color: #070709 !important;
+    color: #e2e8f0 !important;
+    background-image:
+        radial-gradient(circle at 14% 12%, rgba(59, 130, 246, 0.16) 0px, transparent 42%),
+        radial-gradient(circle at 86% 24%, rgba(139, 92, 246, 0.15) 0px, transparent 44%),
+        radial-gradient(circle at 50% 82%, rgba(14, 165, 233, 0.11) 0px, transparent 48%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px) !important;
+    background-size: 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px !important;
+    background-attachment: fixed;
+}
+
+header {
+    background-color: rgba(7, 7, 9, 0.85) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10) !important;
+}
+
+.hero-pattern {
+    background-color: #070709 !important;
+    background-image:
+        radial-gradient(at 18% 18%, rgba(59, 130, 246, 0.28) 0px, transparent 52%),
+        radial-gradient(at 82% 28%, rgba(139, 92, 246, 0.24) 0px, transparent 54%),
+        radial-gradient(at 50% 88%, rgba(20, 184, 166, 0.15) 0px, transparent 52%),
+        linear-gradient(180deg, rgba(7, 7, 9, 0.92) 0%, rgba(17, 18, 22, 0.96) 100%) !important;
+}
+
+/* 將全站白底/淺灰底區塊升級為深邃太空黑與微光網格 */
+section.bg-white, section.bg-slate-50, section.bg-slate-900, section.bg-slate-950, footer.bg-slate-950 {
+    background-color: rgba(7, 7, 9, 0.84) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    color: #f1f5f9 !important;
+}
+
+/* 便當盒毛玻璃卡片 (Bento Glassmorphism) + 1px 微光細邊框 + Hover Glow */
+.bento-glass,
+section .bg-white,
+section .bg-slate-50,
+section .bg-slate-900,
+section .bg-slate-800 {
+    background-color: rgba(17, 18, 22, 0.78) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.10) !important;
+    color: #e2e8f0 !important;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.75), inset 0 1px 0 0 rgba(255, 255, 255, 0.09) !important;
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease, box-shadow 0.22s ease !important;
+}
+
+.bento-glass:hover,
+section .bg-white:hover,
+section .bg-slate-50:hover {
+    border-color: rgba(139, 92, 246, 0.48) !important;
+    box-shadow: 0 24px 48px -12px rgba(59, 130, 246, 0.22), 0 0 28px -4px rgba(139, 92, 246, 0.20), inset 0 1px 0 0 rgba(255, 255, 255, 0.18) !important;
+}
+
+/* 深色奢華模式下修正深色文字為冷調銀白與高對比色 */
+section .text-slate-900, section .text-slate-800, section th.text-slate-900, section td.text-slate-900 {
+    color: #f8fafc !important;
+}
+section .text-slate-700, section .text-slate-600 {
+    color: #cbd5e1 !important;
+}
+section .text-slate-500 {
+    color: #94a3b8 !important;
+}
+section .text-sky-900, section .text-sky-800, section .text-sky-700 {
+    color: #7dd3fc !important;
+}
+section .text-teal-900, section .text-teal-800, section .text-teal-700 {
+    color: #5eead4 !important;
+}
+section .text-emerald-700, section .text-emerald-800 {
+    color: #6ee7b7 !important;
+}
+section .text-amber-800, section .text-amber-700 {
+    color: #fcd34d !important;
+}
+section .text-rose-600 {
+    color: #fb7185 !important;
+}
+section .bg-sky-50\/40, section .bg-sky-50\/70, section .bg-teal-50\/30, section .bg-teal-50\/50, section .bg-amber-50\/70 {
+    background-color: rgba(30, 41, 59, 0.55) !important;
+    border-color: rgba(255, 255, 255, 0.10) !important;
+}
+section .bg-sky-100, section .bg-teal-100, section .bg-amber-100, section .bg-slate-100, section .bg-slate-200 {
+    background-color: rgba(59, 130, 246, 0.18) !important;
+    color: #e0f2fe !important;
+    border: 1px solid rgba(59, 130, 246, 0.35) !important;
+}
+section tr.hover\:bg-sky-50\/60:hover, section tr.hover\:bg-sky-50\/80:hover, section tr.hover\:bg-teal-50\/60:hover, section tr.hover\:bg-slate-50:hover {
+    background-color: rgba(59, 130, 246, 0.12) !important;
+}
+
+/* Awwwards 金屬與電光藍-極光紫漸層大標題 */
+.awwwards-title {
+    background: linear-gradient(135deg, #FFFFFF 0%, #E2E8F0 45%, #93C5FD 78%, #C4B5FD 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.awwwards-glow-btn {
+    background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.45) !important;
+}
+.awwwards-glow-btn:hover {
+    box-shadow: 0 14px 32px -4px rgba(59, 130, 246, 0.65) !important;
+    filter: brightness(1.08);
+}
+
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased overflow-x-hidden">
@@ -655,7 +783,7 @@ button:active, a:active, summary:active, .quick-note-chip:active {
                             <i class="fa-solid fa-shield-check"></i> 開放單邊散水盤 14 天免費試裝
                         </span>
                     </div>
-                    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight mb-5">
+                    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight mb-5 awwwards-title">
                         無軸文丘里微氣泡<br>
                         <span class="text-amber-400">免插電太陽能除垢防苔系統</span>
                     </h1>
@@ -867,6 +995,43 @@ button:active, a:active, summary:active, .quick-note-chip:active {
                         <div class="text-rose-400 font-black text-sm mb-2">防呆鐵律 06｜快拆直管袖管＋精準插深</div>
                         <h4 class="font-bold text-white text-base mb-2">兩端 55mm 袖管 (Stub-End) 16 bar 咬合</h4>
                         <p class="text-slate-300 text-xs leading-relaxed">雙螺栓齒環快拆嚴禁夾在大小頭斜錐面！全系列增設 55~60mm 同口徑直管袖管供快拆水平鎖緊；45° 吸氣嘴明確規範前緣尖端與後緣短邊插深，確保不堵焊道且阻塞比 &le; 20%。</p>
+                    </div>
+                </div>
+            </div>
+
+            
+            <!-- ★【AI 野心思維・廣度 Range ＆ 深度 Depth】科技廠務紅隊質疑直球對決（水力壓損 <0.05 bar 與銅管安全物理驗證） -->
+            <div class="mt-12 bento-glass rounded-3xl p-6 sm:p-8 border-2 border-violet-500/40">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-5 mb-6">
+                    <div>
+                        <span class="inline-flex items-center gap-1.5 bg-gradient-to-r from-blue-500/20 to-violet-500/20 border border-violet-400/40 text-indigo-200 px-3 py-1 rounded-full text-xs font-black uppercase">
+                            <i class="fa-solid fa-microscope text-amber-400"></i> Red Team Engineering Verification • 廠務紅隊壓力測試直球對決
+                        </span>
+                        <h3 class="text-2xl sm:text-3xl font-black awwwards-title mt-2">資深廠務主任最犀利的 3 大技術質疑，我們用流體力學與外部裁判正面解答！</h3>
+                    </div>
+                    <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 px-3.5 py-1.5 rounded-xl text-xs font-black shrink-0">
+                        IG03010 能源技術服務業法定認證
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs sm:text-sm">
+                    <div class="bg-[#070709]/80 border border-white/10 rounded-2xl p-5 space-y-2.5">
+                        <div class="text-rose-400 font-black">❓ 廠務質疑 01：文丘里縮徑會不會造成冷卻水流量下降或水泵電流過載？</div>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            <strong>🔬 物理流體力學實證：</strong>皓盛採用「SUS304 管內中空無軸無葉片」設計，前段採 10°~14° 同心漸縮、後段採緩擴復壓，且針對良機雙分管（50%分流）與四分管（25%分流）精準匹配喉徑（54.5~94.6mm），單支壓損 <strong>ΔP &lt; 0.05 bar</strong>（不到循環泵總揚程 1.5%），水泵運轉電流（A）零增加！
+                        </p>
+                    </div>
+                    <div class="bg-[#070709]/80 border border-white/10 rounded-2xl p-5 space-y-2.5">
+                        <div class="text-amber-300 font-black">❓ 廠務質疑 02：臭氧打進水塔，會不會流進地下室腐蝕冰水主機銅管？</div>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            <strong>🔬 氣水路徑與半衰期驗證：</strong>微量臭氧（3~5 g/h）於「塔頂上水尾端」吸入，第一時間在敞開式散水盤氧化分解綠青苔；隨後水流滴落散熱片時，經水塔大風車強風曝氣（氣水比 &gt; 1000:1）<strong>100% 揮發還原為純氧（O₂）</strong>，流回地下室冰水主機銅管之殘留臭氧 <strong>&lt; 0.005 ppm</strong>，且微氣泡氣提使水質維持微鹼性（pH 8.3~8.8），具備雙重護管防蝕效果。
+                        </p>
+                    </div>
+                    <div class="bg-[#070709]/80 border border-white/10 rounded-2xl p-5 space-y-2.5">
+                        <div class="text-emerald-300 font-black">❓ 廠務質疑 03：不靠廠商自誇，現場用哪 3 個外部儀器指標（Outside Judge）驗收？</div>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            <strong>🔬 三點硬指標 14 天實測驗收：</strong>① <strong>同框視覺裁判</strong>：單邊試裝側散水盤綠苔 7~14 天白化剝落 vs. 未裝側綠苔對照；② <strong>熱力學裁判</strong>：冰水主機冷凝器趨近溫度（Approach Temp）維持或改善；③ <strong>電氣裁判</strong>：水塔停水後 0.5~1.5 秒內真空開關自動彈開歸零（0W 待機）。14 天試裝不滿意無條件免費拆回還原！
+                        </p>
                     </div>
                 </div>
             </div>
@@ -1093,15 +1258,27 @@ button:active, a:active, summary:active, .quick-note-chip:active {
                                 </div>
                             </div>
 
-                            <div>
+
+                            <div class="space-y-2.5">
                                 <button type="button" id="btnApplyRoiToForm" class="w-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-black py-3.5 px-4 rounded-xl shadow-lg transition text-xs sm:text-sm flex items-center justify-center gap-2">
                                     <i class="fa-solid fa-paper-plane"></i>
                                     <span>以此噸數結果申請 14 天免費試裝 / 索取報價</span>
                                 </button>
-                                <p class="text-[11px] text-slate-500 text-center mt-2">
-                                    * 依冰水主機平均 0.65 kW/RT、工業電價 NT$4.2/度及台電排碳係數估算；實際節費依現場水質與負載為準。
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button type="button" onclick="window.copyVenturiEscoMemo && window.copyVenturiEscoMemo()" class="awwwards-glow-btn font-black py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5">
+                                        <i class="fa-solid fa-file-contract"></i>
+                                        <span>生成「廠務 ESCO 簽呈」</span>
+                                    </button>
+                                    <button type="button" onclick="window.print()" class="bg-white/10 hover:bg-white/15 border border-white/20 text-slate-200 font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5">
+                                        <i class="fa-solid fa-print"></i>
+                                        <span>列印 A4 節能評估報告</span>
+                                    </button>
+                                </div>
+                                <p class="text-[11px] text-slate-400 text-center mt-1">
+                                    * 皓盛具備政府核准 <strong>IG03010 能源技術服務業 (ESCO)</strong> 與 <strong>CB01010 機械設備製造業</strong> 法定資質；依主機 0.65 kW/RT、電價 NT$4.2/度及台電排碳係數估算。
                                 </p>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -3908,6 +4085,82 @@ ${shareData.text}
             }
         });
     });
+
+
+    // =========================================================================
+    // 【AI 野心思維框架升级】高度(Altitude) 簽呈產生器 & 風險診斷引擎
+    // =========================================================================
+    window.updateWtRiskDiagnosis = function() {
+        const sel = document.getElementById('wtLastCleanMonths');
+        const box = document.getElementById('wtRiskAlertBox');
+        if (!sel || !box) return;
+        const m = parseInt(sel.value, 10) || 6;
+        if (m <= 6) {
+            box.innerHTML = '🟢 <strong>自來水處合規週期（滿 6 個月）：</strong>池底餘氯逐漸揮發並開始生成初期生物膜。現在預約定檢，可100%避免 61F 液位電極棒結垢失靈，省下未來抽水/加壓馬達空轉燒毀換新費（NT$ 8,000～18,000）。';
+            box.className = 'bg-blue-950/50 border border-blue-400/40 rounded-xl p-3 text-xs text-slate-200 leading-relaxed';
+        } else if (m <= 12) {
+            box.innerHTML = '🟡 <strong>逾期中度風險（超過 1 年未洗）：</strong>池底通常已累積 1～2 公分鐵鏽黃泥與搖蚊幼蟲（紅蟲），且 61F 電極棒與進水浮球閥極易附著水垢。建議立即排程清洗並執行免費 5 大機電排氣健檢！';
+            box.className = 'bg-amber-950/50 border border-amber-400/50 rounded-xl p-3 text-xs text-amber-100 leading-relaxed';
+        } else {
+            box.innerHTML = '🔴 <strong>高風險紅色預警（超過 2 年或不清楚）：</strong>水垢與生物黏泥已嚴重威脅飲水衛生，且隨時可能發生「電極棒絕緣失靈害地下室抽水馬達空轉燒毀」或「浮球關不住溢水暴增數萬元水費」！建議優先排入本週緊急清洗健檢。';
+            box.className = 'bg-rose-950/60 border border-rose-400/60 rounded-xl p-3 text-xs text-rose-100 leading-relaxed';
+        }
+    };
+
+    window.copyWtProposalMemo = async function() {
+        const tons = document.getElementById('wtTonRange')?.value || '50';
+        const count = document.getElementById('wtCountRange')?.value || '2';
+        const price = document.getElementById('wtResPrice')?.textContent || 'NT$ 7,500 ~ 12,000 起';
+        const downtime = document.getElementById('wtResDowntime')?.textContent || '約 2.5 ~ 3.5 小時';
+        const crew = document.getElementById('wtResCrew')?.textContent || '2 ~ 3 名持證技師';
+        const months = document.getElementById('wtLastCleanMonths')?.selectedOptions?.[0]?.text || '滿 6 個月定期保養';
+        const memo = `【社區管委會 / 廠務部・自來水塔與蓄水池清洗暨機電健檢簽呈提案單】
+■ 承攬廠商：皓盛有限公司（統一編號：90221911｜會轉的都會修！）
+■ 法定資質：具備建築物清潔(J101010)、電器承裝(E601010)、用電設備檢驗維護(E606010)、配管工程(E599010)、自控工程(E603050)、能源技術服務(IG03010)等50項政府核准資質
+■ 評估規模：總儲水量約 ${tons} 噸（共 ${count} 座水塔/水池）｜距上次清洗：${months}
+■ 預估費用：${price}（含稅開立統一發票）
+■ 預計停水：${downtime}（派遣 ${crew}，雙高揚程沉水泵高速抽排）
+■ 為什麼建議委託皓盛（風險防範與附加價值）：
+  1. 遵循自來水處 8 道 SOP 與勞動部局限空間強制通風/四用氣體偵測規範，附完工前後彩色對比驗收報告。
+  2. 獨家免費附贈「5 大給水機電健檢（價值 NT$3,500）」：含地下室揚水馬達電流檢測、61F-GP 液位電極棒除垢、雷達開關測試、進水浮球閥止水檢查、頂樓恆壓加壓馬達排氣復水，徹底杜絕一般清潔行洗完水塔後「管路氣鎖不出水」或「馬達空轉燒毀（換新需 $8,000~$18,000）」之隱形帳單風險！
+■ 專線 / LINE 預約：0916-093-125（李思遠 負責人）｜官網：https://5390857.com/`;
+
+        if (navigator.clipboard && window.isSecureContext) {
+            try { await navigator.clipboard.writeText(memo); } catch(e) {}
+        }
+        const msgBox = document.getElementById('input-message');
+        if (msgBox) msgBox.value = memo;
+        alert('✅ 已為您生成並複製【管委會例會 / 廠務採購簽呈提案單】！\n可直接貼上至管委會 LINE 群組呈報主委/財委，或已同步帶入下方預約表單。');
+    };
+
+    window.copyVenturiEscoMemo = async function() {
+        const rt = document.getElementById('roiRtRange')?.value || '250';
+        const hours = document.getElementById('roiHoursRange')?.value || '16';
+        const savedNtd = document.getElementById('roiSavedNtd')?.textContent || 'NT$ 491,400';
+        const savedKwh = document.getElementById('roiSavedKwh')?.textContent || '117,000 度/年';
+        const savedCo2 = document.getElementById('roiSavedCo2')?.textContent || '57.8 公噸 CO₂e';
+        const recModel = document.getElementById('roiRecModel')?.textContent || 'HC-125S';
+        const memo = `【廠務部 ESCO 節能減碳暨水塔除苔防垢專案簽呈（14天零風險試裝提案）】
+■ 提案廠商：皓盛有限公司（統編：90221911｜具備 IG03010 能源技術服務業、CB01010 機械設備製造業、E601010 電器承裝業等 50 項法定資質）
+■ 評估水塔規模：冷卻水塔約 ${rt} RT（每日運轉 ${hours} 小時）
+■ 推薦配置構型：${recModel}（SUS304 管內中空無軸文丘里 ＋ 50W 免插電太陽能負壓自動啟停臭氧系統）
+■ 預估年度效益：
+  • 預估年省冰水主機無謂耗電：${savedKwh}（約省電費 ${savedNtd} / 年）
+  • ESG 範疇二年度減碳效益：約 ${savedCo2}
+  • 免拉頂樓電源線：現省跨樓層防爆穿管拉線工程費 NT$ 8,000～15,000
+■ 廠務技術與安全把關（三大硬指標驗證）：
+  1. 零壓損設計：管內中空無軸無葉片，落葉鐵鏽直接通過不憋水，壓損 < 0.05 bar，循環水泵電流不增加。
+  2. 保護主機銅管：微量臭氧於塔頂敞開散水盤除苔後，經散熱片強風曝氣 100% 揮發還原為氧，進入地下室主機銅管殘留量 < 0.005 ppm。
+  3. 零風險驗證：開放單邊散水盤 14 天免費試裝（單管 15 分鐘無動火滑套快拆），同框對比青苔白化與主機趨近溫度下降成效，滿意再採購！
+■ 專線 / LINE：0916-093-125（李思遠 總工程師）｜網址：https://5390857.com/venturi.html`;
+
+        if (navigator.clipboard && window.isSecureContext) {
+            try { await navigator.clipboard.writeText(memo); } catch(e) {}
+        }
+        const msgBox = document.getElementById('input-message');
+        if (msgBox) msgBox.value = memo;
+        alert('✅ 已生成並複製【廠務 ESCO 節能減碳暨 14 天免費試裝簽呈提案單】！\n可直接貼入內部簽呈或 LINE 轉傳給廠務主管，並已同步帶入下方申請單。');
+    };
 
 })();
     </script>

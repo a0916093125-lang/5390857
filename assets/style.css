@@ -267,3 +267,130 @@ button:active, a:active, summary:active, .quick-note-chip:active {
 .hs-jump-highlight {
     animation: hsTargetPulse 0.75s ease-out;
 }
+
+
+/* ==========================================================================
+   【方案 C】Awwwards 極簡奢華與未來科技感 (Obsidian Glassmorphism & Bento Grid)
+   深邃太空黑 (#070709) × 曜石黑 (#111216) × 電光藍至極光紫漸層 (#3B82F6 -> #8B5CF6)
+   ========================================================================== */
+:root {
+    --obsidian-space: #070709;
+    --obsidian-card: #111216;
+    --electric-blue: #3B82F6;
+    --aurora-purple: #8B5CF6;
+    --glass-border: rgba(255, 255, 255, 0.10);
+    --glass-border-hover: rgba(139, 92, 246, 0.48);
+}
+
+body {
+    background-color: #070709 !important;
+    color: #e2e8f0 !important;
+    background-image:
+        radial-gradient(circle at 14% 12%, rgba(59, 130, 246, 0.16) 0px, transparent 42%),
+        radial-gradient(circle at 86% 24%, rgba(139, 92, 246, 0.15) 0px, transparent 44%),
+        radial-gradient(circle at 50% 82%, rgba(14, 165, 233, 0.11) 0px, transparent 48%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px) !important;
+    background-size: 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px !important;
+    background-attachment: fixed;
+}
+
+header {
+    background-color: rgba(7, 7, 9, 0.85) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10) !important;
+}
+
+.hero-pattern {
+    background-color: #070709 !important;
+    background-image:
+        radial-gradient(at 18% 18%, rgba(59, 130, 246, 0.28) 0px, transparent 52%),
+        radial-gradient(at 82% 28%, rgba(139, 92, 246, 0.24) 0px, transparent 54%),
+        radial-gradient(at 50% 88%, rgba(20, 184, 166, 0.15) 0px, transparent 52%),
+        linear-gradient(180deg, rgba(7, 7, 9, 0.92) 0%, rgba(17, 18, 22, 0.96) 100%) !important;
+}
+
+/* 將全站白底/淺灰底區塊升級為深邃太空黑與微光網格 */
+section.bg-white, section.bg-slate-50, section.bg-slate-900, section.bg-slate-950, footer.bg-slate-950 {
+    background-color: rgba(7, 7, 9, 0.84) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    color: #f1f5f9 !important;
+}
+
+/* 便當盒毛玻璃卡片 (Bento Glassmorphism) + 1px 微光細邊框 + Hover Glow */
+.bento-glass,
+section .bg-white,
+section .bg-slate-50,
+section .bg-slate-900,
+section .bg-slate-800 {
+    background-color: rgba(17, 18, 22, 0.78) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.10) !important;
+    color: #e2e8f0 !important;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.75), inset 0 1px 0 0 rgba(255, 255, 255, 0.09) !important;
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease, box-shadow 0.22s ease !important;
+}
+
+.bento-glass:hover,
+section .bg-white:hover,
+section .bg-slate-50:hover {
+    border-color: rgba(139, 92, 246, 0.48) !important;
+    box-shadow: 0 24px 48px -12px rgba(59, 130, 246, 0.22), 0 0 28px -4px rgba(139, 92, 246, 0.20), inset 0 1px 0 0 rgba(255, 255, 255, 0.18) !important;
+}
+
+/* 深色奢華模式下修正深色文字為冷調銀白與高對比色 */
+section .text-slate-900, section .text-slate-800, section th.text-slate-900, section td.text-slate-900 {
+    color: #f8fafc !important;
+}
+section .text-slate-700, section .text-slate-600 {
+    color: #cbd5e1 !important;
+}
+section .text-slate-500 {
+    color: #94a3b8 !important;
+}
+section .text-sky-900, section .text-sky-800, section .text-sky-700 {
+    color: #7dd3fc !important;
+}
+section .text-teal-900, section .text-teal-800, section .text-teal-700 {
+    color: #5eead4 !important;
+}
+section .text-emerald-700, section .text-emerald-800 {
+    color: #6ee7b7 !important;
+}
+section .text-amber-800, section .text-amber-700 {
+    color: #fcd34d !important;
+}
+section .text-rose-600 {
+    color: #fb7185 !important;
+}
+section .bg-sky-50\/40, section .bg-sky-50\/70, section .bg-teal-50\/30, section .bg-teal-50\/50, section .bg-amber-50\/70 {
+    background-color: rgba(30, 41, 59, 0.55) !important;
+    border-color: rgba(255, 255, 255, 0.10) !important;
+}
+section .bg-sky-100, section .bg-teal-100, section .bg-amber-100, section .bg-slate-100, section .bg-slate-200 {
+    background-color: rgba(59, 130, 246, 0.18) !important;
+    color: #e0f2fe !important;
+    border: 1px solid rgba(59, 130, 246, 0.35) !important;
+}
+section tr.hover\:bg-sky-50\/60:hover, section tr.hover\:bg-sky-50\/80:hover, section tr.hover\:bg-teal-50\/60:hover, section tr.hover\:bg-slate-50:hover {
+    background-color: rgba(59, 130, 246, 0.12) !important;
+}
+
+/* Awwwards 金屬與電光藍-極光紫漸層大標題 */
+.awwwards-title {
+    background: linear-gradient(135deg, #FFFFFF 0%, #E2E8F0 45%, #93C5FD 78%, #C4B5FD 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.awwwards-glow-btn {
+    background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.45) !important;
+}
+.awwwards-glow-btn:hover {
+    box-shadow: 0 14px 32px -4px rgba(59, 130, 246, 0.65) !important;
+    filter: brightness(1.08);
+}

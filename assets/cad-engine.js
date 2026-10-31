@@ -1844,4 +1844,80 @@
         });
     });
 
+
+    // =========================================================================
+    // 【AI 野心思維框架升级】高度(Altitude) 簽呈產生器 & 風險診斷引擎
+    // =========================================================================
+    window.updateWtRiskDiagnosis = function() {
+        const sel = document.getElementById('wtLastCleanMonths');
+        const box = document.getElementById('wtRiskAlertBox');
+        if (!sel || !box) return;
+        const m = parseInt(sel.value, 10) || 6;
+        if (m <= 6) {
+            box.innerHTML = '🟢 <strong>自來水處合規週期（滿 6 個月）：</strong>池底餘氯逐漸揮發並開始生成初期生物膜。現在預約定檢，可100%避免 61F 液位電極棒結垢失靈，省下未來抽水/加壓馬達空轉燒毀換新費（NT$ 8,000～18,000）。';
+            box.className = 'bg-blue-950/50 border border-blue-400/40 rounded-xl p-3 text-xs text-slate-200 leading-relaxed';
+        } else if (m <= 12) {
+            box.innerHTML = '🟡 <strong>逾期中度風險（超過 1 年未洗）：</strong>池底通常已累積 1～2 公分鐵鏽黃泥與搖蚊幼蟲（紅蟲），且 61F 電極棒與進水浮球閥極易附著水垢。建議立即排程清洗並執行免費 5 大機電排氣健檢！';
+            box.className = 'bg-amber-950/50 border border-amber-400/50 rounded-xl p-3 text-xs text-amber-100 leading-relaxed';
+        } else {
+            box.innerHTML = '🔴 <strong>高風險紅色預警（超過 2 年或不清楚）：</strong>水垢與生物黏泥已嚴重威脅飲水衛生，且隨時可能發生「電極棒絕緣失靈害地下室抽水馬達空轉燒毀」或「浮球關不住溢水暴增數萬元水費」！建議優先排入本週緊急清洗健檢。';
+            box.className = 'bg-rose-950/60 border border-rose-400/60 rounded-xl p-3 text-xs text-rose-100 leading-relaxed';
+        }
+    };
+
+    window.copyWtProposalMemo = async function() {
+        const tons = document.getElementById('wtTonRange')?.value || '50';
+        const count = document.getElementById('wtCountRange')?.value || '2';
+        const price = document.getElementById('wtResPrice')?.textContent || 'NT$ 7,500 ~ 12,000 起';
+        const downtime = document.getElementById('wtResDowntime')?.textContent || '約 2.5 ~ 3.5 小時';
+        const crew = document.getElementById('wtResCrew')?.textContent || '2 ~ 3 名持證技師';
+        const months = document.getElementById('wtLastCleanMonths')?.selectedOptions?.[0]?.text || '滿 6 個月定期保養';
+        const memo = `【社區管委會 / 廠務部・自來水塔與蓄水池清洗暨機電健檢簽呈提案單】
+■ 承攬廠商：皓盛有限公司（統一編號：90221911｜會轉的都會修！）
+■ 法定資質：具備建築物清潔(J101010)、電器承裝(E601010)、用電設備檢驗維護(E606010)、配管工程(E599010)、自控工程(E603050)、能源技術服務(IG03010)等50項政府核准資質
+■ 評估規模：總儲水量約 ${tons} 噸（共 ${count} 座水塔/水池）｜距上次清洗：${months}
+■ 預估費用：${price}（含稅開立統一發票）
+■ 預計停水：${downtime}（派遣 ${crew}，雙高揚程沉水泵高速抽排）
+■ 為什麼建議委託皓盛（風險防範與附加價值）：
+  1. 遵循自來水處 8 道 SOP 與勞動部局限空間強制通風/四用氣體偵測規範，附完工前後彩色對比驗收報告。
+  2. 獨家免費附贈「5 大給水機電健檢（價值 NT$3,500）」：含地下室揚水馬達電流檢測、61F-GP 液位電極棒除垢、雷達開關測試、進水浮球閥止水檢查、頂樓恆壓加壓馬達排氣復水，徹底杜絕一般清潔行洗完水塔後「管路氣鎖不出水」或「馬達空轉燒毀（換新需 $8,000~$18,000）」之隱形帳單風險！
+■ 專線 / LINE 預約：0916-093-125（李思遠 負責人）｜官網：https://5390857.com/`;
+
+        if (navigator.clipboard && window.isSecureContext) {
+            try { await navigator.clipboard.writeText(memo); } catch(e) {}
+        }
+        const msgBox = document.getElementById('input-message');
+        if (msgBox) msgBox.value = memo;
+        alert('✅ 已為您生成並複製【管委會例會 / 廠務採購簽呈提案單】！\n可直接貼上至管委會 LINE 群組呈報主委/財委，或已同步帶入下方預約表單。');
+    };
+
+    window.copyVenturiEscoMemo = async function() {
+        const rt = document.getElementById('roiRtRange')?.value || '250';
+        const hours = document.getElementById('roiHoursRange')?.value || '16';
+        const savedNtd = document.getElementById('roiSavedNtd')?.textContent || 'NT$ 491,400';
+        const savedKwh = document.getElementById('roiSavedKwh')?.textContent || '117,000 度/年';
+        const savedCo2 = document.getElementById('roiSavedCo2')?.textContent || '57.8 公噸 CO₂e';
+        const recModel = document.getElementById('roiRecModel')?.textContent || 'HC-125S';
+        const memo = `【廠務部 ESCO 節能減碳暨水塔除苔防垢專案簽呈（14天零風險試裝提案）】
+■ 提案廠商：皓盛有限公司（統編：90221911｜具備 IG03010 能源技術服務業、CB01010 機械設備製造業、E601010 電器承裝業等 50 項法定資質）
+■ 評估水塔規模：冷卻水塔約 ${rt} RT（每日運轉 ${hours} 小時）
+■ 推薦配置構型：${recModel}（SUS304 管內中空無軸文丘里 ＋ 50W 免插電太陽能負壓自動啟停臭氧系統）
+■ 預估年度效益：
+  • 預估年省冰水主機無謂耗電：${savedKwh}（約省電費 ${savedNtd} / 年）
+  • ESG 範疇二年度減碳效益：約 ${savedCo2}
+  • 免拉頂樓電源線：現省跨樓層防爆穿管拉線工程費 NT$ 8,000～15,000
+■ 廠務技術與安全把關（三大硬指標驗證）：
+  1. 零壓損設計：管內中空無軸無葉片，落葉鐵鏽直接通過不憋水，壓損 < 0.05 bar，循環水泵電流不增加。
+  2. 保護主機銅管：微量臭氧於塔頂敞開散水盤除苔後，經散熱片強風曝氣 100% 揮發還原為氧，進入地下室主機銅管殘留量 < 0.005 ppm。
+  3. 零風險驗證：開放單邊散水盤 14 天免費試裝（單管 15 分鐘無動火滑套快拆），同框對比青苔白化與主機趨近溫度下降成效，滿意再採購！
+■ 專線 / LINE：0916-093-125（李思遠 總工程師）｜網址：https://5390857.com/venturi.html`;
+
+        if (navigator.clipboard && window.isSecureContext) {
+            try { await navigator.clipboard.writeText(memo); } catch(e) {}
+        }
+        const msgBox = document.getElementById('input-message');
+        if (msgBox) msgBox.value = memo;
+        alert('✅ 已生成並複製【廠務 ESCO 節能減碳暨 14 天免費試裝簽呈提案單】！\n可直接貼入內部簽呈或 LINE 轉傳給廠務主管，並已同步帶入下方申請單。');
+    };
+
 })();
