@@ -129,7 +129,7 @@
   </script>
 </head>
 <body>
-  <!-- 頂部實名企業認證橫條（強固管委會與商場廠務採購信任） -->
+    <!-- 頂部實名企業認證橫條（強固管委會與商場廠務採購信任） -->
   <div class="trust-topbar">
     <div class="trust-topbar-inner">
       <div>
@@ -142,7 +142,7 @@
     </div>
   </div>
 
-  <!-- 全站統一導航列（黃金三頁雙引擎閉環） -->
+  <!-- 全站統一導航列（黃金四頁閉環，零孤島頁面） -->
   <header class="site-header">
     <div class="nav-container">
       <a href="index.html" class="brand-logo">
@@ -151,8 +151,9 @@
       </a>
       <nav class="nav-links" aria-label="主導航選單">
         <a href="index.html" class="nav-link">工程總覽首頁</a>
-        <a href="water-tank.html" class="nav-link active">洗自來水塔試算（主力）</a>
+        <a href="water-tank.html" class="nav-link active">洗自來水塔試算</a>
         <a href="cooling-tower.html" class="nav-link">洗空調冷卻水塔試算</a>
+        <a href="quote.html" class="nav-link">📄 正式報價單產生器</a>
         <a href="https://line.me/ti/p/~0916093125" target="_blank" rel="noopener noreferrer" class="nav-link nav-link-cta">加 LINE 傳照片估價</a>
       </nav>
     </div>
@@ -261,6 +262,9 @@
               ✓ 職安合規免責保障：本報價由皓盛有限公司（統編 90221911）正職投保勞健保、500萬雇主職災團保團隊施作，並依法配置「缺氧作業主管」與四用氣體偵測器，讓社區管委會 100% 免除連帶職安罰則與賠償風險！
             </p>
             <div class="btn-group">
+              <button type="button" id="btn-calc-to-quote" class="btn btn-amber" style="width:100%;">
+                📄 一鍵將上述規格帶入「正式報價單生成器」匯出 A4 PDF
+              </button>
               <button type="button" id="btn-calc-line" class="btn btn-line" style="width:100%;">
                 📋 一鍵複製上述試算規格 並開啟 LINE 詢價 (0916-093-125)
               </button>
@@ -304,7 +308,7 @@
     </section>
   </main>
 
-  <!-- 頁尾企業資訊與黃金三頁內部連結網 -->
+    <!-- 頁尾企業資訊與黃金四頁內部連結網 -->
   <footer class="site-footer">
     <div class="container" style="padding-top:0;padding-bottom:0;">
       <div class="grid-3">
@@ -315,11 +319,12 @@
           <p>第二主力（30%）：商用中央空調冷卻水塔清洗保養、良機與跨廠牌水塔散熱材更換、6吋~10吋齒輪式蝴蝶閥更新、東元 TECO F510 變頻器節能調校。</p>
         </div>
         <div>
-          <h3 style="color:#ffffff;margin-bottom:10px;">黃金三頁雙引擎快速導覽</h3>
+          <h3 style="color:#ffffff;margin-bottom:10px;">全站四大核心頁面快速導覽</h3>
           <ul style="list-style:none;line-height:2.1;">
             <li>▸ <a href="index.html">企業工程總覽與清洗前後實景對比首頁</a></li>
             <li>▸ <a href="water-tank.html">社區大樓洗自來水塔 A/B 雙軌費用試算器（主力）</a></li>
             <li>▸ <a href="cooling-tower.html">商用空調冷卻水塔 RT 噸數費用試算器（商空專頁）</a></li>
+            <li>▸ <a href="quote.html">水塔與冷卻水塔 A/B 雙軌正式工程報價單產生器（PDF列印）</a></li>
           </ul>
         </div>
         <div>
@@ -336,7 +341,8 @@
   <!-- 手機端底部安全區固定轉換列（大拇指熱區 >= 46px） -->
   <div class="mobile-sticky-bar">
     <a href="tel:0916093125" class="btn btn-primary">📞 直撥專線 0916-093-125</a>
-    <a href="https://line.me/ti/p/~0916093125" target="_blank" rel="noopener noreferrer" class="btn btn-line">💬 加 LINE 傳現場照估價</a>
+    <a href="quote.html" class="btn btn-amber">📄 產出正式 PDF 報價單</a>
+    <a href="https://line.me/ti/p/~0916093125" target="_blank" rel="noopener noreferrer" class="btn btn-line">💬 加 LINE 詢價</a>
   </div>
   <script src="assets/cad-engine.js"></script>
 </body>

@@ -1,6 +1,6 @@
 /* ==========================================================================
-   皓盛有限公司 (5390857.com) - RWD 雙端防破版與高轉換雙引擎工程樣式表 v6.0
-   定位：洗自來水塔為主（70%）・商用空調冷卻水塔保養為輔（30%）
+   皓盛有限公司 (5390857.com) - RWD 雙端防破版與 A4 正式報價單列印樣式表 v7.0
+   定位：洗自來水塔為主（70%）・商用空調冷卻水塔保養為輔（30%）＋ 線上報價系統
    統一編號：90221911 | 服務專線 & LINE：0916-093-125 | 信箱：ssuyuan@kimo.com
    ========================================================================== */
 
@@ -54,7 +54,7 @@ a:hover {
   color: #38bdf8;
 }
 
-/* 頂部企業實名認證信任橫條（化解純數字網域疑慮） */
+/* 頂部企業實名認證信任橫條 */
 .trust-topbar {
   background: linear-gradient(90deg, #0369a1 0%, #0f172a 55%, #065f46 100%);
   border-bottom: 1px solid rgba(56, 189, 248, 0.3);
@@ -86,7 +86,7 @@ a:hover {
   font-size: 0.8rem;
 }
 
-/* 統一導航列（黃金三頁雙引擎閉環） */
+/* 統一導航列（黃金四頁閉環） */
 .site-header {
   position: sticky;
   top: 0;
@@ -134,11 +134,11 @@ a:hover {
   align-items: center;
   justify-content: center;
   min-height: 44px;
-  padding: 8px 16px;
+  padding: 8px 14px;
   border-radius: 10px;
   color: #e2e8f0;
   font-weight: 600;
-  font-size: 0.94rem;
+  font-size: 0.92rem;
   background: rgba(30, 41, 59, 0.7);
   border: 1px solid transparent;
   transition: all 0.2s ease;
@@ -174,7 +174,7 @@ a:hover {
               linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(7, 13, 25, 1) 100%);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
-  padding: clamp(24px, 5vw, 48px);
+  padding: clamp(24px, 5vw, 44px);
   margin-bottom: 32px;
   box-shadow: var(--shadow-lg);
 }
@@ -192,7 +192,7 @@ a:hover {
 }
 
 h1.main-title {
-  font-size: clamp(1.65rem, 4vw, 2.65rem);
+  font-size: clamp(1.6rem, 3.8vw, 2.55rem);
   font-weight: 800;
   line-height: 1.25;
   margin-bottom: 12px;
@@ -206,12 +206,12 @@ h1.main-title {
   color: #cbd5e1;
   padding: 10px 16px;
   border-radius: 0 10px 10px 0;
-  font-size: clamp(0.95rem, 2vw, 1.1rem);
-  margin-bottom: 24px;
+  font-size: clamp(0.95rem, 2vw, 1.08rem);
+  margin-bottom: 20px;
 }
 
 .section-title {
-  font-size: clamp(1.35rem, 3vw, 1.85rem);
+  font-size: clamp(1.32rem, 3vw, 1.8rem);
   font-weight: 800;
   margin-bottom: 8px;
   color: #f8fafc;
@@ -238,6 +238,21 @@ h1.main-title {
   margin-bottom: 32px;
 }
 
+/* 報價單工作區雙欄佈局（左參數設定、右 A4 即時預覽） */
+.quote-workspace-grid {
+  display: grid;
+  grid-template-columns: 430px minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+  margin-bottom: 40px;
+}
+
+@media (max-width: 1080px) {
+  .quote-workspace-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 @media (max-width: 920px) {
   .grid-2, .grid-3 {
     grid-template-columns: minmax(0, 1fr);
@@ -248,7 +263,7 @@ h1.main-title {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: clamp(18px, 3vw, 28px);
+  padding: clamp(18px, 3vw, 26px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
@@ -262,7 +277,7 @@ h1.main-title {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 18px;
+  margin-top: 16px;
 }
 
 .btn {
@@ -271,9 +286,9 @@ h1.main-title {
   justify-content: center;
   gap: 8px;
   min-height: 48px;
-  padding: 12px 22px;
+  padding: 12px 20px;
   border-radius: 12px;
-  font-size: 1rem;
+  font-size: 0.98rem;
   font-weight: 700;
   cursor: pointer;
   border: none;
@@ -293,8 +308,14 @@ h1.main-title {
   box-shadow: 0 6px 18px rgba(6, 199, 85, 0.35);
 }
 
+.btn-amber {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #ffffff;
+  box-shadow: 0 6px 18px rgba(245, 158, 11, 0.35);
+}
+
 .btn-outline {
-  background: rgba(30, 41, 59, 0.8);
+  background: rgba(30, 41, 59, 0.85);
   color: #e2e8f0;
   border: 1px solid rgba(148, 163, 184, 0.35);
 }
@@ -303,7 +324,7 @@ h1.main-title {
   transform: translateY(-2px);
 }
 
-/* Before / After 清洗前後對比拉桿（手機防誤觸 touch-action: pan-y） */
+/* Before / After 清洗前後對比拉桿 */
 .ba-slider-wrap {
   position: relative;
   width: 100%;
@@ -389,33 +410,38 @@ h1.main-title {
   margin-left: auto;
 }
 
-/* 互動試算器表單控制項 */
+/* 互動試算器與報價表單控制項 */
 .calc-form-group {
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
 .calc-label {
   display: block;
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   color: #e2e8f0;
-  font-size: 0.96rem;
+  font-size: 0.94rem;
 }
 
 .calc-select, .calc-input {
   width: 100%;
-  min-height: 48px;
+  min-height: 46px;
   padding: 10px 14px;
   border-radius: 10px;
   background: #070d19;
   border: 1px solid rgba(148, 163, 184, 0.35);
   color: #ffffff;
-  font-size: 1rem;
+  font-size: 0.96rem;
+}
+
+.calc-select:focus, .calc-input:focus {
+  outline: 2px solid var(--primary);
+  border-color: transparent;
 }
 
 .calc-checkbox-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
   gap: 10px;
 }
 
@@ -424,11 +450,12 @@ h1.main-title {
   align-items: center;
   gap: 10px;
   min-height: 46px;
-  padding: 10px 14px;
+  padding: 10px 12px;
   background: rgba(30, 41, 59, 0.75);
   border: 1px solid var(--border-color);
   border-radius: 10px;
   cursor: pointer;
+  font-size: 0.9rem;
 }
 
 .calc-result-box {
@@ -440,7 +467,7 @@ h1.main-title {
 }
 
 .price-highlight {
-  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-size: clamp(1.55rem, 3.5vw, 2.15rem);
   font-weight: 900;
   color: #34d399;
 }
@@ -483,6 +510,218 @@ h1.main-title {
   z-index: 2;
   font-weight: 700;
   border-right: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+/* ==========================================================================
+   A4 正式工程報價單白紙預覽與 PDF 列印專用樣式 (.quote-paper-sheet)
+   ========================================================================== */
+.quote-paper-sheet {
+  background: #ffffff;
+  color: #0f172a;
+  border-radius: 12px;
+  padding: clamp(20px, 4vw, 40px);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+  border: 1px solid #cbd5e1;
+  position: relative;
+}
+
+.qp-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 3px solid #0284c7;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  gap: 16px;
+}
+
+.qp-company-title {
+  font-size: clamp(1.35rem, 2.8vw, 1.8rem);
+  font-weight: 900;
+  color: #0f172a;
+  letter-spacing: 0.5px;
+}
+
+.qp-company-sub {
+  font-size: 0.88rem;
+  color: #334155;
+  margin-top: 4px;
+  line-height: 1.5;
+}
+
+.qp-doc-badge {
+  text-align: right;
+}
+
+.qp-doc-type {
+  display: inline-block;
+  background: #0284c7;
+  color: #ffffff;
+  font-weight: 900;
+  font-size: 1.15rem;
+  padding: 6px 16px;
+  border-radius: 6px;
+  letter-spacing: 1px;
+}
+
+.qp-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 24px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  font-size: 0.92rem;
+}
+
+@media (max-width: 640px) {
+  .qp-meta-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.qp-meta-row {
+  display: flex;
+  gap: 8px;
+}
+
+.qp-meta-label {
+  font-weight: 800;
+  color: #334155;
+  white-space: nowrap;
+}
+
+.qp-meta-val {
+  font-weight: 700;
+  color: #0f172a;
+  word-break: break-word;
+}
+
+.qp-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 18px;
+}
+
+.qp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  color: #0f172a;
+}
+
+.qp-table th, .qp-table td {
+  border: 1px solid #94a3b8;
+  padding: 10px 12px;
+  vertical-align: top;
+}
+
+.qp-table th {
+  background: #e0f2fe;
+  color: #0369a1;
+  font-weight: 900;
+  text-align: left;
+}
+
+.qp-table td.num-col, .qp-table th.num-col {
+  text-align: right;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.qp-summary-box {
+  background: #f0fdf4;
+  border: 2px solid #16a34a;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+
+.qp-total-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 680px) {
+  .qp-total-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.qp-plan-card {
+  background: #ffffff;
+  border: 1px solid #86efac;
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+
+.qp-plan-title {
+  font-weight: 900;
+  font-size: 0.96rem;
+  color: #0f172a;
+  margin-bottom: 6px;
+}
+
+.qp-plan-price {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #15803d;
+}
+
+.qp-compliance-box {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-left: 4px solid #0284c7;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 0.85rem;
+  color: #1e293b;
+  line-height: 1.6;
+}
+
+.qp-sign-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 20px;
+  border-top: 2px dashed #94a3b8;
+  padding-top: 18px;
+  page-break-inside: avoid;
+}
+
+@media (max-width: 680px) {
+  .qp-sign-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.qp-stamp-box {
+  position: relative;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 14px;
+  min-height: 125px;
+  background: #ffffff;
+}
+
+/* 擬真紅色公司報價專用印鑑章 */
+.qp-red-stamp {
+  display: inline-block;
+  border: 3px double #dc2626;
+  color: #dc2626;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 900;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  text-align: center;
+  transform: rotate(-3deg);
+  background: rgba(254, 226, 226, 0.25);
+  margin-top: 6px;
 }
 
 /* AEO 常見問題直答區塊 */
@@ -562,4 +801,66 @@ h1.main-title {
 
 .toast-msg.show {
   transform: translateX(-50%) translateY(0);
+}
+
+/* ==========================================================================
+   @media print 專屬 A4 正式 PDF 列印模式（自動隱藏深色 UI 與控制項）
+   ========================================================================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt;
+    line-height: 1.45;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .trust-topbar,
+  .site-header,
+  .hero-section,
+  .quote-control-panel,
+  .no-print,
+  .faq-section,
+  .site-footer,
+  .mobile-sticky-bar,
+  .toast-msg {
+    display: none !important;
+  }
+
+  .container {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .quote-workspace-grid {
+    display: block !important;
+    margin: 0 !important;
+  }
+
+  .quote-paper-sheet {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  .qp-table th, .qp-table td {
+    padding: 7px 9px !important;
+    font-size: 9.5pt !important;
+  }
+
+  .qp-summary-box,
+  .qp-compliance-box,
+  .qp-sign-grid {
+    page-break-inside: avoid !important;
+  }
 }
