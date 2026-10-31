@@ -1,488 +1,622 @@
 /* ==========================================================================
-   皓盛有限公司｜空調冷卻水塔清洗保養 × 無軸文丘里太陽能除垢系統
-   模組化主樣式表 (assets/style.css) - 方案 C 極速載入與高轉換率版
+   皓盛有限公司 (5390857.com) - RWD 雙端防破版與高轉換工程視覺樣式表 v2.2
+   統一編號：90221911 | 服務專線 & LINE：0916-093-125 | 信箱：ssuyuan@kimo.com
    ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
 
 :root {
-    --hs-teal: #0d9488;
-    --hs-teal-light: #2dd4bf;
-    --hs-amber: #f59e0b;
-    --hs-dark: #0f172a;
-    --hs-darker: #070b14;
-}
-
-body {
-    font-family: 'Inter', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", sans-serif;
-    scroll-behavior: smooth;
-}
-
-.hero-pattern {
-    background-color: #0f172a;
-    background-image:
-        radial-gradient(at 18% 25%, rgba(13, 148, 136, 0.32) 0px, transparent 55%),
-        radial-gradient(at 82% 75%, rgba(2, 132, 199, 0.28) 0px, transparent 55%),
-        linear-gradient(135deg, rgba(15, 23, 42, 0.96) 0%, rgba(15, 118, 110, 0.88) 100%),
-        repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 2px, transparent 2px, transparent 12px);
-}
-
-/* 3D CAD 畫布容器與手機防卡手設計 */
-.cad-canvas-wrap {
-    position: relative;
-    width: 100%;
-    height: 360px;
-    background: radial-gradient(circle at center, #162238 0%, #070b14 100%);
-    cursor: grab;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: pan-y; /* 手機預設允許單指垂直滑動頁面不卡手 */
-}
-
-.cad-canvas-wrap.touch-unlocked {
-    touch-action: none; /* 啟用單指 3D 旋轉時鎖定畫布觸控 */
-}
-
-@media (min-width: 640px) {
-    .cad-canvas-wrap {
-        height: 480px;
-        touch-action: none;
-    }
-}
-
-.cad-canvas-wrap:active {
-    cursor: grabbing;
-}
-
-.cad-canvas {
-    width: 100%;
-    height: 100%;
-    display: block;
-}
-
-/* 手機橫向滑動膠囊列隱藏捲軸 */
-.no-scrollbar::-webkit-scrollbar {
-    display: none;
-}
-.no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-
-/* Before / After 散水盤除苔與精洗對比拉桿 */
-.ba-slider-wrap {
-    position: relative;
-    width: 100%;
-    height: 320px;
-    border-radius: 1rem;
-    overflow: hidden;
-    user-select: none;
-    -webkit-user-select: none;
-    background: #090e1a;
-    border: 1px solid #334155;
-    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
-}
-@media (min-width: 640px) {
-    .ba-slider-wrap {
-        height: 400px;
-    }
-}
-.ba-layer {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-}
-.ba-before-clip {
-    position: absolute;
-    inset: 0;
-    width: 50%;
-    height: 100%;
-    overflow: hidden;
-    z-index: 10;
-}
-.ba-handle {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    width: 3px;
-    background: #fbbf24;
-    z-index: 20;
-    transform: translateX(-50%);
-    pointer-events: none;
-    box-shadow: 0 0 12px rgba(251, 191, 36, 0.8);
-}
-.ba-handle-knob {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 44px;
-    height: 44px;
-    border-radius: 9999px;
-    background: #fbbf24;
-    color: #0f172a;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 900;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
-    border: 2px solid #ffffff;
-}
-.ba-range-input {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: ew-resize;
-    z-index: 30;
-    margin: 0;
-}
-
-/* ROI 試算器滑桿美化 */
-input[type="range"].roi-range {
-    -webkit-appearance: none;
-    appearance: none;
-    height: 8px;
-    border-radius: 999px;
-    background: #334155;
-    outline: none;
-}
-input[type="range"].roi-range::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: #14b8a6;
-    border: 2px solid #ffffff;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(20, 184, 166, 0.5);
-    transition: transform 0.15s ease;
-}
-input[type="range"].roi-range::-webkit-slider-thumb:hover {
-    transform: scale(1.15);
-    background: #2dd4bf;
-}
-
-/* 手機底部常駐列安全距離 */
-@media (max-width: 767px) {
-    body {
-        padding-bottom: 76px;
-    }
-}
-
-/* 列印最佳化 */
-@media print {
-    header, footer, .no-print {
-        display: none !important;
-    }
-    body {
-        background: #ffffff !important;
-        color: #000000 !important;
-    }
-}
-
-
-/* ==========================================================================
-   A + B 手機極速瀏覽與單手拇指操作強化樣式 (Mobile UX Optimization)
-   ========================================================================== */
-/* 隱藏原生 details 三角形箭頭並美化手風琴 */
-details.hs-accordion > summary {
-    list-style: none;
-    cursor: pointer;
-    user-select: none;
-    -webkit-user-select: none;
-}
-details.hs-accordion > summary::-webkit-details-marker {
-    display: none;
-}
-details.hs-accordion[open] > summary .acc-chevron {
-    transform: rotate(180deg);
-}
-details.hs-accordion[open] > summary .acc-hint-closed {
-    display: none;
-}
-details.hs-accordion:not([open]) > summary .acc-hint-open {
-    display: none;
-}
-
-/* 手機橫向滑動撲克牌 (Snap Carousel) 視覺回饋 */
-.mobile-snap-row {
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-}
-.mobile-snap-card {
-    scroll-snap-align: center;
-}
-
-/* 手機端縮減過長區塊垂直留白，減少無謂滑動距離 */
-@media (max-width: 639px) {
-    .py-20 {
-        padding-top: 2.75rem !important;
-        padding-bottom: 2.75rem !important;
-    }
-    .py-16 {
-        padding-top: 2.25rem !important;
-        padding-bottom: 2.25rem !important;
-    }
-    .mb-16 {
-        margin-bottom: 2rem !important;
-    }
-    .mb-14 {
-        margin-bottom: 1.75rem !important;
-    }
-}
-
-
-/* ==========================================================================
-   方案 C + B 全站極速秒按引擎：消除觸控延遲、瞬時按壓回饋、精準錨點定位與目標閃爍提示
-   ========================================================================== */
-html {
-    scroll-padding-top: 108px;
-}
-body {
-    scroll-behavior: auto !important; /* 移除慢速長滾動卡頓，改由智慧瞬時定位接管 */
-}
-section[id], div[id="tank-calculator"], div[id="roi-calculator"] {
-    scroll-margin-top: 108px;
-}
-button, a, summary, input[type="button"], input[type="submit"], .plan-select-btn, .wt-type-btn, .wt-ton-preset, .roi-rt-preset, .roi-scale-btn, .quick-note-chip, .faq-btn, .v-scheme-btn, .v-model-btn, .v-cam-btn, .b-cam-btn, .tab-btn, .scheme-btn, .toggle-btn, .preset-btn, .sim-btn {
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-    user-select: none;
-    -webkit-user-select: none;
-    cursor: pointer;
-    transition: transform 0.08s cubic-bezier(0.2, 0, 0, 1), background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease !important;
-}
-button:active, a:active, summary:active, .quick-note-chip:active {
-    transform: scale(0.96) !important;
-}
-@keyframes hsTargetPulse {
-    0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.75); }
-    50% { box-shadow: 0 0 0 10px rgba(56, 189, 248, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
-}
-.hs-jump-highlight {
-    animation: hsTargetPulse 0.75s ease-out;
-}
-
-
-/* ==========================================================================
-   【方案 C】Awwwards 極簡奢華與未來科技感 (Obsidian Glassmorphism & Bento Grid)
-   深邃太空黑 (#070709) × 曜石黑 (#111216) × 電光藍至極光紫漸層 (#3B82F6 -> #8B5CF6)
-   ========================================================================== */
-:root {
-    --obsidian-space: #070709;
-    --obsidian-card: #111216;
-    --electric-blue: #3B82F6;
-    --aurora-purple: #8B5CF6;
-    --glass-border: rgba(255, 255, 255, 0.10);
-    --glass-border-hover: rgba(139, 92, 246, 0.48);
-}
-
-body {
-    background-color: #070709 !important;
-    color: #e2e8f0 !important;
-    background-image:
-        radial-gradient(circle at 14% 12%, rgba(59, 130, 246, 0.16) 0px, transparent 42%),
-        radial-gradient(circle at 86% 24%, rgba(139, 92, 246, 0.15) 0px, transparent 44%),
-        radial-gradient(circle at 50% 82%, rgba(14, 165, 233, 0.11) 0px, transparent 48%),
-        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px) !important;
-    background-size: 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px !important;
-    background-attachment: fixed;
-}
-
-header {
-    background-color: rgba(7, 7, 9, 0.85) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.10) !important;
-}
-
-.hero-pattern {
-    background-color: #070709 !important;
-    background-image:
-        radial-gradient(at 18% 18%, rgba(59, 130, 246, 0.28) 0px, transparent 52%),
-        radial-gradient(at 82% 28%, rgba(139, 92, 246, 0.24) 0px, transparent 54%),
-        radial-gradient(at 50% 88%, rgba(20, 184, 166, 0.15) 0px, transparent 52%),
-        linear-gradient(180deg, rgba(7, 7, 9, 0.92) 0%, rgba(17, 18, 22, 0.96) 100%) !important;
-}
-
-/* 將全站白底/淺灰底區塊升級為深邃太空黑與微光網格 */
-section.bg-white, section.bg-slate-50, section.bg-slate-900, section.bg-slate-950, footer.bg-slate-950 {
-    background-color: rgba(7, 7, 9, 0.84) !important;
-    border-color: rgba(255, 255, 255, 0.08) !important;
-    color: #f1f5f9 !important;
-}
-
-/* 便當盒毛玻璃卡片 (Bento Glassmorphism) + 1px 微光細邊框 + Hover Glow */
-.bento-glass,
-section .bg-white,
-section .bg-slate-50,
-section .bg-slate-900,
-section .bg-slate-800 {
-    background-color: rgba(17, 18, 22, 0.78) !important;
-    backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.10) !important;
-    color: #e2e8f0 !important;
-    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.75), inset 0 1px 0 0 rgba(255, 255, 255, 0.09) !important;
-    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease, box-shadow 0.22s ease !important;
-}
-
-.bento-glass:hover,
-section .bg-white:hover,
-section .bg-slate-50:hover {
-    border-color: rgba(139, 92, 246, 0.48) !important;
-    box-shadow: 0 24px 48px -12px rgba(59, 130, 246, 0.22), 0 0 28px -4px rgba(139, 92, 246, 0.20), inset 0 1px 0 0 rgba(255, 255, 255, 0.18) !important;
-}
-
-/* 深色奢華模式下修正深色文字為冷調銀白與高對比色 */
-section .text-slate-900, section .text-slate-800, section th.text-slate-900, section td.text-slate-900 {
-    color: #f8fafc !important;
-}
-section .text-slate-700, section .text-slate-600 {
-    color: #cbd5e1 !important;
-}
-section .text-slate-500 {
-    color: #94a3b8 !important;
-}
-section .text-sky-900, section .text-sky-800, section .text-sky-700 {
-    color: #7dd3fc !important;
-}
-section .text-teal-900, section .text-teal-800, section .text-teal-700 {
-    color: #5eead4 !important;
-}
-section .text-emerald-700, section .text-emerald-800 {
-    color: #6ee7b7 !important;
-}
-section .text-amber-800, section .text-amber-700 {
-    color: #fcd34d !important;
-}
-section .text-rose-600 {
-    color: #fb7185 !important;
-}
-section .bg-sky-50\/40, section .bg-sky-50\/70, section .bg-teal-50\/30, section .bg-teal-50\/50, section .bg-amber-50\/70 {
-    background-color: rgba(30, 41, 59, 0.55) !important;
-    border-color: rgba(255, 255, 255, 0.10) !important;
-}
-section .bg-sky-100, section .bg-teal-100, section .bg-amber-100, section .bg-slate-100, section .bg-slate-200 {
-    background-color: rgba(59, 130, 246, 0.18) !important;
-    color: #e0f2fe !important;
-    border: 1px solid rgba(59, 130, 246, 0.35) !important;
-}
-section tr.hover\:bg-sky-50\/60:hover, section tr.hover\:bg-sky-50\/80:hover, section tr.hover\:bg-teal-50\/60:hover, section tr.hover\:bg-slate-50:hover {
-    background-color: rgba(59, 130, 246, 0.12) !important;
-}
-
-/* Awwwards 金屬與電光藍-極光紫漸層大標題 */
-.awwwards-title {
-    background: linear-gradient(135deg, #FFFFFF 0%, #E2E8F0 45%, #93C5FD 78%, #C4B5FD 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-.awwwards-glow-btn {
-    background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%) !important;
-    color: #ffffff !important;
-    border: 1px solid rgba(255, 255, 255, 0.22) !important;
-    box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.45) !important;
-}
-.awwwards-glow-btn:hover {
-    box-shadow: 0 14px 32px -4px rgba(59, 130, 246, 0.65) !important;
-    filter: brightness(1.08);
-}
-
-
-/* ==========================================================================
-   【RWD UI/UX Architect 旗艦雙端大一統升級】
-   1. 零橫向溢出鐵律 (Zero Horizontal Overflow & Flex/Grid min-width: 0)
-   2. 行動端 44px 大拇指熱區、32px 試算滑桿圓鈕與底部 Safe-Area 手勢區留白
-   3. 高密度數據表格「固定首欄 (Sticky First-Column) ＋ 右側局部滑動」
-   4. 電腦版 (1024px+) 試算器「左側控制面板 ＋ 右側報價看板 Sticky 吸附對齊」
-   ========================================================================== */
-html, body {
-    max-width: 100vw !important;
-    overflow-x: hidden !important;
-    box-sizing: border-box !important;
-    -webkit-text-size-adjust: 100%;
+  --bg-dark: #070d19;
+  --bg-card: #0f172a;
+  --bg-elevated: #1e293b;
+  --primary: #0ea5e9;
+  --primary-hover: #0284c7;
+  --accent-green: #10b981;
+  --accent-amber: #f59e0b;
+  --accent-danger: #ef4444;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-color: rgba(148, 163, 184, 0.18);
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --shadow-lg: 0 12px 32px -4px rgba(0, 0, 0, 0.5);
 }
 
 *, *::before, *::after {
-    box-sizing: inherit;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* 防止 Flex 與 Grid 子元素在窄螢幕 (360px~430px) 撐破父容器 */
-.grid > *, .flex > *, section > div {
-    min-width: 0;
+html, body {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", "PingFang TC", sans-serif;
+  line-height: 1.65;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
-/* 放大 ROI 與水塔噸數試算器滑桿圓鈕：手機單手拖拉更精準不滑手 */
-input[type="range"].roi-range {
-    height: 10px !important;
-    border-radius: 999px;
-    background: #334155;
-    cursor: pointer;
-}
-input[type="range"].roi-range::-webkit-slider-thumb {
-    width: 28px !important;
-    height: 28px !important;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #38bdf8 0%, #14b8a6 100%) !important;
-    border: 3px solid #ffffff !important;
-    box-shadow: 0 3px 12px rgba(20, 184, 166, 0.65) !important;
-}
-input[type="range"].roi-range::-moz-range-thumb {
-    width: 28px !important;
-    height: 28px !important;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #38bdf8 0%, #14b8a6 100%) !important;
-    border: 3px solid #ffffff !important;
-    box-shadow: 0 3px 12px rgba(20, 184, 166, 0.65) !important;
+/* 防止 Flex / Grid 子元素撐破手機版面 */
+div, section, article, main, header, footer, nav, aside {
+  min-width: 0;
 }
 
-@media (max-width: 767px) {
-    /* 手機底部常駐列安全距離 (適配 iPhone 橫條與三星手勢列) */
-    body {
-        padding-bottom: calc(82px + env(safe-area-inset-bottom, 0px)) !important;
-    }
-    input[type="range"].roi-range::-webkit-slider-thumb {
-        width: 32px !important;
-        height: 32px !important;
-    }
-    /* 確保手機端快速選擇按鈕、方案切換按鈕具備舒適點擊熱區 */
-    .wt-ton-preset, .roi-rt-preset, .wt-type-btn, .roi-scale-btn, .v-scheme-btn, .v-model-btn, .quick-note-chip {
-        min-height: 42px;
-        display: inline-flex;
-        align-items: center;
-    }
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.2s ease, opacity 0.2s ease;
 }
 
-/* 局部獨立橫向捲動表格：手機窄螢幕固定首欄 + 流暢慣性滑動 */
-.overflow-x-auto {
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(56, 189, 248, 0.4) rgba(15, 23, 42, 0.6);
-}
-@media (max-width: 767px) {
-    .overflow-x-auto table th:first-child,
-    .overflow-x-auto table td:first-child {
-        position: sticky;
-        left: 0;
-        z-index: 15;
-        background-color: #0e131f !important;
-        box-shadow: 4px 0 12px -2px rgba(0, 0, 0, 0.65);
-    }
+a:hover {
+  color: #38bdf8;
 }
 
-/* 電腦寬螢幕 (1024px+) 雙欄試算儀表板：右側結果卡片自動 Sticky 跟隨視線 */
-@media (min-width: 1024px) {
-    #tank-calculator .lg\:col-span-5,
-    #roi-calculator .lg\:col-span-5 {
-        position: sticky;
-        top: 104px;
-        align-self: start;
-    }
+/* 頂部企業實名認證信任橫條（化解純數字網域疑慮） */
+.trust-topbar {
+  background: linear-gradient(90deg, #0369a1 0%, #0f172a 55%, #065f46 100%);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.3);
+  font-size: clamp(0.78rem, 1.8vw, 0.9rem);
+  padding: 8px 16px;
+  color: #e0f2fe;
+}
+
+.trust-topbar-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.trust-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.5);
+  color: #6ee7b7;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+/* 統一導航列 */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.nav-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 12px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.brand-logo {
+  display: flex;
+  flex-direction: column;
+  color: var(--text-main);
+  font-weight: 800;
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+  letter-spacing: 0.5px;
+}
+
+.brand-sub {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  color: #e2e8f0;
+  font-weight: 600;
+  font-size: 0.92rem;
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+  background: rgba(14, 165, 233, 0.18);
+  border-color: var(--primary);
+  color: #38bdf8;
+}
+
+.nav-link-cta {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff !important;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+}
+
+.nav-link-cta:hover {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
+/* 主容器與雙層標題系統 */
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(20px, 4vw, 48px) 16px;
+}
+
+.hero-section {
+  background: radial-gradient(circle at top right, rgba(14, 165, 233, 0.18), transparent 60%),
+              linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(7, 13, 25, 1) 100%);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: clamp(24px, 5vw, 48px);
+  margin-bottom: 32px;
+  box-shadow: var(--shadow-lg);
+}
+
+.eyebrow-tag {
+  display: inline-block;
+  background: rgba(14, 165, 233, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+h1.main-title {
+  font-size: clamp(1.65rem, 4vw, 2.65rem);
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 12px;
+  color: #ffffff;
+}
+
+.subtitle-pill {
+  display: block;
+  background: rgba(30, 41, 59, 0.85);
+  border-left: 4px solid var(--primary);
+  color: #cbd5e1;
+  padding: 10px 16px;
+  border-radius: 0 10px 10px 0;
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-size: clamp(1.35rem, 3vw, 1.85rem);
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: #f8fafc;
+}
+
+.section-sub {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 24px;
+}
+
+/* 響應式雙態網格 */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+@media (max-width: 920px) {
+  .grid-2, .grid-3 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: clamp(18px, 3vw, 28px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.card-highlight {
+  border-color: rgba(14, 165, 233, 0.5);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 1) 0%, rgba(12, 30, 53, 0.9) 100%);
+}
+
+/* 拇指熱區按鈕系統 (>= 44px) */
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 12px 22px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease;
+  text-align: center;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+  color: #ffffff;
+  box-shadow: 0 6px 18px rgba(14, 165, 233, 0.35);
+}
+
+.btn-line {
+  background: linear-gradient(135deg, #06c755 0%, #059669 100%);
+  color: #ffffff;
+  box-shadow: 0 6px 18px rgba(6, 199, 85, 0.35);
+}
+
+.btn-outline {
+  background: rgba(30, 41, 59, 0.8);
+  color: #e2e8f0;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Before / After 清洗前後對比拉桿（手機防誤觸 touch-action: pan-y） */
+.ba-slider-wrap {
+  position: relative;
+  width: 100%;
+  height: clamp(260px, 45vw, 420px);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 2px solid rgba(56, 189, 248, 0.4);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
+  background: #091326;
+}
+
+.ba-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.ba-after {
+  background: radial-gradient(circle at center, #0c4a6e 0%, #082f49 70%, #041e30 100%);
+  color: #e0f2fe;
+}
+
+.ba-before {
+  background: radial-gradient(circle at center, #78350f 0%, #451a03 70%, #270e02 100%);
+  color: #fef3c7;
+  width: 50%;
+  overflow: hidden;
+  border-right: 3px solid #38bdf8;
+}
+
+.ba-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 48px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: ew-resize;
+  z-index: 10;
+}
+
+.ba-handle-circle {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #0ea5e9;
+  border: 3px solid #ffffff;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+}
+
+.ba-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 0.88rem;
+  width: fit-content;
+}
+
+.ba-badge-before {
+  background: rgba(239, 68, 68, 0.9);
+  color: #ffffff;
+}
+
+.ba-badge-after {
+  background: rgba(16, 185, 129, 0.9);
+  color: #ffffff;
+  margin-left: auto;
+}
+
+/* 互動試算器表單控制項 */
+.calc-form-group {
+  margin-bottom: 18px;
+}
+
+.calc-label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #e2e8f0;
+  font-size: 0.96rem;
+}
+
+.calc-select, .calc-input {
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #070d19;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+.calc-checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.calc-check-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 10px 14px;
+  background: rgba(30, 41, 59, 0.75);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.calc-result-box {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.price-highlight {
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-weight: 900;
+  color: #34d399;
+}
+
+/* 局部滾動規格表（固定首欄防穿透） */
+.table-scroll-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  margin-bottom: 28px;
+}
+
+.spec-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.spec-table th, .spec-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.94rem;
+}
+
+.spec-table th {
+  background: #1e293b;
+  color: #38bdf8;
+  font-weight: 800;
+}
+
+.spec-table th:first-child,
+.spec-table td:first-child {
+  position: sticky;
+  left: 0;
+  background: #0f172a;
+  z-index: 2;
+  font-weight: 700;
+  border-right: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+/* 3D 互動工程藍圖畫布區 */
+.cad-viewport-wrap {
+  position: relative;
+  width: 100%;
+  height: clamp(320px, 52vw, 520px);
+  background: radial-gradient(circle at center, #0f2942 0%, #07111e 100%);
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.cad-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+  cursor: grab;
+}
+
+.cad-canvas:active {
+  cursor: grabbing;
+}
+
+.cad-toolbar {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+}
+
+.cad-toolbar > * {
+  pointer-events: auto;
+}
+
+.cad-btn {
+  min-height: 44px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(56, 189, 248, 0.5);
+  color: #e0f2fe;
+  font-weight: 700;
+  font-size: 0.86rem;
+  cursor: pointer;
+}
+
+.cad-btn.active, .cad-btn:hover {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+/* AEO 常見問題直答區塊 */
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 36px;
+}
+
+.faq-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 18px 22px;
+}
+
+.faq-q {
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #38bdf8;
+  margin-bottom: 8px;
+}
+
+.faq-a {
+  color: #cbd5e1;
+  font-size: 0.95rem;
+}
+
+/* 頁尾與手機安全區懸浮操作列 */
+.site-footer {
+  background: #040811;
+  border-top: 1px solid var(--border-color);
+  padding: 40px 16px calc(90px + env(safe-area-inset-bottom, 0px));
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.mobile-sticky-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  background: rgba(15, 23, 42, 0.96);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.mobile-sticky-bar .btn {
+  flex: 1;
+  max-width: 280px;
+  min-height: 46px;
+  font-size: 0.95rem;
+  padding: 10px 12px;
+}
+
+/* Toast 複製成功通知 */
+.toast-msg {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-120%);
+  background: #10b981;
+  color: #ffffff;
+  padding: 12px 24px;
+  border-radius: 999px;
+  font-weight: 800;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.toast-msg.show {
+  transform: translateX(-50%) translateY(0);
 }
