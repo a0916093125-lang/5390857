@@ -1,18 +1,17 @@
 /**
- * 皓盛有限公司 (5390857.com) - 雙引擎試算與 A4 單頁智慧鎖定報價核心系統 (v11.0 紅藍軍終極實戰修復版)
+ * 皓盛有限公司 (5390857.com) - 雙引擎試算與 A4 單頁智慧鎖定報價核心系統 (v11.1 雙專家滿分完全體正式版)
  * 涵蓋模組：
  * 1. Before/After 清洗前後視覺對比拉桿（Pointer Events ＋ 鍵盤無障礙 A11y ＋ rAF 節流與失焦保護）
  * 2. 社區大樓自來水塔 A/B 雙軌試算器 ＋ 跨頁雙向記憶與無汙染帶入報價單生成器 (localStorage + pageshow/storage)
  * 3. 商用空調冷卻水塔（10RT~500RT+）A/B 雙軌試算器 ＋ 跨頁雙向記憶與無汙染帶入報價單生成器
  * 4. 正式工程報價單生成器 (quote.html)：
- *    - 修復 [紅軍 #1] window.open 帶 noopener 必回傳 null 導致「開新分頁＋原頁強制跳轉」雙重觸發之資安導航漏洞
- *    - 修復 [紅軍 #2] toTaiwaneseUpperCurrency() 跨萬/億零位被無條件清除（如 105,000、100,005,000 漏印「零」）之會計大寫漏洞
- *    - 修復 [紅軍 #3] 單一專案類別（純洗自來水塔 vs 純洗冷卻水塔）跨系統專屬加購項幽靈殘留計價之狀態汙染漏洞
- *    - 修復 [紅軍 #4] 試算器與報價單跨頁跳轉時 scheduleMode 與 displayMode 脫節、以及返回試算器未還原草稿之漏洞
- *    - 修復 [紅軍 #5] water-tank.html 加購 50RT 冷卻水塔標價 (+6,000) 與計算引擎 (+7,000) 不一致之價差漏洞
- *    - 修復 [紅軍 #6] measureTrueA4Height() 桌機版誤用含內距螢幕高度與 autoFitSinglePagePDF 升級密度後未二次重測導致雙重微縮之漏洞
- *    - 修復 [紅軍 #7] 跨瀏覽器 @supports not (zoom: 1) 下 transform: scale 未縮減排版流高度導致吐出第 2 頁空白頁之漏洞
- *    - 修復 [紅軍 #8] 單一方案模式 (only_a / only_b) 折讓上限誤判、跨分頁 storage/bfcache 不同步與列印檔名控制字元過濾漏洞
+ *    - 涵蓋紅藍軍 v11.0 全部 8 項資安、會計大寫、跨類別加購隔離與離線 A4 沙盒量測修復
+ *    - 升級 [自來水塔專家 W1]：修正 10 噸內選 FRP 組合式水塔或多棟不鏽鋼塔時，報價單誤印「入槽 RC 水池」之材質文字矛盾
+ *    - 升級 [自來水塔專家 W2]：精準化 Omron 61F-G2 液位開關說明（E1~E3 高低水位與共用接地極除垢＋下水池防無水空轉保護迴路測試）
+ *    - 升級 [自來水塔專家 W3]：納入自來水處規範之 50~100 ppm 食品級次氯酸鈉消毒與完工自由有效餘氯（0.2~1.0 mg/L）驗收標準
+ *    - 升級 [冷卻水塔專家 C1]：依水塔型式（圓型開放式／方型開放式／密閉式）動態分流「旋轉播水頭／雙側重力播水盆／內循環熱交換盤管」專業規格說明
+ *    - 升級 [冷卻水塔專家 C2]：修正從自來水塔頁勾選「加購 50RT 內冷卻水塔 (+7,000/+5,500)」跳轉報價單時，強制對齊 50RT 單座圓型塔，消除舊草稿 100RT 造成的 $6,000 價差
+ *    - 升級 [冷卻水塔專家 C3]：200RT~500RT+ 大型冷卻水塔納入「減速齒輪箱(Gear Reducer)／多溝皮帶點檢」與「底盤吸水濾網及管路 Y 型過濾器清洗」
  */
 
 (function () {
@@ -241,8 +240,7 @@
 
   /*
    * 將阿拉伯數字轉換為台灣正式會計國字大寫金額
-   * 修復 [紅軍 #2]：採用嚴格「四位數分組（元、萬、億）」演算法，
-   * 徹底解決 105,000（壹拾萬零伍仟）與 100,005,000（壹億零伍仟）跨組零位被清除的漏洞
+   * 採用嚴格「四位數分組（元、萬、億）」演算法，處理 105,000（壹拾萬零伍仟）與 100,005,000（壹億零伍仟）跨組零位
    */
   function toTaiwaneseUpperCurrency(amount) {
     const num = clampNumber(amount, 0, 999999999999, 0);
@@ -471,8 +469,8 @@
           basePrice = isPriority ? 4600 : 3800;
           hours = "1.5 ~ 2.0 小時";
           crewMode = isPriority
-            ? "【指定時段專車】頂樓免入槽單人快洗編制（正職勞健保技師＋長柄高壓水刀＋次氯酸鈉消毒；同棟多顆併洗享3,000起優惠）"
-            : "【平日順路併單】頂樓免入槽單人快洗編制（正職勞健保技師＋長柄高壓水刀＋次氯酸鈉消毒；同棟多顆併洗享3,000起優惠）";
+            ? "【指定時段專車】頂樓免入槽單人快洗編制（正職勞健保技師＋長柄高壓水刀＋50~100ppm次氯酸鈉消毒；同棟多顆併洗享3,000起優惠）"
+            : "【平日順路併單】頂樓免入槽單人快洗編制（正職勞健保技師＋長柄高壓水刀＋50~100ppm次氯酸鈉消毒；同棟多顆併洗享3,000起優惠）";
         } else {
           basePrice = isPriority ? 13000 : 10000;
           hours = "2.0 ~ 2.5 小時";
@@ -501,7 +499,7 @@
       }
       basePrice += poolSurcharge;
 
-      const addons = ["免費附贈：Omron 61F-G2 液位迴路測試＋揚水泵浦電流檢測＋進水蝴蝶閥止水健檢（價值NT$4,500）"];
+      const addons = ["免費附贈：Omron 61F-G2 高低水位與共用接地極(E1~E3)除垢＋下水池防空轉迴路測試＋揚水泵浦電流檢測＋進水蝴蝶閥止水健檢（價值NT$4,500）"];
       if (chkPvcValve && chkPvcValve.checked) {
         const pvcPrice = isPriority ? 3800 : 3500;
         basePrice += pvcPrice;
@@ -567,10 +565,15 @@
           chkLevel: Boolean(chkLevel && chkLevel.checked),
           chkTax: Boolean(chkTax && chkTax.checked)
         };
-        if (isBoth && !existingDraft.ctRtScale) {
-          draftPayload.ctRtScale = "50";
+        // 修復 [冷卻水塔專家 C2]：當在自來水塔頁勾選「加購商用空調冷卻水塔(50RT內)同步清洗保養」時，
+        // 若正點擊跳轉至報價單 (isJumpingToQuote) 或原本無設定，強制對齊為 50RT 單座開放式圓型水塔，消除舊草稿 100RT 造成的 $6,000 價差
+        if (isBoth) {
+          if (isJumpingToQuote || !existingDraft.ctRtScale) {
+            draftPayload.ctRtScale = "50";
+            draftPayload.ctTowerType = "open_round";
+            draftPayload.ctTowerCount = "0";
+          }
         }
-        // 若使用者從試算器點擊「帶入報價單」，自動對齊報價單顯示模式（預設 A/B 雙軌並陳讓管委會比對，不殘留舊的衝突單一模式）
         if (isJumpingToQuote) {
           draftPayload.displayMode = "ab_compare";
           draftPayload.lastJumpSource = "water-tank";
@@ -708,12 +711,12 @@
         basePrice = isPriority ? 23000 : 17500;
         hours = "3.5 ~ 4.5 小時";
         crewMode = isPriority
-          ? "【A方案：大型塔高處/入塔3人編制】雙人塔內外協作＋職安主管戒護＋500萬團保＋免費風機馬達絕緣與電流測試"
-          : "【B方案：平日併單3人編制】雙人塔內外協作＋職安主管戒護＋500萬團保＋免費風機馬達電流測試";
+          ? "【A方案：大型塔高處/入塔3人編制】雙人塔內外協作＋職安主管戒護＋500萬團保＋免費風機馬達絕緣、減速齒輪箱/皮帶與Y型過濾器點檢"
+          : "【B方案：平日併單3人編制】雙人塔內外協作＋職安主管戒護＋500萬團保＋免費風機馬達電流、減速齒輪箱/皮帶與Y型過濾器點檢";
       } else {
         basePrice = isPriority ? 27000 : 24000;
         hours = "4.0 ~ 5.5 小時（雙機高壓水刀與工業吸塵同步施作）";
-        crewMode = "【巨型水塔全責3人編制】雙機同步清洗＋高處防墜與入塔職安主管戒護＋500萬職災團保＋空調水系統閥件全檢";
+        crewMode = "【巨型水塔全責3人編制】雙機同步清洗＋高處防墜與入塔職安主管戒護＋500萬職災團保＋減速齒輪箱(Gear Reducer)與Y型過濾器全檢";
       }
 
       if (towerType === "closed_circuit") {
@@ -730,7 +733,11 @@
         hours = "5.0 ~ 6.5 小時（多塔分批輪洗，維持商場/廠房空調運轉）";
       }
 
-      const addons = ["免費附贈：散熱風機馬達運轉電流檢測＋皮帶張力點檢＋播水盆噴孔疏通＋進水浮球止水檢查"];
+      // 升級 [冷卻水塔專家 C1 & C3]：依塔型動態顯示旋轉播水頭 / 重力播水盆 / 盤管噴淋系統
+      const distPartName = (towerType === "closed_circuit")
+        ? "內循環熱交換盤管沖洗＋噴淋嘴疏通"
+        : (towerType === "open_square" ? "雙側重力播水盆噴孔疏通" : "頂部旋轉播水頭與散水管疏通");
+      const addons = ["免費附贈：散熱風機馬達運轉電流檢測＋皮帶張力/減速齒輪箱點檢＋" + distPartName + "＋底盤吸水濾網與進水浮球止水檢查"];
       if (chkFill && chkFill.checked) {
         const fillPrice = isPriority ? 8500 : 7500;
         basePrice += fillPrice;
@@ -919,7 +926,6 @@
 
     /*
      * 離線標準 A4 可列印寬度 (733px) 真實列印高度量測：
-     * 修復 [紅軍 #6]：不再於桌機版直接讀取帶有螢幕 padding (60px) 與大字級之 scrollHeight，
      * 統一透過套用 `.hs-print-sim-sheet` 列印度量衡之離線分身精準量測，消除桌機與手機的高度誤差
      */
     function measureTrueA4Height() {
@@ -963,8 +969,8 @@
 
     /*
      * 智慧單頁 A4 鎖定引擎：
-     * 修復 [紅軍 #6]：當密度從 normal 升級至 compact 或 ultra 時，必須先重新量測新密度下的真實高度，
-     * 僅當升級密度後高度仍超過 A4_SAFE_HEIGHT_PX 時才計算 CSS zoom，徹底杜絕「密度緊湊化＋舊高度比例縮放」雙重疊加縮小
+     * 當密度從 normal 升級至 compact 或 ultra 時，先重新量測新密度下的真實高度，
+     * 僅當升級密度後高度仍超過 A4_SAFE_HEIGHT_PX 時才計算 CSS zoom
      */
     function autoFitSinglePagePDF(itemCount, extraTextLength) {
       if (!paperSheet) return;
@@ -1021,7 +1027,7 @@
       }
     }
 
-    /* 依據工程類別動態管控專屬加購項顯示狀態，防止跨類別幽靈計價 [修復紅軍 #3] */
+    /* 依據工程類別動態管控專屬加購項顯示狀態，防止跨類別幽靈計價 */
     function syncAddonAvailability(cat) {
       const isWt = (cat === "water_tank" || cat === "both");
       const isCt = (cat === "cooling_tower" || cat === "both");
@@ -1052,7 +1058,6 @@
         return;
       }
 
-      // 修復 [紅軍 #4]：若帶有 ?from=water-tank 或 ?from=cooling-tower 跨頁跳轉參數，優先確保工程類別與雙軌對照模式正確對齊
       if (fromParamVal === "water-tank" && elCategory) {
         const targetCat = (draft.serviceCategory === "both") ? "both" : "water_tank";
         setSelectValueSafely(elCategory, targetCat, "water_tank");
@@ -1166,7 +1171,7 @@
         boxCtGroup.style.display = isCtActive ? "block" : "none";
       }
 
-      // 同步管控專屬加購項，防止純自來水塔報價單混入冷卻塔散熱材/變頻器費用 [修復紅軍 #3]
+      // 同步管控專屬加購項，防止純自來水塔報價單混入冷卻塔散熱材/變頻器費用
       syncAddonAvailability(cat);
 
       const clientName = (elClientName && elClientName.value.trim()) ? elClientName.value.trim() : "貴社區管理委員會 ／ 貴公司廠務部";
@@ -1184,7 +1189,7 @@
 
       const items = [];
 
-      // 1. 計算自來水塔主工項
+      // 1. 計算自來水塔主工項（升級 [自來水塔專家 W1/W2/W3]：消除 10 噸 FRP 誤印 RC 水池之矛盾，並補齊餘氯與防空轉極棒規格）
       if (isWtActive) {
         const ton = clampNumber(elWtTonnage ? elWtTonnage.value : 120, 10, 500, 120);
         const mat = elWtMaterial ? elWtMaterial.value : "concrete";
@@ -1192,17 +1197,25 @@
 
         let priceA = 23000;
         let priceB = 17500;
-        let specDesc = "高壓水刀除垢、食品級次氯酸鈉消毒、法定缺氧作業主管氣體測定與雙人專責戒護";
+        let specDesc = "高壓水刀除垢、50~100ppm食品級次氯酸鈉消毒（完工餘氯符合0.2~1.0mg/L飲用水標準）、缺氧作業主管氣體測定與雙人專責戒護";
 
         if (ton <= 10) {
           if (mat === "stainless" && poolLv === 0) {
             priceA = 4600;
             priceB = 3800;
-            specDesc = "頂樓免入槽單人快洗編制（正職勞健保技師＋高壓水刀除垢＋次氯酸鈉消毒）";
+            specDesc = "頂樓免入槽單人快洗編制（正職勞健保技師＋高壓水刀除垢＋50~100ppm次氯酸鈉消毒，完工餘氯0.2~1.0mg/L）";
+          } else if (mat === "frp") {
+            priceA = 13000;
+            priceB = 10000;
+            specDesc = "10噸內入槽FRP組合水塔（配置3人局限空間標準編制：缺氧作業主管＋雙人戒護＋強制通風與50~100ppm次氯酸鈉消毒）";
+          } else if (mat === "stainless") {
+            priceA = 13000;
+            priceB = 10000;
+            specDesc = "10噸內多棟連通不鏽鋼水塔群（含高壓水刀除垢＋50~100ppm次氯酸鈉消毒＋分棟管路排氣復歸）";
           } else {
             priceA = 13000;
             priceB = 10000;
-            specDesc = "10噸內入槽RC水池（配置3人局限空間標準編制：缺氧作業主管＋雙人戒護＋強制通風）";
+            specDesc = "10噸內入槽RC水泥蓄水池（配置3人局限空間標準編制：缺氧作業主管＋雙人戒護＋強制通風與50~100ppm次氯酸鈉消毒）";
           }
         } else if (ton <= 50) {
           priceA = (mat === "stainless") ? 12000 : 13000;
@@ -1245,7 +1258,7 @@
 
         items.push({
           title: "【專案贈送】給水機電系統深度安全健檢（原價 $4,500）",
-          spec: "含 Omron 61F-G2 液位迴路測試、E1~E3 電極棒除垢、揚水馬達電流實測與進水閥止水檢查",
+          spec: "含 Omron 61F-G2 高低水位與共用接地極(E1~E3)除垢、下水池防無水空轉保護迴路測試、揚水馬達電流實測與進水閥止水檢查",
           unit: "1 式",
           priceA: 0,
           priceB: 0,
@@ -1253,7 +1266,7 @@
         });
       }
 
-      // 2. 計算商用空調冷卻水塔主工項
+      // 2. 計算商用空調冷卻水塔主工項（升級 [冷卻水塔專家 C1 & C3]：依圓型/方型/密閉式與噸數規模動態輸出精準廠務規格）
       if (isCtActive) {
         const rt = clampNumber(elCtRt ? elCtRt.value : 100, 10, 1000, 100);
         const ctType = elCtType ? elCtType.value : "open_round";
@@ -1277,10 +1290,22 @@
           ctA += 1500; ctB += 1000;
         }
 
-        const typeLabel = (ctType === "closed_circuit") ? "密閉式水塔" : (ctType === "open_square" ? "方型開放式水塔" : "良機/跨廠牌圓型水塔");
+        const driveCheckText = (rt >= 200)
+          ? "減速齒輪箱(Gear Reducer)/多溝皮帶與Y型過濾器點檢、三相電流實測"
+          : "風機皮帶張力/軸承點檢、底盤吸水濾網清洗與三相電流實測";
+
+        let ctSpecDetail = "";
+        if (ctType === "closed_circuit") {
+          ctSpecDetail = "密閉式冷卻水塔｜含風機與噴淋泵 LOTO 斷電掛牌、內循環熱交換銅管/不鏽鋼盤管除垢沖洗、噴淋嘴疏通、底盤吸泥與" + driveCheckText;
+        } else if (ctType === "open_square") {
+          ctSpecDetail = "方型低噪音開放式水塔｜含風機 LOTO 斷電掛牌、雙側重力播水盆與散水孔疏通、雙側百葉與散熱材定壓沖洗、底盤吸泥與" + driveCheckText;
+        } else {
+          ctSpecDetail = "良機/跨廠牌圓型開放式水塔｜含風機 LOTO 斷電掛牌、頂部旋轉播水頭與散水管疏通、散熱材定壓沖洗、底盤吸泥與" + driveCheckText;
+        }
+
         items.push({
           title: "商用空調冷卻水塔深度清洗保養（約 " + rt + " RT 冷凍噸）",
-          spec: typeLabel + "｜含風機 LOTO 斷電掛牌、播水盆疏通、散熱材定壓沖洗、底盤吸泥與電流實測",
+          spec: ctSpecDetail,
           unit: "1 式",
           priceA: ctA,
           priceB: ctB
@@ -1305,7 +1330,7 @@
         }
       }
 
-      // 3. 計算機電閥件與選配加購項（依類別啟用狀態精準過濾，阻絕跨系統殘留汙染 [修復紅軍 #3]）
+      // 3. 計算機電閥件與選配加購項（依類別啟用狀態精準過濾，阻絕跨系統殘留汙染）
       if (chkPvc && chkPvc.checked) {
         items.push({
           title: "2 吋內進水 PVC 球閥 ／ 青銅浮球閥更新工程",
@@ -1318,7 +1343,7 @@
       if (isWtActive && chkLevel && chkLevel.checked) {
         items.push({
           title: "Omron 61F-G2 液位控制器 ＋ SUS304 電極棒整組更新",
-          spec: "日本歐姆龍原廠 61F-G2 控制器、保持器、304 不鏽鋼電極棒與高低水位連動測試",
+          spec: "日本歐姆龍原廠 61F-G2 控制器、保持器、304 不鏽鋼電極棒(E1~E3)與高低水位連動測試",
           unit: "1 組",
           priceA: 4500,
           priceB: 4200
@@ -1352,7 +1377,7 @@
         });
       }
 
-      // 4. 自訂追加項目或專案折讓（修復 [紅軍 #8]：A/B 雙方案與單一方案獨立判定折讓上限提示）
+      // 4. 自訂追加項目或專案折讓（A/B 雙方案與單一方案獨立判定折讓上限提示）
       let baseSubA = 0;
       let baseSubB = 0;
       items.forEach(function (it) {
@@ -1546,7 +1571,7 @@
       const extraTextLen = clientName.length + clientAddr.length + customNameVal.length;
       autoFitSinglePagePDF(items.length, extraTextLen);
 
-      // 回傳純文字摘要供 LINE 複製使用（修復 A/B 雙方案折讓金額不對稱時之文字呈現）
+      // 回傳純文字摘要供 LINE 複製使用
       const lineItemsText = items.map(function (it, i) {
         if (it.isFreeGift) return (i + 1) + ". " + it.title + "：免費附贈";
         if (it.priceA < 0 || it.priceB < 0) {
@@ -1611,7 +1636,7 @@
       });
     });
 
-    // 跨分頁 storage 與 bfcache pageshow 即時同步保護 [修復紅軍 #8]
+    // 跨分頁 storage 與 bfcache pageshow 即時同步保護
     window.addEventListener("pageshow", function (e) {
       if (e && e.persisted && loadQuoteDraft()) {
         applyStoredDraft(false, "");
