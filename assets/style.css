@@ -1,5 +1,5 @@
 /* ==========================================================================
-   皓盛有限公司 (5390857.com) - RWD 雙端防破版與 A4 單頁智慧鎖定列印樣式表 v14.1 (企業品牌形象專家重塑版＋60-30-10 雙欄旗艦首屏完全體)
+   皓盛有限公司 (5390857.com) - RWD 雙端防破版與 A4 單頁智慧鎖定列印樣式表 v15.0 (企業品牌形象專家重塑版＋60-30-10 雙欄旗艦首屏完全體)
    定位：給水機電事業部（社區大樓自來水塔）・商空水系統事業部（空調冷卻水塔）＋ 單頁 A4 報價系統
    統一編號：90221911 | 服務專線 & LINE：0916-093-125 | 信箱：ssuyuan@kimo.com
    ========================================================================== */
@@ -1575,7 +1575,7 @@ h1.main-title {
 
 
 /* ==========================================================================
-   v14.1 企業品牌形象專區卡片 (.corp-pillar-card)
+   v15.0 企業品牌形象專區卡片 (.corp-pillar-card)
    ========================================================================== */
 .corp-pillar-card {
   position: relative;
@@ -1618,7 +1618,7 @@ h1.main-title {
 
 
 /* ==========================================================================
-   v14.1 試算器跨頁無縫直傳與智慧規格收合面板 (.tech-specs-toggle-btn)
+   v15.0 試算器跨頁無縫直傳與智慧規格收合面板 (.tech-specs-toggle-btn)
    ========================================================================== */
 .btn {
   text-wrap: balance;
@@ -1654,4 +1654,135 @@ h1.main-title {
 
 .tech-specs-collapse-box.is-collapsed {
   display: none;
+}
+
+
+/* ==========================================================================
+   v15.0 真實案場清洗前後照片無損裁切滑桿 (.ba-photo + clip-path: inset)
+   徹底解決手機版文字被切半與圖片擠壓變形問題
+   ========================================================================== */
+.ba-slider-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  max-height: 540px;
+  height: auto !important;
+  min-height: 250px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2px solid rgba(56, 189, 248, 0.45);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+  background: #070d19;
+}
+
+.ba-layer {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  display: block !important;
+}
+
+.ba-before {
+  width: 100% !important;
+  clip-path: inset(0 50% 0 0);
+  -webkit-clip-path: inset(0 50% 0 0);
+  border-right: none !important;
+  z-index: 2;
+}
+
+.ba-after {
+  z-index: 1;
+}
+
+.ba-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.ba-badge {
+  position: absolute;
+  top: 14px;
+  z-index: 4;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: clamp(0.76rem, 2.2vw, 0.9rem);
+  letter-spacing: 0.3px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.ba-badge-before {
+  left: 14px;
+  background: rgba(220, 38, 38, 0.9);
+  border: 1px solid rgba(252, 165, 165, 0.5);
+  color: #ffffff;
+}
+
+.ba-badge-after {
+  right: 14px;
+  background: rgba(5, 150, 105, 0.92);
+  border: 1px solid rgba(110, 231, 183, 0.5);
+  color: #ffffff;
+}
+
+.ba-handle {
+  z-index: 10;
+}
+
+.ba-handle::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  transform: translateX(-50%);
+  background: #38bdf8;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.9);
+  pointer-events: none;
+}
+
+.ba-handle-circle {
+  position: relative;
+  z-index: 2;
+}
+
+.ba-caption-bar {
+  margin-top: 14px;
+  background: rgba(15, 24, 43, 0.85);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+@media (max-width: 720px) {
+  .ba-caption-bar {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    padding: 12px 14px;
+  }
+  .ba-badge {
+    top: 10px;
+    padding: 4px 10px;
+    font-size: 0.74rem;
+  }
+  .ba-badge-before {
+    left: 10px;
+  }
+  .ba-badge-after {
+    right: 10px;
+  }
 }

@@ -1,5 +1,5 @@
 /**
- * 皓盛有限公司 (5390857.com) - 雙引擎試算與 A4 單頁智慧鎖定報價核心系統 (v14.1 雙專家滿分完全體正式版)
+ * 皓盛有限公司 (5390857.com) - 雙引擎試算與 A4 單頁智慧鎖定報價核心系統 (v15.0 雙專家滿分完全體正式版)
  * 涵蓋模組：
  * 1. Before/After 清洗前後視覺對比拉桿（Pointer Events ＋ 鍵盤無障礙 A11y ＋ rAF 節流與失焦保護）
  * 2. 社區大樓自來水塔 A/B 雙軌試算器 ＋ 跨頁雙向記憶與無汙染帶入報價單生成器 (localStorage + pageshow/storage)
@@ -331,7 +331,10 @@
       function renderPct(pct) {
         currentPct = Math.max(5, Math.min(95, pct));
         const pctStr = currentPct.toFixed(1) + "%";
-        beforeLayer.style.width = pctStr;
+        const rightClipStr = (100 - currentPct).toFixed(1) + "%";
+        beforeLayer.style.width = "100%";
+        beforeLayer.style.clipPath = "inset(0 " + rightClipStr + " 0 0)";
+        beforeLayer.style.webkitClipPath = "inset(0 " + rightClipStr + " 0 0)";
         handle.style.left = pctStr;
         const rounded = Math.round(currentPct);
         slider.setAttribute("aria-valuenow", String(rounded));
