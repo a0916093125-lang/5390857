@@ -1,10 +1,11 @@
 /**
- * 皓盛有限公司 (5390857.com) - 雙引擎試算與 A4 單頁智慧鎖定報價核心系統 (v8.0)
+ * 皓盛有限公司 (5390857.com) - 雙引擎試算與 A4 單頁智慧鎖定報價核心系統 (v9.0 紅藍軍資安與防呆強化正式版)
  * 涵蓋模組：
- * 1. Before/After 清洗前後視覺對比拉桿（Pointer Events 手機防跳頁保護）
- * 2. 社區大樓自來水塔 A/B 雙軌試算器 ＋ 跨頁自動帶入報價單生成器 (localStorage)
- * 3. 商用空調冷卻水塔（10RT~500RT+）A/B 雙軌試算器 ＋ 跨頁自動帶入報價單生成器
- * 4. 正式工程報價單生成器 (quote.html)：內建 autoFitSinglePagePDF() 智慧動態縮放與 A4 黃金比例緊湊排版引擎，保證 100% 鎖定單頁 A4 PDF 輸出
+ * 1. Before/After 清洗前後視覺對比拉桿（Pointer Events ＋ 鍵盤無障礙 A11y ＋ rAF 節流與失焦保護）
+ * 2. 社區大樓自來水塔 A/B 雙軌試算器 ＋ 跨頁無損合併帶入報價單生成器 (localStorage)
+ * 3. 商用空調冷卻水塔（10RT~500RT+）A/B 雙軌試算器 ＋ 跨頁無損合併帶入報價單生成器
+ * 4. 正式工程報價單生成器 (quote.html)：內建 XSS 實體轉義、IME 中文輸入防抖、beforeprint/afterprint 雙向檔名鎖定、
+ *    以及 autoFitSinglePagePDF() 真實 DOM 高度量測 ＋ CSS Zoom / Firefox Scale 雙軌單頁 A4 鎖定引擎
  */
 
 (function () {
@@ -21,8 +22,36 @@
   };
 
   const DRAFT_STORAGE_KEY = "hs_5390857_quote_draft_v8";
+  const CUSTOM_PRICE_MIN = -500000;
+  const CUSTOM_PRICE_MAX = 5000000;
+  const A4_SAFE_HEIGHT_PX = 960;
 
+  let toastTimerId = null;
+  let isLineNavigating = false;
+  let lineNavTimerId = null;
+  let savedDocumentTitle = null;
+
+  /* 資安防護：HTML 特殊字元轉義，徹底阻絕 DOM XSS 與表格破版 */
+  function escapeHtml(rawStr) {
+    if (rawStr === null || rawStr === undefined) return "";
+    return String(rawStr)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  /* 數值安全夾限（Clamping），防止 NaN、Infinity 或溢位 */
+  function clampNumber(val, min, max, fallback) {
+    const num = Number(val);
+    if (!Number.isFinite(num)) return fallback;
+    return Math.min(max, Math.max(min, Math.round(num)));
+  }
+
+  /* Toast 通知（修正連續點擊計時器競爭與閃退問題） */
   function showToast(message) {
+    if (!document.body) return;
     let toast = document.getElementById("hs-global-toast");
     if (!toast) {
       toast = document.createElement("div");
@@ -32,113 +61,147 @@
       toast.setAttribute("aria-live", "polite");
       document.body.appendChild(toast);
     }
-    toast.textContent = message;
+    if (toastTimerId !== null) {
+      clearTimeout(toastTimerId);
+      toastTimerId = null;
+    }
+    toast.textContent = String(message || "");
     toast.classList.add("show");
-    setTimeout(function () {
+    toastTimerId = setTimeout(function () {
       toast.classList.remove("show");
+      toastTimerId = null;
     }, 3400);
   }
 
-  function saveQuoteDraft(draftObj) {
-    try {
-      localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draftObj));
-    } catch (e) {}
-  }
-
+  /* 跨頁草稿讀取（加上型別驗證，防止損毀 JSON 導致崩潰） */
   function loadQuoteDraft() {
     try {
       const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
-      return raw ? JSON.parse(raw) : null;
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+        return null;
+      }
+      return parsed;
     } catch (e) {
       return null;
     }
   }
 
-  function copyAndOpenLine(summaryText, customHeader) {
-    const header = customHeader || "【皓盛官網 5390857.com 線上工程試算詢價】";
-    const fullText = header + "\n" + summaryText + "\n請李先生協助評估現場檔期與正式報價單！";
+  /* 跨頁草稿儲存（採用無損合併 Object.assign，保留水塔與冷卻塔雙邊設定） */
+  function saveQuoteDraft(draftPatch) {
     try {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(fullText).then(function () {
-          showToast("已自動複製完整報價內容！即將為您開啟 LINE 貼上...");
-          setTimeout(function () {
-            window.open(COMPANY_INFO.lineUrl, "_blank", "noopener,noreferrer");
-          }, 900);
-        }).catch(function () {
-          fallbackCopy(fullText);
-        });
-      } else {
-        fallbackCopy(fullText);
+      const existing = loadQuoteDraft() || {};
+      const merged = Object.assign({}, existing, draftPatch, {
+        updatedAt: Date.now()
+      });
+      localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(merged));
+    } catch (e) {}
+  }
+
+  /* 同步開啟 LINE 視窗輔助（保留使用者點擊手勢 User Activation，突破 iOS Safari 彈窗攔截） */
+  function openLineSafely() {
+    if (isLineNavigating) return;
+    isLineNavigating = true;
+    if (lineNavTimerId !== null) clearTimeout(lineNavTimerId);
+    lineNavTimerId = setTimeout(function () {
+      isLineNavigating = false;
+      lineNavTimerId = null;
+    }, 1200);
+
+    try {
+      const win = window.open(COMPANY_INFO.lineUrl, "_blank", "noopener,noreferrer");
+      if (!win) {
+        window.location.href = COMPANY_INFO.lineUrl;
       }
-    } catch (err) {
-      window.open(COMPANY_INFO.lineUrl, "_blank", "noopener,noreferrer");
+    } catch (e) {
+      window.location.href = COMPANY_INFO.lineUrl;
     }
   }
 
-  function fallbackCopy(text) {
+  /* 傳統剪貼簿備援複製 */
+  function fallbackCopyText(text) {
     try {
       const ta = document.createElement("textarea");
       ta.value = text;
+      ta.setAttribute("readonly", "readonly");
       ta.style.position = "fixed";
+      ta.style.top = "-9999px";
+      ta.style.left = "-9999px";
       ta.style.opacity = "0";
       document.body.appendChild(ta);
       ta.select();
-      document.execCommand("copy");
+      ta.setSelectionRange(0, ta.value.length);
+      const ok = document.execCommand("copy");
       document.body.removeChild(ta);
-      showToast("已複製報價規格！正在開啟 LINE（請直接長按貼上）...");
+      return Boolean(ok);
     } catch (e) {
-      showToast("正在開啟 LINE 客服專線 0916-093-125...");
+      return false;
     }
-    setTimeout(function () {
-      window.open(COMPANY_INFO.lineUrl, "_blank", "noopener,noreferrer");
-    }, 800);
   }
 
-  /* 將阿拉伯數字轉換為台灣正式會計國字大寫金額（壹、貳、參...元整） */
+  /* 一鍵複製並開啟 LINE（先執行同步複製確保手勢不中斷，再非同步雙重寫入剪貼簿） */
+  function copyAndOpenLine(summaryText, customHeader) {
+    const header = customHeader || "【皓盛官網 5390857.com 線上工程試算詢價】";
+    const fullText = header + "\n" + summaryText + "\n請李先生協助評估現場檔期與正式報價單！";
+
+    const syncCopied = fallbackCopyText(fullText);
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+      navigator.clipboard.writeText(fullText).catch(function () {});
+    }
+
+    if (syncCopied) {
+      showToast("✓ 已自動複製完整報價內容！正在為您開啟 LINE...");
+    } else {
+      showToast("正在為您開啟 LINE 客服專線 0916-093-125...");
+    }
+    openLineSafely();
+  }
+
+  /* 將阿拉伯數字轉換為台灣正式會計國字大寫金額（支援至兆位、嚴格處理跨萬/億零位與上下限保護） */
   function toTaiwaneseUpperCurrency(amount) {
-    let num = Math.round(Number(amount) || 0);
-    if (num <= 0) return "零元整";
+    let num = clampNumber(amount, 0, 999999999999, 0);
+    if (num <= 0) return "新臺幣 零元整";
+
     const digits = ["零", "壹", "貳", "參", "肆", "伍", "陸", "柒", "捌", "玖"];
     const units = ["", "拾", "佰", "仟"];
-    const bigUnits = ["", "萬", "億"];
+    const bigUnits = ["", "萬", "億", "兆"];
 
-    let str = "";
-    let groupIndex = 0;
-    let needZero = false;
+    const numStr = String(num);
+    let result = "";
+    let zeroPending = false;
+    const len = numStr.length;
 
-    while (num > 0) {
-      const group = num % 10000;
-      if (group !== 0) {
-        let groupStr = "";
-        let temp = group;
-        for (let i = 0; i < 4 && temp > 0; i++) {
-          const d = temp % 10;
-          if (d !== 0) {
-            groupStr = digits[d] + units[i] + groupStr;
-            needZero = false;
-          } else {
-            if (!needZero && groupStr.length > 0) {
-              groupStr = "零" + groupStr;
-              needZero = true;
-            }
-          }
-          temp = Math.floor(temp / 10);
+    for (let i = 0; i < len; i++) {
+      const digit = numStr.charCodeAt(i) - 48;
+      const pos = len - 1 - i;
+      const groupIdx = Math.floor(pos / 4);
+      const unitIdx = pos % 4;
+
+      if (digit === 0) {
+        zeroPending = true;
+      } else {
+        if (zeroPending) {
+          result += "零";
+          zeroPending = false;
         }
-        if (group < 1000 && Math.floor(num / 10000) > 0) {
-          groupStr = "零" + groupStr;
-        }
-        str = groupStr + bigUnits[groupIndex] + str;
-      } else if (str.length > 0 && !str.startsWith("零")) {
-        str = "零" + str;
+        result += digits[digit] + units[unitIdx];
       }
-      num = Math.floor(num / 10000);
-      groupIndex++;
+
+      if (unitIdx === 0 && groupIdx > 0) {
+        const groupSlice = numStr.slice(Math.max(0, i - 3), i + 1);
+        if (parseInt(groupSlice, 10) > 0) {
+          result += bigUnits[groupIdx] || "";
+        }
+        zeroPending = false;
+      }
     }
-    str = str.replace(/零+/g, "零").replace(/^零|零$/g, "");
-    return "新臺幣 " + str + " 元整";
+
+    result = result.replace(/零+/g, "零").replace(/^零|零$/g, "");
+    return "新臺幣 " + (result || "零") + " 元整";
   }
 
-  /* 1. 初始化 Before/After 對比拉桿 */
+  /* 1. 初始化 Before/After 對比拉桿（含 Pointer Capture 失焦防護、rAF 節流與鍵盤無障礙支援） */
   function initBeforeAfterSlider() {
     const sliders = document.querySelectorAll(".js-ba-slider");
     sliders.forEach(function (slider) {
@@ -147,35 +210,76 @@
       if (!beforeLayer || !handle) return;
 
       let isDragging = false;
+      let currentPct = 50;
+      let rafId = null;
 
-      function setPosition(clientX) {
-        const rect = slider.getBoundingClientRect();
-        if (rect.width <= 0) return;
-        let pct = ((clientX - rect.left) / rect.width) * 100;
-        pct = Math.max(5, Math.min(95, pct));
-        beforeLayer.style.width = pct.toFixed(1) + "%";
-        handle.style.left = pct.toFixed(1) + "%";
+      slider.setAttribute("tabindex", "0");
+      slider.setAttribute("role", "slider");
+      slider.setAttribute("aria-valuemin", "5");
+      slider.setAttribute("aria-valuemax", "95");
+      slider.setAttribute("aria-valuenow", "50");
+
+      function renderPct(pct) {
+        currentPct = Math.max(5, Math.min(95, pct));
+        const pctStr = currentPct.toFixed(1) + "%";
+        beforeLayer.style.width = pctStr;
+        handle.style.left = pctStr;
+        slider.setAttribute("aria-valuenow", String(Math.round(currentPct)));
+      }
+
+      function updateFromClientX(clientX) {
+        if (rafId !== null) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(function () {
+          const rect = slider.getBoundingClientRect();
+          if (rect.width > 0) {
+            const pct = ((clientX - rect.left) / rect.width) * 100;
+            renderPct(pct);
+          }
+          rafId = null;
+        });
       }
 
       slider.addEventListener("pointerdown", function (e) {
+        if (e.button !== undefined && e.button !== 0) return;
         isDragging = true;
-        setPosition(e.clientX);
-        if (slider.setPointerCapture) {
+        updateFromClientX(e.clientX);
+        if (slider.setPointerCapture && e.pointerId !== undefined) {
           try { slider.setPointerCapture(e.pointerId); } catch (err) {}
         }
       });
 
       slider.addEventListener("pointermove", function (e) {
         if (!isDragging) return;
-        setPosition(e.clientX);
+        updateFromClientX(e.clientX);
       });
 
-      function stopDrag() {
+      function stopDrag(e) {
+        if (!isDragging) return;
         isDragging = false;
+        if (slider.releasePointerCapture && e && e.pointerId !== undefined) {
+          try { slider.releasePointerCapture(e.pointerId); } catch (err) {}
+        }
       }
 
       slider.addEventListener("pointerup", stopDrag);
       slider.addEventListener("pointercancel", stopDrag);
+      slider.addEventListener("lostpointercapture", stopDrag);
+
+      slider.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          renderPct(currentPct - 5);
+        } else if (e.key === "ArrowRight") {
+          e.preventDefault();
+          renderPct(currentPct + 5);
+        } else if (e.key === "Home") {
+          e.preventDefault();
+          renderPct(5);
+        } else if (e.key === "End") {
+          e.preventDefault();
+          renderPct(95);
+        }
+      });
     });
   }
 
@@ -205,9 +309,9 @@
     function calculate() {
       const scheduleMode = scheduleSelect ? scheduleSelect.value : "priority_50";
       const isPriority = (scheduleMode !== "weekday_35");
-      const tonVal = parseInt(tonSelect ? tonSelect.value : "50", 10) || 50;
+      const tonVal = clampNumber(tonSelect ? tonSelect.value : 50, 10, 500, 50);
       const matVal = matSelect ? matSelect.value : "concrete";
-      const poolLevel = parseInt(poolCountSelect ? poolCountSelect.value : "0", 10) || 0;
+      const poolLevel = clampNumber(poolCountSelect ? poolCountSelect.value : 0, 0, 2, 0);
       const regionVal = regionSelect ? regionSelect.value : "台北市 / 新北市";
 
       let basePrice = isPriority ? 13000 : 10500;
@@ -302,8 +406,9 @@
         ? poolCountSelect.options[poolCountSelect.selectedIndex].text
         : "標準單棟（1下池＋1上池）";
 
-      saveQuoteDraft({
+      const draftPayload = {
         serviceCategory: (chkCool && chkCool.checked) ? "both" : "water_tank",
+        scheduleMode: scheduleMode,
         region: regionVal,
         wtTonnage: String(tonVal),
         wtMaterial: matVal,
@@ -312,7 +417,11 @@
         chkButterfly: Boolean(chkButterfly && chkButterfly.checked),
         chkLevel: Boolean(chkLevel && chkLevel.checked),
         chkTax: Boolean(chkTax && chkTax.checked)
-      });
+      };
+      if (chkCool && chkCool.checked) {
+        draftPayload.ctRtScale = "50";
+      }
+      saveQuoteDraft(draftPayload);
 
       const summary = "【自來水塔與蓄水池清洗詢價】" +
         "\n📍 地區：" + regionVal +
@@ -374,9 +483,9 @@
       const scheduleMode = scheduleSelect ? scheduleSelect.value : "priority_50";
       const isPriority = (scheduleMode !== "weekday_35");
       const regionVal = regionSelect ? regionSelect.value : "台北市 / 新北市";
-      const rtVal = parseInt(rtSelect ? rtSelect.value : "100", 10) || 100;
+      const rtVal = clampNumber(rtSelect ? rtSelect.value : 100, 10, 1000, 100);
       const towerType = typeSelect ? typeSelect.value : "open_round";
-      const countLevel = parseInt(countSelect ? countSelect.value : "0", 10) || 0;
+      const countLevel = clampNumber(countSelect ? countSelect.value : 0, 0, 2, 0);
 
       let basePrice = isPriority ? 13000 : 10500;
       let hours = "2.5 ~ 3.5 小時";
@@ -469,6 +578,7 @@
 
       saveQuoteDraft({
         serviceCategory: "cooling_tower",
+        scheduleMode: scheduleMode,
         region: regionVal,
         ctRtScale: String(rtVal),
         ctTowerType: towerType,
@@ -569,7 +679,7 @@
 
     // 初始化預設日期與報價單號
     const now = new Date();
-    const yyyy = now.getFullYear();
+    const yyyy = String(now.getFullYear());
     const mm = String(now.getMonth() + 1).padStart(2, "0");
     const dd = String(now.getDate()).padStart(2, "0");
     if (elDocDate && !elDocDate.value) {
@@ -579,19 +689,19 @@
       elDocNo.value = "HS-" + yyyy + mm + dd + "-01";
     }
 
-    /* 智慧單頁 A4 鎖定引擎：依工項數量與實際高度自動計算密度與 --qp-print-zoom 縮放比 */
-    function autoFitSinglePagePDF(itemCount) {
+    /* 智慧單頁 A4 鎖定引擎：結合工項數量、長文字換行偵測與真實 DOM scrollHeight 動態計算縮放比 */
+    function autoFitSinglePagePDF(itemCount, extraTextLength) {
       if (!paperSheet) return;
       let density = "normal";
       let zoomFactor = 1.0;
+      const effectiveLoad = itemCount + (extraTextLength > 60 ? 1 : 0);
 
-      if (itemCount >= 8) {
+      if (effectiveLoad >= 8) {
         density = "ultra";
-        // 8~11 項全滿時，除啟動 ultra 緊湊字級外，額外微縮 zoom 至 0.88~0.92 確保 100% 單頁
-        zoomFactor = Math.max(0.85, 1.0 - (itemCount - 7) * 0.03);
-      } else if (itemCount >= 5) {
+        zoomFactor = Math.max(0.84, 1.0 - (effectiveLoad - 7) * 0.03);
+      } else if (effectiveLoad >= 5) {
         density = "compact";
-        zoomFactor = Math.max(0.92, 1.0 - (itemCount - 4) * 0.02);
+        zoomFactor = Math.max(0.91, 1.0 - (effectiveLoad - 4) * 0.02);
       } else {
         density = "normal";
         zoomFactor = 1.0;
@@ -599,8 +709,21 @@
 
       paperSheet.setAttribute("data-density", density);
       paperSheet.setAttribute("data-item-count", String(itemCount));
-      document.documentElement.style.setProperty("--qp-print-zoom", zoomFactor.toFixed(2));
-      paperSheet.style.setProperty("--qp-print-zoom", zoomFactor.toFixed(2));
+
+      // 實測 DOM 渲染高度，若因超長客戶名稱或自訂規格換行導致超過 A4 安全高度，自動微縮保底
+      const renderedHeight = paperSheet.scrollHeight || 0;
+      if (renderedHeight > A4_SAFE_HEIGHT_PX) {
+        const heightRatio = A4_SAFE_HEIGHT_PX / renderedHeight;
+        zoomFactor = Math.max(0.78, Math.min(zoomFactor, Number(heightRatio.toFixed(2))));
+        if (density === "normal") {
+          density = "compact";
+          paperSheet.setAttribute("data-density", density);
+        }
+      }
+
+      const zoomStr = zoomFactor.toFixed(2);
+      document.documentElement.style.setProperty("--qp-print-zoom", zoomStr);
+      paperSheet.style.setProperty("--qp-print-zoom", zoomStr);
 
       if (statusText) {
         const pct = Math.round(zoomFactor * 100);
@@ -616,19 +739,24 @@
         return;
       }
       if (draft.serviceCategory && elCategory) elCategory.value = draft.serviceCategory;
-      if (draft.region && elClientAddr && !elClientAddr.value) elClientAddr.value = draft.region;
-      if (draft.wtTonnage && elWtTonnage) elWtTonnage.value = draft.wtTonnage;
+      if (draft.region && elClientAddr) {
+        const curAddr = elClientAddr.value.trim();
+        if (!curAddr || curAddr === "台北市 / 新北市" || curAddr === "桃園市 / 新竹縣市" || curAddr === "其他外縣市專案") {
+          elClientAddr.value = draft.region;
+        }
+      }
+      if (draft.wtTonnage && elWtTonnage) elWtTonnage.value = String(draft.wtTonnage);
       if (draft.wtMaterial && elWtMaterial) elWtMaterial.value = draft.wtMaterial;
-      if (draft.wtPoolCount && elWtPools) elWtPools.value = draft.wtPoolCount;
-      if (draft.ctRtScale && elCtRt) elCtRt.value = draft.ctRtScale;
+      if (draft.wtPoolCount !== undefined && elWtPools) elWtPools.value = String(draft.wtPoolCount);
+      if (draft.ctRtScale && elCtRt) elCtRt.value = String(draft.ctRtScale);
       if (draft.ctTowerType && elCtType) elCtType.value = draft.ctTowerType;
-      if (draft.ctTowerCount && elCtCount) elCtCount.value = draft.ctTowerCount;
+      if (draft.ctTowerCount !== undefined && elCtCount) elCtCount.value = String(draft.ctTowerCount);
 
-      if (chkPvc) chkPvc.checked = Boolean(draft.chkPvcValve);
-      if (chkButterfly) chkButterfly.checked = Boolean(draft.chkButterfly);
-      if (chkLevel) chkLevel.checked = Boolean(draft.chkLevel);
-      if (chkFill) chkFill.checked = Boolean(draft.chkFill);
-      if (chkInverter) chkInverter.checked = Boolean(draft.chkInverter);
+      if (chkPvc && draft.chkPvcValve !== undefined) chkPvc.checked = Boolean(draft.chkPvcValve);
+      if (chkButterfly && draft.chkButterfly !== undefined) chkButterfly.checked = Boolean(draft.chkButterfly);
+      if (chkLevel && draft.chkLevel !== undefined) chkLevel.checked = Boolean(draft.chkLevel);
+      if (chkFill && draft.chkFill !== undefined) chkFill.checked = Boolean(draft.chkFill);
+      if (chkInverter && draft.chkInverter !== undefined) chkInverter.checked = Boolean(draft.chkInverter);
       if (elTaxMode && draft.chkTax !== undefined) {
         elTaxMode.value = draft.chkTax ? "include_5" : "exclude_5";
       }
@@ -652,6 +780,7 @@
       const clientAddr = (elClientAddr && elClientAddr.value.trim()) ? elClientAddr.value.trim() : "台北市 / 新北市";
       const docNo = (elDocNo && elDocNo.value.trim()) ? elDocNo.value.trim() : ("HS-" + yyyy + mm + dd + "-01");
       const docDate = (elDocDate && elDocDate.value.trim()) ? elDocDate.value.trim() : (yyyy + "-" + mm + "-" + dd);
+      const docYear = /^\d{4}/.test(docDate) ? docDate.slice(0, 4) : yyyy;
 
       if (outClientName) outClientName.textContent = clientName;
       if (outContact) outContact.textContent = contactPerson;
@@ -663,9 +792,9 @@
 
       // 1. 計算自來水塔主工項
       if (cat === "water_tank" || cat === "both") {
-        const ton = parseInt(elWtTonnage ? elWtTonnage.value : "120", 10) || 120;
+        const ton = clampNumber(elWtTonnage ? elWtTonnage.value : 120, 10, 500, 120);
         const mat = elWtMaterial ? elWtMaterial.value : "concrete";
-        const poolLv = parseInt(elWtPools ? elWtPools.value : "0", 10) || 0;
+        const poolLv = clampNumber(elWtPools ? elWtPools.value : 0, 0, 2, 0);
 
         let priceA = 23000;
         let priceB = 17500;
@@ -732,9 +861,9 @@
 
       // 2. 計算商用空調冷卻水塔主工項
       if (cat === "cooling_tower" || cat === "both") {
-        const rt = parseInt(elCtRt ? elCtRt.value : "100", 10) || 100;
+        const rt = clampNumber(elCtRt ? elCtRt.value : 100, 10, 1000, 100);
         const ctType = elCtType ? elCtType.value : "open_round";
-        const ctCount = parseInt(elCtCount ? elCtCount.value : "0", 10) || 0;
+        const ctCount = clampNumber(elCtCount ? elCtCount.value : 0, 0, 2, 0);
 
         let ctA = 13000;
         let ctB = 10500;
@@ -829,13 +958,31 @@
         });
       }
 
-      // 4. 自訂追加項目或專案折讓
-      const customPriceVal = parseInt(elCustomPrice ? elCustomPrice.value : "0", 10) || 0;
-      const customNameVal = (elCustomName && elCustomName.value.trim()) ? elCustomName.value.trim() : "現場特殊管線改造 ／ 專案折讓調整";
+      // 4. 自訂追加項目或專案折讓（加上數值夾限與負數折讓上限保護）
+      let baseSubA = 0;
+      let baseSubB = 0;
+      items.forEach(function (it) {
+        baseSubA += it.priceA;
+        baseSubB += it.priceB;
+      });
+
+      const rawCustomPrice = elCustomPrice ? elCustomPrice.value : "0";
+      let customPriceVal = clampNumber(rawCustomPrice, CUSTOM_PRICE_MIN, CUSTOM_PRICE_MAX, 0);
+      if (customPriceVal < 0) {
+        const maxAllowedDiscount = Math.min(baseSubA, baseSubB);
+        if (Math.abs(customPriceVal) > maxAllowedDiscount) {
+          customPriceVal = -maxAllowedDiscount;
+        }
+      }
+
+      const customNameVal = (elCustomName && elCustomName.value.trim())
+        ? elCustomName.value.trim()
+        : (customPriceVal < 0 ? "老客戶續約 ／ 管委會專案核定特別折讓" : "現場特殊管線改造 ／ 追加工程項目");
+
       if (customPriceVal !== 0) {
         items.push({
           title: customNameVal,
-          spec: customPriceVal < 0 ? "老客戶續約或管委會專案核定特別折讓" : "依現場實際人孔高度、管徑或特殊動線追加項目",
+          spec: customPriceVal < 0 ? "老客戶續約或管委會專案核定特別折讓（直接扣抵工程小計）" : "依現場實際人孔高度、管徑或特殊動線追加項目",
           unit: "1 式",
           priceA: customPriceVal,
           priceB: customPriceVal
@@ -859,6 +1006,17 @@
       const totalB = subB + taxB;
       const savedDiff = Math.max(0, totalA - totalB);
 
+      // 輔助格式化單價（正數與負數折讓優雅顯示）
+      function formatItemPrice(val, isFreeGift) {
+        if (isFreeGift) {
+          return "<span style='color:#16a34a;font-weight:900;'>免費贈送</span>";
+        }
+        if (val < 0) {
+          return "<span style='color:#dc2626;font-weight:800;'>- NT$ " + Math.abs(val).toLocaleString() + "</span>";
+        }
+        return "NT$ " + val.toLocaleString();
+      }
+
       // 渲染表格表頭
       if (outThead) {
         if (displayMode === "ab_compare") {
@@ -877,24 +1035,27 @@
             "<th style='width:36%;'>工程與機電檢修項目</th>" +
             "<th style='width:36%;'>施工規格與職安配置說明</th>" +
             "<th style='width:8%;'>單位</th>" +
-            "<th class='num-col' style='width:14%;'>" + singleTitle + "</th>" +
+            "<th class='num-col' style='width:14%;'>" + escapeHtml(singleTitle) + "</th>" +
             "</tr>";
         }
       }
 
-      // 渲染表格內容列
+      // 渲染表格內容列（全欄位強制通過 escapeHtml 防止 DOM XSS 與破版）
       if (outTbody) {
         const rowsHtml = items.map(function (it, idx) {
           const numStr = String(idx + 1).padStart(2, "0");
-          const pAStr = it.isFreeGift ? "<span style='color:#16a34a;font-weight:900;'>免費贈送</span>" : ("NT$ " + it.priceA.toLocaleString());
-          const pBStr = it.isFreeGift ? "<span style='color:#16a34a;font-weight:900;'>免費贈送</span>" : ("NT$ " + it.priceB.toLocaleString());
+          const safeTitle = escapeHtml(it.title);
+          const safeSpec = escapeHtml(it.spec);
+          const safeUnit = escapeHtml(it.unit);
+          const pAStr = formatItemPrice(it.priceA, it.isFreeGift);
+          const pBStr = formatItemPrice(it.priceB, it.isFreeGift);
 
           if (displayMode === "ab_compare") {
             return "<tr>" +
               "<td>" + numStr + "</td>" +
-              "<td><strong>" + it.title + "</strong></td>" +
-              "<td>" + it.spec + "</td>" +
-              "<td>" + it.unit + "</td>" +
+              "<td><strong>" + safeTitle + "</strong></td>" +
+              "<td>" + safeSpec + "</td>" +
+              "<td>" + safeUnit + "</td>" +
               "<td class='num-col'>" + pAStr + "</td>" +
               "<td class='num-col' style='color:#0369a1;'>" + pBStr + "</td>" +
               "</tr>";
@@ -902,9 +1063,9 @@
             const chosenStr = (displayMode === "only_a") ? pAStr : pBStr;
             return "<tr>" +
               "<td>" + numStr + "</td>" +
-              "<td><strong>" + it.title + "</strong></td>" +
-              "<td>" + it.spec + "</td>" +
-              "<td>" + it.unit + "</td>" +
+              "<td><strong>" + safeTitle + "</strong></td>" +
+              "<td>" + safeSpec + "</td>" +
+              "<td>" + safeUnit + "</td>" +
               "<td class='num-col'>" + chosenStr + "</td>" +
               "</tr>";
           }
@@ -922,14 +1083,14 @@
                 "<div style='font-size:0.8rem;color:#475569;'>未稅小計：NT$ " + subA.toLocaleString() +
                 (includeTax ? (" ＋ 5%營業稅：NT$ " + taxA.toLocaleString()) : "（未稅，開發票另加5%）") + "</div>" +
                 "<div class='qp-plan-price'>總計 NT$ " + totalA.toLocaleString() + " 元" + (includeTax ? "（含稅）" : "（未稅）") + "</div>" +
-                "<div style='font-size:0.78rem;color:#334155;font-weight:700;'>大寫：" + toTaiwaneseUpperCurrency(totalA) + "</div>" +
+                "<div style='font-size:0.78rem;color:#334155;font-weight:700;'>大寫：" + escapeHtml(toTaiwaneseUpperCurrency(totalA)) + "</div>" +
               "</div>" +
               "<div class='qp-plan-card' style='border-color:#0284c7;background:#f0f9ff;'>" +
                 "<div class='qp-plan-title' style='color:#0369a1;'>⚡ B方案：平日彈性順路併單特惠（現省 NT$ " + savedDiff.toLocaleString() + " 元）</div>" +
                 "<div style='font-size:0.8rem;color:#475569;'>未稅小計：NT$ " + subB.toLocaleString() +
                 (includeTax ? (" ＋ 5%營業稅：NT$ " + taxB.toLocaleString()) : "（未稅，開發票另加5%）") + "</div>" +
                 "<div class='qp-plan-price' style='color:#0284c7;'>總計 NT$ " + totalB.toLocaleString() + " 元" + (includeTax ? "（含稅）" : "（未稅）") + "</div>" +
-                "<div style='font-size:0.78rem;color:#334155;font-weight:700;'>大寫：" + toTaiwaneseUpperCurrency(totalB) + "</div>" +
+                "<div style='font-size:0.78rem;color:#334155;font-weight:700;'>大寫：" + escapeHtml(toTaiwaneseUpperCurrency(totalB)) + "</div>" +
               "</div>" +
             "</div>";
         } else {
@@ -942,21 +1103,21 @@
             : "⚡ 核定採行【B方案：平日彈性順路併單特惠檔期】";
           outSummaryArea.innerHTML =
             "<div class='qp-plan-card' style='border-width:1.5px;'>" +
-              "<div class='qp-plan-title'>" + planTitle + "</div>" +
+              "<div class='qp-plan-title'>" + escapeHtml(planTitle) + "</div>" +
               "<div style='font-size:0.84rem;color:#475569;'>未稅工程小計：NT$ " + sub.toLocaleString() + " 元" +
               (includeTax ? (" ｜ 5% 統一發票營業稅：NT$ " + tax.toLocaleString() + " 元") : "（本報價為未稅價，開立統一發票另加 5% 營業稅）") + "</div>" +
               "<div class='qp-plan-price' style='font-size:1.35rem;'>總計金額：NT$ " + tot.toLocaleString() + " 元" + (includeTax ? "（含稅總價）" : "（未稅總價）") + "</div>" +
-              "<div style='font-size:0.82rem;color:#0f172a;font-weight:800;margin-top:2px;'>國字大寫：" + toTaiwaneseUpperCurrency(tot) + "</div>" +
+              "<div style='font-size:0.82rem;color:#0f172a;font-weight:800;margin-top:2px;'>國字大寫：" + escapeHtml(toTaiwaneseUpperCurrency(tot)) + "</div>" +
             "</div>";
         }
       }
 
-      // 渲染管委會簽核勾選區（緊湊高對比排版）
+      // 渲染管委會簽核勾選區（動態帶入報價年份 docYear，消除寫死 2026 跨年誤差）
       if (outDecisionArea) {
         if (displayMode === "ab_compare") {
           outDecisionArea.innerHTML =
             "<div style='font-weight:900;color:#0f172a;margin-bottom:4px;font-size:0.84rem;'>【客戶／社區管委會決議簽核欄（二選一打勾回傳）】</div>" +
-            "<div style='margin-bottom:3px;font-size:0.8rem;'>□ 採行 <strong>A方案（指定專車：NT$ " + totalA.toLocaleString() + "）</strong>，預計日期：____月____日</div>" +
+            "<div style='margin-bottom:3px;font-size:0.8rem;'>□ 採行 <strong>A方案（指定專車：NT$ " + totalA.toLocaleString() + "）</strong>，預計日期：" + escapeHtml(docYear) + "年____月____日</div>" +
             "<div style='margin-bottom:8px;font-size:0.8rem;'>□ 採行 <strong>B方案（平日併單：NT$ " + totalB.toLocaleString() + "）</strong>，授權協調平日順路檔期</div>" +
             "<div style='margin-top:8px;border-top:1px solid #94a3b8;padding-top:6px;font-size:0.8rem;'>主委／客戶代表簽章：____________________ 日期：____/____/____</div>";
         } else {
@@ -964,17 +1125,21 @@
           outDecisionArea.innerHTML =
             "<div style='font-weight:900;color:#0f172a;margin-bottom:4px;font-size:0.84rem;'>【客戶／社區管委會正式委託簽認欄】</div>" +
             "<div style='margin-bottom:6px;font-size:0.8rem;'>茲同意委託皓盛有限公司依本報價單規格進場施作，核定總額 <strong>NT$ " + chosenTot.toLocaleString() + " 元</strong>。</div>" +
-            "<div style='margin-bottom:8px;font-size:0.8rem;'>預計施工日期：2026 年 ____ 月 ____ 日（停水公告於施工前3日張貼）</div>" +
+            "<div style='margin-bottom:8px;font-size:0.8rem;'>預計施工日期：" + escapeHtml(docYear) + " 年 ____ 月 ____ 日（停水公告於施工前3日張貼）</div>" +
             "<div style='margin-top:8px;border-top:1px solid #94a3b8;padding-top:6px;font-size:0.8rem;'>主委／客戶代表簽章：____________________ 日期：____/____/____</div>";
         }
       }
 
-      // 啟動智慧單頁 A4 動態縮放計算
-      autoFitSinglePagePDF(items.length);
+      // 啟動智慧單頁 A4 動態縮放計算（傳入工項數與自訂文字總長度）
+      const extraTextLen = clientName.length + clientAddr.length + customNameVal.length;
+      autoFitSinglePagePDF(items.length, extraTextLen);
 
       // 回傳純文字摘要供 LINE 複製使用
       const lineItemsText = items.map(function (it, i) {
         if (it.isFreeGift) return (i + 1) + ". " + it.title + "：免費附贈";
+        if (it.priceA < 0) {
+          return (i + 1) + ". " + it.title + "：折讓 -NT$ " + Math.abs(it.priceA).toLocaleString();
+        }
         if (displayMode === "ab_compare") {
           return (i + 1) + ". " + it.title + "｜A專車 $" + it.priceA.toLocaleString() + " / B平日 $" + it.priceB.toLocaleString();
         }
@@ -997,12 +1162,57 @@
         "\n✓ 均含法定缺氧作業主管、雙人專責戒護與500萬雇主職災團保";
     }
 
-    form.addEventListener("change", renderQuotation);
-    form.addEventListener("input", renderQuotation);
+    // 處理中文輸入法 (IME Composition) 與 rAF 節流，避免打字過程頻繁重繪 DOM 卡頓
+    let isComposing = false;
+    let renderRafId = null;
 
-    // 攔截系統 Ctrl+P 或手機瀏覽器選單列印事件，確保 100% 觸發單頁縮放鎖定
+    function scheduleRender() {
+      if (isComposing) return;
+      if (renderRafId !== null) cancelAnimationFrame(renderRafId);
+      renderRafId = requestAnimationFrame(function () {
+        renderQuotation();
+        renderRafId = null;
+      });
+    }
+
+    form.addEventListener("compositionstart", function () {
+      isComposing = true;
+    });
+    form.addEventListener("compositionend", function () {
+      isComposing = false;
+      scheduleRender();
+    });
+    form.addEventListener("change", renderQuotation);
+    form.addEventListener("input", scheduleRender);
+
+    // 列印前後檔名安全鎖定（支援按鈕觸發與系統 Ctrl+P / 手機選單列印，並在 afterprint 精準還原）
+    function applyPrintDocumentTitle() {
+      if (savedDocumentTitle === null) {
+        savedDocumentTitle = document.title;
+      }
+      const cName = (elClientName && elClientName.value.trim())
+        ? elClientName.value.trim().replace(/[\\/:*?"<>|]/g, "_")
+        : "社區與商場專案";
+      const dNo = (elDocNo && elDocNo.value.trim())
+        ? elDocNo.value.trim().replace(/[\\/:*?"<>|]/g, "_")
+        : "HS報價單";
+      document.title = "皓盛有限公司_單頁正式報價單_" + cName + "_" + dNo;
+    }
+
+    function restorePrintDocumentTitle() {
+      if (savedDocumentTitle !== null) {
+        document.title = savedDocumentTitle;
+        savedDocumentTitle = null;
+      }
+    }
+
     window.addEventListener("beforeprint", function () {
       renderQuotation();
+      applyPrintDocumentTitle();
+    });
+
+    window.addEventListener("afterprint", function () {
+      restorePrintDocumentTitle();
     });
 
     if (window.location.search.indexOf("from=") !== -1) {
@@ -1020,14 +1230,8 @@
     if (btnPrintPdf) {
       btnPrintPdf.addEventListener("click", function () {
         renderQuotation();
-        const originalTitle = document.title;
-        const cName = (elClientName && elClientName.value.trim()) ? elClientName.value.trim() : "社區與商場專案";
-        const dNo = (elDocNo && elDocNo.value.trim()) ? elDocNo.value.trim() : "HS報價單";
-        document.title = "皓盛有限公司_單頁正式報價單_" + cName + "_" + dNo;
+        applyPrintDocumentTitle();
         window.print();
-        setTimeout(function () {
-          document.title = originalTitle;
-        }, 1200);
       });
     }
 

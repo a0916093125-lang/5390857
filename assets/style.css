@@ -1033,3 +1033,27 @@ h1.main-title {
     line-height: 1.2 !important;
   }
 }
+
+/* ==========================================================================
+   v9.0 紅藍軍強化補丁：無障礙焦點環、Firefox 列印縮放備援與 Sticky 表格列印防重疊
+   ========================================================================== */
+.ba-slider-wrap:focus-visible {
+  outline: 3px solid #38bdf8;
+  outline-offset: 3px;
+}
+
+@media print {
+  .spec-table th:first-child,
+  .spec-table td:first-child {
+    position: static !important;
+    background: transparent !important;
+  }
+
+  @supports not (zoom: 1) {
+    .quote-paper-sheet {
+      transform: scale(var(--qp-print-zoom, 1)) !important;
+      transform-origin: top left !important;
+      width: calc(100% / var(--qp-print-zoom, 1)) !important;
+    }
+  }
+}
