@@ -24,7 +24,7 @@
   <meta name="twitter:description" content="輸入社區管委會或公司名稱，10秒產出帶統編 90221911 報價章、5% 營業稅與職安免責承諾書之單頁 A4 PDF 報價單！">
   <meta name="twitter:image" content="https://5390857.com/assets/og-quote.jpg">
   <meta name="twitter:image:alt" content="皓盛有限公司社區自來水塔與商用空調冷卻水塔 A/B 雙軌單頁 A4 正式工程報價單產生器">
-  <link rel="stylesheet" href="assets/style.css?v=13.1">
+  <link rel="stylesheet" href="assets/style.css?v=13.2">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -190,8 +190,8 @@
             <label class="calc-label" for="q-display-mode">1. 報價單呈現模式（A/B/C 三模式切換）</label>
             <select id="q-display-mode" class="calc-select" style="border-color:#38bdf8;font-weight:700;">
               <option value="ab_compare" selected>模式 A（最推薦）：A/B 雙軌並陳二選一報價單（讓管委會直接勾選）</option>
-              <option value="only_a">模式 B-1：僅顯示「A方案：指定時段專車全責（50%純益基準）」</option>
-              <option value="only_b">模式 B-2：僅顯示「B方案：平日彈性順路併單（35%純益基準）」</option>
+              <option value="only_a">模式 B-1：僅顯示「A方案：指定時段專車全責專案（配合指定吉日／休館時段）」</option>
+              <option value="only_b">模式 B-2：僅顯示「B方案：平日彈性順路併單特惠（授權週一至週五順路排程）」</option>
             </select>
           </div>
 
@@ -236,7 +236,7 @@
             <div class="calc-form-group">
               <label class="calc-label" for="q-wt-tonnage">水塔總噸數規模</label>
               <select id="q-wt-tonnage" class="calc-select">
-                <option value="10">10 噸以內（小型水塔｜專車4,600 / 平日3,800；入槽RC池按局限空間計）</option>
+                <option value="10">10 噸以內（頂樓不鏽鋼塔專車4,600 / 平日3,800；入槽RC池/FRP塔按局限空間3人編制計）</option>
                 <option value="50">20 ~ 50 噸（中小型華廈上下池｜專車13,000 / 平日10,500）</option>
                 <option value="120" selected>60 ~ 120 噸（標準社區大樓上下池｜專車23,000 / 平日17,500）</option>
                 <option value="200">150 ~ 250 噸以上（大型社區/商場雙池｜專車27,000 / 平日24,000）</option>
@@ -246,8 +246,8 @@
               <label class="calc-label" for="q-wt-material">水池結構材質</label>
               <select id="q-wt-material" class="calc-select">
                 <option value="concrete" selected>RC 鋼筋水泥蓄水池（須進入人孔，配置3人局限空間編制）</option>
-                <option value="stainless">SUS304 不鏽鋼水塔</option>
-                <option value="frp">FRP 玻璃纖維組合式水塔</option>
+                <option value="stainless">SUS304 不鏽鋼水塔（20噸以上表面光滑享減免優惠 $700~$1,500）</option>
+                <option value="frp">FRP 玻璃纖維組合式水塔（須進入人孔，配置3人局限空間編制）</option>
               </select>
             </div>
             <div class="calc-form-group" style="margin-bottom:0;">
@@ -294,7 +294,7 @@
             <div class="calc-checkbox-grid" style="grid-template-columns:1fr;">
               <label class="calc-check-item">
                 <input type="checkbox" id="q-chk-pvc">
-                <span>2吋內進水 PVC 球閥 / 青銅浮球閥更新（專車+3,800 / 平日+3,500）</span>
+                <span>2吋內進水／冷卻塔補給水 PVC 球閥與青銅浮球閥更新（專車+3,800 / 平日+3,500）</span>
               </label>
               <label class="calc-check-item">
                 <input type="checkbox" id="q-chk-level">
@@ -485,6 +485,6 @@
     <a href="quote.html" class="btn btn-amber">📄 產出單頁 PDF 報價單</a>
     <a href="https://line.me/ti/p/~0916093125" target="_blank" rel="noopener noreferrer" class="btn btn-line">💬 加 LINE 詢價</a>
   </div>
-  <script src="assets/cad-engine.js?v=13.1"></script>
+  <script src="assets/cad-engine.js?v=13.2"></script>
 </body>
 </html>
