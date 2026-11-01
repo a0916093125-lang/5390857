@@ -1,5 +1,5 @@
 /* ==========================================================================
-   皓盛有限公司 (5390857.com) - RWD 雙端防破版與 A4 單頁智慧鎖定列印樣式表 v13.2 (企業品牌形象專家重塑版＋60-30-10 雙欄旗艦首屏完全體)
+   皓盛有限公司 (5390857.com) - RWD 雙端防破版與 A4 單頁智慧鎖定列印樣式表 v14.0 (企業品牌形象專家重塑版＋60-30-10 雙欄旗艦首屏完全體)
    定位：給水機電事業部（社區大樓自來水塔）・商空水系統事業部（空調冷卻水塔）＋ 單頁 A4 報價系統
    統一編號：90221911 | 服務專線 & LINE：0916-093-125 | 信箱：ssuyuan@kimo.com
    ========================================================================== */
@@ -1575,7 +1575,7 @@ h1.main-title {
 
 
 /* ==========================================================================
-   v13.2 企業品牌形象專區卡片 (.corp-pillar-card)
+   v14.0 企業品牌形象專區卡片 (.corp-pillar-card)
    ========================================================================== */
 .corp-pillar-card {
   position: relative;
@@ -1614,4 +1614,44 @@ h1.main-title {
   font-size: 0.93rem;
   color: #cbd5e1;
   line-height: 1.72;
+}
+
+
+/* ==========================================================================
+   v14.0 試算器跨頁無縫直傳與智慧規格收合面板 (.tech-specs-toggle-btn)
+   ========================================================================== */
+.btn {
+  text-wrap: balance;
+}
+
+.tech-specs-toggle-btn {
+  width: 100%;
+  text-align: left;
+  background: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  color: #6ee7b7;
+  padding: 11px 14px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  cursor: pointer;
+  margin-bottom: 14px;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.tech-specs-toggle-btn:hover {
+  background: rgba(16, 185, 129, 0.24);
+  border-color: #34d399;
+}
+
+.tech-specs-collapse-box {
+  background: rgba(8, 14, 28, 0.55);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 16px;
+}
+
+.tech-specs-collapse-box.is-collapsed {
+  display: none;
 }

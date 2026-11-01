@@ -1,5 +1,5 @@
 /**
- * 皓盛有限公司 (5390857.com) - 雙引擎試算與 A4 單頁智慧鎖定報價核心系統 (v13.2 雙專家滿分完全體正式版)
+ * 皓盛有限公司 (5390857.com) - 雙引擎試算與 A4 單頁智慧鎖定報價核心系統 (v14.0 雙專家滿分完全體正式版)
  * 涵蓋模組：
  * 1. Before/After 清洗前後視覺對比拉桿（Pointer Events ＋ 鍵盤無障礙 A11y ＋ rAF 節流與失焦保護）
  * 2. 社區大樓自來水塔 A/B 雙軌試算器 ＋ 跨頁雙向記憶與無汙染帶入報價單生成器 (localStorage + pageshow/storage)
@@ -111,7 +111,9 @@
     }, 3400);
   }
 
-  /* 跨頁草稿讀取（向下相容 v10/v8 舊鍵值，加上嚴格型別驗證防止損毀 JSON 崩潰） */
+  let memoryDraftFallback = null;
+
+  /* 跨頁草稿讀取（支援記憶體保底 memoryDraftFallback，即使無痕模式或 WebView 封鎖 localStorage 亦 100% 可用） */
   function loadQuoteDraft() {
     try {
       let raw = localStorage.getItem(DRAFT_STORAGE_KEY);
@@ -121,24 +123,25 @@
           if (raw) break;
         }
       }
-      if (!raw) return null;
-      const parsed = JSON.parse(raw);
-      if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
-        return null;
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+          memoryDraftFallback = Object.assign({}, memoryDraftFallback || {}, parsed);
+          return memoryDraftFallback;
+        }
       }
-      return parsed;
-    } catch (e) {
-      return null;
-    }
+    } catch (e) {}
+    return memoryDraftFallback;
   }
 
-  /* 跨頁草稿儲存（採用無損合併 Object.assign，同步寫入新版與相容鍵值） */
+  /* 跨頁草稿儲存（同時寫入記憶體保底與 localStorage，確保 URL 參數直傳在任何沙盒或無痕環境下 100% 生效） */
   function saveQuoteDraft(draftPatch) {
+    const existing = loadQuoteDraft() || {};
+    const merged = Object.assign({}, existing, draftPatch, {
+      updatedAt: Date.now()
+    });
+    memoryDraftFallback = merged;
     try {
-      const existing = loadQuoteDraft() || {};
-      const merged = Object.assign({}, existing, draftPatch, {
-        updatedAt: Date.now()
-      });
       const serialized = JSON.stringify(merged);
       localStorage.setItem(DRAFT_STORAGE_KEY, serialized);
       for (let i = 0; i < LEGACY_STORAGE_KEYS.length; i++) {
@@ -622,7 +625,21 @@
     if (btnToQuote) {
       btnToQuote.addEventListener("click", function () {
         calculate(true, true);
-        window.location.href = "quote.html?from=water-tank";
+        const isBoth = Boolean(chkCool && chkCool.checked);
+        const qParams = new URLSearchParams({
+          from: "water-tank",
+          cat: isBoth ? "both" : "water_tank",
+          mode: scheduleSelect ? scheduleSelect.value : "priority_50",
+          reg: regionSelect ? regionSelect.value : "台北市 / 新北市",
+          ton: tonSelect ? tonSelect.value : "50",
+          mat: matSelect ? matSelect.value : "concrete",
+          pools: poolCountSelect ? poolCountSelect.value : "0",
+          pvc: (chkPvcValve && chkPvcValve.checked) ? "1" : "0",
+          bf: (chkButterfly && chkButterfly.checked) ? "1" : "0",
+          lvl: (chkLevel && chkLevel.checked) ? "1" : "0",
+          tax: (chkTax && chkTax.checked) ? "1" : "0"
+        });
+        window.location.href = "quote.html?" + qParams.toString() + "#qp-workspace-anchor";
       });
     }
   }
@@ -852,7 +869,23 @@
     if (btnCtToQuote) {
       btnCtToQuote.addEventListener("click", function () {
         calcCoolingTower(true, true);
-        window.location.href = "quote.html?from=cooling-tower";
+        const existingDraft = loadQuoteDraft() || {};
+        const nextCat = (existingDraft.serviceCategory === "both") ? "both" : "cooling_tower";
+        const qParams = new URLSearchParams({
+          from: "cooling-tower",
+          cat: nextCat,
+          mode: scheduleSelect ? scheduleSelect.value : "priority_50",
+          reg: regionSelect ? regionSelect.value : "台北市 / 新北市",
+          rt: rtSelect ? rtSelect.value : "100",
+          type: typeSelect ? typeSelect.value : "open_round",
+          cnt: countSelect ? countSelect.value : "0",
+          fill: (chkFill && chkFill.checked) ? "1" : "0",
+          bf: (chkButterfly && chkButterfly.checked) ? "1" : "0",
+          pvc: (chkBallValve && chkBallValve.checked) ? "1" : "0",
+          inv: (chkInverter && chkInverter.checked) ? "1" : "0",
+          tax: (chkTax && chkTax.checked) ? "1" : "0"
+        });
+        window.location.href = "quote.html?" + qParams.toString() + "#qp-workspace-anchor";
       });
     }
   }
@@ -1708,11 +1741,71 @@
       } catch (e) {}
     }
 
-    // 頁面初次進入：解析 ?from= 參數，若有儲存的草稿自動無縫載入
+    // 智慧規格收合面板控制（從試算器跳轉過來時自動收合重複的規格選單，直接聚焦客戶寶號與 A4 報價單）
+    const btnToggleSpecs = document.getElementById("btn-toggle-tech-specs");
+    const boxSpecsCollapse = document.getElementById("q-tech-specs-collapse");
+    const lblToggleSpecs = document.getElementById("tech-specs-toggle-label");
+
+    function setSpecsCollapsed(collapsed) {
+      if (!boxSpecsCollapse || !btnToggleSpecs) return;
+      boxSpecsCollapse.classList.toggle("is-collapsed", Boolean(collapsed));
+      btnToggleSpecs.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      if (lblToggleSpecs) {
+        lblToggleSpecs.textContent = collapsed
+          ? "✓ 3. 已自動帶入您剛才選好的水塔與閥件規格（點此展開微調規格 ▸）"
+          : "🔧 3. 工程規格與機電加購明細（點此收合規格選單 ▾）";
+      }
+    }
+
+    if (btnToggleSpecs && boxSpecsCollapse) {
+      btnToggleSpecs.addEventListener("click", function () {
+        const isCurrentlyCollapsed = boxSpecsCollapse.classList.contains("is-collapsed");
+        setSpecsCollapsed(!isCurrentlyCollapsed);
+      });
+    }
+
+    // 頁面初次進入：解析 URL 參數（支援網址參數直傳＋localStorage 雙重保障，徹底免除手動按載入）
     let fromParamVal = "";
     try {
       const params = new URLSearchParams(window.location.search || "");
       fromParamVal = params.get("from") || "";
+      if (fromParamVal === "water-tank") {
+        const urlPatch = {
+          serviceCategory: params.get("cat") || "water_tank",
+          scheduleMode: params.get("mode") || "priority_50",
+          displayMode: "ab_compare"
+        };
+        if (params.get("reg")) urlPatch.region = params.get("reg");
+        if (params.get("ton")) urlPatch.wtTonnage = params.get("ton");
+        if (params.get("mat")) urlPatch.wtMaterial = params.get("mat");
+        if (params.get("pools") !== null) urlPatch.wtPoolCount = params.get("pools");
+        if (params.get("pvc") !== null) urlPatch.chkPvcValve = (params.get("pvc") === "1");
+        if (params.get("bf") !== null) urlPatch.chkButterfly = (params.get("bf") === "1");
+        if (params.get("lvl") !== null) urlPatch.chkLevel = (params.get("lvl") === "1");
+        if (params.get("tax") !== null) urlPatch.chkTax = (params.get("tax") === "1");
+        if (urlPatch.serviceCategory === "both") {
+          urlPatch.ctRtScale = "50";
+          urlPatch.ctTowerType = "open_round";
+          urlPatch.ctTowerCount = "0";
+        }
+        saveQuoteDraft(urlPatch);
+      } else if (fromParamVal === "cooling-tower") {
+        const urlPatch = {
+          serviceCategory: params.get("cat") || "cooling_tower",
+          scheduleMode: params.get("mode") || "priority_50",
+          displayMode: "ab_compare"
+        };
+        if (params.get("reg")) urlPatch.region = params.get("reg");
+        if (params.get("rt")) urlPatch.ctRtScale = params.get("rt");
+        if (params.get("type")) urlPatch.ctTowerType = params.get("type");
+        if (params.get("cnt") !== null) urlPatch.ctTowerCount = params.get("cnt");
+        if (params.get("fill") !== null) urlPatch.chkFill = (params.get("fill") === "1");
+        if (params.get("bf") !== null) urlPatch.chkButterfly = (params.get("bf") === "1");
+        if (params.get("pvc") !== null) urlPatch.chkPvcValve = (params.get("pvc") === "1");
+        if (params.get("inv") !== null) urlPatch.chkInverter = (params.get("inv") === "1");
+        if (params.get("tax") !== null) urlPatch.chkTax = (params.get("tax") === "1");
+        saveQuoteDraft(urlPatch);
+      }
     } catch (e) {
       if (window.location.search.indexOf("from=water-tank") !== -1) fromParamVal = "water-tank";
       else if (window.location.search.indexOf("from=cooling-tower") !== -1) fromParamVal = "cooling-tower";
@@ -1724,10 +1817,19 @@
       renderQuotation(false);
     }
 
-    if (btnLoadDraft) {
-      btnLoadDraft.addEventListener("click", function () {
-        applyStoredDraft(true, "");
-      });
+    // 若從試算器跳轉而來，自動收合已選好的重複規格欄並將視線聚焦至報價單工作台
+    if (fromParamVal) {
+      setSpecsCollapsed(true);
+      setTimeout(function () {
+        const targetAnchor = document.getElementById("qp-workspace-anchor") || paperSheet;
+        if (targetAnchor && typeof targetAnchor.scrollIntoView === "function") {
+          try {
+            targetAnchor.scrollIntoView({ behavior: "smooth", block: "start" });
+          } catch (err) {
+            targetAnchor.scrollIntoView();
+          }
+        }
+      }, 80);
     }
 
     if (btnPrintPdf) {
