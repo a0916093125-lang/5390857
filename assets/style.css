@@ -1,5 +1,5 @@
 /* ==========================================================================
-   皓盛有限公司 (5390857.com) - RWD 雙端防破版與 A4 單頁智慧鎖定列印樣式表 v8.0
+   皓盛有限公司 (5390857.com) - RWD 雙端防破版與 A4 單頁智慧鎖定列印樣式表 v11.0 (紅藍軍終極修復版)
    定位：洗自來水塔為主（70%）・商用空調冷卻水塔保養為輔（30%）＋ 單頁 A4 報價系統
    統一編號：90221911 | 服務專線 & LINE：0916-093-125 | 信箱：ssuyuan@kimo.com
    ========================================================================== */
@@ -1035,11 +1035,117 @@ h1.main-title {
 }
 
 /* ==========================================================================
-   v9.0 紅藍軍強化補丁：無障礙焦點環、Firefox 列印縮放備援與 Sticky 表格列印防重疊
+   v11.0 紅藍軍終極強化補丁：
+   1. 專屬加購項跨類別禁用防誤觸樣式 (.is-disabled-addon)
+   2. 離線 A4 標準可列印寬度 (733px) 模擬沙盒精準度量衡 (.hs-print-sim-sheet)
+   3. 跨瀏覽器 @supports not (zoom: 1) 列印防溢頁鎖定與無障礙焦點環
    ========================================================================== */
 .ba-slider-wrap:focus-visible {
   outline: 3px solid #38bdf8;
   outline-offset: 3px;
+}
+
+.calc-check-item.is-disabled-addon {
+  opacity: 0.42;
+  cursor: not-allowed;
+  background: rgba(15, 23, 42, 0.4);
+  border-style: dashed;
+}
+
+.calc-check-item.is-disabled-addon input[type="checkbox"] {
+  cursor: not-allowed;
+}
+
+/* 離線 A4 高度量測沙盒：100% 同步 @media print 字級、行距與內距，消除桌機與手機螢幕樣式誤差 */
+.hs-print-sim-sheet {
+  font-size: 9.5pt !important;
+  line-height: 1.32 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.hs-print-sim-sheet .qp-header {
+  padding-bottom: 6px !important;
+  margin-bottom: 8px !important;
+}
+
+.hs-print-sim-sheet .qp-company-title {
+  font-size: 14pt !important;
+}
+
+.hs-print-sim-sheet .qp-company-sub {
+  font-size: 8pt !important;
+  line-height: 1.3 !important;
+}
+
+.hs-print-sim-sheet .qp-meta-grid {
+  grid-template-columns: 1.35fr 1fr !important;
+  gap: 4px 14px !important;
+  padding: 6px 10px !important;
+  margin-bottom: 8px !important;
+  font-size: 8.5pt !important;
+}
+
+.hs-print-sim-sheet .qp-table-wrap {
+  margin-bottom: 8px !important;
+  overflow: visible !important;
+}
+
+.hs-print-sim-sheet .qp-table th,
+.hs-print-sim-sheet .qp-table td {
+  padding: 4.5px 7px !important;
+  font-size: 8.5pt !important;
+  line-height: 1.25 !important;
+}
+
+.hs-print-sim-sheet .qp-summary-box {
+  padding: 7px 10px !important;
+  margin-bottom: 8px !important;
+}
+
+.hs-print-sim-sheet .qp-total-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+}
+
+.hs-print-sim-sheet .qp-plan-card {
+  padding: 6px 10px !important;
+}
+
+.hs-print-sim-sheet .qp-plan-price {
+  font-size: 11.5pt !important;
+}
+
+.hs-print-sim-sheet .qp-compliance-box {
+  padding: 6px 10px !important;
+  margin-bottom: 8px !important;
+  font-size: 7.8pt !important;
+  line-height: 1.28 !important;
+}
+
+.hs-print-sim-sheet .qp-sign-grid {
+  grid-template-columns: 1.25fr 1fr !important;
+  gap: 10px !important;
+  padding-top: 8px !important;
+}
+
+.hs-print-sim-sheet .qp-stamp-box {
+  padding: 7px 10px !important;
+}
+
+.hs-print-sim-sheet[data-density="ultra"] .qp-table th,
+.hs-print-sim-sheet[data-density="ultra"] .qp-table td {
+  padding: 3px 5px !important;
+  font-size: 7.8pt !important;
+  line-height: 1.18 !important;
+}
+
+.hs-print-sim-sheet[data-density="ultra"] .qp-compliance-box {
+  padding: 4px 8px !important;
+  font-size: 7.2pt !important;
+  line-height: 1.2 !important;
 }
 
 @media print {
@@ -1049,11 +1155,18 @@ h1.main-title {
     background: transparent !important;
   }
 
+  /* 修復 [紅軍 #7]：針對不支援 CSS zoom 之列印引擎，限制單頁最大高度並消除 scale 殘留空白佔位 */
   @supports not (zoom: 1) {
+    html, body {
+      max-height: 284mm !important;
+      overflow: hidden !important;
+    }
     .quote-paper-sheet {
       transform: scale(var(--qp-print-zoom, 1)) !important;
       transform-origin: top left !important;
       width: calc(100% / var(--qp-print-zoom, 1)) !important;
+      max-height: calc(284mm / var(--qp-print-zoom, 1)) !important;
+      overflow: hidden !important;
     }
   }
 }
