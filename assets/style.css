@@ -1,24 +1,33 @@
 /* ==========================================================================
-   皓盛有限公司 (5390857.com) - RWD 雙端防破版與 A4 單頁智慧鎖定列印樣式表 v11.1 (紅藍軍＋雙專家滿分完全體正式版)
+   皓盛有限公司 (5390857.com) - RWD 雙端防破版與 A4 單頁智慧鎖定列印樣式表 v12.0 (60-30-10 頂級機電美學配色＋雙欄旗艦首屏完全體版)
    定位：洗自來水塔為主（70%）・商用空調冷卻水塔保養為輔（30%）＋ 單頁 A4 報價系統
    統一編號：90221911 | 服務專線 & LINE：0916-093-125 | 信箱：ssuyuan@kimo.com
    ========================================================================== */
 
 :root {
-  --bg-dark: #070d19;
-  --bg-card: #0f172a;
-  --bg-elevated: #1e293b;
+  /* 60-30-10 專業水系統與機電工程品牌調色盤 (v12.0 Design Tokens) */
+  --bg-dark: #080e1c;
+  --bg-canvas: #080e1c;
+  --bg-card: #0f182b;
+  --bg-surface-glass: rgba(17, 27, 48, 0.78);
+  --bg-elevated: #18253e;
   --primary: #0ea5e9;
   --primary-hover: #0284c7;
+  --accent-water: #0ea5e9;
+  --accent-water-glow: rgba(14, 165, 233, 0.32);
   --accent-green: #10b981;
+  --accent-safety: #10b981;
   --accent-amber: #f59e0b;
+  --accent-contract: #f59e0b;
   --accent-danger: #ef4444;
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
-  --border-color: rgba(148, 163, 184, 0.18);
+  --border-color: rgba(148, 163, 184, 0.16);
+  --inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --font-mono: "JetBrains Mono", "Inter", "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --radius-lg: 16px;
   --radius-md: 12px;
-  --shadow-lg: 0 12px 32px -4px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 16px 40px -8px rgba(0, 0, 0, 0.55);
   --qp-print-zoom: 1;
 }
 
@@ -1169,4 +1178,322 @@ h1.main-title {
       overflow: hidden !important;
     }
   }
+}
+
+
+/* ==========================================================================
+   v12.0 方案 A：60-30-10 微光毛玻璃配色系統 ＋ 左文右「機電信任儀表板」雙欄旗艦首屏
+   ========================================================================== */
+.price-highlight,
+.spec-table td,
+.qp-table td.num-col,
+.qp-plan-price,
+.hero-metric-val,
+.hero-rate-val {
+  font-variant-numeric: tabular-nums;
+}
+
+.card {
+  box-shadow: var(--inner-highlight), 0 10px 28px -6px rgba(0, 0, 0, 0.42);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.btn {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.hero-flagship {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(14, 165, 233, 0.18), transparent 48%),
+    radial-gradient(circle at 88% 82%, rgba(16, 185, 129, 0.14), transparent 52%),
+    linear-gradient(180deg, rgba(15, 24, 43, 0.96) 0%, rgba(8, 14, 28, 0.99) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.26);
+  box-shadow: var(--inner-highlight), var(--shadow-lg);
+  padding: clamp(22px, 4vw, 40px);
+}
+
+.hero-split-grid {
+  display: grid;
+  grid-template-columns: 1.32fr 1fr;
+  gap: clamp(20px, 3vw, 32px);
+  align-items: stretch;
+}
+
+@media (max-width: 980px) {
+  .hero-split-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.hero-copy-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hero-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 10px #10b981;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.hero-trust-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #6ee7b7;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.text-gradient-cyan {
+  background: linear-gradient(135deg, #38bdf8 0%, #7dd3fc 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-emerald {
+  background: linear-gradient(135deg, #34d399 0%, #6ee7b7 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* 1 主軸（雙引擎試算）＋ 2 輔（單頁 PDF 報價單 ／ LINE）CTA 動線結構 */
+.hero-cta-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.hero-cta-primary-row,
+.hero-cta-secondary-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .hero-cta-primary-row,
+  .hero-cta-secondary-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.hero-btn-main {
+  min-height: 52px;
+  font-size: 1rem;
+  letter-spacing: 0.2px;
+}
+
+.btn-emerald-glass {
+  background: rgba(16, 185, 129, 0.14);
+  color: #6ee7b7;
+  border: 1.5px solid rgba(16, 185, 129, 0.5);
+  box-shadow: var(--inner-highlight), 0 6px 18px rgba(16, 185, 129, 0.16);
+}
+
+.btn-emerald-glass:hover {
+  background: rgba(16, 185, 129, 0.24);
+  border-color: #34d399;
+  color: #ffffff;
+}
+
+.btn-amber-glass {
+  background: rgba(245, 158, 11, 0.14);
+  color: #fcd34d;
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  box-shadow: var(--inner-highlight);
+}
+
+.btn-amber-glass:hover {
+  background: rgba(245, 158, 11, 0.25);
+  border-color: #fbbf24;
+  color: #ffffff;
+}
+
+/* 右側：毛玻璃「機電實戰信任與雙軌報價快覽儀表板 (Bento Dashboard)」 */
+.hero-bento-panel {
+  background: var(--bg-surface-glass);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: var(--inner-highlight), 0 12px 32px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.hero-bento-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.hero-bento-title {
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: #e2e8f0;
+  letter-spacing: 0.3px;
+}
+
+.hero-bento-tag {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #38bdf8;
+  background: rgba(14, 165, 233, 0.14);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.hero-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+@media (max-width: 350px) {
+  .hero-bento-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.hero-metric-card {
+  background: rgba(8, 14, 28, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: var(--inner-highlight);
+}
+
+.hero-metric-val {
+  font-family: var(--font-mono);
+  font-size: clamp(1.15rem, 2vw, 1.38rem);
+  font-weight: 900;
+  color: #38bdf8;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+
+.hero-metric-unit {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #93c5fd;
+}
+
+.hero-val-emerald {
+  color: #34d399;
+}
+
+.hero-val-amber {
+  color: #fbbf24;
+}
+
+.hero-metric-label {
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: #f8fafc;
+  margin-bottom: 2px;
+}
+
+.hero-metric-desc {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  line-height: 1.35;
+}
+
+.hero-rate-strip {
+  background: rgba(15, 23, 42, 0.88);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hero-rate-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 0.8rem;
+}
+
+.hero-rate-badge {
+  font-weight: 800;
+  font-size: 0.78rem;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.badge-plan-a {
+  background: rgba(14, 165, 233, 0.16);
+  color: #38bdf8;
+}
+
+.badge-plan-b {
+  background: rgba(16, 185, 129, 0.16);
+  color: #34d399;
+}
+
+.hero-rate-val {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  color: #f8fafc;
+  font-size: 0.8rem;
+}
+
+.hero-rate-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed rgba(148, 163, 184, 0.22);
+  font-size: 0.78rem;
+  color: #cbd5e1;
+}
+
+.hero-rate-link {
+  font-weight: 800;
+  color: #fbbf24;
+}
+
+.hero-rate-link:hover {
+  color: #fde68a;
 }
