@@ -1,5 +1,5 @@
 /* ==========================================================================
-   皓盛有限公司 (5390857.com) - RWD 雙端防破版與 A4 單頁智慧鎖定列印樣式表 v12.0 (60-30-10 頂級機電美學配色＋雙欄旗艦首屏完全體版)
+   皓盛有限公司 (5390857.com) - RWD 雙端防破版與 A4 單頁智慧鎖定列印樣式表 v13.0 (企業品牌形象專家重塑版＋60-30-10 雙欄旗艦首屏完全體)
    定位：洗自來水塔為主（70%）・商用空調冷卻水塔保養為輔（30%）＋ 單頁 A4 報價系統
    統一編號：90221911 | 服務專線 & LINE：0916-093-125 | 信箱：ssuyuan@kimo.com
    ========================================================================== */
@@ -1496,4 +1496,122 @@ h1.main-title {
 
 .hero-rate-link:hover {
   color: #fde68a;
+}
+
+/* ==========================================================================
+   v12.0 雙端視覺精雕補丁（Desktop 隱藏手機底部列、Mobile 導覽列單行橫滑與首屏對稱）
+   ========================================================================== */
+@media (min-width: 861px) {
+  .mobile-sticky-bar {
+    display: none !important;
+  }
+  .site-footer {
+    padding-bottom: 44px;
+  }
+}
+
+.hero-btn-main {
+  min-height: 50px;
+  font-size: 0.94rem;
+  padding: 10px 14px;
+  white-space: nowrap;
+}
+
+@media (max-width: 860px) {
+  .trust-topbar {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+  }
+  .nav-container {
+    padding: 8px 12px;
+    gap: 8px;
+  }
+  .nav-links {
+    width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 6px;
+    padding-bottom: 2px;
+  }
+  .nav-links::-webkit-scrollbar {
+    display: none;
+  }
+  .nav-link {
+    flex-shrink: 0;
+    min-height: 38px;
+    padding: 6px 11px;
+    font-size: 0.84rem;
+  }
+  .hero-flagship {
+    padding: 18px 14px;
+  }
+  h1.main-title {
+    font-size: clamp(1.42rem, 6vw, 1.95rem);
+    margin-bottom: 10px;
+  }
+  .subtitle-pill {
+    font-size: 0.88rem;
+    padding: 8px 12px;
+    margin-bottom: 14px;
+  }
+  .hero-btn-main {
+    white-space: normal;
+  }
+  .mobile-sticky-bar {
+    padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px));
+    gap: 6px;
+  }
+  .mobile-sticky-bar .btn {
+    min-height: 44px;
+    font-size: 0.82rem;
+    padding: 8px 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+
+/* ==========================================================================
+   v13.0 企業品牌形象專區卡片 (.corp-pillar-card)
+   ========================================================================== */
+.corp-pillar-card {
+  position: relative;
+  background: linear-gradient(180deg, rgba(24, 37, 62, 0.85) 0%, rgba(15, 24, 43, 0.95) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.corp-pillar-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(56, 189, 248, 0.55);
+}
+
+.corp-pillar-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(14, 165, 233, 0.16);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+}
+
+.corp-pillar-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.35;
+}
+
+.corp-pillar-desc {
+  font-size: 0.93rem;
+  color: #cbd5e1;
+  line-height: 1.72;
 }
