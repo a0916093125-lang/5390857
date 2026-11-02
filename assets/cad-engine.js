@@ -1,5 +1,5 @@
 /**
- * 皓盛有限公司 (5390857.com) - 雙引擎試算與 A4 單頁智慧鎖定報價核心系統 (v20.0 雙專家滿分完全體正式版)
+ * 皓盛有限公司 (5390857.com) - 雙引擎試算與 A4 單頁智慧鎖定報價核心系統 (v20.1 雙專家滿分完全體正式版)
  * 涵蓋模組：
  * 1. Before/After 清洗前後視覺對比拉桿（Pointer Events ＋ 鍵盤無障礙 A11y ＋ rAF 節流與失焦保護）
  * 2. 社區大樓自來水塔 A/B 雙軌試算器 ＋ 跨頁雙向記憶與無汙染帶入報價單生成器 (localStorage + pageshow/storage)
@@ -913,7 +913,7 @@
   }
 
 
-  /* 3B. 新增引擎：冷氣與商用中央空調（四方吹/吊隱FCU/大型AHU/分離式）A/B 雙軌包套＆水塔同日順洗試算器 (v20.0) */
+  /* 3B. 新增引擎：冷氣與商用中央空調（四方吹/吊隱FCU/大型AHU/分離式）A/B 雙軌包套＆水塔同日順洗試算器 (v20.1) */
   function initAcCleaningCalculator() {
     const form = document.getElementById("ac-cleaning-calc-form");
     if (!form) return;
@@ -1170,6 +1170,7 @@
     const outThead = document.getElementById("qp-table-thead");
     const outTbody = document.getElementById("qp-table-tbody");
     const outSummaryArea = document.getElementById("qp-summary-area");
+    const outComplianceArea = document.getElementById("qp-compliance-area");
     const outDecisionArea = document.getElementById("qp-decision-area");
 
     const btnPrintPdf = document.getElementById("btn-q-print");
@@ -1935,8 +1936,56 @@
         }
       }
 
-      // 渲染管委會簽核勾選區（動態帶入報價年份 docYear，消除寫死 2026 跨年誤差）
+      // 依工程類別智慧動態切換專屬「職安合規免責承諾書暨機電保護／保固條款」 (v20.1)
+      if (outComplianceArea) {
+        if (cat === "ac_cleaning") {
+          outComplianceArea.innerHTML =
+            "<div style='font-weight:900;color:#0369a1;margin-bottom:2px;font-size:0.84rem;'>" +
+              "🛡️ 皓盛有限公司【冷氣與中央空調機電防護・職安免責承諾書】暨【洗後保固條款】" +
+            "</div>" +
+            "<ol style='padding-left:16px;margin:0;'>" +
+              "<li><strong>雙人正職機電編制與 LOTO 電腦板防水保護</strong>：由具備實戰中央空調背景之雙人正職技師出勤（具甲種職安業務主管合格認證），施工前執行迴路斷電驗電（LOTO 掛牌）並以專用防水隔離罩完整包覆電腦主機板、變頻模組與感溫器，絕不洗壞機板。</li>" +
+              "<li><strong>親水鋁鰭片環保藥洗與果凍淤泥根治滴水</strong>：採用不傷藍波親水塗層之環保洗劑深層拆洗風鼓葉輪與蒸發器鰭片，徹底抽除集水盤「果凍狀生物膜」、高壓打通排水管路並點檢自動排水器（Drain Pump）與浮球開關，根治冷氣滴水與酸臭霉味。</li>" +
+              "<li><strong>正職勞健保、500萬團保免責與測溫驗收保固</strong>：全體出勤人員均具正職勞健保與 500 萬職災團保，高處爬梯與機電作業安全概由本公司負全責（<strong>貴公司與管委會 100% 免除連帶風險</strong>）；完工實測出風溫差（ΔT）與運轉電流，附前後對比照片驗收並享洗後運轉與排水暢通保固。</li>" +
+            "</ol>";
+        } else if (cat === "cooling_tower") {
+          outComplianceArea.innerHTML =
+            "<div style='font-weight:900;color:#0369a1;margin-bottom:2px;font-size:0.84rem;'>" +
+              "🛡️ 皓盛有限公司【商用空調冷卻水塔 EHS 職安免責承諾書】暨【機電 LOTO 保護條款】" +
+            "</div>" +
+            "<ol style='padding-left:16px;margin:0;'>" +
+              "<li><strong>甲種職安＆缺氧主管雙證與風機 LOTO 斷電掛牌</strong>：本公司具備政府核發「甲種職業安全衛生業務主管」與「缺氧作業主管」雙證資格（進場隨附證照與保單備查）。入塔作業前嚴格執行散熱風機與水泵斷電掛牌上鎖（LOTO）及高處防墜戒護，防止風機誤啟動造成工安風險。</li>" +
+              "<li><strong>散熱材定壓沖洗、底盤吸泥與循環水質檢測</strong>：逐孔疏通頂部旋轉播水頭／雙側重力播水盆，以定壓水刀沖洗 PVC 散熱材填料、徹底吸除水盤鐵鏽青苔淤泥並清洗吸水濾網與 Y 型過濾器；完工免費檢測循環水 pH/TDS 指標，並支援代客送驗 SGS 退伍軍人菌正式報告。</li>" +
+              "<li><strong>正職勞健保、500萬團保免責與電流實測驗收</strong>：全體出勤人員均具正職勞健保與 500 萬雇主職災團保，施工期間職安責任概由本公司完全承擔（<strong>貴商場與貴公司 100% 免除連帶風險</strong>）；復水後實測風機三相電流、皮帶張力與減速機運轉，交付前後對比照片報告驗收付款。</li>" +
+            "</ol>";
+        } else if (cat === "water_tank") {
+          outComplianceArea.innerHTML =
+            "<div style='font-weight:900;color:#0369a1;margin-bottom:2px;font-size:0.84rem;'>" +
+              "🛡️ 皓盛有限公司【國家級雙職安主管資格・局限空間合規免責承諾書】暨【機電保護條款】" +
+            "</div>" +
+            "<ol style='padding-left:16px;margin:0;'>" +
+              "<li><strong>甲種職安＆缺氧作業主管雙證與法定 3 人編制</strong>：本公司具備政府核發「甲種職業安全衛生業務主管」與「缺氧作業主管」雙證資格（進場隨附證照與保單正影本供查驗）。凡入槽作業一律配置「池內技師＋池外人孔專責監視＋缺氧作業主管」3 人以上編制，入槽前執行強制通風與氣體測定（O₂ ≧ 18%），以 50~100ppm 食品級次氯酸鈉消毒，完工免費實測現場 3 項水質（餘氯 0.2~1.0mg/L、pH 6.0~8.5、TDS ≦500mg/L），並支援代客送驗 SGS 大腸桿菌群正式報告。</li>" +
+              "<li><strong>正職勞健保與 500 萬職災團保免責保障</strong>：全體出勤人員均具正職勞健保與 500 萬雇主意外責任險／職災團保；施工期間若發生任何職安事故概由本公司負完全法律責任，<strong>貴社區管委會與貴公司 100% 免除連帶賠償與勞檢罰則風險</strong>。</li>" +
+              "<li><strong>機電排氣復歸與驗收付款</strong>：施工前切斷揚水／加壓泵浦電源（LOTO 掛牌防止無水空轉燒毀軸封），完工注水後執行公共管路排氣、電流實測與液位迴路測試；工程完畢交付「清洗前後實景對比照片報告」驗收無誤後一次付清款項。</li>" +
+            "</ol>";
+        } else {
+          outComplianceArea.innerHTML =
+            "<div style='font-weight:900;color:#0369a1;margin-bottom:2px;font-size:0.84rem;'>" +
+              "🛡️ 皓盛有限公司【水系統與空調機電全責職安免責承諾書】暨【複合工程保固條款】" +
+            "</div>" +
+            "<ol style='padding-left:16px;margin:0;'>" +
+              "<li><strong>國家級雙職安證照、局限空間 3 人編制與水質實測</strong>：具備「甲種職安業務主管＋缺氧作業主管」雙證資格。蓄水池入槽嚴格配置 3 人編制並實測氧氣（O₂ ≧ 18%），以 50~100ppm 次氯酸鈉消毒並免費實測餘氯（0.2~1.0mg/L）、pH 與 TDS 水質（支援代驗 SGS 大腸桿菌群／退伍軍人菌）。</li>" +
+              "<li><strong>給水泵浦與冷氣／冷卻塔 LOTO 電腦板防水保護</strong>：施工前標準切換揚水／加壓泵浦與空調電源（LOTO 斷電掛牌），冷氣拆洗全程以專用防水罩密封電腦機板、抽除集水盤果凍淤泥並高壓疏通排水管；復歸後實測管路排氣、出風溫差（ΔT）與馬達運轉電流。</li>" +
+              "<li><strong>正職勞健保、500萬職災團保免責與驗收保固</strong>：全體出勤技師均具正職勞健保與 500 萬職災團保，施工期間職安責任概由本公司負完全法律責任（<strong>貴社區管委會與貴公司 100% 免責</strong>）；完工交付「清洗前後實景對比照片報告」驗收無誤後一次付清款項。</li>" +
+            "</ol>";
+        }
+      }
+
+      // 渲染管委會／客戶簽核勾選區（依類別智慧調整停水公告或空調斷電提示）
       if (outDecisionArea) {
+        const scheduleNotice = (cat === "ac_cleaning")
+          ? "（施工前協調分區空調斷電與施作動線）"
+          : (cat === "cooling_tower" ? "（施工前協調冷卻水塔分塔隔離或停機時段）" : "（停水公告於施工前3日張貼）");
         if (displayMode === "ab_compare") {
           outDecisionArea.innerHTML =
             "<div style='font-weight:900;color:#0f172a;margin-bottom:4px;font-size:0.84rem;'>【客戶／社區管委會決議簽核欄（二選一打勾回傳）】</div>" +
@@ -1948,7 +1997,7 @@
           outDecisionArea.innerHTML =
             "<div style='font-weight:900;color:#0f172a;margin-bottom:4px;font-size:0.84rem;'>【客戶／社區管委會正式委託簽認欄】</div>" +
             "<div style='margin-bottom:6px;font-size:0.8rem;'>茲同意委託皓盛有限公司依本報價單規格進場施作，核定總額 <strong>NT$ " + chosenTot.toLocaleString() + " 元</strong>。</div>" +
-            "<div style='margin-bottom:8px;font-size:0.8rem;'>預計施工日期：" + escapeHtml(docYear) + " 年 ____ 月 ____ 日（停水公告於施工前3日張貼）</div>" +
+            "<div style='margin-bottom:8px;font-size:0.8rem;'>預計施工日期：" + escapeHtml(docYear) + " 年 ____ 月 ____ 日" + scheduleNotice + "</div>" +
             "<div style='margin-top:8px;border-top:1px solid #94a3b8;padding-top:6px;font-size:0.8rem;'>主委／客戶代表簽章：____________________ 日期：____/____/____</div>";
         }
       }
@@ -1990,7 +2039,7 @@
         lineItemsText +
         "\n-------------------------\n" +
         priceText +
-        "\n✓ 均含甲種職安業務主管、法定缺氧作業主管、雙人專責戒護與500萬雇主職災團保（進場隨附證照與保單備查）";
+        (cat === "ac_cleaning" ? "\n✓ 均含雙人正職機電技師、LOTO斷電與電腦板防水保護、果凍淤泥疏通、500萬職災團保與洗後保固" : "\n✓ 均含甲種職安業務主管、法定缺氧作業主管、雙人專責戒護與500萬雇主職災團保（進場隨附證照與保單備查）");
     }
 
     // 處理中文輸入法 (IME Composition) 與 rAF 節流，避免打字過程頻繁重繪 DOM 卡頓
@@ -2229,7 +2278,7 @@
 
 
   // ============================================================================
-  // 5. 首頁 Google 地圖官方地標 (MEO) 雙模式切換與離線防破版保護 (v20.0)
+  // 5. 首頁 Google 地圖官方地標 (MEO) 雙模式切換與離線防破版保護 (v20.1)
   // ============================================================================
   function initMeoMapTabs() {
     const btnGmap = document.getElementById("btn-meo-tab-gmap");
