@@ -24,7 +24,7 @@
   <meta name="twitter:description" content="支援「指定時段專車全責」與「平日順路併單特惠」雙軌試算，一鍵帶入單頁 A4 報價單或加 LINE 預約！">
   <meta name="twitter:image" content="https://5390857.com/assets/og-water-tank.jpg">
   <meta name="twitter:image:alt" content="社區大樓自來水塔清洗費用線上試算與 Omron 61F-G2 液位開關健檢">
-  <link rel="stylesheet" href="assets/style.css?v=18.2">
+  <link rel="stylesheet" href="assets/style.css?v=20.0">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -118,7 +118,7 @@
           "name": "社區大樓洗水塔要停水多久？洗完會有漂白水味或水龍頭空氣阻塞嗎？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "皓盛採用雙台大口徑沉水泵浦同步抽排，一般社區大樓停水時間嚴格控制在 2.5 至 4 小時內完成。消毒採用符合自來水處規範之 50～100 ppm 食品級次氯酸鈉溶液，完工排空注水後確保自由有效餘氯符合飲用水標準（0.2～1.0 mg/L），絕無刺鼻漂白水味；復水前並由技師執行公共管路排氣（Air Bleeding），防止空氣阻塞與馬達氣鎖空轉。"
+            "text": "皓盛採用雙台大口徑沉水泵浦同步抽排，一般社區大樓停水時間嚴格控制在 2.5 至 4 小時內完成。消毒採用符合自來水處規範之 50～100 ppm 食品級次氯酸鈉溶液，完工排空注水後免費以儀器／試劑實測 3 項水質指標：自由有效餘氯（0.2～1.0 mg/L）、酸鹼值（pH 6.0～8.5）與總溶解固體量（TDS ≦ 500 mg/L），絕無刺鼻漂白水味，並支援代客無菌採樣送驗 SGS 大腸桿菌群（≦ 6 CFU/100mL）正式報告；復水前並由技師執行公共管路排氣（Air Bleeding），防止空氣阻塞與馬達氣鎖空轉。"
           }
         },
         {
@@ -159,7 +159,8 @@
       <nav class="nav-links" aria-label="主導航選單">
         <a href="index.html" class="nav-link">企業工程總覽</a>
         <a href="water-tank.html" class="nav-link active">💧 洗自來水塔試算</a>
-        <a href="cooling-tower.html" class="nav-link">❄️ 洗空調冷卻水塔試算</a>
+        <a href="cooling-tower.html" class="nav-link">❄️ 洗冷卻水塔試算</a>
+        <a href="ac-cleaning.html" class="nav-link">🌬️ 洗冷氣空調試算</a>
         <a href="quote.html" class="nav-link">📄 正式報價單產生器</a>
         <a href="https://line.me/ti/p/~0916093125" target="_blank" rel="noopener noreferrer" class="nav-link nav-link-cta">加 LINE 傳照片估價</a>
       </nav>
@@ -245,6 +246,10 @@
                 <span>Omron 61F-G2 液位控制器＋電極棒整組更新（專車+4,500 / 平日+4,200）</span>
               </label>
               <label class="calc-check-item">
+                <input type="checkbox" id="chk-sgs-water">
+                <span>🧪 代客無菌採樣送驗 SGS 飲用水水質檢驗（大腸桿菌群／總菌落數報告｜專車+3,500 / 平日+3,000）</span>
+              </label>
+              <label class="calc-check-item">
                 <input type="checkbox" id="chk-cooling">
                 <span>商用空調冷卻水塔(50RT內)同步清洗保養（專車+7,000 / 平日+5,500起）</span>
               </label>
@@ -287,7 +292,7 @@
           <li><strong>法定局限空間氣體測定與強制通風</strong>：入池前由「缺氧作業主管」測定氧氣濃度（≧18%）並架設送風機，池外配置專責監視人員，杜絕工安意外。</li>
           <li><strong>施工前機電保護切換</strong>：先將地下室揚水泵浦與頂樓加壓馬達控制盤切至「手動/停止（OFF）」，避免抽水期間馬達無水空轉燒毀軸封。</li>
           <li><strong>雙機高速排空與淤泥抽除</strong>：使用大口徑沉水泵浦快速排空餘水，將停水時間壓縮至最短。</li>
-          <li><strong>高壓水刀除垢與食品級次氯酸鈉消毒</strong>：針對池壁生物膜、鐵鏽水垢與死角進行高壓水刀沖洗，並以符合自來水處規範之 50～100 ppm 食品級次氯酸鈉溶液噴灑消毒，完工排空注水後確保自由有效餘氯符合飲用水標準（0.2～1.0 mg/L），無刺鼻漂白水殘留。</li>
+          <li><strong>高壓水刀除垢與食品級次氯酸鈉消毒</strong>：針對池壁生物膜、鐵鏽水垢與死角進行高壓水刀沖洗，並以符合自來水處規範之 50～100 ppm 食品級次氯酸鈉溶液噴灑消毒，完工排空注水後免費以儀器／試劑實測 3 項水質指標：自由有效餘氯（0.2～1.0 mg/L）、酸鹼值（pH 6.0～8.5）與總溶解固體量（TDS ≦ 500 mg/L），無刺鼻漂白水殘留；若學校、廠房或管委會需第三方公信力報告，亦可勾選代客無菌採樣送驗 SGS 實驗室（大腸桿菌群／總菌落數）。</li>
           <li><strong>Omron 61F-G2 液位開關與進水蝴蝶閥免費健檢</strong>：免費檢查上水塔高低水位與共用接地電極棒（E1/E2/E3）及地下受水池防無水空轉保護迴路是否因水垢絕緣或鏽蝕短路，並確認 2吋～10吋蝴蝶閥與球閥止水密合。</li>
           <li><strong>排氣復歸與前後對比照片驗收</strong>：注水後執行管路排氣、復歸自動控制盤，並交付完整「清洗前後對比照片報告」供管委會公告住戶。</li>
         </ol>
@@ -303,7 +308,7 @@
         </div>
         <div class="faq-item">
           <div class="faq-q">Q2：社區大樓洗水塔要停水多久？洗完水塔會有漂白水味或水龍頭空氣阻塞嗎？</div>
-          <div class="faq-a">皓盛採用雙台大口徑沉水泵浦同步抽排，一般社區大樓停水時間嚴格控制在 2.5 至 4 小時內完成。消毒採用符合自來水處規範之 50～100 ppm 食品級次氯酸鈉溶液，完工排空注水後確保自由有效餘氯符合飲用水標準（0.2～1.0 mg/L），無刺鼻漂白水殘留；復水時並由技師執行公共管路排氣（Air Bleeding），住戶端若有私人小型加壓馬達，僅需於停水時段暫關電源即可。</div>
+          <div class="faq-a">皓盛採用雙台大口徑沉水泵浦同步抽排，一般社區大樓停水時間嚴格控制在 2.5 至 4 小時內完成。消毒採用符合自來水處規範之 50～100 ppm 食品級次氯酸鈉溶液，完工排空注水後免費以儀器／試劑實測 3 項水質指標：自由有效餘氯（0.2～1.0 mg/L）、酸鹼值（pH 6.0～8.5）與總溶解固體量（TDS ≦ 500 mg/L），無刺鼻漂白水殘留；若學校、廠房或管委會需第三方公信力報告，亦可勾選代客無菌採樣送驗 SGS 實驗室（大腸桿菌群／總菌落數）；復水時並由技師執行公共管路排氣（Air Bleeding），住戶端若有私人小型加壓馬達，僅需於停水時段暫關電源即可。</div>
         </div>
         <div class="faq-item">
           <div class="faq-q">Q3：為什麼有些大樓洗完水塔後會發生「不會進水」或「水塔溢水淹水」？</div>
@@ -324,11 +329,12 @@
           <p>【商空水系統事業部】：商用中央空調冷卻水塔清洗保養、良機與跨廠牌水塔散熱材更換、6吋~10吋齒輪式蝴蝶閥更新、東元 TECO F510 變頻器節能調校。</p>
         </div>
         <div>
-          <h3 style="color:#ffffff;margin-bottom:10px;">全站四大核心頁面快速導覽</h3>
-          <ul style="list-style:none;line-height:2.1;">
+          <h3 style="color:#ffffff;margin-bottom:10px;">全站五大核心頁面快速導覽</h3>
+          <ul style="list-style:none;line-height:2.0;">
             <li>▸ <a href="index.html">皓盛有限公司企業形象與工程實力總覽首頁</a></li>
             <li>▸ <a href="water-tank.html">給水機電事業部：社區大樓洗自來水塔試算器</a></li>
             <li>▸ <a href="cooling-tower.html">商空水系統事業部：空調冷卻水塔 RT 試算器</a></li>
+            <li>▸ <a href="ac-cleaning.html">室內空調機電部：冷氣與中央空調清洗試算器</a></li>
             <li>▸ <a href="quote.html">採購與管委會專區：單頁 A4 正式工程報價單產生器</a></li>
           </ul>
         </div>
@@ -358,6 +364,6 @@
       <span class="sticky-btn-sub">傳照片估價</span>
     </a>
   </div>
-  <script src="assets/cad-engine.js?v=18.2"></script>
+  <script src="assets/cad-engine.js?v=20.0"></script>
 </body>
 </html>

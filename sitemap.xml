@@ -10,18 +10,24 @@
     <loc>https://5390857.com/water-tank.html</loc>
     <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://5390857.com/cooling-tower.html</loc>
     <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://5390857.com/ac-cleaning.html</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://5390857.com/quote.html</loc>
     <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
+    <priority>0.9</priority>
   </url>
 </urlset>

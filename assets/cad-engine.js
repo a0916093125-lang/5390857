@@ -1,5 +1,5 @@
 /**
- * 皓盛有限公司 (5390857.com) - 雙引擎試算與 A4 單頁智慧鎖定報價核心系統 (v18.2 雙專家滿分完全體正式版)
+ * 皓盛有限公司 (5390857.com) - 雙引擎試算與 A4 單頁智慧鎖定報價核心系統 (v20.0 雙專家滿分完全體正式版)
  * 涵蓋模組：
  * 1. Before/After 清洗前後視覺對比拉桿（Pointer Events ＋ 鍵盤無障礙 A11y ＋ rAF 節流與失焦保護）
  * 2. 社區大樓自來水塔 A/B 雙軌試算器 ＋ 跨頁雙向記憶與無汙染帶入報價單生成器 (localStorage + pageshow/storage)
@@ -410,6 +410,7 @@
     const chkPvcValve = document.getElementById("chk-pvc-valve");
     const chkButterfly = document.getElementById("chk-butterfly-valve");
     const chkLevel = document.getElementById("chk-level");
+    const chkSgsWater = document.getElementById("chk-sgs-water");
     const chkCool = document.getElementById("chk-cooling");
     const chkTax = document.getElementById("chk-tax");
 
@@ -447,6 +448,9 @@
       }
       if (chkLevel && draft.chkLevel !== undefined) {
         chkLevel.checked = Boolean(draft.chkLevel);
+      }
+      if (chkSgsWater && draft.chkSgs !== undefined) {
+        chkSgsWater.checked = Boolean(draft.chkSgs);
       }
       if (chkCool && draft.serviceCategory !== undefined) {
         chkCool.checked = (draft.serviceCategory === "both");
@@ -502,7 +506,7 @@
       }
       basePrice += poolSurcharge;
 
-      const addons = ["免費附贈：Omron 61F-G2 高低水位與共用接地極(E1~E3)除垢＋下水池防空轉迴路測試＋揚水泵浦電流檢測＋進水蝴蝶閥止水健檢（價值NT$4,500）"];
+      const addons = ["免費附贈：(1) 完工現場 3 項水質實測（自由有效餘氯 0.2~1.0mg/L、酸鹼值 pH 6.0~8.5、總溶解固體 TDS≦500mg/L）＋ (2) Omron 61F-G2 極棒除垢、防空轉測試、馬達電流與進水閥健檢（價值NT$4,500）"];
       if (chkPvcValve && chkPvcValve.checked) {
         const pvcPrice = isPriority ? 3800 : 3500;
         basePrice += pvcPrice;
@@ -517,6 +521,11 @@
         const lvlPrice = isPriority ? 4500 : 4200;
         basePrice += lvlPrice;
         addons.push("加購 Omron 61F-G2 液位控制器＋304電極棒整組更新 (+NT$" + lvlPrice.toLocaleString() + ")");
+      }
+      if (chkSgsWater && chkSgsWater.checked) {
+        const sgsPrice = isPriority ? 3500 : 3000;
+        basePrice += sgsPrice;
+        addons.push("加購代客無菌採樣送驗 SGS 飲用水水質檢驗報告（大腸桿菌群／總菌落數）(+NT$" + sgsPrice.toLocaleString() + ")");
       }
       if (chkCool && chkCool.checked) {
         const coolPrice = isPriority ? 7000 : 5500;
@@ -566,6 +575,7 @@
           chkPvcValve: Boolean(chkPvcValve && chkPvcValve.checked),
           chkButterfly: Boolean(chkButterfly && chkButterfly.checked),
           chkLevel: Boolean(chkLevel && chkLevel.checked),
+          chkSgs: Boolean(chkSgsWater && chkSgsWater.checked),
           chkTax: Boolean(chkTax && chkTax.checked)
         };
         // 修復 [冷卻水塔專家 C2]：當在自來水塔頁勾選「加購商用空調冷卻水塔(50RT內)同步清洗保養」時，
@@ -637,6 +647,7 @@
           pvc: (chkPvcValve && chkPvcValve.checked) ? "1" : "0",
           bf: (chkButterfly && chkButterfly.checked) ? "1" : "0",
           lvl: (chkLevel && chkLevel.checked) ? "1" : "0",
+          sgs: (chkSgsWater && chkSgsWater.checked) ? "1" : "0",
           tax: (chkTax && chkTax.checked) ? "1" : "0"
         });
         window.location.href = "quote.html?" + qParams.toString() + "#qp-workspace-anchor";
@@ -659,6 +670,7 @@
     const chkButterfly = document.getElementById("ct-chk-butterfly");
     const chkBallValve = document.getElementById("ct-chk-ballvalve");
     const chkInverter = document.getElementById("ct-chk-inverter");
+    const chkCtSgs = document.getElementById("ct-chk-sgs");
     const chkTax = document.getElementById("ct-chk-tax");
 
     const outPrice = document.getElementById("ct-price-output");
@@ -698,6 +710,9 @@
       }
       if (chkInverter && draft.chkInverter !== undefined) {
         chkInverter.checked = Boolean(draft.chkInverter);
+      }
+      if (chkCtSgs && draft.chkSgs !== undefined) {
+        chkCtSgs.checked = Boolean(draft.chkSgs);
       }
       if (chkTax && draft.chkTax !== undefined) {
         chkTax.checked = Boolean(draft.chkTax);
@@ -754,7 +769,7 @@
       const distPartName = (towerType === "closed_circuit")
         ? "內循環熱交換盤管沖洗＋噴淋嘴疏通"
         : (towerType === "open_square" ? "雙側重力播水盆噴孔疏通" : "頂部旋轉播水頭與散水管疏通");
-      const addons = ["免費附贈：散熱風機馬達運轉電流檢測＋皮帶張力/減速齒輪箱點檢＋" + distPartName + "＋底盤吸水濾網與進水浮球止水檢查"];
+      const addons = ["免費附贈：冷卻循環水質 pH/TDS 導電度檢測＋散熱風機電流檢測＋皮帶張力/減速齒輪箱點檢＋" + distPartName + "＋底盤吸水濾網與浮球止水檢查"];
       if (chkFill && chkFill.checked) {
         const fillPrice = isPriority ? 8500 : 7500;
         basePrice += fillPrice;
@@ -774,6 +789,11 @@
         const invPrice = isPriority ? 4500 : 4200;
         basePrice += invPrice;
         addons.push("加購東元 TECO F510 變頻器參數節能調校與溫控連動點檢 (+NT$" + invPrice.toLocaleString() + ")");
+      }
+      if (chkCtSgs && chkCtSgs.checked) {
+        const sgsPrice = isPriority ? 3500 : 3000;
+        basePrice += sgsPrice;
+        addons.push("加購代客採樣送驗 SGS 冷卻水塔水質／退伍軍人菌（Legionella）檢測報告 (+NT$" + sgsPrice.toLocaleString() + ")");
       }
 
       let maxPrice = Math.round(basePrice * 1.18);
@@ -819,6 +839,7 @@
           chkButterfly: Boolean(chkButterfly && chkButterfly.checked),
           chkPvcValve: Boolean(chkBallValve && chkBallValve.checked),
           chkInverter: Boolean(chkInverter && chkInverter.checked),
+          chkSgs: Boolean(chkCtSgs && chkCtSgs.checked),
           chkTax: Boolean(chkTax && chkTax.checked)
         };
         if (isJumpingToQuote) {
@@ -883,6 +904,208 @@
           bf: (chkButterfly && chkButterfly.checked) ? "1" : "0",
           pvc: (chkBallValve && chkBallValve.checked) ? "1" : "0",
           inv: (chkInverter && chkInverter.checked) ? "1" : "0",
+          sgs: (chkCtSgs && chkCtSgs.checked) ? "1" : "0",
+          tax: (chkTax && chkTax.checked) ? "1" : "0"
+        });
+        window.location.href = "quote.html?" + qParams.toString() + "#qp-workspace-anchor";
+      });
+    }
+  }
+
+
+  /* 3B. 新增引擎：冷氣與商用中央空調（四方吹/吊隱FCU/大型AHU/分離式）A/B 雙軌包套＆水塔同日順洗試算器 (v20.0) */
+  function initAcCleaningCalculator() {
+    const form = document.getElementById("ac-cleaning-calc-form");
+    if (!form) return;
+
+    const scheduleSelect = document.getElementById("ac-schedule-mode");
+    const regionSelect = document.getElementById("ac-region");
+    const typeSelect = document.getElementById("ac-unit-type");
+    const qtySelect = document.getElementById("ac-qty-tier");
+
+    const chkDrain = document.getElementById("ac-chk-drain");
+    const chkOutdoor = document.getElementById("ac-chk-outdoor");
+    const chkSteam = document.getElementById("ac-chk-steam");
+    const chkTax = document.getElementById("ac-chk-tax");
+
+    const outPrice = document.getElementById("ac-price-output");
+    const outHours = document.getElementById("ac-hours-output");
+    const outCrew = document.getElementById("ac-crew-output");
+    const outSummary = document.getElementById("ac-summary-text");
+
+    const btnAcToQuote = document.getElementById("btn-ac-to-quote");
+    const btnAcLine = document.getElementById("btn-ac-line");
+
+    function restoreAcDraft() {
+      const draft = loadQuoteDraft();
+      if (!draft) return;
+      if (draft.acScheduleMode && scheduleSelect) {
+        setSelectValueSafely(scheduleSelect, draft.acScheduleMode, "priority_50");
+      }
+      if (draft.region && regionSelect) {
+        setSelectValueSafely(regionSelect, draft.region, "台北市 / 新北市");
+      }
+      if (draft.acType && typeSelect) {
+        setSelectValueSafely(typeSelect, draft.acType, "cassette");
+      }
+      if (draft.acQty && qtySelect) {
+        setSelectValueSafely(qtySelect, draft.acQty, "base");
+      }
+      if (chkDrain && draft.chkAcDrain !== undefined) chkDrain.checked = Boolean(draft.chkAcDrain);
+      if (chkOutdoor && draft.chkAcOutdoor !== undefined) chkOutdoor.checked = Boolean(draft.chkAcOutdoor);
+      if (chkSteam && draft.chkAcSteam !== undefined) chkSteam.checked = Boolean(draft.chkAcSteam);
+      if (chkTax && draft.chkTax !== undefined) chkTax.checked = Boolean(draft.chkTax);
+    }
+
+    function calcAcCleaning(shouldPersistDraft, isJumpingToQuote) {
+      const modeVal = scheduleSelect ? scheduleSelect.value : "priority_50";
+      const isAddonWithTank = (modeVal === "addon_with_tank");
+      const isPriority = (modeVal === "priority_50");
+      const regionVal = regionSelect ? regionSelect.value : "台北市 / 新北市";
+      const acType = typeSelect ? typeSelect.value : "cassette";
+      const acQty = qtySelect ? qtySelect.value : "base";
+
+      // 各機型：單獨派車基本包套價 (A/B) 與 超台/水塔順洗單台價 (A/B)
+      const acPricingMap = {
+        split:    { pkgA: 12500, pkgB: 10000, unitA: 2200, unitB: 1800, baseIncluded: "4 台內", name: "壁掛分離式冷氣" },
+        fcu:      { pkgA: 13000, pkgB: 10500, unitA: 3200, unitB: 2800, baseIncluded: "3 台內", name: "吊隱式冷氣／冰水送風機(FCU)" },
+        cassette: { pkgA: 13500, pkgB: 11000, unitA: 4000, unitB: 3500, baseIncluded: "3 台內", name: "四方吹嵌入式卡式冷氣" },
+        package:  { pkgA: 13500, pkgB: 11000, unitA: 4500, unitB: 3800, baseIncluded: "2 台內", name: "落地箱型冷氣(氣冷/水冷櫃機)" },
+        ahu:      { pkgA: 15000, pkgB: 12500, unitA: 8500, unitB: 7500, baseIncluded: "1 座大型機房", name: "大型中央空調箱(AHU)" }
+      };
+      const cfg = acPricingMap[acType] || acPricingMap.cassette;
+
+      let extraCount = 0;
+      if (acQty === "add_2") extraCount = 2;
+      else if (acQty === "add_4") extraCount = 4;
+      else if (acQty === "add_8") extraCount = 8;
+
+      let basePrice = 0;
+      let hours = "3.0 ~ 4.5 小時";
+      let crewMode = "";
+
+      if (isAddonWithTank) {
+        // 水塔／冷卻塔客戶同日順洗模式：免二次出車底價，1 台起按單台特惠價計算
+        const totalUnits = (extraCount === 0) ? 1 : extraCount;
+        basePrice = totalUnits * cfg.unitB;
+        hours = (totalUnits <= 2) ? "1.0 ~ 2.0 小時（洗水塔同日順便施作）" : "2.5 ~ 4.0 小時（洗水塔同日順便施作）";
+        crewMode = "【水塔客戶同日順洗特惠】由當日駐場之雙人正職機電技師順便施作（免收二次工程車出車底價，同享電腦板防水保護＋500萬職災團保）";
+      } else {
+        // 單獨派車專案包套模式（保障雙師傅 $5,000 工資＋油錢勞健保＋公司合理獲利）
+        const pkgBase = isPriority ? cfg.pkgA : cfg.pkgB;
+        const unitAdd = isPriority ? cfg.unitA : cfg.unitB;
+        basePrice = pkgBase + (extraCount * unitAdd);
+        if (extraCount === 0) {
+          hours = "2.5 ~ 4.0 小時";
+        } else if (extraCount <= 4) {
+          hours = "4.0 ~ 6.0 小時";
+        } else {
+          hours = "6.0 ~ 8.0 小時（雙人機電技師全天駐場精洗）";
+        }
+        crewMode = isPriority
+          ? "【A方案：指定時段／假日夜間雙人機電專車】2 位正職勞健保空調機電技師＋LOTO 斷電掛牌＋電腦板全密封防水保護＋500萬職災團保"
+          : "【B方案：平日彈性併單雙人機電專車】由本公司安排平日順路時段雙人正職機電技師施作，同享電腦板防水保護＋集水盤疏通＋500萬團保";
+      }
+
+      const addons = ["免費內含：LOTO斷電與電腦機板防水罩保護＋集水盤果凍淤泥抽除與排水管疏通＋出風溫差(ΔT)與運轉電流實測"];
+      if (chkDrain && chkDrain.checked) {
+        const dPrice = isPriority ? 2500 : 2200;
+        basePrice += dPrice;
+        addons.push("加購冷凝水自動排水器(Drain Pump)換新＋管路高壓疏通 (+NT$" + dPrice.toLocaleString() + ")");
+      }
+      if (chkOutdoor && chkOutdoor.checked) {
+        const oPrice = isPriority ? 2000 : 1600;
+        basePrice += oPrice;
+        addons.push("加購室外機散熱鰭片高壓沖洗 (+NT$" + oPrice.toLocaleString() + ")");
+      }
+      if (chkSteam && chkSteam.checked) {
+        const sPrice = isPriority ? 1800 : 1500;
+        basePrice += sPrice;
+        addons.push("加購高溫蒸氣／臭氧深層除臭殺菌 (+NT$" + sPrice.toLocaleString() + ")");
+      }
+
+      let maxPrice = Math.round(basePrice * 1.15);
+      let taxNote = "未稅";
+      if (chkTax && chkTax.checked) {
+        basePrice = Math.round(basePrice * 1.05);
+        maxPrice = Math.round(maxPrice * 1.05);
+        taxNote = "含 5% 統一發票營業稅";
+      }
+
+      if (outPrice) {
+        outPrice.textContent = "NT$ " + basePrice.toLocaleString() + " ~ " + maxPrice.toLocaleString() + " 元（" + taxNote + "）";
+      }
+      if (outHours) {
+        outHours.textContent = hours;
+      }
+      if (outCrew) {
+        outCrew.textContent = crewMode;
+      }
+
+      const qtyLabel = qtySelect && qtySelect.options[qtySelect.selectedIndex]
+        ? qtySelect.options[qtySelect.selectedIndex].text
+        : "標準基本包套規模";
+
+      if (shouldPersistDraft) {
+        const targetCat = isAddonWithTank ? "wt_ac" : "ac_cleaning";
+        const draftPayload = {
+          serviceCategory: targetCat,
+          scheduleMode: isAddonWithTank ? "weekday_35" : modeVal,
+          acScheduleMode: modeVal,
+          region: regionVal,
+          acType: acType,
+          acQty: acQty,
+          chkAcDrain: Boolean(chkDrain && chkDrain.checked),
+          chkAcOutdoor: Boolean(chkOutdoor && chkOutdoor.checked),
+          chkAcSteam: Boolean(chkSteam && chkSteam.checked),
+          chkTax: Boolean(chkTax && chkTax.checked)
+        };
+        if (isJumpingToQuote) {
+          draftPayload.displayMode = "ab_compare";
+          draftPayload.lastJumpSource = "ac-cleaning";
+        }
+        saveQuoteDraft(draftPayload);
+      }
+
+      const summary = "【冷氣與中央空調深層清洗保養詢價】" +
+        "\n📍 地區：" + regionVal +
+        "\n❄️ 空調機型：" + cfg.name + "（" + qtyLabel + "）" +
+        "\n👷 出勤編制：" + crewMode +
+        "\n⏱️ 預估施工工時：" + hours +
+        "\n🔧 檢修與選配：" + addons.join("、") +
+        "\n💰 系統預估區間：NT$ " + basePrice.toLocaleString() + " ~ " + maxPrice.toLocaleString() + " 元（" + taxNote + "）";
+
+      if (outSummary) {
+        outSummary.textContent = summary.replace(/\n/g, " ｜ ");
+      }
+      return summary;
+    }
+
+    restoreAcDraft();
+    form.addEventListener("change", function () { calcAcCleaning(true, false); });
+    form.addEventListener("input", function () { calcAcCleaning(true, false); });
+    calcAcCleaning(false, false);
+
+    if (btnAcLine) {
+      btnAcLine.addEventListener("click", function () {
+        copyAndOpenLine(calcAcCleaning(true, false));
+      });
+    }
+    if (btnAcToQuote) {
+      btnAcToQuote.addEventListener("click", function () {
+        calcAcCleaning(true, true);
+        const modeVal = scheduleSelect ? scheduleSelect.value : "priority_50";
+        const isAddonWithTank = (modeVal === "addon_with_tank");
+        const qParams = new URLSearchParams({
+          from: "ac-cleaning",
+          cat: isAddonWithTank ? "wt_ac" : "ac_cleaning",
+          mode: isAddonWithTank ? "weekday_35" : modeVal,
+          reg: regionSelect ? regionSelect.value : "台北市 / 新北市",
+          actype: typeSelect ? typeSelect.value : "cassette",
+          acqty: qtySelect ? qtySelect.value : "base",
+          acdrain: (chkDrain && chkDrain.checked) ? "1" : "0",
+          acout: (chkOutdoor && chkOutdoor.checked) ? "1" : "0",
+          acsteam: (chkSteam && chkSteam.checked) ? "1" : "0",
           tax: (chkTax && chkTax.checked) ? "1" : "0"
         });
         window.location.href = "quote.html?" + qParams.toString() + "#qp-workspace-anchor";
@@ -925,6 +1148,14 @@
     const chkButterfly = document.getElementById("q-chk-butterfly");
     const chkFill = document.getElementById("q-chk-fill");
     const chkInverter = document.getElementById("q-chk-inverter");
+    const chkSgs = document.getElementById("q-chk-sgs");
+    const lblSgsText = document.getElementById("q-lbl-sgs-text");
+    const boxAcGroup = document.getElementById("q-ac-group");
+    const elAcType = document.getElementById("q-ac-type");
+    const elAcQty = document.getElementById("q-ac-qty");
+    const chkAcDrain = document.getElementById("q-chk-ac-drain");
+    const chkAcOutdoor = document.getElementById("q-chk-ac-outdoor");
+    const chkAcSteam = document.getElementById("q-chk-ac-steam");
 
     const elCustomName = document.getElementById("q-custom-name");
     const elCustomPrice = document.getElementById("q-custom-price");
@@ -1046,7 +1277,7 @@
       if (renderedHeight > A4_SAFE_HEIGHT_PX) {
         const heightRatio = A4_SAFE_HEIGHT_PX / renderedHeight;
         const safeRatio = Math.floor(heightRatio * 100) / 100;
-        zoomFactor = Math.max(0.76, Math.min(zoomFactor, safeRatio));
+        zoomFactor = Math.max(0.70, Math.min(zoomFactor, safeRatio));
       }
 
       const zoomStr = zoomFactor.toFixed(2);
@@ -1062,8 +1293,9 @@
 
     /* 依據工程類別動態管控專屬加購項顯示狀態，防止跨類別幽靈計價 */
     function syncAddonAvailability(cat) {
-      const isWt = (cat === "water_tank" || cat === "both");
-      const isCt = (cat === "cooling_tower" || cat === "both");
+      const isWt = (cat === "water_tank" || cat === "both" || cat === "wt_ac" || cat === "all_three");
+      const isCt = (cat === "cooling_tower" || cat === "both" || cat === "all_three");
+      const isAc = (cat === "ac_cleaning" || cat === "wt_ac" || cat === "all_three");
 
       function toggleAddonItem(checkboxEl, enabled) {
         if (!checkboxEl) return;
@@ -1075,9 +1307,24 @@
         }
       }
 
-      toggleAddonItem(chkLevel, isWt, "此項為「自來水塔與蓄水池」專屬液位控制設備，切換至自來水塔或雙系統合購即可勾選");
-      toggleAddonItem(chkFill, isCt, "此項為「商用空調冷卻水塔」專屬散熱填料工程，切換至冷卻水塔或雙系統合購即可勾選");
-      toggleAddonItem(chkInverter, isCt, "此項為「商用空調冷卻水塔」專屬風機變頻調校工程，切換至冷卻水塔或雙系統合購即可勾選");
+      toggleAddonItem(chkPvc, isWt || isCt);
+      toggleAddonItem(chkButterfly, isWt || isCt);
+      toggleAddonItem(chkLevel, isWt);
+      toggleAddonItem(chkFill, isCt);
+      toggleAddonItem(chkInverter, isCt);
+      toggleAddonItem(chkSgs, isWt || isCt);
+      toggleAddonItem(chkAcDrain, isAc);
+      toggleAddonItem(chkAcOutdoor, isAc);
+      toggleAddonItem(chkAcSteam, isAc);
+      if (lblSgsText) {
+        if (cat === "water_tank") {
+          lblSgsText.textContent = "🧪 代客無菌採樣送驗 SGS 飲用水水質檢驗報告（大腸桿菌群／總菌落數｜專車+3,500 / 平日+3,000）";
+        } else if (cat === "cooling_tower") {
+          lblSgsText.textContent = "🧪 代客採樣送驗 SGS 冷卻水塔水質／退伍軍人菌（Legionella）檢測報告（專車+3,500 / 平日+3,000）";
+        } else {
+          lblSgsText.textContent = "🧪 代客採樣送驗 SGS 實驗室水質檢驗報告（自來水大腸桿菌群／冷卻塔退伍軍人菌｜專車+3,500 / 平日+3,000）";
+        }
+      }
     }
 
     function applyStoredDraft(showNotification, fromParamVal) {
@@ -1093,6 +1340,9 @@
       } else if (fromParamVal === "cooling-tower" && elCategory) {
         const targetCat = (draft.serviceCategory === "both") ? "both" : "cooling_tower";
         setSelectValueSafely(elCategory, targetCat, "cooling_tower");
+      } else if (fromParamVal === "ac-cleaning" && elCategory) {
+        const targetCat = (draft.serviceCategory === "wt_ac") ? "wt_ac" : "ac_cleaning";
+        setSelectValueSafely(elCategory, targetCat, "ac_cleaning");
       } else if (draft.serviceCategory && elCategory) {
         setSelectValueSafely(elCategory, draft.serviceCategory, "water_tank");
       }
@@ -1141,6 +1391,12 @@
       if (chkLevel && draft.chkLevel !== undefined) chkLevel.checked = Boolean(draft.chkLevel);
       if (chkFill && draft.chkFill !== undefined) chkFill.checked = Boolean(draft.chkFill);
       if (chkInverter && draft.chkInverter !== undefined) chkInverter.checked = Boolean(draft.chkInverter);
+      if (chkSgs && draft.chkSgs !== undefined) chkSgs.checked = Boolean(draft.chkSgs);
+      if (draft.acType && elAcType) setSelectValueSafely(elAcType, draft.acType, "cassette");
+      if (draft.acQty && elAcQty) setSelectValueSafely(elAcQty, draft.acQty, "base");
+      if (chkAcDrain && draft.chkAcDrain !== undefined) chkAcDrain.checked = Boolean(draft.chkAcDrain);
+      if (chkAcOutdoor && draft.chkAcOutdoor !== undefined) chkAcOutdoor.checked = Boolean(draft.chkAcOutdoor);
+      if (chkAcSteam && draft.chkAcSteam !== undefined) chkAcSteam.checked = Boolean(draft.chkAcSteam);
 
       if (elCustomName && draft.customName !== undefined) {
         elCustomName.value = String(draft.customName);
@@ -1181,6 +1437,12 @@
         chkButterfly: Boolean(chkButterfly && chkButterfly.checked),
         chkFill: Boolean(chkFill && chkFill.checked),
         chkInverter: Boolean(chkInverter && chkInverter.checked),
+        chkSgs: Boolean(chkSgs && chkSgs.checked),
+        acType: elAcType ? elAcType.value : "cassette",
+        acQty: elAcQty ? elAcQty.value : "base",
+        chkAcDrain: Boolean(chkAcDrain && chkAcDrain.checked),
+        chkAcOutdoor: Boolean(chkAcOutdoor && chkAcOutdoor.checked),
+        chkAcSteam: Boolean(chkAcSteam && chkAcSteam.checked),
         customName: elCustomName ? elCustomName.value.trim() : "",
         customPrice: elCustomPrice ? elCustomPrice.value : "0",
         chkTax: (elTaxMode ? elTaxMode.value : "include_5") === "include_5"
@@ -1190,14 +1452,18 @@
     function renderQuotation(shouldPersist) {
       const displayMode = elDisplayMode ? elDisplayMode.value : "ab_compare";
       const cat = elCategory ? elCategory.value : "water_tank";
-      const isWtActive = (cat === "water_tank" || cat === "both");
-      const isCtActive = (cat === "cooling_tower" || cat === "both");
+      const isWtActive = (cat === "water_tank" || cat === "both" || cat === "wt_ac" || cat === "all_three");
+      const isCtActive = (cat === "cooling_tower" || cat === "both" || cat === "all_three");
+      const isAcActive = (cat === "ac_cleaning" || cat === "wt_ac" || cat === "all_three");
 
       if (boxWtGroup) {
         boxWtGroup.style.display = isWtActive ? "block" : "none";
       }
       if (boxCtGroup) {
         boxCtGroup.style.display = isCtActive ? "block" : "none";
+      }
+      if (boxAcGroup) {
+        boxAcGroup.style.display = isAcActive ? "block" : "none";
       }
 
       // 同步管控專屬加購項，防止純自來水塔報價單混入冷卻塔散熱材/變頻器費用
@@ -1284,8 +1550,8 @@
         }
 
         items.push({
-          title: "【專案贈送】給水機電系統深度安全健檢（原價 $4,500）",
-          spec: "含 Omron 61F-G2 高低水位與共用接地極(E1~E3)除垢、下水池防無水空轉保護迴路測試、揚水馬達電流實測與進水閥止水檢查",
+          title: "【專案免費贈送】給水機電安全健檢 ＋ 完工現場 3 項水質實測（原價 $4,500）",
+          spec: "現場實測自由有效餘氯(0.2~1.0mg/L)、酸鹼值(pH 6.0~8.5)、總溶解固體(TDS≦500mg/L)＋Omron 61F-G2極棒除垢、防空轉測試與馬達電流點檢",
           unit: "1 式",
           priceA: 0,
           priceB: 0,
@@ -1357,6 +1623,58 @@
         }
       }
 
+
+      // 2B. 計算室內冷氣與中央空調主工項（支援單獨派車雙人工程車包套 ＆ 水塔客戶同日順洗免出車底價特惠）
+      if (isAcActive) {
+        const acTypeVal = elAcType ? elAcType.value : "cassette";
+        const acQtyVal = elAcQty ? elAcQty.value : "base";
+        const isTankCombo = (cat === "wt_ac" || cat === "all_three");
+
+        const acMap = {
+          split:    { pkgA: 12500, pkgB: 10000, unitA: 2200, unitB: 1800, inc: "含 4 台內", name: "壁掛分離式冷氣", spec: "拆洗外殼、濾網、貫流風鼓葉輪、蒸發器親水藥洗與排水管疏通" },
+          fcu:      { pkgA: 13000, pkgB: 10500, unitA: 3200, unitB: 2800, inc: "含 3 台內", name: "吊隱式冷氣／冰水送風機(FCU)", spec: "天花板維修孔拆洗風車葉輪、鰭片高壓藥洗、集水盤果凍淤泥抽除與浮球點檢" },
+          cassette: { pkgA: 13500, pkgB: 11000, unitA: 4000, unitB: 3500, inc: "含 3 台內", name: "四方吹嵌入式卡式冷氣", spec: "拆卸四方出風面板、內建排水泵浦與浮球清潔、全方位蒸發器鰭片精洗與電流實測" },
+          package:  { pkgA: 13500, pkgB: 11000, unitA: 4500, unitB: 3800, inc: "含 2 台內", name: "落地箱型冷氣(氣冷/水冷櫃機)", spec: "大型排管蒸發器高壓藥洗、雙風鼓葉輪除垢、冷凝水盤與排水管疏通" },
+          ahu:      { pkgA: 15000, pkgB: 12500, unitA: 8500, unitB: 7500, inc: "單座大型機房", name: "大型中央空調箱(AHU)", spec: "多排式冰水盤管高壓除垢、大型離心風車清潔、皮帶張力校正與馬達三相電流實測" }
+        };
+        const acCfg = acMap[acTypeVal] || acMap.cassette;
+
+        let extraCnt = 0;
+        if (acQtyVal === "add_2") extraCnt = 2;
+        else if (acQtyVal === "add_4") extraCnt = 4;
+        else if (acQtyVal === "add_8") extraCnt = 8;
+
+        if (isTankCombo) {
+          // 水塔同日順洗模式：免收二次工程車出車底價，按實際順洗台數計價
+          const comboUnits = (extraCnt === 0) ? 1 : extraCnt;
+          items.push({
+            title: "【水塔同日順洗特惠】" + acCfg.name + "深層拆洗保養（共 " + comboUnits + " 台）",
+            spec: "與水塔工程同日施作免二次出車底價｜LOTO斷電與電腦板防水保護、" + acCfg.spec,
+            unit: comboUnits + " 台",
+            priceA: comboUnits * acCfg.unitA,
+            priceB: comboUnits * acCfg.unitB
+          });
+        } else {
+          // 單獨派車專案包套模式（雙人正職機電工程車基本出勤包套）
+          items.push({
+            title: acCfg.name + "深層拆洗保養專案包套（雙人機電專車・" + acCfg.inc + "）",
+            spec: "雙人正職勞健保機電技師出勤｜LOTO斷電與電腦板全密封防水保護、" + acCfg.spec,
+            unit: "1 式",
+            priceA: acCfg.pkgA,
+            priceB: acCfg.pkgB
+          });
+          if (extraCnt > 0) {
+            items.push({
+              title: acCfg.name + "同案場追加清洗台數（追加 " + extraCnt + " 台量販優惠）",
+              spec: "同趟工程車連續施作追加台數（每台 A:$" + acCfg.unitA.toLocaleString() + " / B:$" + acCfg.unitB.toLocaleString() + "）",
+              unit: extraCnt + " 台",
+              priceA: extraCnt * acCfg.unitA,
+              priceB: extraCnt * acCfg.unitB
+            });
+          }
+        }
+      }
+
       // 3. 計算機電閥件與選配加購項（依類別啟用狀態精準過濾，阻絕跨系統殘留汙染）
       if (chkPvc && chkPvc.checked) {
         items.push({
@@ -1401,6 +1719,51 @@
           unit: "1 式",
           priceA: 4500,
           priceB: 4200
+        });
+      }
+      if (chkSgs && chkSgs.checked) {
+        let sgsTitle = "代客無菌採樣送驗 SGS 飲用水水質檢驗報告（大腸桿菌群／總菌落數）";
+        let sgsSpec = "依環境部飲用水水質標準無菌採樣送交 SGS 實驗室檢驗大腸桿菌群(≦6 CFU/100mL)與總菌落數，附正式檢驗報告";
+        if (cat === "cooling_tower") {
+          sgsTitle = "代客採樣送驗 SGS 冷卻水塔水質／退伍軍人菌（Legionella）檢測報告";
+          sgsSpec = "無菌採樣送交 SGS 等第三方認證實驗室執行冷卻水塔退伍軍人菌(Legionella)培養檢測，附正式檢驗報告";
+        } else if (cat === "both") {
+          sgsTitle = "代客無菌採樣送驗 SGS 實驗室水質檢驗報告（大腸桿菌群／退伍軍人菌）";
+          sgsSpec = "無菌採樣送交 SGS 認證實驗室執行飲用水大腸桿菌群或冷卻塔退伍軍人菌定量檢測，附正式檢驗報告";
+        }
+        items.push({
+          title: sgsTitle,
+          spec: sgsSpec,
+          unit: "1 式",
+          priceA: 3500,
+          priceB: 3000
+        });
+      }
+      if (isAcActive && chkAcDrain && chkAcDrain.checked) {
+        items.push({
+          title: "冷氣自動排水器（Drain Pump）換新 ＋ 排水管果凍淤泥高壓疏通",
+          spec: "換裝靜音高揚程自動排水器並以高壓水刀／氣壓徹底打通排水管路，根治冷氣滴水漏水",
+          unit: "1 組",
+          priceA: 2500,
+          priceB: 2200
+        });
+      }
+      if (isAcActive && chkAcOutdoor && chkAcOutdoor.checked) {
+        items.push({
+          title: "分離式／箱型冷氣室外機散熱鰭片高壓沖洗（4 台內）",
+          spec: "清除室外機冷凝器鋁鰭片厚重灰塵與油垢，提升熱交換效率、降低壓縮機高壓跳機並省電 15%",
+          unit: "1 式",
+          priceA: 2000,
+          priceB: 1600
+        });
+      }
+      if (isAcActive && chkAcSteam && chkAcSteam.checked) {
+        items.push({
+          title: "冷氣出風口醫療級高溫蒸氣 ／ 臭氧深層除臭殺菌處理",
+          spec: "針對風道與蒸發器執行高溫蒸氣與臭氧抑菌除臭，消除陳年霉味與過敏原",
+          unit: "1 式",
+          priceA: 1800,
+          priceB: 1500
         });
       }
 
@@ -1778,12 +2141,27 @@
         if (params.get("pvc") !== null) urlPatch.chkPvcValve = (params.get("pvc") === "1");
         if (params.get("bf") !== null) urlPatch.chkButterfly = (params.get("bf") === "1");
         if (params.get("lvl") !== null) urlPatch.chkLevel = (params.get("lvl") === "1");
+        if (params.get("sgs") !== null) urlPatch.chkSgs = (params.get("sgs") === "1");
         if (params.get("tax") !== null) urlPatch.chkTax = (params.get("tax") === "1");
         if (urlPatch.serviceCategory === "both") {
           urlPatch.ctRtScale = "50";
           urlPatch.ctTowerType = "open_round";
           urlPatch.ctTowerCount = "0";
         }
+        saveQuoteDraft(urlPatch);
+      } else if (fromParamVal === "ac-cleaning") {
+        const urlPatch = {
+          serviceCategory: params.get("cat") || "ac_cleaning",
+          scheduleMode: params.get("mode") || "priority_50",
+          displayMode: "ab_compare"
+        };
+        if (params.get("reg")) urlPatch.region = params.get("reg");
+        if (params.get("actype")) urlPatch.acType = params.get("actype");
+        if (params.get("acqty")) urlPatch.acQty = params.get("acqty");
+        if (params.get("acdrain") !== null) urlPatch.chkAcDrain = (params.get("acdrain") === "1");
+        if (params.get("acout") !== null) urlPatch.chkAcOutdoor = (params.get("acout") === "1");
+        if (params.get("acsteam") !== null) urlPatch.chkAcSteam = (params.get("acsteam") === "1");
+        if (params.get("tax") !== null) urlPatch.chkTax = (params.get("tax") === "1");
         saveQuoteDraft(urlPatch);
       } else if (fromParamVal === "cooling-tower") {
         const urlPatch = {
@@ -1799,6 +2177,7 @@
         if (params.get("bf") !== null) urlPatch.chkButterfly = (params.get("bf") === "1");
         if (params.get("pvc") !== null) urlPatch.chkPvcValve = (params.get("pvc") === "1");
         if (params.get("inv") !== null) urlPatch.chkInverter = (params.get("inv") === "1");
+        if (params.get("sgs") !== null) urlPatch.chkSgs = (params.get("sgs") === "1");
         if (params.get("tax") !== null) urlPatch.chkTax = (params.get("tax") === "1");
         saveQuoteDraft(urlPatch);
       }
@@ -1850,7 +2229,7 @@
 
 
   // ============================================================================
-  // 5. 首頁 Google 地圖官方地標 (MEO) 雙模式切換與離線防破版保護 (v18.2)
+  // 5. 首頁 Google 地圖官方地標 (MEO) 雙模式切換與離線防破版保護 (v20.0)
   // ============================================================================
   function initMeoMapTabs() {
     const btnGmap = document.getElementById("btn-meo-tab-gmap");
@@ -1894,6 +2273,7 @@
     initMeoMapTabs();
     initWaterTankCalculator();
     initCoolingTowerCalculator();
+    initAcCleaningCalculator();
     initQuoteGenerator();
   }
 
