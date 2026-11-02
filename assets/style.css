@@ -1,5 +1,5 @@
 /* ==========================================================================
-   皓盛有限公司 (5390857.com) - RWD 雙端防破版與 A4 單頁智慧鎖定列印樣式表 v17.0 (企業品牌形象專家重塑版＋60-30-10 雙欄旗艦首屏完全體)
+   皓盛有限公司 (5390857.com) - RWD 雙端防破版與 A4 單頁智慧鎖定列印樣式表 v18.0 (企業品牌形象專家重塑版＋60-30-10 雙欄旗艦首屏完全體)
    定位：給水機電事業部（社區大樓自來水塔）・商空水系統事業部（空調冷卻水塔）＋ 單頁 A4 報價系統
    統一編號：90221911 | 服務專線 & LINE：0916-093-125 | 信箱：ssuyuan@kimo.com
    ========================================================================== */
@@ -1575,7 +1575,7 @@ h1.main-title {
 
 
 /* ==========================================================================
-   v17.0 企業品牌形象專區卡片 (.corp-pillar-card)
+   v18.0 企業品牌形象專區卡片 (.corp-pillar-card)
    ========================================================================== */
 .corp-pillar-card {
   position: relative;
@@ -1618,7 +1618,7 @@ h1.main-title {
 
 
 /* ==========================================================================
-   v17.0 試算器跨頁無縫直傳與智慧規格收合面板 (.tech-specs-toggle-btn)
+   v18.0 試算器跨頁無縫直傳與智慧規格收合面板 (.tech-specs-toggle-btn)
    ========================================================================== */
 .btn {
   text-wrap: balance;
@@ -1658,7 +1658,7 @@ h1.main-title {
 
 
 /* ==========================================================================
-   v17.0 真實案場清洗前後照片無損裁切滑桿 (.ba-photo + clip-path: inset)
+   v18.0 真實案場清洗前後照片無損裁切滑桿 (.ba-photo + clip-path: inset)
    徹底解決手機版文字被切半與圖片擠壓變形問題
    ========================================================================== */
 .ba-slider-wrap {
@@ -1789,7 +1789,7 @@ h1.main-title {
 
 
 /* ==========================================================================
-   v17.0 報價單參數設定面板 6 大精雕與紅色印鑑章防斷字鎖定
+   v18.0 報價單參數設定面板 6 大精雕與紅色印鑑章防斷字鎖定
    ========================================================================== */
 .calc-select,
 .calc-input {
@@ -1836,7 +1836,7 @@ h1.main-title {
 
 
 /* ==========================================================================
-   v17.0 手機底部懸浮轉換列：上下雙行精緻膠囊（100% 零切字、保留電話與 A4 PDF）
+   v18.0 手機底部懸浮轉換列：上下雙行精緻膠囊（100% 零切字、保留電話與 A4 PDF）
    ========================================================================== */
 @media (max-width: 860px) {
   .mobile-sticky-bar {
@@ -1876,7 +1876,7 @@ h1.main-title {
 
 
 /* ==========================================================================
-   v17.0 全方位 Google 地圖 MEO 旗艦專區 (.meo-section-grid & Dual Map View)
+   v18.0 全方位 Google 地圖 MEO 旗艦專區 (.meo-section-grid & Dual Map View)
    ========================================================================== */
 .meo-section-grid {
   display: grid;
@@ -2073,7 +2073,7 @@ h1.main-title {
   align-items: center;
   justify-content: center;
   background: radial-gradient(circle at 50% 42%, #13284c 0%, #091326 75%);
-  padding-bottom: 42px;
+  padding-bottom: 0;
 }
 
 .meo-map-floating-bar {
@@ -2116,5 +2116,238 @@ h1.main-title {
   .meo-map-iframe,
   .meo-radar-svg-wrap {
     min-height: 310px;
+  }
+}
+
+
+/* ==========================================================================
+   v18.0 國家級雙職安主管證照實拍查驗專區 (.cert-showcase-grid & Lightbox Modal)
+   ========================================================================== */
+.cert-showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.cert-card {
+  background: linear-gradient(180deg, rgba(24, 37, 62, 0.92) 0%, rgba(15, 24, 43, 0.98) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: var(--shadow-lg), var(--inner-highlight);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+  min-width: 0;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.cert-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(56, 189, 248, 0.58);
+}
+
+.cert-card-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.cert-rank-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.cert-rank-amber {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  color: #fbbf24;
+}
+
+.cert-rank-emerald {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  color: #34d399;
+}
+
+.cert-no-pill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #7dd3fc;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.32);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.cert-title {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.cert-img-btn {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 2px solid rgba(148, 163, 184, 0.26);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #091326;
+  cursor: zoom-in;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cert-img-btn:hover {
+  border-color: #38bdf8;
+  box-shadow: 0 8px 24px rgba(14, 165, 233, 0.25);
+}
+
+.cert-img-btn img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 960 / 620;
+  object-fit: cover;
+}
+
+.cert-zoom-hint {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background: rgba(8, 14, 28, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  color: #f8fafc;
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.cert-meta-box {
+  background: rgba(8, 14, 28, 0.68);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: grid;
+  gap: 6px;
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+.cert-meta-row {
+  display: grid;
+  grid-template-columns: 84px 1fr;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.cert-meta-label {
+  color: #94a3b8;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.cert-meta-val {
+  color: #f8fafc;
+  font-weight: 600;
+}
+
+.cert-compliance-banner {
+  margin-top: 18px;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(14, 165, 233, 0.12) 100%);
+  border: 1px solid rgba(52, 211, 153, 0.38);
+  border-radius: 14px;
+  padding: 16px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.cert-Modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 9, 20, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.cert-Modal-backdrop.open {
+  display: flex;
+}
+
+.cert-Modal-dialog {
+  position: relative;
+  max-width: 960px;
+  width: 100%;
+  background: #0f182b;
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75);
+}
+
+.cert-Modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.cert-Modal-close {
+  appearance: none;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: rgba(30, 41, 59, 0.9);
+  color: #f8fafc;
+  font-size: 0.85rem;
+  font-weight: 800;
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.cert-Modal-close:hover {
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
+@media (max-width: 900px) {
+  .cert-showcase-grid {
+    grid-template-columns: 1fr;
+  }
+  .cert-card {
+    padding: 16px;
+  }
+  .cert-meta-row {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+  .cert-compliance-banner {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
