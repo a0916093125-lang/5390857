@@ -26,7 +26,7 @@
 <meta content="社區大樓洗水塔、商用空調冷卻水塔保養與商辦四方吹/FCU/AHU冷氣清洗正式工程報價單線上產生器！內建智慧單頁 A4 鎖定引擎與動態保固條款，自動計算 A/B 雙軌價格、5% 營業稅與國字大寫金額（附統編90221911報價章），10秒匯出單頁 A4 PDF 報價單。" name="twitter:description"/>
 <meta content="https://5390857.com/assets/og-quote.jpg" name="twitter:image"/>
 <meta content="皓盛有限公司社區自來水塔與商用空調冷卻水塔 A/B 雙軌單頁 A4 正式工程報價單產生器" name="twitter:image:alt"/>
-<link href="assets/style.css?v=21.1" rel="stylesheet"/>
+<link href="assets/style.css?v=22.0" rel="stylesheet"/>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -202,6 +202,7 @@
 <a class="nav-link" href="water-tank.html">💧 洗自來水塔試算</a>
 <a class="nav-link" href="cooling-tower.html">❄️ 洗冷卻水塔試算</a>
 <a class="nav-link" href="ac-cleaning.html">🌬️ 洗冷氣空調試算</a>
+<a class="nav-link" href="motor-pump-valve.html">⚡ 會轉都會修・馬達閥件</a>
 <a class="nav-link active" href="quote.html">📄 正式報價單產生器</a>
 <a class="nav-link nav-link-cta" href="https://line.me/ti/p/~0916093125" rel="noopener noreferrer" target="_blank">加 LINE 傳照片估價</a>
 </nav>
@@ -267,6 +268,7 @@
 <option selected="" value="water_tank">💧 給水機電事業部：社區大樓／商辦「自來水塔與蓄水池清洗」</option>
 <option value="cooling_tower">❄️ 商空水系統事業部：商場／廠房「商用空調冷卻水塔清洗保養」</option>
 <option value="ac_cleaning">🌬️ 室內空調機電部：商辦／社區公設／廠房「冷氣與中央空調清洗保養」</option>
+<option value="mpv_repair">⚡ 機電馬達閥件部（會轉都會修！）：冷氣風鼓・空調箱連座軸承・水塔幫浦減速機・大口徑蝶閥逆止閥搶修</option>
 <option value="wt_ac">🏘️ 社區水塔＋公設冷氣同日順洗專案（享免二次冷氣出車底價特惠）</option>
 <option value="ct_ac">🏬 商場冷卻水塔＋室內四方吹／FCU／AHU空調同日順洗專案（免二次出車底價）</option>
 <option value="both">🏢 自來水塔 ＋ 空調冷卻水塔「雙塔系統同步維保專案」</option>
@@ -353,6 +355,35 @@
 </select>
 </div>
 </div>
+<div id="q-mpv-group" style="display:none;background:rgba(56,189,248,0.09);border:1px solid rgba(56,189,248,0.4);border-radius:10px;padding:14px;margin-bottom:16px;">
+<div style="font-weight:800;color:#38bdf8;margin-bottom:10px;">⚡ 「會轉都會修！」機電馬達・風鼓軸承・幫浦與蝶閥逆止閥規格設定</div>
+<div class="calc-form-group">
+<label class="calc-label" for="q-mpv-spec">檢修設備與工程級距項目</label>
+<select class="calc-select" id="q-mpv-spec">
+<option value="split_minor">1A. 分離式冷氣：啟動/運轉電容、導風板步進馬達、靜音排水器或軸套檢修（B:$2,500 / A:$3,500起/台）</option>
+<option selected="" value="split_major">1B. 分離式冷氣：室內外機 DC/AC 風扇馬達、貫流扇風鼓總成或日本 NSK 培林更換（B:$4,500 / A:$6,000起/台）</option>
+<option value="fcu_repair">2A. 吊隱式送風機(FCU)／四方吹：多翼式離心風鼓、雙軸送風馬達培林或電動二通閥更新（B:$4,500 / A:$6,000起/台）</option>
+<option value="ahu_overhaul">2B. 大型空調箱(AHU)傳動大修：重型連座軸承(Pillow Block)＋皮帶輪對心＋三相送風馬達大修（B:$28,000 / A:$32,000起，區間$28,000~$38,000起/組）</option>
+<option value="ct_sprinkler">3A. 冷卻水塔旋轉播水頭總成更新：中小型塑鋼/鋁合金至工業級青銅/不鏽鋼散水頭（B:$4,500 / A:$6,000起，區間$4,500~$38,000起/組）</option>
+<option value="ct_motor_pump">3B. 水塔風機馬達／減速齒輪箱／冰水與冷卻水循環泵軸封培林大修（B:$9,000 / A:$12,000起，區間$9,000~$98,000起/台）</option>
+<option value="pump_seal_bearing">4A. 社區揚水(抽水)／加壓馬達：耐磨碳化矽機械軸封漏水更換、前後滾珠培林或壓力桶檢修（B:$5,500 / A:$7,500起/台）</option>
+<option value="pump_replace">4B. 社區揚水(抽水)／頂樓恆壓變頻加壓泵浦：整機換新升級工程（B:$10,500 / A:$13,500起，區間$10,500~$30,000起/台）</option>
+<option value="valve_2_4">5A. 2"~4" 蝶閥／不鏽鋼無聲逆止閥(消水錘)／高壓防震軟管／減壓閥抽換（B:$11,000 / A:$12,500起，區間$11,000~$15,000起/處）</option>
+<option value="valve_6_10">5B. 6"~10" 大口徑齒輪式蝴蝶閥／無聲逆止閥吊裝抽換（含EPDM墊片與304白鐵螺栓｜B:$22,000 / A:$25,000起，區間$22,000~$32,000起/處）</option>
+<option value="ctrl_float_omron">6A. 青銅/不鏽鋼複動浮球閥、Omron 61F-G2 液位控制器＋304電極棒或電磁接觸器搶修（B:$3,500 / A:$4,800起/組）</option>
+<option value="ctrl_altitude_valve">6B. 大口徑水力定水位閥（主閥＋導閥膜片總成）或雙泵交替控制盤更新（B:$7,500 / A:$9,500起/組）</option>
+</select>
+</div>
+<div class="calc-form-group" style="margin-bottom:0;">
+<label class="calc-label" for="q-mpv-qty">現場檢修數量 ／ 台數 ／ 處數</label>
+<select class="calc-select" id="q-mpv-qty">
+<option selected="" value="1">1 台 ／ 1 組 ／ 1 處（標準單件專車檢修）</option>
+<option value="2">2 台 ／ 2 組 ／ 2 處（同案場第 2 件起享同趟免重覆出車折減 10%）</option>
+<option value="3">3 台 ／ 3 組 ／ 3 處（同案場多件批次檢修折減 12%）</option>
+<option value="4">4 台 ／ 4 組 ／ 4 處（商場／社區全機房專案批次折減 15%）</option>
+</select>
+</div>
+</div>
 <div class="calc-form-group" style="margin-bottom:0;">
 <span class="calc-label">機電閥件更換與空調加購明細（可複選）</span>
 <div class="calc-checkbox-grid" style="grid-template-columns:1fr;">
@@ -366,7 +397,7 @@
 </label>
 <label class="calc-check-item">
 <input id="q-chk-butterfly" type="checkbox"/>
-<span>6吋~10吋 FCD/304 齒輪式蝴蝶閥更換（專車+18,000 / 平日+16,500）</span>
+<span>6吋~10吋 大口徑齒輪式蝴蝶閥／無聲逆止閥抽換（$22,000 ~ $32,000 起 / 處｜A方案+25,000 / B方案+22,000）</span>
 </label>
 <label class="calc-check-item">
 <input id="q-chk-fill" type="checkbox"/>
@@ -391,6 +422,18 @@
 <label class="calc-check-item">
 <input id="q-chk-ac-steam" type="checkbox"/>
 <span>✨ 冷氣出風口高溫蒸氣／臭氧深層除臭殺菌（專車+1,800 / 平日+1,500）</span>
+</label>
+<label class="calc-check-item">
+<input id="q-chk-valve-24" type="checkbox"/>
+<span>🔧 2吋~4吋蝶閥／不鏽鋼無聲逆止閥(消水錘)／防震軟管抽換（$11,000~$15,000起/處｜A方案+12,500 / B方案+11,000）</span>
+</label>
+<label class="calc-check-item">
+<input id="q-chk-mpv-elec" type="checkbox"/>
+<span>🔌 控制盤電磁接觸器／積熱電驛／啟動電容更新＋三相絕緣阻抗實測（A方案+3,500 / B方案+2,800）</span>
+</label>
+<label class="calc-check-item">
+<input id="q-chk-mpv-urgent" type="checkbox"/>
+<span>🚨 24H 當日急件插單搶修 ／ 夜間（18:00後）與週六日例假日緊急調度費（A方案+4,500 / B方案+3,500）</span>
 </label>
 </div>
 </div>
@@ -534,14 +577,16 @@
 <p>【給水機電事業部】：社區大樓與商辦自來水塔清洗消毒、地下蓄水池清洗、完工現場 3 項驗水（餘氯/pH/TDS）、Omron 61F-G2 液位開關與進水蝴蝶閥更換。</p>
 <p>【商空水系統事業部】：商用中央空調冷卻水塔清洗保養、良機與跨廠牌水塔散熱材更換、6吋~10吋齒輪式蝴蝶閥更新、東元 TECO F510 變頻器調校。</p>
 <p>【室內空調機電部】：商辦四方吹嵌入式冷氣、吊隱式送風機（FCU）、大型空調箱（AHU）、箱型機與社區公設／團購分離式冷氣深層拆洗、根治果凍淤泥滴水。</p>
+<p>【機電馬達與閥件搶修部（會轉都會修！）】：分離式與吊隱式冷氣風鼓馬達培林電容、AHU 空調箱連座軸承大修、水塔播水頭減速機循環泵、揚水加壓馬達與 2"~10" 蝶閥無聲逆止閥搶修。</p>
 </div>
 <div>
-<h3 style="color:#ffffff;margin-bottom:10px;">全站五大核心頁面快速導覽</h3>
+<h3 style="color:#ffffff;margin-bottom:10px;">全站六大核心頁面快速導覽</h3>
 <ul style="list-style:none;line-height:2.0;">
 <li>▸ <a href="index.html">皓盛有限公司企業形象與工程實力總覽首頁</a></li>
 <li>▸ <a href="water-tank.html">給水機電事業部：社區大樓洗自來水塔試算器</a></li>
 <li>▸ <a href="cooling-tower.html">商空水系統事業部：空調冷卻水塔 RT 試算器</a></li>
 <li>▸ <a href="ac-cleaning.html">室內空調機電部：冷氣與中央空調清洗試算器</a></li>
+<li>▸ <a href="motor-pump-valve.html">會轉都會修！機電馬達・風鼓軸承・泵浦閥件試算器</a></li>
 <li>▸ <a href="quote.html">採購與管委會專區：單頁 A4 正式工程報價單產生器</a></li>
 </ul>
 </div>
@@ -570,6 +615,6 @@
 <span class="sticky-btn-sub">傳照片估價</span>
 </a>
 </div>
-<script src="assets/cad-engine.js?v=21.1"></script>
+<script src="assets/cad-engine.js?v=22.0"></script>
 </body>
 </html>

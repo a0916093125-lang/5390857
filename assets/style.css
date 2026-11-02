@@ -2320,3 +2320,34 @@ h1.main-title {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* v22.0 全站 6 大核心頁面導覽與首頁 4 大事業部對稱網格 (.pillars-4col-grid) */
+.nav-link {
+  padding: 8px 11px;
+  font-size: 0.88rem;
+}
+.text-gradient-amber {
+  background: linear-gradient(135deg, #fde68a 0%, #f59e0b 55%, #fbbf24 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.pillars-4col-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  align-items: stretch;
+  margin-bottom: 36px;
+}
+.pillars-4col-grid > .card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+}
+@media (max-width: 900px) {
+  .pillars-4col-grid {
+    grid-template-columns: 1fr;
+  }
+}

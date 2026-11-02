@@ -517,9 +517,9 @@
         addons.push("加購 2吋內進水 PVC 球閥/青銅浮球閥更新 (+NT$" + pvcPrice.toLocaleString() + "起)");
       }
       if (chkButterfly && chkButterfly.checked) {
-        const bfPrice = isPriority ? 18000 : 16500;
+        const bfPrice = isPriority ? 25000 : 22000;
         basePrice += bfPrice;
-        addons.push("加購 6吋~10吋 FCD/SUS304 齒輪式蝴蝶閥更換 (+NT$" + bfPrice.toLocaleString() + "起)");
+        addons.push("加購 6吋~10吋 大口徑齒輪式蝴蝶閥／無聲逆止閥抽換 (+NT$" + bfPrice.toLocaleString() + "~32,000起)");
       }
       if (chkLevel && chkLevel.checked) {
         const lvlPrice = isPriority ? 4500 : 4200;
@@ -800,9 +800,9 @@
         addons.push("加購散熱材(PVC膠片填料)局部深度除垢或更新預估 (+NT$" + fillPrice.toLocaleString() + "起)");
       }
       if (chkButterfly && chkButterfly.checked) {
-        const bfPrice = isPriority ? 18000 : 16500;
+        const bfPrice = isPriority ? 25000 : 22000;
         basePrice += bfPrice;
-        addons.push("加購 6吋~10吋 FCD/SUS304 齒輪式蝴蝶閥更換 (+NT$" + bfPrice.toLocaleString() + "起)");
+        addons.push("加購 6吋~10吋 大口徑齒輪式蝴蝶閥／無聲逆止閥抽換 (+NT$" + bfPrice.toLocaleString() + "~32,000起)");
       }
       if (chkBallValve && chkBallValve.checked) {
         const bvPrice = isPriority ? 3800 : 3500;
@@ -1171,6 +1171,338 @@
     }
   }
 
+  
+  // ============================================================================
+  // 3B. 第四引擎：「會轉都會修！」機電馬達・風鼓軸承・幫浦與蝶閥逆止閥試算器 (v22.0)
+  // ============================================================================
+  const MPV_SPEC_MAP = {
+    split_minor: {
+      cat: "cat1_split_ac",
+      name: "分離式冷氣（室內外機）啟動/運轉電容・步進馬達・靜音排水器或軸套檢修",
+      spec: "現場檢測更換耐高溫防爆啟動/運轉電容、導風板步進馬達、高揚程靜音排水器或風鼓耐溫軸套，含運轉電流實測",
+      unitName: "台",
+      minB: 2500, maxB: 4500,
+      minA: 3500, maxA: 5500,
+      quoteB: 2500, quoteA: 3500,
+      rangeLabel: "$2,500 ~ $4,500 起 / 台",
+      hours: "1.5 ~ 2.5 小時"
+    },
+    split_major: {
+      cat: "cat1_split_ac",
+      name: "分離式冷氣（室內外機）DC/AC 風扇馬達・貫流扇風鼓總成或日本 NSK 培林更換",
+      spec: "拆機更換原廠規格室內/室外風扇馬達、貫流扇風鼓葉輪或日本 NSK/SKF 精密靜音滾珠軸承（培林），根治尖叫異音與不轉跳機",
+      unitName: "台",
+      minB: 4500, maxB: 8500,
+      minA: 6000, maxA: 11000,
+      quoteB: 4500, quoteA: 6000,
+      rangeLabel: "$4,500 ~ $11,000 起 / 台",
+      hours: "2.0 ~ 3.5 小時"
+    },
+    fcu_repair: {
+      cat: "cat2_ahu_fcu",
+      name: "商用吊隱式送風機(FCU)／四方吹 多翼式離心風鼓・雙軸送風馬達培林或電動二通閥更新",
+      spec: "天花板維修孔拆卸多翼式離心風鼓（松鼠籠風車）校正更新、雙軸馬達日本 NSK 培林更換、冷凝排水器或冰水電動二通閥驅動頭更新",
+      unitName: "台",
+      minB: 4500, maxB: 8500,
+      minA: 6000, maxA: 11000,
+      quoteB: 4500, quoteA: 6000,
+      rangeLabel: "$4,500 ~ $11,000 起 / 台",
+      hours: "2.5 ~ 4.0 小時"
+    },
+    ahu_overhaul: {
+      cat: "cat2_ahu_fcu",
+      name: "大型中央空調箱(AHU)／大樓排風車傳動大修（重型連座軸承＋皮帶輪對心＋三相送風馬達）",
+      spec: "專用拔輪器無損拆卸更換重型連座軸承(Pillow Block Bearing)、雷射/直尺皮帶輪平行對心、抗靜電三角皮帶更新與三相馬達絕緣電流實測（級距 $28,000~$38,000 起/組）",
+      unitName: "組",
+      minB: 28000, maxB: 38000,
+      minA: 28000, maxA: 38000,
+      quoteB: 28000, quoteA: 32000,
+      rangeLabel: "$28,000 ~ $38,000 起 / 組",
+      hours: "4.0 ~ 6.5 小時"
+    },
+    ct_sprinkler: {
+      cat: "cat3_ct_drive",
+      name: "冷卻水塔旋轉播水頭（散水頭）總成更新（中小型鋁合金至大型工業級青銅/不鏽鋼散水頭）",
+      spec: "拆除中心軸承卡死之舊散水頭，換裝全新塑鋼/鋁合金或大型高噸數青銅/SUS304不鏽鋼重型旋轉播水頭總成，含散水管水平角度與水壓轉速校正（級距 $4,500~$38,000 起/組）",
+      unitName: "組",
+      minB: 4500, maxB: 38000,
+      minA: 4500, maxA: 38000,
+      quoteB: 4500, quoteA: 6000,
+      rangeLabel: "$4,500 ~ $38,000 起 / 組",
+      hours: "2.0 ~ 4.5 小時"
+    },
+    ct_motor_pump: {
+      cat: "cat3_ct_drive",
+      name: "冷卻水塔散熱風機馬達／減速齒輪箱（Gear Reducer）／冰水與冷卻水循環泵軸封培林大修",
+      spec: "涵蓋水塔頂部防滴型風機馬達防水培林更新、減速齒輪箱換油與油封齒輪大修、以及機房立臥式冰水/冷卻水/熱水循環大泵機械軸封與聯軸器對心校正（級距 $9,000~$98,000 起/台）",
+      unitName: "台",
+      minB: 9000, maxB: 98000,
+      minA: 9000, maxA: 98000,
+      quoteB: 9000, quoteA: 12000,
+      rangeLabel: "$9,000 ~ $98,000 起 / 台",
+      hours: "3.5 ~ 7.0 小時"
+    },
+    pump_seal_bearing: {
+      cat: "cat4_water_pump",
+      name: "社區大樓揚水（抽水）馬達／頂樓恆壓加壓泵浦 耐磨碳化矽機械軸封與滾珠培林現場搶修",
+      spec: "關水洩壓拆解泵浦本體，換裝耐磨碳化矽(SiC)機械軸封根治漏水、更新日本 NSK 前後滾珠軸承消除尖叫異音，並點檢穩壓壓力桶與壓力開關",
+      unitName: "台",
+      minB: 5500, maxB: 10500,
+      minA: 7500, maxA: 13500,
+      quoteB: 5500, quoteA: 7500,
+      rangeLabel: "$5,500 ~ $13,500 起 / 台",
+      hours: "2.5 ~ 4.0 小時"
+    },
+    pump_replace: {
+      cat: "cat4_water_pump",
+      name: "社區大樓地下室揚水（抽水）馬達／頂樓恆壓變頻加壓泵浦 整機換新升級工程",
+      spec: "舊泵吊拆清運、換裝高效靜音多段離心泵或 SUS304 不鏽鋼微電腦恆壓變頻加壓泵浦，含進出水由令/法蘭配管銜接、排氣試水與三相電流設定",
+      unitName: "台",
+      minB: 10500, maxB: 24000,
+      minA: 13500, maxA: 30000,
+      quoteB: 10500, quoteA: 13500,
+      rangeLabel: "$10,500 ~ $30,000 起 / 台",
+      hours: "3.0 ~ 5.5 小時"
+    },
+    valve_2_4: {
+      cat: "cat5_valves",
+      name: "2吋~4吋 蝶閥／不鏽鋼無聲逆止閥（消除停泵水錘巨響）／高壓防震軟管／減壓閥抽換",
+      spec: "管路排空洩壓、舊閥拆卸、法蘭密封面除鏽清潔、換裝 CNS 認證 2吋~4吋蝶閥/無聲逆止閥/防震軟管、更新 EPDM 墊片與 SUS304 不鏽鋼螺栓及復水耐壓測試（級距 $11,000~$15,000 起/處）",
+      unitName: "處",
+      minB: 11000, maxB: 15000,
+      minA: 11000, maxA: 15000,
+      quoteB: 11000, quoteA: 12500,
+      rangeLabel: "$11,000 ~ $15,000 起 / 處",
+      hours: "2.0 ~ 3.5 小時"
+    },
+    valve_6_10: {
+      cat: "cat5_valves",
+      name: "6吋~10吋 大口徑齒輪式蝴蝶閥／無聲逆止閥吊裝抽換工程",
+      spec: "雙人正職機電編制搭配手拉吊車吊裝、拆除鏽死舊閥、換裝 6吋~10吋 FCD鑄鐵本體＋SUS304不鏽鋼蝶板重型齒輪式蝴蝶閥或無聲逆止閥，含 EPDM 墊片與 304 白鐵螺栓對角鎖固試壓（級距 $22,000~$32,000 起/處）",
+      unitName: "處",
+      minB: 22000, maxB: 32000,
+      minA: 22000, maxA: 32000,
+      quoteB: 22000, quoteA: 25000,
+      rangeLabel: "$22,000 ~ $32,000 起 / 處",
+      hours: "3.0 ~ 5.0 小時"
+    },
+    ctrl_float_omron: {
+      cat: "cat6_level_ctrl",
+      name: "大口徑青銅/不鏽鋼複動式浮球閥・Omron 61F-G2 液位控制器＋304電極棒或電磁接觸器搶修",
+      spec: "更換水池進水複動式浮球閥、日本歐姆龍原廠 Omron 61F-G2 液位保持繼電器、SUS304 不鏽鋼電極棒座或控制盤電磁接觸器/積熱電驛，含滿水斷電與防空轉測試",
+      unitName: "組",
+      minB: 3500, maxB: 6800,
+      minA: 4800, maxA: 8500,
+      quoteB: 3500, quoteA: 4800,
+      rangeLabel: "$3,500 ~ $8,500 起 / 組",
+      hours: "1.5 ~ 2.5 小時"
+    },
+    ctrl_altitude_valve: {
+      cat: "cat6_level_ctrl",
+      name: "大口徑水力定水位閥（主閥＋導閥膜片總成）或雙泵交替自動控制盤檢修更新",
+      spec: "拆檢更換水塔進水大口徑水力定水位閥（主閥膜片、導閥與過濾器清洗更新）或揚水泵雙泵交替控制盤改造，徹底根治水塔滿水溢流與單泵過載",
+      unitName: "組",
+      minB: 7500, maxB: 15000,
+      minA: 9500, maxA: 18500,
+      quoteB: 7500, quoteA: 9500,
+      rangeLabel: "$7,500 ~ $18,500 起 / 組",
+      hours: "2.5 ~ 4.5 小時"
+    }
+  };
+
+  function initMpvCalculator() {
+    const form = document.getElementById("mpv-calc-form");
+    if (!form) return;
+
+    const scheduleSelect = document.getElementById("mpv-schedule-mode");
+    const regionSelect = document.getElementById("mpv-region");
+    const mainCatSelect = document.getElementById("mpv-main-cat");
+    const subSpecSelect = document.getElementById("mpv-sub-spec");
+    const qtySelect = document.getElementById("mpv-qty");
+
+    const chkUrgent = document.getElementById("mpv-chk-urgent");
+    const chkElec = document.getElementById("mpv-chk-elec");
+    const chkComboClean = document.getElementById("mpv-chk-combo-clean");
+    const chkTax = document.getElementById("mpv-chk-tax");
+
+    const outPrice = document.getElementById("mpv-price-output");
+    const outHours = document.getElementById("mpv-hours-output");
+    const outCrew = document.getElementById("mpv-crew-output");
+    const outSummary = document.getElementById("mpv-summary-text");
+
+    const btnToQuote = document.getElementById("btn-mpv-to-quote");
+    const btnLine = document.getElementById("btn-mpv-line");
+
+    const catDefaultSpec = {
+      cat1_split_ac: "split_major",
+      cat2_ahu_fcu: "ahu_overhaul",
+      cat3_ct_drive: "ct_motor_pump",
+      cat4_water_pump: "pump_seal_bearing",
+      cat5_valves: "valve_6_10",
+      cat6_level_ctrl: "ctrl_float_omron"
+    };
+
+    if (mainCatSelect && subSpecSelect) {
+      mainCatSelect.addEventListener("change", function () {
+        const targetSpec = catDefaultSpec[mainCatSelect.value];
+        if (targetSpec) {
+          setSelectValueSafely(subSpecSelect, targetSpec, "split_major");
+        }
+        calcMpv(true, false);
+      });
+      subSpecSelect.addEventListener("change", function () {
+        const specObj = MPV_SPEC_MAP[subSpecSelect.value];
+        if (specObj && mainCatSelect.value !== specObj.cat) {
+          setSelectValueSafely(mainCatSelect, specObj.cat, "cat1_split_ac");
+        }
+      });
+    }
+
+    function restoreMpvDraft() {
+      const draft = loadQuoteDraft();
+      if (!draft) return;
+      if (draft.mpvScheduleMode && scheduleSelect) {
+        setSelectValueSafely(scheduleSelect, draft.mpvScheduleMode, "priority_50");
+      }
+      if (draft.region && regionSelect) {
+        setSelectValueSafely(regionSelect, draft.region, "台北市 / 新北市");
+      }
+      if (draft.mpvSpec && subSpecSelect && MPV_SPEC_MAP[draft.mpvSpec]) {
+        setSelectValueSafely(subSpecSelect, draft.mpvSpec, "split_major");
+        if (mainCatSelect) {
+          setSelectValueSafely(mainCatSelect, MPV_SPEC_MAP[draft.mpvSpec].cat, "cat1_split_ac");
+        }
+      }
+      if (draft.mpvQty && qtySelect) {
+        setSelectValueSafely(qtySelect, String(draft.mpvQty), "1");
+      }
+      if (chkUrgent && draft.chkMpvUrgent !== undefined) chkUrgent.checked = Boolean(draft.chkMpvUrgent);
+      if (chkElec && draft.chkMpvElec !== undefined) chkElec.checked = Boolean(draft.chkMpvElec);
+      if (chkComboClean && draft.chkMpvComboClean !== undefined) chkComboClean.checked = Boolean(draft.chkMpvComboClean);
+      if (chkTax && draft.chkTax !== undefined) chkTax.checked = Boolean(draft.chkTax);
+    }
+
+    function calcMpv(shouldPersistDraft, isJumpingToQuote) {
+      const modeVal = scheduleSelect ? scheduleSelect.value : "priority_50";
+      const isAddonClean = (modeVal === "addon_with_clean") || Boolean(chkComboClean && chkComboClean.checked);
+      const isPriority = (modeVal === "priority_50");
+      const regionVal = regionSelect ? regionSelect.value : "台北市 / 新北市";
+      const specKey = (subSpecSelect && MPV_SPEC_MAP[subSpecSelect.value]) ? subSpecSelect.value : "split_major";
+      const specCfg = MPV_SPEC_MAP[specKey];
+      const qtyNum = clampNumber(qtySelect ? qtySelect.value : 1, 1, 10, 1);
+
+      let discountFactor = 1.0;
+      if (qtyNum === 2) discountFactor = 0.90;
+      else if (qtyNum === 3) discountFactor = 0.88;
+      else if (qtyNum >= 4) discountFactor = 0.85;
+
+      let lowPrice = Math.round((isPriority ? specCfg.minA : specCfg.minB) * qtyNum * discountFactor);
+      let highPrice = Math.round((isPriority ? specCfg.maxA : specCfg.maxB) * qtyNum * discountFactor);
+
+      const addons = [
+        isAddonClean
+          ? "同日搭配清洗保養順修特惠：免收 $2,500 單獨查修出工底價"
+          : "含雙人正職機電技師到場儀器診斷（單獨叫修基本出工檢測保底 $2,000~$2,500 起/趟，確認委修全額併入折抵）"
+      ];
+
+      if (chkElec && chkElec.checked) {
+        const elecAdd = isPriority ? 3500 : 2800;
+        lowPrice += elecAdd;
+        highPrice += elecAdd;
+        addons.push("加購控制盤電磁接觸器／積熱電驛／啟動電容更新＋三相絕緣阻抗實測 (+NT$" + elecAdd.toLocaleString() + ")");
+      }
+      if (chkUrgent && chkUrgent.checked) {
+        const urgAdd = isPriority ? 4500 : 3500;
+        lowPrice += urgAdd;
+        highPrice += Math.round(urgAdd * 1.35);
+        addons.push("⚡ 24H 當日急件插單搶修／夜間與例假日緊急出勤調度 (+NT$" + urgAdd.toLocaleString() + "起)");
+      }
+
+      let taxNote = "未稅";
+      if (chkTax && chkTax.checked) {
+        lowPrice = Math.round(lowPrice * 1.05);
+        highPrice = Math.round(highPrice * 1.05);
+        taxNote = "含 5% 統一發票營業稅";
+      }
+
+      if (outPrice) {
+        outPrice.textContent = "NT$ " + lowPrice.toLocaleString() + " ~ " + highPrice.toLocaleString() + " 元起（" + taxNote + "）";
+      }
+      if (outHours) {
+        outHours.textContent = specCfg.hours + (qtyNum > 1 ? ("（共 " + qtyNum + " " + specCfg.unitName + "同趟施作）") : "");
+      }
+      if (outCrew) {
+        outCrew.textContent = isPriority
+          ? "【A方案：企業合規長效保固專車】雙人正職勞健保機電技師＋LOTO斷電掛牌＋日本NSK/原廠級料件＋電流絕緣簽認報告（180~365天保固）"
+          : (isAddonClean
+            ? "【清洗客戶同日順修特惠】由駐場雙人正職機電技師趁排空或拆機時同步檢修（免收 $2,500 單獨查修出工費！）"
+            : "【B方案：標準完修經濟排程】雙人正職勞健保機電技師＋工業級標準新品料件＋運轉測試（90天完修保固）");
+      }
+
+      if (shouldPersistDraft) {
+        const draftPayload = {
+          serviceCategory: "mpv_repair",
+          scheduleMode: isPriority ? "priority_50" : "weekday_35",
+          mpvScheduleMode: modeVal,
+          region: regionVal,
+          mpvSpec: specKey,
+          mpvQty: String(qtyNum),
+          chkMpvUrgent: Boolean(chkUrgent && chkUrgent.checked),
+          chkMpvElec: Boolean(chkElec && chkElec.checked),
+          chkMpvComboClean: Boolean(chkComboClean && chkComboClean.checked),
+          chkTax: Boolean(chkTax && chkTax.checked)
+        };
+        if (isJumpingToQuote) {
+          draftPayload.displayMode = "ab_compare";
+          draftPayload.lastJumpSource = "motor-pump-valve";
+        }
+        saveQuoteDraft(draftPayload);
+      }
+
+      const summary = "【會轉都會修！機電馬達・風鼓軸承・幫浦閥件搶修詢價】" +
+        "\n📍 地區：" + regionVal +
+        "\n⚡ 檢修項目：" + specCfg.name + "（數量：" + qtyNum + " " + specCfg.unitName + "｜基準級距：" + specCfg.rangeLabel + "）" +
+        "\n👷 保固與編制：" + (outCrew ? outCrew.textContent : "") +
+        "\n⏱️ 預估完修工時：" + (outHours ? outHours.textContent : specCfg.hours) +
+        "\n🔧 附加設定：" + addons.join("、") +
+        "\n💰 系統預估浮動區間：NT$ " + lowPrice.toLocaleString() + " ~ " + highPrice.toLocaleString() + " 元起（" + taxNote + "）";
+
+      if (outSummary) {
+        outSummary.textContent = summary.replace(/\n/g, " ｜ ");
+      }
+      return summary;
+    }
+
+    restoreMpvDraft();
+    form.addEventListener("change", function () { calcMpv(true, false); });
+    form.addEventListener("input", function () { calcMpv(true, false); });
+    calcMpv(false, false);
+
+    if (btnLine) {
+      btnLine.addEventListener("click", function () {
+        copyAndOpenLine(calcMpv(true, false));
+      });
+    }
+    if (btnToQuote) {
+      btnToQuote.addEventListener("click", function () {
+        calcMpv(true, true);
+        const modeVal = scheduleSelect ? scheduleSelect.value : "priority_50";
+        const qParams = new URLSearchParams({
+          from: "motor-pump-valve",
+          cat: "mpv_repair",
+          mode: (modeVal === "priority_50") ? "priority_50" : "weekday_35",
+          reg: regionSelect ? regionSelect.value : "台北市 / 新北市",
+          mpvspec: subSpecSelect ? subSpecSelect.value : "split_major",
+          mpvqty: qtySelect ? qtySelect.value : "1",
+          mpvurg: (chkUrgent && chkUrgent.checked) ? "1" : "0",
+          mpvelec: (chkElec && chkElec.checked) ? "1" : "0",
+          tax: (chkTax && chkTax.checked) ? "1" : "0"
+        });
+        window.location.href = "quote.html?" + qParams.toString() + "#qp-workspace-anchor";
+      });
+    }
+  }
+
   /* 4. 第三引擎：A/B 雙軌正式工程報價單生成器 (quote.html - 內建 100% 單頁 A4 PDF 智慧動態縮放鎖定) */
   function initQuoteGenerator() {
     const form = document.getElementById("hs-quote-builder-form");
@@ -1214,6 +1546,12 @@
     const chkAcDrain = document.getElementById("q-chk-ac-drain");
     const chkAcOutdoor = document.getElementById("q-chk-ac-outdoor");
     const chkAcSteam = document.getElementById("q-chk-ac-steam");
+    const boxMpvGroup = document.getElementById("q-mpv-group");
+    const elMpvSpec = document.getElementById("q-mpv-spec");
+    const elMpvQty = document.getElementById("q-mpv-qty");
+    const chkValve24 = document.getElementById("q-chk-valve-24");
+    const chkMpvElec = document.getElementById("q-chk-mpv-elec");
+    const chkMpvUrgent = document.getElementById("q-chk-mpv-urgent");
 
     const elCustomName = document.getElementById("q-custom-name");
     const elCustomPrice = document.getElementById("q-custom-price");
@@ -1355,6 +1693,7 @@
       const isWt = (cat === "water_tank" || cat === "both" || cat === "wt_ac" || cat === "all_three");
       const isCt = (cat === "cooling_tower" || cat === "both" || cat === "ct_ac" || cat === "all_three");
       const isAc = (cat === "ac_cleaning" || cat === "wt_ac" || cat === "ct_ac" || cat === "all_three");
+      const isMpv = (cat === "mpv_repair");
 
       function toggleAddonItem(checkboxEl, enabled) {
         if (!checkboxEl) return;
@@ -1375,6 +1714,9 @@
       toggleAddonItem(chkAcDrain, isAc);
       toggleAddonItem(chkAcOutdoor, isAc);
       toggleAddonItem(chkAcSteam, isAc);
+      toggleAddonItem(chkValve24, isWt || isCt || isMpv);
+      toggleAddonItem(chkMpvElec, isMpv || isWt || isCt || isAc);
+      toggleAddonItem(chkMpvUrgent, isMpv);
       if (lblSgsText) {
         if (cat === "water_tank") {
           lblSgsText.textContent = "🧪 代客無菌採樣送驗 SGS 飲用水水質檢驗報告（大腸桿菌群／總菌落數｜專車+3,500 / 平日+3,000）";
@@ -1402,6 +1744,8 @@
       } else if (fromParamVal === "ac-cleaning" && elCategory) {
         const targetCat = (draft.serviceCategory === "wt_ac") ? "wt_ac" : "ac_cleaning";
         setSelectValueSafely(elCategory, targetCat, "ac_cleaning");
+      } else if (fromParamVal === "motor-pump-valve" && elCategory) {
+        setSelectValueSafely(elCategory, "mpv_repair", "mpv_repair");
       } else if (draft.serviceCategory && elCategory) {
         setSelectValueSafely(elCategory, draft.serviceCategory, "water_tank");
       }
@@ -1456,6 +1800,11 @@
       if (chkAcDrain && draft.chkAcDrain !== undefined) chkAcDrain.checked = Boolean(draft.chkAcDrain);
       if (chkAcOutdoor && draft.chkAcOutdoor !== undefined) chkAcOutdoor.checked = Boolean(draft.chkAcOutdoor);
       if (chkAcSteam && draft.chkAcSteam !== undefined) chkAcSteam.checked = Boolean(draft.chkAcSteam);
+      if (draft.mpvSpec && elMpvSpec) setSelectValueSafely(elMpvSpec, draft.mpvSpec, "split_major");
+      if (draft.mpvQty && elMpvQty) setSelectValueSafely(elMpvQty, String(draft.mpvQty), "1");
+      if (chkValve24 && draft.chkValve24 !== undefined) chkValve24.checked = Boolean(draft.chkValve24);
+      if (chkMpvElec && draft.chkMpvElec !== undefined) chkMpvElec.checked = Boolean(draft.chkMpvElec);
+      if (chkMpvUrgent && draft.chkMpvUrgent !== undefined) chkMpvUrgent.checked = Boolean(draft.chkMpvUrgent);
 
       if (elCustomName && draft.customName !== undefined) {
         elCustomName.value = String(draft.customName);
@@ -1502,6 +1851,11 @@
         chkAcDrain: Boolean(chkAcDrain && chkAcDrain.checked),
         chkAcOutdoor: Boolean(chkAcOutdoor && chkAcOutdoor.checked),
         chkAcSteam: Boolean(chkAcSteam && chkAcSteam.checked),
+        mpvSpec: elMpvSpec ? elMpvSpec.value : "split_major",
+        mpvQty: elMpvQty ? elMpvQty.value : "1",
+        chkValve24: Boolean(chkValve24 && chkValve24.checked),
+        chkMpvElec: Boolean(chkMpvElec && chkMpvElec.checked),
+        chkMpvUrgent: Boolean(chkMpvUrgent && chkMpvUrgent.checked),
         customName: elCustomName ? elCustomName.value.trim() : "",
         customPrice: elCustomPrice ? elCustomPrice.value : "0",
         chkTax: (elTaxMode ? elTaxMode.value : "include_5") === "include_5"
@@ -1523,6 +1877,10 @@
       }
       if (boxAcGroup) {
         boxAcGroup.style.display = isAcActive ? "block" : "none";
+      }
+      const isMpvActive = (cat === "mpv_repair");
+      if (boxMpvGroup) {
+        boxMpvGroup.style.display = isMpvActive ? "block" : "none";
       }
 
       // 同步管控專屬加購項，防止純自來水塔報價單混入冷卻塔散熱材/變頻器費用
@@ -1740,6 +2098,38 @@
         }
       }
 
+      
+      // 2C. 計算「會轉都會修！」機電馬達・風鼓軸承・幫浦與蝶閥逆止閥主工項 (v22.0)
+      if (isMpvActive) {
+        const specKey = (elMpvSpec && MPV_SPEC_MAP[elMpvSpec.value]) ? elMpvSpec.value : "split_major";
+        const mCfg = MPV_SPEC_MAP[specKey];
+        const mQty = clampNumber(elMpvQty ? elMpvQty.value : 1, 1, 10, 1);
+        let disc = 1.0;
+        if (mQty === 2) disc = 0.90;
+        else if (mQty === 3) disc = 0.88;
+        else if (mQty >= 4) disc = 0.85;
+
+        const pA = Math.round(mCfg.quoteA * mQty * disc);
+        const pB = Math.round(mCfg.quoteB * mQty * disc);
+
+        items.push({
+          title: "【會轉都會修】" + mCfg.name + "（基準級距 " + mCfg.rangeLabel + "）",
+          spec: mCfg.spec,
+          unit: mQty + " " + mCfg.unitName,
+          priceA: pA,
+          priceB: pB
+        });
+
+        items.push({
+          title: "【專案包含】雙人正職機電技師儀器查修 ＋ 三相電流／絕緣阻抗實測驗收（原價 $2,500）",
+          spec: "確認委修直接免除 $2,500 單獨出工檢測費｜含 LOTO 斷電掛牌、三用電錶/鉤錶/高阻計實測與完修保固（A方案180~365天 / B方案90天）",
+          unit: "1 式",
+          priceA: 0,
+          priceB: 0,
+          isFreeGift: true
+        });
+      }
+
       // 3. 計算機電閥件與選配加購項（依類別啟用狀態精準過濾，阻絕跨系統殘留汙染）
       if (chkPvc && chkPvc.checked) {
         items.push({
@@ -1761,11 +2151,11 @@
       }
       if (chkButterfly && chkButterfly.checked) {
         items.push({
-          title: "大口徑 6吋~10吋 FCD/SUS304 齒輪式蝴蝶閥更換工程",
-          spec: "鑄鐵本體＋304不鏽鋼蝶板＋重型齒輪箱、EPDM 法蘭墊片與白鐵螺栓連工帶料",
-          unit: "1 組",
-          priceA: 18000,
-          priceB: 16500
+          title: "大口徑 6吋~10吋 FCD/SUS304 齒輪式蝴蝶閥／無聲逆止閥抽換（級距 $22,000~$32,000起）",
+          spec: "鑄鐵/不鏽鋼本體＋304蝶板＋重型齒輪箱、EPDM 法蘭墊片與304白鐵螺栓連工帶料吊裝試壓",
+          unit: "1 處",
+          priceA: 25000,
+          priceB: 22000
         });
       }
       if (isCtActive && chkFill && chkFill.checked) {
@@ -1829,6 +2219,33 @@
           unit: "1 式",
           priceA: 1800,
           priceB: 1500
+        });
+      }
+      if ((isWtActive || isCtActive || isMpvActive) && chkValve24 && chkValve24.checked) {
+        items.push({
+          title: "2吋~4吋 蝶閥／不鏽鋼無聲逆止閥（消除停泵水錘）／防震軟管抽換（級距 $11,000~$15,000起）",
+          spec: "含管路排空洩壓、舊閥拆卸、CNS認證閥體、EPDM墊片與SUS304不鏽鋼螺栓換裝試壓",
+          unit: "1 處",
+          priceA: 12500,
+          priceB: 11000
+        });
+      }
+      if (chkMpvElec && chkMpvElec.checked) {
+        items.push({
+          title: "機電控制盤電磁接觸器／積熱電驛／啟動電容更新 ＋ 三相絕緣阻抗實測",
+          spec: "更換老化燒熔之電磁接觸器(Magnetic Contactor)、過載積熱電驛或防爆運轉電容，並實測迴路絕緣",
+          unit: "1 組",
+          priceA: 3500,
+          priceB: 2800
+        });
+      }
+      if (isMpvActive && chkMpvUrgent && chkMpvUrgent.checked) {
+        items.push({
+          title: "⚡ 24H 當日急件插單搶修 ／ 夜間（18:00後）與例假日緊急出勤調度費",
+          spec: "針對緊急停水、冰水機跳高壓或營業場所空調停擺，優先調度雙人正職機電工程車與備品救火",
+          unit: "1 趟",
+          priceA: 4500,
+          priceB: 3500
         });
       }
 
@@ -2002,7 +2419,17 @@
 
       // 依工程類別智慧動態切換專屬「職安合規免責承諾書暨機電保護／保固條款」 (v21.1)
       if (outComplianceArea) {
-        if (cat === "ac_cleaning") {
+        if (cat === "mpv_repair") {
+          outComplianceArea.innerHTML =
+            "<div style='font-weight:900;color:#0369a1;margin-bottom:2px;font-size:0.84rem;'>" +
+              "🛡️ 皓盛有限公司【「會轉都會修」機電馬達・風鼓軸承・泵浦閥件檢修職安免責承諾書】暨【保固條款】" +
+            "</div>" +
+            "<ol style='padding-left:16px;margin:0;'>" +
+              "<li><strong>雙人正職機電編制、LOTO 斷電掛牌與無損拔輪工法</strong>：由具備實戰中央空調與機電配電資歷之雙人正職技師出勤（具甲種職安與缺氧作業主管雙證）。拆修前嚴格執行電源與管路閥門掛牌上鎖（LOTO），全程使用專用拔輪器（Puller）與對心工具換裝日本 NSK/SKF 精密軸承、耐磨碳化矽機械軸封與 CNS 認證大口徑蝶閥／無聲逆止閥。</li>" +
+              "<li><strong>三段式透明浮動核價與先報價後施工原則</strong>：單獨叫修基本出工檢測保底 $2,000~$2,500 起/趟（確認委修直接折抵併入總價；同日搭配清洗免收出車檢測費）。因馬力噸數（HP）、管徑與拆裝高度難度差異，現場若涉及特殊高空、動火切割或原廠變頻模組更換，必先提出書面明細經客戶簽認後始得施作。</li>" +
+              "<li><strong>正職勞健保、500萬職災團保免責與最高 365 天保固</strong>：全體出勤人員均具正職勞健保與 500 萬職災團保，施工安全概由本公司負全責（<strong>貴公司與管委會 100% 免責</strong>）；完修後實測三相平衡電流、軸承溫升與耐壓零滲漏，所更換之新品零件享 B方案 90 天 ／ A方案 180~365 天保固。</li>" +
+            "</ol>";
+        } else if (cat === "ac_cleaning") {
           outComplianceArea.innerHTML =
             "<div style='font-weight:900;color:#0369a1;margin-bottom:2px;font-size:0.84rem;'>" +
               "🛡️ 皓盛有限公司【冷氣與中央空調機電防護・職安免責承諾書】暨【洗後保固條款】" +
@@ -2266,6 +2693,19 @@
           urlPatch.acQty = "base";
         }
         saveQuoteDraft(urlPatch);
+      } else if (fromParamVal === "motor-pump-valve") {
+        const urlPatch = {
+          serviceCategory: "mpv_repair",
+          scheduleMode: params.get("mode") || "priority_50",
+          displayMode: "ab_compare"
+        };
+        if (params.get("reg")) urlPatch.region = params.get("reg");
+        if (params.get("mpvspec")) urlPatch.mpvSpec = params.get("mpvspec");
+        if (params.get("mpvqty")) urlPatch.mpvQty = params.get("mpvqty");
+        if (params.get("mpvurg") !== null) urlPatch.chkMpvUrgent = (params.get("mpvurg") === "1");
+        if (params.get("mpvelec") !== null) urlPatch.chkMpvElec = (params.get("mpvelec") === "1");
+        if (params.get("tax") !== null) urlPatch.chkTax = (params.get("tax") === "1");
+        saveQuoteDraft(urlPatch);
       } else if (fromParamVal === "ac-cleaning") {
         const urlPatch = {
           serviceCategory: params.get("cat") || "ac_cleaning",
@@ -2395,6 +2835,7 @@
     initWaterTankCalculator();
     initCoolingTowerCalculator();
     initAcCleaningCalculator();
+    initMpvCalculator();
     initQuoteGenerator();
   }
 
