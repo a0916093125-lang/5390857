@@ -876,6 +876,7 @@
           ctTowerType: towerType,
           ctTowerCount: String(countLevel),
           chkFill: Boolean(chkFill && chkFill.checked),
+        chkCtSprinkler: Boolean(chkQCtSprinkler && chkQCtSprinkler.checked),
           chkCtSprinkler: Boolean(chkCtSprinkler && chkCtSprinkler.checked),
           chkCtMotorReducer: Boolean(chkCtMotorReducer && chkCtMotorReducer.checked),
           chkAddMpv: Boolean((chkCtSprinkler && chkCtSprinkler.checked) || (chkCtMotorReducer && chkCtMotorReducer.checked)),
@@ -1200,173 +1201,177 @@
 
   
   // ============================================================================
-  // 3B. 第四引擎：「會轉都會修！」機電馬達・風鼓軸承・幫浦與蝶閥逆止閥試算器 (v22.1 支援 3 檔馬力噸數級距)
+  // 3B. 第四引擎：「會轉都會修！」機電馬達・風鼓軸承・幫浦與蝶閥逆止閥試算器 (v22.2 嚴格遞增 3 檔級距＋雙向連動)
   // ============================================================================
   const MPV_SPEC_MAP = {
     split_minor: {
       cat: "cat1_split_ac",
+      comboCleanCat: "ac_cleaning",
+      comboAcType: "split",
       name: "分離式冷氣（室內外機）啟動/運轉電容・步進馬達・靜音排水器或軸套檢修",
       spec: "現場檢測更換耐高溫防爆啟動/運轉電容、導風板步進馬達、高揚程靜音排水器或風鼓耐溫軸套，含運轉電流實測",
       unitName: "台",
-      minB: 2500, maxB: 4500, minA: 3500, maxA: 5500,
       tiers: {
-        tier_std:   { qB: 2500, qA: 3500, label: "標準壁掛/小型機" },
-        tier_mid:   { qB: 3500, qA: 4500, label: "中大型變頻/挑高安裝" },
-        tier_heavy: { qB: 4500, qA: 5500, label: "特殊高空/大能力商用分離式" }
+        tier_std:   { minB: 2500, maxB: 3200, minA: 3000, maxA: 3800, qB: 2500, qA: 3500, label: "標準壁掛/小型機" },
+        tier_mid:   { minB: 3200, maxB: 3900, minA: 3800, maxA: 4600, qB: 3500, qA: 4500, label: "中大型變頻/挑高安裝" },
+        tier_heavy: { minB: 3900, maxB: 4500, minA: 4600, maxA: 5500, qB: 4500, qA: 5500, label: "特殊高空/大能力商用分離式" }
       },
       rangeLabel: "$2,500 ~ $4,500 起 / 台",
       hours: "1.5 ~ 2.5 小時"
     },
     split_major: {
       cat: "cat1_split_ac",
+      comboCleanCat: "ac_cleaning",
+      comboAcType: "split",
       name: "分離式冷氣（室內外機）DC/AC 風扇馬達・貫流扇風鼓總成或日本 NSK 培林更換",
       spec: "拆機更換原廠規格室內/室外風扇馬達、貫流扇風鼓葉輪或日本 NSK/SKF 精密靜音滾珠軸承（培林），根治尖叫異音與不轉跳機",
       unitName: "台",
-      minB: 4500, maxB: 8500, minA: 6000, maxA: 11000,
       tiers: {
-        tier_std:   { qB: 4500, qA: 6000, label: "標準 2.8~5.0kW 機種" },
-        tier_mid:   { qB: 6500, qA: 8500, label: "中大型 6.3~10kW 變頻機種" },
-        tier_heavy: { qB: 8500, qA: 11000, label: "大型落地箱型/高空外牆機種" }
+        tier_std:   { minB: 4500, maxB: 5800, minA: 5500, maxA: 7000,  qB: 4500, qA: 6000,  label: "標準 2.8~5.0kW 機種" },
+        tier_mid:   { minB: 5800, maxB: 7200, minA: 7000, maxA: 9000,  qB: 6500, qA: 8500,  label: "中大型 6.3~10kW 變頻機種" },
+        tier_heavy: { minB: 7200, maxB: 8500, minA: 9000, maxA: 11000, qB: 8500, qA: 11000, label: "大型落地箱型/高空外牆機種" }
       },
       rangeLabel: "$4,500 ~ $11,000 起 / 台",
       hours: "2.0 ~ 3.5 小時"
     },
     fcu_repair: {
       cat: "cat2_ahu_fcu",
+      comboCleanCat: "ac_cleaning",
+      comboAcType: "fcu",
       name: "商用吊隱式送風機(FCU)／四方吹 多翼式離心風鼓・雙軸送風馬達培林或電動二通閥更新",
       spec: "天花板維修孔拆卸多翼式離心風鼓（松鼠籠風車）校正更新、雙軸馬達日本 NSK 培林更換、冷凝排水器或冰水電動二通閥驅動頭更新",
       unitName: "台",
-      minB: 4500, maxB: 8500, minA: 6000, maxA: 11000,
       tiers: {
-        tier_std:   { qB: 4500, qA: 6000, label: "標準 200~600 CFM 送風機" },
-        tier_mid:   { qB: 6500, qA: 8500, label: "大型 800~1200 CFM 雙風鼓/挑高" },
-        tier_heavy: { qB: 8500, qA: 11000, label: "特大風量/狹窄天花板全總成翻修" }
+        tier_std:   { minB: 4500, maxB: 5800, minA: 5500, maxA: 7000,  qB: 4500, qA: 6000,  label: "標準 200~600 CFM 送風機" },
+        tier_mid:   { minB: 5800, maxB: 7200, minA: 7000, maxA: 9000,  qB: 6500, qA: 8500,  label: "大型 800~1200 CFM 雙風鼓/挑高" },
+        tier_heavy: { minB: 7200, maxB: 8500, minA: 9000, maxA: 11000, qB: 8500, qA: 11000, label: "特大風量/狹窄天花板全總成翻修" }
       },
       rangeLabel: "$4,500 ~ $11,000 起 / 台",
       hours: "2.5 ~ 4.0 小時"
     },
     ahu_overhaul: {
       cat: "cat2_ahu_fcu",
+      comboCleanCat: "ac_cleaning",
+      comboAcType: "ahu",
       name: "大型中央空調箱(AHU)／大樓排風車傳動大修（重型連座軸承＋皮帶輪對心＋三相送風馬達）",
       spec: "專用拔輪器無損拆卸更換重型連座軸承(Pillow Block Bearing)、雷射/直尺皮帶輪平行對心、抗靜電三角皮帶更新與三相馬達絕緣電流實測（級距 $28,000~$38,000 起/組）",
       unitName: "組",
-      minB: 28000, maxB: 38000, minA: 28000, maxA: 38000,
       tiers: {
-        tier_std:   { qB: 28000, qA: 30000, label: "標準 5~10HP 空調箱傳動組" },
-        tier_mid:   { qB: 32000, qA: 35000, label: "中大型 15~25HP 空調箱連座軸承大修" },
-        tier_heavy: { qB: 35000, qA: 38000, label: "特大型 30HP+ 重型空調箱/排風車傳動大修" }
+        tier_std:   { minB: 28000, maxB: 31000, minA: 29500, maxA: 33000, qB: 28000, qA: 30000, label: "標準 5~10HP 空調箱傳動組" },
+        tier_mid:   { minB: 31000, maxB: 34500, minA: 33000, maxA: 36000, qB: 32000, qA: 35000, label: "中大型 15~25HP 空調箱連座軸承大修" },
+        tier_heavy: { minB: 34500, maxB: 36500, minA: 36000, maxA: 38000, qB: 35000, qA: 38000, label: "特大型 30HP+ 重型空調箱/排風車傳動大修" }
       },
       rangeLabel: "$28,000 ~ $38,000 起 / 組",
       hours: "4.0 ~ 6.5 小時"
     },
     ct_sprinkler: {
       cat: "cat3_ct_drive",
+      comboCleanCat: "cooling_tower",
       name: "冷卻水塔旋轉播水頭（散水頭）總成更新（中小型鋁合金至大型工業級青銅/不鏽鋼散水頭）",
       spec: "拆除中心軸承卡死之舊散水頭，換裝全新塑鋼/鋁合金或大型高噸數青銅/SUS304不鏽鋼重型旋轉播水頭總成，含散水管水平角度與水壓轉速校正（級距 $4,500~$38,000 起/組）",
       unitName: "組",
-      minB: 4500, maxB: 38000, minA: 4500, maxA: 38000,
       tiers: {
-        tier_std:   { qB: 4500,  qA: 6000,  label: "中小型 10~80RT 塑鋼/鋁合金散水頭" },
-        tier_mid:   { qB: 16000, qA: 19500, label: "商空大型 100~250RT 重型鋁合金/青銅散水頭" },
-        tier_heavy: { qB: 32000, qA: 38000, label: "工業巨型 300~500RT+ 法蘭式青銅/304不鏽鋼散水頭總成" }
+        tier_std:   { minB: 4500,  maxB: 8500,  minA: 5500,  maxA: 10500, qB: 4500,  qA: 6000,  label: "中小型 10~80RT 塑鋼/鋁合金散水頭" },
+        tier_mid:   { minB: 12000, maxB: 20000, minA: 15000, maxA: 24000, qB: 16000, qA: 19500, label: "商空大型 100~250RT 重型鋁合金/青銅散水頭" },
+        tier_heavy: { minB: 26000, maxB: 34000, minA: 30000, maxA: 38000, qB: 32000, qA: 38000, label: "工業巨型 300~500RT+ 法蘭式青銅/304不鏽鋼散水頭總成" }
       },
       rangeLabel: "$4,500 ~ $38,000 起 / 組",
       hours: "2.0 ~ 4.5 小時"
     },
     ct_motor_pump: {
       cat: "cat3_ct_drive",
+      comboCleanCat: "cooling_tower",
       name: "冷卻水塔散熱風機馬達／減速齒輪箱（Gear Reducer）／冰水與冷卻水循環泵軸封培林大修",
       spec: "涵蓋水塔頂部防滴型風機馬達防水培林更新、減速齒輪箱換油與油封齒輪大修、以及機房立臥式冰水/冷卻水/熱水循環大泵機械軸封與聯軸器對心校正（級距 $9,000~$98,000 起/台）",
       unitName: "台",
-      minB: 9000, maxB: 98000, minA: 9000, maxA: 98000,
       tiers: {
-        tier_std:   { qB: 9000,  qA: 12000, label: "標準 3~7.5HP 風機馬達/循環泵軸封培林檢修" },
-        tier_mid:   { qB: 38000, qA: 45000, label: "商空大型 10~25HP 減速齒輪箱/立臥式大泵翻修" },
-        tier_heavy: { qB: 85000, qA: 98000, label: "廠房特大 30~60HP+ 重型減速機/大馬力馬達/主循環泵吊裝大修" }
+        tier_std:   { minB: 9000,  maxB: 16000, minA: 11000, maxA: 20000, qB: 9000,  qA: 12000, label: "標準 3~7.5HP 風機馬達/循環泵軸封培林檢修" },
+        tier_mid:   { minB: 32000, maxB: 48000, minA: 38000, maxA: 56000, qB: 38000, qA: 45000, label: "商空大型 10~25HP 減速齒輪箱/立臥式大泵翻修" },
+        tier_heavy: { minB: 68000, maxB: 88000, minA: 78000, maxA: 98000, qB: 85000, qA: 98000, label: "廠房特大 30~60HP+ 重型減速機/大馬力馬達/主循環泵吊裝大修" }
       },
       rangeLabel: "$9,000 ~ $98,000 起 / 台",
       hours: "3.5 ~ 7.0 小時"
     },
     pump_seal_bearing: {
       cat: "cat4_water_pump",
+      comboCleanCat: "water_tank",
       name: "社區大樓揚水（抽水）馬達／頂樓恆壓加壓泵浦 耐磨碳化矽機械軸封與滾珠培林現場搶修",
       spec: "關水洩壓拆解泵浦本體，換裝耐磨碳化矽(SiC)機械軸封根治漏水、更新日本 NSK 前後滾珠軸承消除尖叫異音，並點檢穩壓壓力桶與壓力開關",
       unitName: "台",
-      minB: 5500, maxB: 10500, minA: 7500, maxA: 13500,
       tiers: {
-        tier_std:   { qB: 5500,  qA: 7500,  label: "標準 1~3HP 抽水/加壓馬達軸封培林" },
-        tier_mid:   { qB: 8000,  qA: 10500, label: "中型 5~7.5HP 多段離心揚水泵軸封培林" },
-        tier_heavy: { qB: 10500, qA: 13500, label: "大型 10~15HP 高揚程聯軸式揚水泵大修" }
+        tier_std:   { minB: 5500, maxB: 7200,  minA: 6800,  maxA: 8800,  qB: 5500,  qA: 7500,  label: "標準 1~3HP 抽水/加壓馬達軸封培林" },
+        tier_mid:   { minB: 7200, maxB: 9000,  minA: 8800,  maxA: 11000, qB: 8000,  qA: 10500, label: "中型 5~7.5HP 多段離心揚水泵軸封培林" },
+        tier_heavy: { minB: 9000, maxB: 10500, minA: 11000, maxA: 13500, qB: 10500, qA: 13500, label: "大型 10~15HP 高揚程聯軸式揚水泵大修" }
       },
       rangeLabel: "$5,500 ~ $13,500 起 / 台",
       hours: "2.5 ~ 4.0 小時"
     },
     pump_replace: {
       cat: "cat4_water_pump",
+      comboCleanCat: "water_tank",
       name: "社區大樓地下室揚水（抽水）馬達／頂樓恆壓變頻加壓泵浦 整機換新升級工程",
       spec: "舊泵吊拆清運、換裝高效靜音多段離心泵或 SUS304 不鏽鋼微電腦恆壓變頻加壓泵浦，含進出水由令/法蘭配管銜接、排氣試水與三相電流設定",
       unitName: "台",
-      minB: 10500, maxB: 24000, minA: 13500, maxA: 30000,
       tiers: {
-        tier_std:   { qB: 10500, qA: 13500, label: "標準 1~2HP 恆壓加壓/抽水泵整機換新" },
-        tier_mid:   { qB: 17500, qA: 21500, label: "中大型 3~5HP 多段不鏽鋼/變頻泵浦換新" },
-        tier_heavy: { qB: 24000, qA: 30000, label: "大型社區 7.5~15HP 重型揚水主泵吊裝換新" }
+        tier_std:   { minB: 10500, maxB: 14500, minA: 12500, maxA: 17500, qB: 10500, qA: 13500, label: "標準 1~2HP 恆壓加壓/抽水泵整機換新" },
+        tier_mid:   { minB: 15000, maxB: 19500, minA: 18000, maxA: 23500, qB: 17500, qA: 21500, label: "中大型 3~5HP 多段不鏽鋼/變頻泵浦換新" },
+        tier_heavy: { minB: 20000, maxB: 24000, minA: 24000, maxA: 30000, qB: 24000, qA: 30000, label: "大型社區 7.5~15HP 重型揚水主泵吊裝換新" }
       },
       rangeLabel: "$10,500 ~ $30,000 起 / 台",
       hours: "3.0 ~ 5.5 小時"
     },
     valve_2_4: {
       cat: "cat5_valves",
+      comboCleanCat: "water_tank",
       name: "2吋~4吋 蝶閥／不鏽鋼無聲逆止閥（消除停泵水錘巨響）／高壓防震軟管／減壓閥抽換",
       spec: "管路排空洩壓、舊閥拆卸、法蘭密封面除鏽清潔、換裝 CNS 認證 2吋~4吋蝶閥/無聲逆止閥/防震軟管、更新 EPDM 墊片與 SUS304 不鏽鋼螺栓及復水耐壓測試（級距 $11,000~$15,000 起/處）",
       unitName: "處",
-      minB: 11000, maxB: 15000, minA: 11000, maxA: 15000,
       tiers: {
-        tier_std:   { qB: 11000, qA: 12000, label: "2吋~2.5吋 手柄式蝶閥/逆止閥/軟管" },
-        tier_mid:   { qB: 12500, qA: 13800, label: "3吋 法蘭式無聲逆止閥/蝶閥/減壓閥" },
-        tier_heavy: { qB: 14000, qA: 15000, label: "4吋 重型無聲逆止閥/齒輪蝶閥/高處管道間" }
+        tier_std:   { minB: 11000, maxB: 12200, minA: 11800, maxA: 13000, qB: 11000, qA: 12000, label: "2吋~2.5吋 手柄式蝶閥/逆止閥/軟管" },
+        tier_mid:   { minB: 12200, maxB: 13500, minA: 13000, maxA: 14200, qB: 12500, qA: 13800, label: "3吋 法蘭式無聲逆止閥/蝶閥/減壓閥" },
+        tier_heavy: { minB: 13500, maxB: 14500, minA: 14200, maxA: 15000, qB: 14000, qA: 15000, label: "4吋 重型無聲逆止閥/齒輪蝶閥/高處管道間" }
       },
       rangeLabel: "$11,000 ~ $15,000 起 / 處",
       hours: "2.0 ~ 3.5 小時"
     },
     valve_6_10: {
       cat: "cat5_valves",
+      comboCleanCat: "cooling_tower",
       name: "6吋~10吋 大口徑齒輪式蝴蝶閥／無聲逆止閥吊裝抽換工程",
       spec: "雙人正職機電編制搭配手拉吊車吊裝、拆除鏽死舊閥、換裝 6吋~10吋 FCD鑄鐵本體＋SUS304不鏽鋼蝶板重型齒輪式蝴蝶閥或無聲逆止閥，含 EPDM 墊片與 304 白鐵螺栓對角鎖固試壓（級距 $22,000~$32,000 起/處）",
       unitName: "處",
-      minB: 22000, maxB: 32000, minA: 22000, maxA: 32000,
       tiers: {
-        tier_std:   { qB: 22000, qA: 24500, label: "6吋 大口徑齒輪式蝴蝶閥/逆止閥" },
-        tier_mid:   { qB: 26000, qA: 28500, label: "8吋 重型齒輪式蝴蝶閥/無聲逆止閥吊裝" },
-        tier_heavy: { qB: 29500, qA: 32000, label: "10吋 巨型法蘭齒輪蝶閥/逆止閥高空吊裝抽換" }
+        tier_std:   { minB: 22000, maxB: 24500, minA: 23500, maxA: 26000, qB: 22000, qA: 24500, label: "6吋 大口徑齒輪式蝴蝶閥/逆止閥" },
+        tier_mid:   { minB: 25000, maxB: 28000, minA: 26500, maxA: 29500, qB: 26000, qA: 28500, label: "8吋 重型齒輪式蝴蝶閥/無聲逆止閥吊裝" },
+        tier_heavy: { minB: 28500, maxB: 31000, minA: 29500, maxA: 32000, qB: 29500, qA: 32000, label: "10吋 巨型法蘭齒輪蝶閥/逆止閥高空吊裝抽換" }
       },
       rangeLabel: "$22,000 ~ $32,000 起 / 處",
       hours: "3.0 ~ 5.0 小時"
     },
     ctrl_float_omron: {
       cat: "cat6_level_ctrl",
+      comboCleanCat: "water_tank",
       name: "大口徑青銅/不鏽鋼複動式浮球閥・Omron 61F-G2 液位控制器＋304電極棒或電磁接觸器搶修",
       spec: "更換水池進水複動式浮球閥、日本歐姆龍原廠 Omron 61F-G2 液位保持繼電器、SUS304 不鏽鋼電極棒座或控制盤電磁接觸器/積熱電驛，含滿水斷電與防空轉測試",
       unitName: "組",
-      minB: 3500, maxB: 6800, minA: 4800, maxA: 8500,
       tiers: {
-        tier_std:   { qB: 3500, qA: 4800, label: "標準 1吋~1.5吋 浮球閥 / 61F-G2 液位器" },
-        tier_mid:   { qB: 5000, qA: 6500, label: "2吋 重型複動式不鏽鋼浮球閥＋304極棒全套" },
-        tier_heavy: { qB: 6800, qA: 8500, label: "大口徑浮球閥＋控制盤電磁接觸器/積熱電驛全修" }
+        tier_std:   { minB: 3500, maxB: 4500, minA: 4200, maxA: 5500, qB: 3500, qA: 4800, label: "標準 1吋~1.5吋 浮球閥 / 61F-G2 液位器" },
+        tier_mid:   { minB: 4500, maxB: 5800, minA: 5500, maxA: 7000, qB: 5000, qA: 6500, label: "2吋 重型複動式不鏽鋼浮球閥＋304極棒全套" },
+        tier_heavy: { minB: 5800, maxB: 6800, minA: 7000, maxA: 8500, qB: 6800, qA: 8500, label: "大口徑浮球閥＋控制盤電磁接觸器/積熱電驛全修" }
       },
       rangeLabel: "$3,500 ~ $8,500 起 / 組",
       hours: "1.5 ~ 2.5 小時"
     },
     ctrl_altitude_valve: {
       cat: "cat6_level_ctrl",
+      comboCleanCat: "water_tank",
       name: "大口徑水力定水位閥（主閥＋導閥膜片總成）或雙泵交替自動控制盤檢修更新",
       spec: "拆檢更換水塔進水大口徑水力定水位閥（主閥膜片、導閥與過濾器清洗更新）或揚水泵雙泵交替控制盤改造，徹底根治水塔滿水溢流與單泵過載",
       unitName: "組",
-      minB: 7500, maxB: 15000, minA: 9500, maxA: 18500,
       tiers: {
-        tier_std:   { qB: 7500,  qA: 9500,  label: "2吋~2.5吋 定水位閥導閥膜片總成檢修" },
-        tier_mid:   { qB: 11500, qA: 14000, label: "3吋~4吋 水力定水位閥整組更新或雙泵控制盤翻修" },
-        tier_heavy: { qB: 15000, qA: 18500, label: "6吋 大口徑法蘭定水位閥總成抽換＋全盤電控改造" }
+        tier_std:   { minB: 7500,  maxB: 9800,  minA: 8800,  maxA: 11500, qB: 7500,  qA: 9500,  label: "2吋~2.5吋 定水位閥導閥膜片總成檢修" },
+        tier_mid:   { minB: 10000, maxB: 12800, minA: 11800, maxA: 15000, qB: 11500, qA: 14000, label: "3吋~4吋 水力定水位閥整組更新或雙泵控制盤翻修" },
+        tier_heavy: { minB: 13000, maxB: 15000, minA: 15000, maxA: 18500, qB: 15000, qA: 18500, label: "6吋 大口徑法蘭定水位閥總成抽換＋全盤電控改造" }
       },
       rangeLabel: "$7,500 ~ $18,500 起 / 組",
       hours: "2.5 ~ 4.5 小時"
@@ -1465,19 +1470,13 @@
       else if (qtyNum === 3) discountFactor = 0.88;
       else if (qtyNum >= 4) discountFactor = 0.85;
 
-      let lowPrice = 0;
-      let highPrice = 0;
-      if (tierKey === "tier_std") {
-        lowPrice = Math.round((isPriority ? specCfg.minA : specCfg.minB) * qtyNum * discountFactor);
-        highPrice = Math.round((isPriority ? specCfg.maxA : specCfg.maxB) * qtyNum * discountFactor);
-      } else {
-        lowPrice = Math.round(tierCfg.qB * qtyNum * discountFactor);
-        highPrice = Math.round(tierCfg.qA * qtyNum * discountFactor);
-      }
+      // 每一檔位 (tier_std / tier_mid / tier_heavy) 均嚴格遞增，並隨 A方案 / B方案 動態切換
+      let lowPrice = Math.round((isPriority ? tierCfg.minA : tierCfg.minB) * qtyNum * discountFactor);
+      let highPrice = Math.round((isPriority ? tierCfg.maxA : tierCfg.maxB) * qtyNum * discountFactor);
 
       const addons = [
         isAddonClean
-          ? "同日搭配清洗保養順修特惠：免收 $2,500 單獨查修出工底價"
+          ? "同日搭配清洗保養順修特惠：免收 $2,500 單獨查修出工底價（自動合併清洗＋維修同單報價）"
           : "含雙人正職機電技師到場儀器診斷（單獨叫修基本出工檢測保底 $2,000~$2,500 起/趟，確認委修全額併入折抵）"
       ];
 
@@ -1502,7 +1501,7 @@
       }
 
       if (outPrice) {
-        outPrice.textContent = "NT$ " + lowPrice.toLocaleString() + " ~ " + highPrice.toLocaleString() + " 元起（" + taxNote + "｜" + tierCfg.label + "）";
+        outPrice.textContent = "NT$ " + lowPrice.toLocaleString() + " ~ " + highPrice.toLocaleString() + " 元起（" + taxNote + "｜" + tierCfg.label + "｜全跨度 " + specCfg.rangeLabel + "）";
       }
       if (outHours) {
         outHours.textContent = specCfg.hours + (qtyNum > 1 ? ("（共 " + qtyNum + " " + specCfg.unitName + "同趟施作）") : "");
@@ -1515,12 +1514,15 @@
             : "【B方案：標準完修經濟排程】雙人正職勞健保機電技師＋工業級標準新品料件＋運轉測試（90天完修保固）");
       }
 
+      const targetCategory = isAddonClean ? (specCfg.comboCleanCat || "water_tank") : "mpv_repair";
+
       if (shouldPersistDraft) {
         const draftPayload = {
-          serviceCategory: "mpv_repair",
+          serviceCategory: targetCategory,
           scheduleMode: isPriority ? "priority_50" : "weekday_35",
           mpvScheduleMode: modeVal,
           region: regionVal,
+          chkAddMpv: true,
           mpvSpec: specKey,
           mpvTier: tierKey,
           mpvQty: String(qtyNum),
@@ -1529,6 +1531,10 @@
           chkMpvComboClean: Boolean(chkComboClean && chkComboClean.checked),
           chkTax: Boolean(chkTax && chkTax.checked)
         };
+        if (isAddonClean && specCfg.comboAcType) {
+          draftPayload.acType = specCfg.comboAcType;
+          draftPayload.acQty = "base";
+        }
         if (isJumpingToQuote) {
           draftPayload.displayMode = "ab_compare";
           draftPayload.lastJumpSource = "motor-pump-valve";
@@ -1564,18 +1570,26 @@
       btnToQuote.addEventListener("click", function () {
         calcMpv(true, true);
         const modeVal = scheduleSelect ? scheduleSelect.value : "priority_50";
+        const isAddonClean = (modeVal === "addon_with_clean") || Boolean(chkComboClean && chkComboClean.checked);
+        const specKey = (subSpecSelect && MPV_SPEC_MAP[subSpecSelect.value]) ? subSpecSelect.value : "split_major";
+        const specCfg = MPV_SPEC_MAP[specKey];
+        const targetCategory = isAddonClean ? (specCfg.comboCleanCat || "water_tank") : "mpv_repair";
         const qParams = new URLSearchParams({
           from: "motor-pump-valve",
-          cat: "mpv_repair",
+          cat: targetCategory,
           mode: (modeVal === "priority_50") ? "priority_50" : "weekday_35",
           reg: regionSelect ? regionSelect.value : "台北市 / 新北市",
-          mpvspec: subSpecSelect ? subSpecSelect.value : "split_major",
+          mpvspec: specKey,
           mpvtier: scaleTierSelect ? scaleTierSelect.value : "tier_std",
           mpvqty: qtySelect ? qtySelect.value : "1",
+          mpvcombo: isAddonClean ? "1" : "0",
           mpvurg: (chkUrgent && chkUrgent.checked) ? "1" : "0",
           mpvelec: (chkElec && chkElec.checked) ? "1" : "0",
           tax: (chkTax && chkTax.checked) ? "1" : "0"
         });
+        if (isAddonClean && specCfg.comboAcType) {
+          qParams.set("actype", specCfg.comboAcType);
+        }
         window.location.href = "quote.html?" + qParams.toString() + "#qp-workspace-anchor";
       });
     }
@@ -1615,6 +1629,7 @@
     const chkLevel = document.getElementById("q-chk-level");
     const chkButterfly = document.getElementById("q-chk-butterfly");
     const chkFill = document.getElementById("q-chk-fill");
+    const chkQCtSprinkler = document.getElementById("q-chk-ct-sprinkler");
     const chkInverter = document.getElementById("q-chk-inverter");
     const chkSgs = document.getElementById("q-chk-sgs");
     const lblSgsText = document.getElementById("q-lbl-sgs-text");
@@ -1719,7 +1734,10 @@
       let zoomFactor = 1.0;
       const effectiveLoad = itemCount + (extraTextLength > 65 ? 1 : 0);
 
-      if (effectiveLoad >= 8) {
+      if (effectiveLoad >= 10) {
+        density = "mega";
+        zoomFactor = 0.92;
+      } else if (effectiveLoad >= 8) {
         density = "ultra";
         zoomFactor = Math.max(0.84, 1.0 - (effectiveLoad - 7) * 0.025);
       } else if (effectiveLoad >= 5) {
@@ -1736,25 +1754,30 @@
       // 第 1 次量測：檢查當前密度下的標準 A4 列印高度
       let renderedHeight = measureTrueA4Height();
 
-      // 若在 normal 密度下超標，先升級為 compact 並重新量測真實高度
+      // 依序升級密度等級（normal -> compact -> ultra -> mega），先靠排版壓縮減少高度，避免無謂縮小字體
       if (renderedHeight > A4_SAFE_HEIGHT_PX && density === "normal") {
         density = "compact";
         paperSheet.setAttribute("data-density", density);
         renderedHeight = measureTrueA4Height();
       }
-
-      // 若在 compact 密度下仍超標，再升級為 ultra 並重新量測真實高度
       if (renderedHeight > A4_SAFE_HEIGHT_PX && density === "compact") {
         density = "ultra";
         paperSheet.setAttribute("data-density", density);
         renderedHeight = measureTrueA4Height();
       }
+      if (renderedHeight > A4_SAFE_HEIGHT_PX && density === "ultra") {
+        density = "mega";
+        paperSheet.setAttribute("data-density", density);
+        renderedHeight = measureTrueA4Height();
+      }
 
-      // 唯有在目標密度下真實列印高度依然超過 A4_SAFE_HEIGHT_PX 時，才精準計算微縮比例
+      // 若升級至最高密度 mega 後高度仍超過 A4_SAFE_HEIGHT_PX (985px)，依真實高度比精準微縮，保證 100% 不跨頁
       if (renderedHeight > A4_SAFE_HEIGHT_PX) {
         const heightRatio = A4_SAFE_HEIGHT_PX / renderedHeight;
         const safeRatio = Math.floor(heightRatio * 100) / 100;
-        zoomFactor = Math.max(0.70, Math.min(zoomFactor, safeRatio));
+        zoomFactor = Math.max(0.48, Math.min(zoomFactor, safeRatio));
+      } else {
+        zoomFactor = 1.0;
       }
 
       const zoomStr = zoomFactor.toFixed(2);
@@ -1763,7 +1786,9 @@
 
       if (statusText) {
         const pct = Math.round(zoomFactor * 100);
-        const modeDesc = density === "ultra" ? "超緊湊單頁模式" : (density === "compact" ? "緊湊單頁模式" : "標準單頁模式");
+        const modeDesc = density === "mega"
+          ? "極限多工項單頁模式"
+          : (density === "ultra" ? "超緊湊單頁模式" : (density === "compact" ? "緊湊單頁模式" : "標準單頁模式"));
         statusText.textContent = "✓ 單頁 A4 智慧鎖定已啟動：目前共 " + itemCount + " 個工項 ｜ 自動切換「" + modeDesc + "（適配比例 " + pct + "%）」・保證 100% 單頁 PDF 輸出不跨頁";
       }
     }
@@ -1789,6 +1814,7 @@
       toggleAddonItem(chkButterfly, isWt || isCt);
       toggleAddonItem(chkLevel, isWt);
       toggleAddonItem(chkFill, isCt);
+      toggleAddonItem(chkQCtSprinkler, isCt);
       toggleAddonItem(chkInverter, isCt);
       toggleAddonItem(chkSgs, isWt || isCt);
       toggleAddonItem(chkAcDrain, isAc);
@@ -1825,7 +1851,8 @@
         const targetCat = (draft.serviceCategory === "wt_ac") ? "wt_ac" : "ac_cleaning";
         setSelectValueSafely(elCategory, targetCat, "ac_cleaning");
       } else if (fromParamVal === "motor-pump-valve" && elCategory) {
-        setSelectValueSafely(elCategory, "mpv_repair", "mpv_repair");
+        const targetCat = draft.serviceCategory || "mpv_repair";
+        setSelectValueSafely(elCategory, targetCat, "mpv_repair");
       } else if (draft.serviceCategory && elCategory) {
         setSelectValueSafely(elCategory, draft.serviceCategory, "water_tank");
       }
@@ -1873,6 +1900,7 @@
       if (chkButterfly && draft.chkButterfly !== undefined) chkButterfly.checked = Boolean(draft.chkButterfly);
       if (chkLevel && draft.chkLevel !== undefined) chkLevel.checked = Boolean(draft.chkLevel);
       if (chkFill && draft.chkFill !== undefined) chkFill.checked = Boolean(draft.chkFill);
+      if (chkQCtSprinkler && draft.chkCtSprinkler !== undefined) chkQCtSprinkler.checked = Boolean(draft.chkCtSprinkler);
       if (chkInverter && draft.chkInverter !== undefined) chkInverter.checked = Boolean(draft.chkInverter);
       if (chkSgs && draft.chkSgs !== undefined) chkSgs.checked = Boolean(draft.chkSgs);
       if (draft.acType && elAcType) setSelectValueSafely(elAcType, draft.acType, "cassette");
@@ -2234,7 +2262,7 @@
           priceB: 3500
         });
       }
-      if (isWtActive && chkLevel && chkLevel.checked) {
+      if (isWtActive && chkLevel && chkLevel.checked && !(isMpvActive && elMpvSpec && elMpvSpec.value === "ctrl_float_omron")) {
         items.push({
           title: "Omron 61F-G2 液位控制器 ＋ SUS304 電極棒整組更新",
           spec: "日本歐姆龍原廠 61F-G2 控制器、保持器、304 不鏽鋼電極棒(E1~E3)與高低水位連動測試",
@@ -2243,7 +2271,7 @@
           priceB: 4200
         });
       }
-      if (chkButterfly && chkButterfly.checked) {
+      if (chkButterfly && chkButterfly.checked && !(isMpvActive && elMpvSpec && elMpvSpec.value === "valve_6_10")) {
         items.push({
           title: "大口徑 6吋~10吋 FCD/SUS304 齒輪式蝴蝶閥／無聲逆止閥抽換（級距 $22,000~$32,000起）",
           spec: "鑄鐵/不鏽鋼本體＋304蝶板＋重型齒輪箱、EPDM 法蘭墊片與304白鐵螺栓連工帶料吊裝試壓",
@@ -2261,6 +2289,15 @@
           priceB: 7500
         });
       }
+      if (isCtActive && chkQCtSprinkler && chkQCtSprinkler.checked && !(isMpvActive && elMpvSpec && elMpvSpec.value === "ct_sprinkler")) {
+        items.push({
+          title: "【會轉都會修・清洗同日順修特惠】冷卻水塔旋轉播水頭（散水頭）總成更新（級距 $4,500~$38,000起）",
+          spec: "與冷卻水塔保養同日施作免收 $2,500 單獨查修出工底價｜拆除中心軸承卡死舊散水頭、換裝全新旋轉播水頭總成並校正散水管水平角度",
+          unit: "1 組",
+          priceA: 6000,
+          priceB: 4500
+        });
+      }
       if (isCtActive && chkInverter && chkInverter.checked) {
         items.push({
           title: "東元（TECO F510）變頻器節能參數調校與溫控連動檢測",
@@ -2273,10 +2310,10 @@
       if (chkSgs && chkSgs.checked) {
         let sgsTitle = "代客無菌採樣送驗 SGS 飲用水水質檢驗報告（大腸桿菌群／總菌落數）";
         let sgsSpec = "依環境部飲用水水質標準無菌採樣送交 SGS 實驗室檢驗大腸桿菌群(≦6 CFU/100mL)與總菌落數，附正式檢驗報告";
-        if (cat === "cooling_tower") {
+        if (cat === "cooling_tower" || cat === "ct_ac") {
           sgsTitle = "代客採樣送驗 SGS 冷卻水塔水質／退伍軍人菌（Legionella）檢測報告";
           sgsSpec = "無菌採樣送交 SGS 等第三方認證實驗室執行冷卻水塔退伍軍人菌(Legionella)培養檢測，附正式檢驗報告";
-        } else if (cat === "both") {
+        } else if (cat === "both" || cat === "all_three") {
           sgsTitle = "代客無菌採樣送驗 SGS 實驗室水質檢驗報告（大腸桿菌群／退伍軍人菌）";
           sgsSpec = "無菌採樣送交 SGS 認證實驗室執行飲用水大腸桿菌群或冷卻塔退伍軍人菌定量檢測，附正式檢驗報告";
         }
@@ -2315,7 +2352,7 @@
           priceB: 1500
         });
       }
-      if ((isWtActive || isCtActive || isMpvActive) && chkValve24 && chkValve24.checked) {
+      if ((isWtActive || isCtActive || isMpvActive) && chkValve24 && chkValve24.checked && !(isMpvActive && elMpvSpec && elMpvSpec.value === "valve_2_4")) {
         items.push({
           title: "2吋~4吋 蝶閥／不鏽鋼無聲逆止閥（消除停泵水錘）／防震軟管抽換（級距 $11,000~$15,000起）",
           spec: "含管路排空洩壓、舊閥拆卸、CNS認證閥體、EPDM墊片與SUS304不鏽鋼螺栓換裝試壓",
@@ -2780,7 +2817,7 @@
         if (params.get("pools") !== null) urlPatch.wtPoolCount = params.get("pools");
         if (params.get("pvc") !== null) urlPatch.chkPvcValve = (params.get("pvc") === "1");
         if (params.get("v24") !== null) urlPatch.chkValve24 = (params.get("v24") === "1");
-        if (params.get("wtpump") === "1") { urlPatch.chkAddMpv = true; urlPatch.mpvSpec = "pump_seal_bearing"; urlPatch.mpvTier = "tier_std"; }
+        if (params.get("wtpump") === "1") { urlPatch.chkAddMpv = true; urlPatch.mpvSpec = "pump_seal_bearing"; urlPatch.mpvTier = "tier_std"; } else { urlPatch.chkAddMpv = false; }
         if (params.get("bf") !== null) urlPatch.chkButterfly = (params.get("bf") === "1");
         if (params.get("lvl") !== null) urlPatch.chkLevel = (params.get("lvl") === "1");
         if (params.get("sgs") !== null) urlPatch.chkSgs = (params.get("sgs") === "1");
@@ -2796,15 +2833,19 @@
         }
         saveQuoteDraft(urlPatch);
       } else if (fromParamVal === "motor-pump-valve") {
+        const isComboClean = (params.get("mpvcombo") === "1");
         const urlPatch = {
-          serviceCategory: "mpv_repair",
+          serviceCategory: params.get("cat") || "mpv_repair",
           scheduleMode: params.get("mode") || "priority_50",
-          displayMode: "ab_compare"
+          displayMode: "ab_compare",
+          chkAddMpv: true,
+          chkMpvComboClean: isComboClean
         };
         if (params.get("reg")) urlPatch.region = params.get("reg");
         if (params.get("mpvspec")) urlPatch.mpvSpec = params.get("mpvspec");
         if (params.get("mpvtier")) urlPatch.mpvTier = params.get("mpvtier");
         if (params.get("mpvqty")) urlPatch.mpvQty = params.get("mpvqty");
+        if (params.get("actype")) urlPatch.acType = params.get("actype");
         if (params.get("mpvurg") !== null) urlPatch.chkMpvUrgent = (params.get("mpvurg") === "1");
         if (params.get("mpvelec") !== null) urlPatch.chkMpvElec = (params.get("mpvelec") === "1");
         if (params.get("tax") !== null) urlPatch.chkTax = (params.get("tax") === "1");
@@ -2819,7 +2860,7 @@
         if (params.get("actype")) urlPatch.acType = params.get("actype");
         if (params.get("acqty")) urlPatch.acQty = params.get("acqty");
         if (params.get("acdrain") !== null) urlPatch.chkAcDrain = (params.get("acdrain") === "1");
-        if (params.get("acmpv") === "1") { urlPatch.chkAddMpv = true; urlPatch.mpvSpec = (urlPatch.acType === "ahu") ? "ahu_overhaul" : ((urlPatch.acType === "fcu" || urlPatch.acType === "cassette") ? "fcu_repair" : "split_major"); urlPatch.mpvTier = "tier_std"; }
+        if (params.get("acmpv") === "1") { urlPatch.chkAddMpv = true; urlPatch.mpvSpec = (urlPatch.acType === "ahu") ? "ahu_overhaul" : ((urlPatch.acType === "fcu" || urlPatch.acType === "cassette") ? "fcu_repair" : "split_major"); urlPatch.mpvTier = "tier_std"; } else { urlPatch.chkAddMpv = false; }
         if (params.get("acout") !== null) urlPatch.chkAcOutdoor = (params.get("acout") === "1");
         if (params.get("acsteam") !== null) urlPatch.chkAcSteam = (params.get("acsteam") === "1");
         if (params.get("tax") !== null) urlPatch.chkTax = (params.get("tax") === "1");
@@ -2835,8 +2876,14 @@
         if (params.get("type")) urlPatch.ctTowerType = params.get("type");
         if (params.get("cnt") !== null) urlPatch.ctTowerCount = params.get("cnt");
         if (params.get("fill") !== null) urlPatch.chkFill = (params.get("fill") === "1");
-        if (params.get("ctspr") === "1") { urlPatch.chkAddMpv = true; urlPatch.mpvSpec = "ct_sprinkler"; urlPatch.mpvTier = "tier_std"; }
-        if (params.get("ctmot") === "1") { urlPatch.chkAddMpv = true; urlPatch.mpvSpec = "ct_motor_pump"; urlPatch.mpvTier = "tier_std"; }
+        if (params.get("ctspr") !== null) urlPatch.chkCtSprinkler = (params.get("ctspr") === "1");
+        if (params.get("ctmot") === "1") {
+          urlPatch.chkAddMpv = true;
+          urlPatch.mpvSpec = "ct_motor_pump";
+          urlPatch.mpvTier = "tier_std";
+        } else {
+          urlPatch.chkAddMpv = false;
+        }
         if (params.get("bf") !== null) urlPatch.chkButterfly = (params.get("bf") === "1");
         if (params.get("pvc") !== null) urlPatch.chkPvcValve = (params.get("pvc") === "1");
         if (params.get("inv") !== null) urlPatch.chkInverter = (params.get("inv") === "1");
@@ -2935,7 +2982,25 @@
     }
   }
 
+  
+  function initStickyQuoteButton() {
+    const stickyQuoteBtn = document.getElementById("btn-sticky-to-quote");
+    if (!stickyQuoteBtn) return;
+    const calcQuoteBtn =
+      document.getElementById("btn-calc-to-quote") ||
+      document.getElementById("btn-ct-to-quote") ||
+      document.getElementById("btn-ac-to-quote") ||
+      document.getElementById("btn-mpv-to-quote");
+    if (calcQuoteBtn) {
+      stickyQuoteBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        calcQuoteBtn.click();
+      });
+    }
+  }
+
   function bootAllModules() {
+    initStickyQuoteButton();
     initBeforeAfterSlider();
     initMeoMapTabs();
     initWaterTankCalculator();

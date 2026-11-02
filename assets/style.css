@@ -2364,3 +2364,80 @@ h1.main-title {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* v22.3 第 4 級極限多工項 (9~21項) 單頁 A4 鎖定樣式 (data-density="mega") */
+.quote-paper-sheet[data-density="mega"],
+.hs-print-sim-sheet[data-density="mega"] {
+  padding: 10px 14px !important;
+  font-size: 0.72rem !important;
+  line-height: 1.2 !important;
+}
+.quote-paper-sheet[data-density="mega"] .qp-header,
+.hs-print-sim-sheet[data-density="mega"] .qp-header {
+  padding-bottom: 4px !important;
+  margin-bottom: 5px !important;
+}
+.quote-paper-sheet[data-density="mega"] .qp-company-title,
+.hs-print-sim-sheet[data-density="mega"] .qp-company-title {
+  font-size: 1.05rem !important;
+}
+.quote-paper-sheet[data-density="mega"] .qp-company-sub,
+.hs-print-sim-sheet[data-density="mega"] .qp-company-sub {
+  font-size: 0.65rem !important;
+  line-height: 1.2 !important;
+}
+.quote-paper-sheet[data-density="mega"] .qp-meta-grid,
+.hs-print-sim-sheet[data-density="mega"] .qp-meta-grid {
+  padding: 4px 8px !important;
+  margin-bottom: 5px !important;
+  gap: 2px 8px !important;
+  font-size: 0.68rem !important;
+}
+.quote-paper-sheet[data-density="mega"] .qp-table,
+.hs-print-sim-sheet[data-density="mega"] .qp-table {
+  margin-bottom: 5px !important;
+}
+.quote-paper-sheet[data-density="mega"] .qp-table th,
+.hs-print-sim-sheet[data-density="mega"] .qp-table th {
+  padding: 2px 4px !important;
+  font-size: 0.66rem !important;
+}
+.quote-paper-sheet[data-density="mega"] .qp-table td,
+.hs-print-sim-sheet[data-density="mega"] .qp-table td {
+  padding: 2px 4px !important;
+  font-size: 0.65rem !important;
+  line-height: 1.15 !important;
+}
+.quote-paper-sheet[data-density="mega"] .qp-total-grid,
+.hs-print-sim-sheet[data-density="mega"] .qp-total-grid {
+  gap: 6px !important;
+  margin-bottom: 5px !important;
+}
+.quote-paper-sheet[data-density="mega"] .qp-plan-card,
+.hs-print-sim-sheet[data-density="mega"] .qp-plan-card {
+  padding: 4px 8px !important;
+}
+.quote-paper-sheet[data-density="mega"] .qp-plan-price,
+.hs-print-sim-sheet[data-density="mega"] .qp-plan-price {
+  font-size: 0.86rem !important;
+  margin: 1px 0 !important;
+}
+.quote-paper-sheet[data-density="mega"] .qp-compliance-box,
+.hs-print-sim-sheet[data-density="mega"] .qp-compliance-box {
+  padding: 4px 8px !important;
+  margin-bottom: 5px !important;
+  font-size: 0.63rem !important;
+  line-height: 1.15 !important;
+}
+.quote-paper-sheet[data-density="mega"] .qp-sign-grid,
+.hs-print-sim-sheet[data-density="mega"] .qp-sign-grid {
+  gap: 8px !important;
+  padding-top: 4px !important;
+}
+.quote-paper-sheet[data-density="mega"] .qp-sign-box,
+.hs-print-sim-sheet[data-density="mega"] .qp-sign-box {
+  padding: 4px 8px !important;
+  min-height: 54px !important;
+  font-size: 0.65rem !important;
+}
