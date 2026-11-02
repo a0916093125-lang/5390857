@@ -2351,3 +2351,16 @@ h1.main-title {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* v22.1 首頁首屏 2x2 四大事業部主按鈕網格 */
+.hero-cta-primary-row.hero-cta-2x2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+@media (max-width: 640px) {
+  .hero-cta-primary-row.hero-cta-2x2 {
+    grid-template-columns: 1fr;
+  }
+}
