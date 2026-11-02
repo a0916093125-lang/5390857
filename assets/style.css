@@ -2441,3 +2441,69 @@ h1.main-title {
   min-height: 54px !important;
   font-size: 0.65rem !important;
 }
+
+
+/* ==========================================================================
+   v23.0 9大專家旗艦升級：
+   1. 報價單手機/桌機即時 A/B 總價懸浮狀態列 (.qp-live-summary-bar)
+   2. 報價單 4 碼動態防偽檢核碼與免訂金契約效力聲明 (.qp-verify-badge)
+   ========================================================================== */
+.qp-live-summary-bar {
+  position: sticky;
+  bottom: 12px;
+  z-index: 85;
+  margin-top: 14px;
+  background: rgba(8, 14, 28, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1.5px solid rgba(56, 189, 248, 0.55);
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.65);
+  color: #f8fafc;
+  font-size: 0.86rem;
+}
+
+.qp-live-jump-btn {
+  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.qp-verify-badge {
+  display: inline-block;
+  background: #f1f5f9;
+  border: 1px solid #94a3b8;
+  color: #0f172a;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-top: 2px;
+}
+
+@media (max-width: 860px) {
+  .qp-live-summary-bar {
+    bottom: calc(68px + env(safe-area-inset-bottom, 0px));
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+@media print {
+  .qp-live-summary-bar {
+    display: none !important;
+  }
+}

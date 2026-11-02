@@ -26,7 +26,7 @@
 <meta content="社區大樓洗水塔、商用空調冷卻水塔保養與商辦四方吹/FCU/AHU冷氣清洗正式工程報價單線上產生器！內建智慧單頁 A4 鎖定引擎與動態保固條款，自動計算 A/B 雙軌價格、5% 營業稅與國字大寫金額（附統編90221911報價章），10秒匯出單頁 A4 PDF 報價單。" name="twitter:description"/>
 <meta content="https://5390857.com/assets/og-quote.jpg" name="twitter:image"/>
 <meta content="皓盛有限公司社區自來水塔與商用空調冷卻水塔 A/B 雙軌單頁 A4 正式工程報價單產生器" name="twitter:image:alt"/>
-<link href="assets/style.css?v=22.3" rel="stylesheet"/>
+<link href="assets/style.css?v=23.0" rel="stylesheet"/>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -481,8 +481,15 @@
               🖨️ 一鍵列印 ／ 另存「單頁 A4 PDF」正式報價單
             </button>
 <button class="btn btn-line" id="btn-q-line" style="width:100%;" type="button">
-              📋 一鍵複製報價單文字 並開啟 LINE 傳送 (0916-093-125)
+              📋 一鍵複製報價單文字(含還原連結) 並開啟 LINE 傳送
             </button>
+<button class="btn btn-outline" id="btn-q-share-url" style="width:100%;border-color:rgba(56,189,248,0.5);color:#7dd3fc;" type="button">
+              🔗 僅複製「報價單專屬還原網址」傳給委員或採購
+            </button>
+</div>
+<div aria-live="polite" class="qp-live-summary-bar no-print" id="qp-live-summary-bar">
+<span id="qp-live-summary-text">已選 <strong>2</strong> 項｜即時計算 A/B 雙軌總價中...</span>
+<button class="qp-live-jump-btn" id="btn-qp-live-jump" type="button">預覽 A4 報價單 ↓</button>
 </div>
 </form>
 </aside>
@@ -555,8 +562,9 @@
                   工程報價專用章
                 </div>
 </div>
-<div style="font-size:0.74rem;color:#64748b;border-top:1px solid #cbd5e1;padding-top:4px;">
-                * 確認委託後請拍照回傳官方 LINE ID：0916093125 安排進場檔期
+<div style="font-size:0.72rem;color:#475569;border-top:1px solid #cbd5e1;padding-top:4px;line-height:1.35;">
+                <span class="qp-verify-badge" id="qp-out-verify-hash">防偽檢核碼：驗證中｜免預付訂金・完工驗收無誤後匯款</span><br/>
+                * 本單經官方 LINE (0916093125) 或現場勘查核定生效，確認委託請打勾拍照回傳
               </div>
 </div>
 </div>
@@ -633,6 +641,7 @@
 <span class="sticky-btn-sub">傳照片估價</span>
 </a>
 </div>
-<script src="assets/cad-engine.js?v=22.3"></script>
+<script src="assets/pricing-config.js?v=23.0"></script>
+<script src="assets/cad-engine.js?v=23.0"></script>
 </body>
 </html>

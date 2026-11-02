@@ -17,7 +17,8 @@
 (function () {
   "use strict";
 
-  const COMPANY_INFO = {
+  const SSOT_CFG = (typeof window !== "undefined" && window.HS_PRICING_CONFIG) ? window.HS_PRICING_CONFIG : null;
+  const COMPANY_INFO = (SSOT_CFG && SSOT_CFG.company) ? SSOT_CFG.company : {
     name: "皓盛有限公司",
     taxId: "90221911",
     owner: "李思遠",
@@ -26,6 +27,65 @@
     lineUrl: "https://line.me/ti/p/~0916093125",
     email: "ssuyuan@kimo.com"
   };
+
+  /* [v23.0 新增] 報價單 4 碼動態防偽檢核碼演算法 (Anti-Tamper Verification Hash) */
+  function computeQuoteVerifyHash(cat, itemCount, totalA, totalB, includeTax) {
+    const rawPayload = [
+      String(cat || "wt"),
+      String(itemCount || 0),
+      String(totalA || 0),
+      String(totalB || 0),
+      includeTax ? "T1" : "T0",
+      "HS90221911"
+    ].join("|");
+    let hash = 2166136261;
+    for (let i = 0; i < rawPayload.length; i++) {
+      hash ^= rawPayload.charCodeAt(i);
+      hash = Math.imul(hash, 16777619);
+    }
+    return ((hash >>> 0) & 0xffff).toString(16).toUpperCase().padStart(4, "0");
+  }
+
+  /* [v23.0 新增] 報價單完整狀態網址序列化 (1-Click Shareable URL Builder) */
+  function buildShareableQuoteUrl(stateObj) {
+    if (!stateObj) return "https://5390857.com/quote.html";
+    const q = new URLSearchParams();
+    q.set("from", "share");
+    if (stateObj.displayMode) q.set("dmode", stateObj.displayMode);
+    if (stateObj.serviceCategory) q.set("cat", stateObj.serviceCategory);
+    if (stateObj.clientName) q.set("cname", String(stateObj.clientName).slice(0, 40));
+    if (stateObj.contactPerson) q.set("cperson", String(stateObj.contactPerson).slice(0, 24));
+    if (stateObj.clientAddr) q.set("caddr", String(stateObj.clientAddr).slice(0, 50));
+    if (stateObj.wtTonnage) q.set("ton", stateObj.wtTonnage);
+    if (stateObj.wtMaterial) q.set("mat", stateObj.wtMaterial);
+    if (stateObj.wtPoolCount !== undefined) q.set("pools", stateObj.wtPoolCount);
+    if (stateObj.ctRtScale) q.set("rt", stateObj.ctRtScale);
+    if (stateObj.ctTowerType) q.set("type", stateObj.ctTowerType);
+    if (stateObj.ctTowerCount !== undefined) q.set("cnt", stateObj.ctTowerCount);
+    if (stateObj.acType) q.set("actype", stateObj.acType);
+    if (stateObj.acQty) q.set("acqty", stateObj.acQty);
+    if (stateObj.chkAddMpv) q.set("addmpv", "1");
+    if (stateObj.mpvSpec) q.set("mpvspec", stateObj.mpvSpec);
+    if (stateObj.mpvTier) q.set("mpvtier", stateObj.mpvTier);
+    if (stateObj.mpvQty) q.set("mpvqty", stateObj.mpvQty);
+    if (stateObj.chkPvcValve) q.set("pvc", "1");
+    if (stateObj.chkLevel) q.set("lvl", "1");
+    if (stateObj.chkButterfly) q.set("bf", "1");
+    if (stateObj.chkFill) q.set("fill", "1");
+    if (stateObj.chkCtSprinkler) q.set("ctspr", "1");
+    if (stateObj.chkInverter) q.set("inv", "1");
+    if (stateObj.chkSgs) q.set("sgs", "1");
+    if (stateObj.chkAcDrain) q.set("acdrain", "1");
+    if (stateObj.chkAcOutdoor) q.set("acout", "1");
+    if (stateObj.chkAcSteam) q.set("acsteam", "1");
+    if (stateObj.chkValve24) q.set("v24", "1");
+    if (stateObj.chkMpvElec) q.set("mpvelec", "1");
+    if (stateObj.chkMpvUrgent) q.set("mpvurg", "1");
+    if (stateObj.customName) q.set("custn", String(stateObj.customName).slice(0, 30));
+    if (Number(stateObj.customPrice) !== 0) q.set("custp", String(stateObj.customPrice));
+    q.set("tax", stateObj.chkTax ? "1" : "0");
+    return "https://5390857.com/quote.html?" + q.toString() + "#qp-workspace-anchor";
+  }
 
   const DRAFT_STORAGE_KEY = "hs_5390857_quote_draft_v11";
   const LEGACY_STORAGE_KEYS = [
@@ -446,6 +506,12 @@
       if (chkPvcValve && draft.chkPvcValve !== undefined) {
         chkPvcValve.checked = Boolean(draft.chkPvcValve);
       }
+      if (chkWtValve24 && draft.chkValve24 !== undefined) {
+        chkWtValve24.checked = Boolean(draft.chkValve24);
+      }
+      if (chkWtPumpSeal && draft.chkWtPumpSeal !== undefined) {
+        chkWtPumpSeal.checked = Boolean(draft.chkWtPumpSeal);
+      }
       if (chkButterfly && draft.chkButterfly !== undefined) {
         chkButterfly.checked = Boolean(draft.chkButterfly);
       }
@@ -517,6 +583,16 @@
         const pvcPrice = isPriority ? 3800 : 3500;
         basePrice += pvcPrice;
         addons.push("加購 2吋內進水 PVC 球閥/青銅浮球閥更新 (+NT$" + pvcPrice.toLocaleString() + "起)");
+      }
+      if (chkWtValve24 && chkWtValve24.checked) {
+        const v24Price = isPriority ? 12500 : 11000;
+        basePrice += v24Price;
+        addons.push("加購 2吋~4吋 蝶閥／不鏽鋼無聲逆止閥(消水錘)／防震軟管抽換 (+NT$" + v24Price.toLocaleString() + "~15,000起)");
+      }
+      if (chkWtPumpSeal && chkWtPumpSeal.checked) {
+        const pumpPrice = isPriority ? 7500 : 5500;
+        basePrice += pumpPrice;
+        addons.push("加購【會轉都會修】揚水／加壓馬達機械軸封漏水與培林異音順修 (+NT$" + pumpPrice.toLocaleString() + "起・免$2,500檢測費)");
       }
       if (chkButterfly && chkButterfly.checked) {
         const bfPrice = isPriority ? 25000 : 22000;
@@ -733,6 +809,12 @@
       if (chkFill && draft.chkFill !== undefined) {
         chkFill.checked = Boolean(draft.chkFill);
       }
+      if (chkCtSprinkler && draft.chkCtSprinkler !== undefined) {
+        chkCtSprinkler.checked = Boolean(draft.chkCtSprinkler);
+      }
+      if (chkCtMotorReducer && draft.chkCtMotorReducer !== undefined) {
+        chkCtMotorReducer.checked = Boolean(draft.chkCtMotorReducer);
+      }
       if (chkButterfly && draft.chkButterfly !== undefined) {
         chkButterfly.checked = Boolean(draft.chkButterfly);
       }
@@ -809,6 +891,16 @@
         basePrice += fillPrice;
         addons.push("加購散熱材(PVC膠片填料)局部深度除垢或更新預估 (+NT$" + fillPrice.toLocaleString() + "起)");
       }
+      if (chkCtSprinkler && chkCtSprinkler.checked) {
+        const sprPrice = isPriority ? 6000 : 4500;
+        basePrice += sprPrice;
+        addons.push("加購【會轉都會修】冷卻水塔旋轉播水頭(散水頭)總成順修更新 (+NT$" + sprPrice.toLocaleString() + "~38,000起・免$2,500檢測費)");
+      }
+      if (chkCtMotorReducer && chkCtMotorReducer.checked) {
+        const motPrice = isPriority ? 12000 : 9000;
+        basePrice += motPrice;
+        addons.push("加購【會轉都會修】散熱風機馬達／減速齒輪箱／循環泵軸封培林順修 (+NT$" + motPrice.toLocaleString() + "~98,000起・免$2,500檢測費)");
+      }
       if (chkButterfly && chkButterfly.checked) {
         const bfPrice = isPriority ? 25000 : 22000;
         basePrice += bfPrice;
@@ -876,7 +968,6 @@
           ctTowerType: towerType,
           ctTowerCount: String(countLevel),
           chkFill: Boolean(chkFill && chkFill.checked),
-        chkCtSprinkler: Boolean(chkQCtSprinkler && chkQCtSprinkler.checked),
           chkCtSprinkler: Boolean(chkCtSprinkler && chkCtSprinkler.checked),
           chkCtMotorReducer: Boolean(chkCtMotorReducer && chkCtMotorReducer.checked),
           chkAddMpv: Boolean((chkCtSprinkler && chkCtSprinkler.checked) || (chkCtMotorReducer && chkCtMotorReducer.checked)),
@@ -1936,7 +2027,7 @@
     }
 
     function persistCurrentQuoteState() {
-      saveQuoteDraft({
+      const snapshot = {
         displayMode: elDisplayMode ? elDisplayMode.value : "ab_compare",
         serviceCategory: elCategory ? elCategory.value : "water_tank",
         clientName: elClientName ? elClientName.value.trim() : "",
@@ -1954,6 +2045,7 @@
         chkLevel: Boolean(chkLevel && chkLevel.checked),
         chkButterfly: Boolean(chkButterfly && chkButterfly.checked),
         chkFill: Boolean(chkFill && chkFill.checked),
+        chkCtSprinkler: Boolean(chkQCtSprinkler && chkQCtSprinkler.checked),
         chkInverter: Boolean(chkInverter && chkInverter.checked),
         chkSgs: Boolean(chkSgs && chkSgs.checked),
         acType: elAcType ? elAcType.value : "cassette",
@@ -1971,7 +2063,9 @@
         customName: elCustomName ? elCustomName.value.trim() : "",
         customPrice: elCustomPrice ? elCustomPrice.value : "0",
         chkTax: (elTaxMode ? elTaxMode.value : "include_5") === "include_5"
-      });
+      };
+      saveQuoteDraft(snapshot);
+      return snapshot;
     }
 
     function renderQuotation(shouldPersist) {
@@ -2123,11 +2217,11 @@
 
         let ctSpecDetail = "";
         if (ctType === "closed_circuit") {
-          ctSpecDetail = "密閉式冷卻水塔｜含風機與噴淋泵 LOTO 斷電掛牌、內循環熱交換銅管/不鏽鋼盤管除垢沖洗、噴淋嘴疏通、底盤吸泥與" + driveCheckText;
+          ctSpecDetail = "密閉式冷卻水塔｜含風機與噴淋泵 LOTO 斷電掛牌、內循環熱交換銅管/不鏽鋼盤管定壓除垢沖洗、噴淋嘴疏通、底盤吸泥與" + driveCheckText;
         } else if (ctType === "open_square") {
-          ctSpecDetail = "方型低噪音開放式水塔｜含風機 LOTO 斷電掛牌、雙側重力播水盆與散水孔疏通、雙側百葉與散熱材定壓沖洗、底盤吸泥與" + driveCheckText;
+          ctSpecDetail = "方型低噪音開放式水塔｜含風機 LOTO 斷電掛牌、雙側重力播水盆與散水孔疏通、低壓大流量扇形水刀定壓沖洗（絕不擊穿散熱膠片）、底盤吸泥與" + driveCheckText;
         } else {
-          ctSpecDetail = "良機/跨廠牌圓型開放式水塔｜含風機 LOTO 斷電掛牌、頂部旋轉播水頭與散水管疏通、散熱材定壓沖洗、底盤吸泥與" + driveCheckText;
+          ctSpecDetail = "良機/跨廠牌圓型開放式水塔｜含風機 LOTO 斷電掛牌、頂部旋轉播水頭與散水管疏通、低壓大流量扇形水刀定壓沖洗（絕不擊穿散熱膠片）、底盤吸泥與" + driveCheckText;
         }
 
         items.push({
@@ -2624,15 +2718,43 @@
         }
       }
 
-      if (shouldPersist !== false) {
-        persistCurrentQuoteState();
+      const verifyHash = computeQuoteVerifyHash(cat, items.length, totalA, totalB, includeTax);
+      if (outDocNo) {
+        outDocNo.textContent = docNo + " [檢核:" + verifyHash + "]";
       }
+      const outVerifyEl = document.getElementById("qp-out-verify-hash");
+      if (outVerifyEl) {
+        outVerifyEl.textContent = "防偽檢核碼：" + verifyHash + "｜免預付訂金・完工驗收無誤後匯款";
+      }
+
+      // 同步更新手機/桌機即時懸浮總價列 (#qp-live-summary-text)
+      const liveBarText = document.getElementById("qp-live-summary-text");
+      if (liveBarText) {
+        if (displayMode === "ab_compare") {
+          liveBarText.innerHTML =
+            "已選 <strong>" + items.length + "</strong> 項｜A專車 <strong style='color:#fde68a;'>$" + totalA.toLocaleString() +
+            "</strong> ／ B平日 <strong style='color:#34d399;'>$" + totalB.toLocaleString() +
+            "</strong> <span style='font-size:0.75rem;color:#94a3b8;'>(省$" + savedDiff.toLocaleString() + ")</span>";
+        } else {
+          const singleTot = (displayMode === "only_a") ? totalA : totalB;
+          liveBarText.innerHTML =
+            "已選 <strong>" + items.length + "</strong> 項｜核定總計 <strong style='color:#34d399;'>NT$ " + singleTot.toLocaleString() + "</strong>";
+        }
+      }
+
+      let currentSnapshot = null;
+      if (shouldPersist !== false) {
+        currentSnapshot = persistCurrentQuoteState();
+      } else {
+        currentSnapshot = loadQuoteDraft();
+      }
+      const shareUrl = buildShareableQuoteUrl(currentSnapshot);
 
       // 啟動智慧單頁 A4 動態縮放計算（傳入工項數與自訂文字總長度）
       const extraTextLen = clientName.length + clientAddr.length + customNameVal.length;
       autoFitSinglePagePDF(items.length, extraTextLen);
 
-      // 回傳純文字摘要供 LINE 複製使用
+      // 回傳純文字摘要供 LINE 複製使用（附帶一鍵還原報價單連結與防偽檢核碼）
       const lineItemsText = items.map(function (it, i) {
         if (it.isFreeGift) return (i + 1) + ". " + it.title + "：免費附贈";
         if (it.priceA < 0 || it.priceB < 0) {
@@ -2654,14 +2776,15 @@
            "\n⚡ B方案（平日併單）：NT$ " + totalB.toLocaleString() + (includeTax ? " (含5%稅，現省$" + savedDiff.toLocaleString() + ")" : " (未稅，現省$" + savedDiff.toLocaleString() + ")"))
         : ("核定總金額：NT$ " + ((displayMode === "only_a") ? totalA : totalB).toLocaleString() + (includeTax ? " (含5%營業稅)" : " (未稅)"));
 
-      return "📄 報價單號：" + docNo +
+      return "📄 報價單號：" + docNo + " [防偽檢核:" + verifyHash + "]" +
         "\n🏢 客戶寶號：" + clientName + "（" + contactPerson + "）" +
         "\n📍 案場位置：" + clientAddr +
         "\n-------------------------\n" +
         lineItemsText +
         "\n-------------------------\n" +
         priceText +
-        (cat === "ac_cleaning" ? "\n✓ 均含雙人正職機電技師、LOTO斷電與電腦板防水保護、果凍淤泥疏通、500萬職災團保與洗後保固" : "\n✓ 均含甲種職安業務主管、法定缺氧作業主管、雙人專責戒護與500萬雇主職災團保（進場隨附證照與保單備查）");
+        (cat === "ac_cleaning" ? "\n✓ 均含雙人正職機電技師、LOTO斷電與電腦板防水保護、果凍淤泥疏通、500萬職災團保與洗後保固" : "\n✓ 均含甲種職安業務主管、法定缺氧作業主管、雙人專責戒護與500萬雇主職災團保（進場隨附證照與保單備查）") +
+        "\n🔗 點此一鍵還原單頁 A4 報價單：\n" + shareUrl;
     }
 
     // 處理中文輸入法 (IME Composition) 與 rAF 節流，避免打字過程頻繁重繪 DOM 卡頓
@@ -2805,7 +2928,44 @@
     try {
       const params = new URLSearchParams(window.location.search || "");
       fromParamVal = params.get("from") || "";
-      if (fromParamVal === "water-tank") {
+      if (fromParamVal === "share") {
+        const urlPatch = {
+          displayMode: params.get("dmode") || "ab_compare",
+          serviceCategory: params.get("cat") || "water_tank"
+        };
+        if (params.get("cname")) urlPatch.clientName = params.get("cname");
+        if (params.get("cperson")) urlPatch.contactPerson = params.get("cperson");
+        if (params.get("caddr")) urlPatch.clientAddr = params.get("caddr");
+        if (params.get("ton")) urlPatch.wtTonnage = params.get("ton");
+        if (params.get("mat")) urlPatch.wtMaterial = params.get("mat");
+        if (params.get("pools") !== null) urlPatch.wtPoolCount = params.get("pools");
+        if (params.get("rt")) urlPatch.ctRtScale = params.get("rt");
+        if (params.get("type")) urlPatch.ctTowerType = params.get("type");
+        if (params.get("cnt") !== null) urlPatch.ctTowerCount = params.get("cnt");
+        if (params.get("actype")) urlPatch.acType = params.get("actype");
+        if (params.get("acqty")) urlPatch.acQty = params.get("acqty");
+        urlPatch.chkAddMpv = (params.get("addmpv") === "1");
+        if (params.get("mpvspec")) urlPatch.mpvSpec = params.get("mpvspec");
+        if (params.get("mpvtier")) urlPatch.mpvTier = params.get("mpvtier");
+        if (params.get("mpvqty")) urlPatch.mpvQty = params.get("mpvqty");
+        urlPatch.chkPvcValve = (params.get("pvc") === "1");
+        urlPatch.chkLevel = (params.get("lvl") === "1");
+        urlPatch.chkButterfly = (params.get("bf") === "1");
+        urlPatch.chkFill = (params.get("fill") === "1");
+        urlPatch.chkCtSprinkler = (params.get("ctspr") === "1");
+        urlPatch.chkInverter = (params.get("inv") === "1");
+        urlPatch.chkSgs = (params.get("sgs") === "1");
+        urlPatch.chkAcDrain = (params.get("acdrain") === "1");
+        urlPatch.chkAcOutdoor = (params.get("acout") === "1");
+        urlPatch.chkAcSteam = (params.get("acsteam") === "1");
+        urlPatch.chkValve24 = (params.get("v24") === "1");
+        urlPatch.chkMpvElec = (params.get("mpvelec") === "1");
+        urlPatch.chkMpvUrgent = (params.get("mpvurg") === "1");
+        if (params.get("custn") !== null) urlPatch.customName = params.get("custn");
+        if (params.get("custp") !== null) urlPatch.customPrice = params.get("custp");
+        if (params.get("tax") !== null) urlPatch.chkTax = (params.get("tax") === "1");
+        saveQuoteDraft(urlPatch);
+      } else if (fromParamVal === "water-tank") {
         const urlPatch = {
           serviceCategory: params.get("cat") || "water_tank",
           scheduleMode: params.get("mode") || "priority_50",
@@ -2937,6 +3097,25 @@
       btnCopyLine.addEventListener("click", function () {
         const text = renderQuotation(true);
         copyAndOpenLine(text, "【皓盛有限公司 統編90221911 正式工程報價單】");
+      });
+    }
+    const btnShareLink = document.getElementById("btn-q-share-url");
+    if (btnShareLink) {
+      btnShareLink.addEventListener("click", function () {
+        renderQuotation(true);
+        const snap = persistCurrentQuoteState();
+        const url = buildShareableQuoteUrl(snap);
+        fallbackCopyText(url);
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+          navigator.clipboard.writeText(url).catch(function () {});
+        }
+        showToast("✓ 已複製「報價單一鍵還原專屬連結」！可貼給主委、採購或李先生直接開啟。");
+      });
+    }
+    const btnLiveJump = document.getElementById("btn-qp-live-jump");
+    if (btnLiveJump && paperSheet) {
+      btnLiveJump.addEventListener("click", function () {
+        paperSheet.scrollIntoView({ behavior: "smooth", block: "start" });
       });
     }
   }
