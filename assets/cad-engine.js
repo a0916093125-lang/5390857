@@ -1,5 +1,5 @@
 /**
- * 皓盛有限公司 (5390857.com) - 雙引擎試算與 A4 單頁智慧鎖定報價核心系統 (v18.0 雙專家滿分完全體正式版)
+ * 皓盛有限公司 (5390857.com) - 雙引擎試算與 A4 單頁智慧鎖定報價核心系統 (v18.1 雙專家滿分完全體正式版)
  * 涵蓋模組：
  * 1. Before/After 清洗前後視覺對比拉桿（Pointer Events ＋ 鍵盤無障礙 A11y ＋ rAF 節流與失焦保護）
  * 2. 社區大樓自來水塔 A/B 雙軌試算器 ＋ 跨頁雙向記憶與無汙染帶入報價單生成器 (localStorage + pageshow/storage)
@@ -1627,7 +1627,7 @@
         lineItemsText +
         "\n-------------------------\n" +
         priceText +
-        "\n✓ 均含國家級雙職安證照（甲種職安主管 111N02406040118 / 缺氧作業主管 115N05801030104）、雙人專責戒護與500萬雇主職災團保";
+        "\n✓ 均含甲種職安業務主管、法定缺氧作業主管、雙人專責戒護與500萬雇主職災團保（進場隨附證照與保單備查）";
     }
 
     // 處理中文輸入法 (IME Composition) 與 rAF 節流，避免打字過程頻繁重繪 DOM 卡頓
@@ -1850,7 +1850,7 @@
 
 
   // ============================================================================
-  // 5. 首頁 Google 地圖官方地標 (MEO) 雙模式切換與離線防破版保護 (v18.0)
+  // 5. 首頁 Google 地圖官方地標 (MEO) 雙模式切換與離線防破版保護 (v18.1)
   // ============================================================================
   function initMeoMapTabs() {
     const btnGmap = document.getElementById("btn-meo-tab-gmap");
@@ -1889,50 +1889,9 @@
     }
   }
 
-
-  // ============================================================================
-  // 6. 首頁國家級雙職安證照放大檢視燈箱 (initCertLightbox - v18.0)
-  // ============================================================================
-  function initCertLightbox() {
-    const modal = document.getElementById("cert-lightbox-modal");
-    const modalImg = document.getElementById("cert-lightbox-img");
-    const modalTitle = document.getElementById("cert-lightbox-title");
-    const closeBtn = document.getElementById("cert-lightbox-close");
-    const triggers = document.querySelectorAll("[data-cert-src]");
-    if (!modal || !modalImg || !triggers.length) return;
-
-    function openModal(src, title) {
-      modalImg.src = src;
-      modalImg.alt = title || "皓盛有限公司國家級職安主管證照放大查驗";
-      if (modalTitle) modalTitle.textContent = title || "國家級職安主管證照原件查驗";
-      modal.classList.add("open");
-      modal.setAttribute("aria-hidden", "false");
-    }
-
-    function closeModal() {
-      modal.classList.remove("open");
-      modal.setAttribute("aria-hidden", "true");
-    }
-
-    triggers.forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        openModal(btn.getAttribute("data-cert-src"), btn.getAttribute("data-cert-title"));
-      });
-    });
-
-    if (closeBtn) closeBtn.addEventListener("click", closeModal);
-    modal.addEventListener("click", function (e) {
-      if (e.target === modal) closeModal();
-    });
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
-    });
-  }
-
   function bootAllModules() {
     initBeforeAfterSlider();
     initMeoMapTabs();
-    initCertLightbox();
     initWaterTankCalculator();
     initCoolingTowerCalculator();
     initQuoteGenerator();
