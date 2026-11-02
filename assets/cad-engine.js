@@ -1,5 +1,5 @@
 /**
- * 皓盛有限公司 (5390857.com) - 雙引擎試算與 A4 單頁智慧鎖定報價核心系統 (v21.0 雙專家滿分完全體正式版)
+ * 皓盛有限公司 (5390857.com) - 雙引擎試算與 A4 單頁智慧鎖定報價核心系統 (v21.1 雙專家滿分完全體正式版)
  * 涵蓋模組：
  * 1. Before/After 清洗前後視覺對比拉桿（Pointer Events ＋ 鍵盤無障礙 A11y ＋ rAF 節流與失焦保護）
  * 2. 社區大樓自來水塔 A/B 雙軌試算器 ＋ 跨頁雙向記憶與無汙染帶入報價單生成器 (localStorage + pageshow/storage)
@@ -872,6 +872,12 @@
           chkSgs: Boolean(chkCtSgs && chkCtSgs.checked),
           chkTax: Boolean(chkTax && chkTax.checked)
         };
+        if (isCtAc) {
+          if (isJumpingToQuote || !existingDraft.acType) {
+            draftPayload.acType = "cassette";
+            draftPayload.acQty = "base";
+          }
+        }
         if (isJumpingToQuote) {
           draftPayload.displayMode = "ab_compare";
           draftPayload.lastJumpSource = "cooling-tower";
@@ -944,7 +950,7 @@
   }
 
 
-  /* 3B. 新增引擎：冷氣與商用中央空調（四方吹/吊隱FCU/大型AHU/分離式）A/B 雙軌包套＆水塔同日順洗試算器 (v21.0) */
+  /* 3B. 新增引擎：冷氣與商用中央空調（四方吹/吊隱FCU/大型AHU/分離式）A/B 雙軌包套＆水塔同日順洗試算器 (v21.1) */
   function initAcCleaningCalculator() {
     const form = document.getElementById("ac-cleaning-calc-form");
     if (!form) return;
@@ -1008,8 +1014,29 @@
 
       let extraCount = 0;
       if (acQty === "add_2") extraCount = 2;
+      else if (acQty === "add_3") extraCount = 3;
       else if (acQty === "add_4") extraCount = 4;
+      else if (acQty === "add_6") extraCount = 6;
       else if (acQty === "add_8") extraCount = 8;
+
+      // 動態同步第 4 題下拉選單文字：單獨派車顯示包套台數，水塔同日順洗直接顯示順洗台數，手機觀看秒懂不混淆
+      if (qtySelect && qtySelect.options.length >= 6) {
+        if (isAddonWithTank) {
+          qtySelect.options[0].text = "同日順洗 1 台（公設大廳／管理室／機房冷氣免出車底價）";
+          qtySelect.options[1].text = "同日順洗 2 台（免二次出車底價・按 2 台單價計算）";
+          qtySelect.options[2].text = "同日順洗 3 台（免二次出車底價・按 3 台單價計算）";
+          qtySelect.options[3].text = "同日順洗 4 台（免二次出車底價・按 4 台單價計算）";
+          qtySelect.options[4].text = "同日順洗 6 台（免二次出車底價・按 6 台單價計算）";
+          qtySelect.options[5].text = "同日順洗 8 台（免二次出車底價・按 8 台單價計算）";
+        } else {
+          qtySelect.options[0].text = "標準基本包套（" + cfg.name + "含 " + cfg.baseIncluded + " 精洗）";
+          qtySelect.options[1].text = "包套外追加 2 台（共約 5~6 台商辦／店面常規規模）";
+          qtySelect.options[2].text = "包套外追加 3 台（共約 6~7 台商辦／社區公設規模）";
+          qtySelect.options[3].text = "包套外追加 4 台（共約 7~8 台大型門市規模）";
+          qtySelect.options[4].text = "包套外追加 6 台（共約 9~10 台商辦規模）";
+          qtySelect.options[5].text = "包套外追加 8 台（共約 11~12 台整層商辦／團購規模）";
+        }
+      }
 
       let basePrice = 0;
       let hours = "3.0 ~ 4.5 小時";
@@ -1020,7 +1047,7 @@
         const totalUnits = (extraCount === 0) ? 1 : extraCount;
         basePrice = totalUnits * cfg.unitB;
         hours = (totalUnits <= 2) ? "1.0 ~ 2.0 小時（洗水塔同日順便施作）" : "2.5 ~ 4.0 小時（洗水塔同日順便施作）";
-        crewMode = "【水塔客戶同日順洗特惠】由當日駐場之雙人正職機電技師順便施作（免收二次工程車出車底價，同享電腦板防水保護＋500萬職災團保）";
+        crewMode = "【水塔客戶同日順洗特惠】由洗水塔當日駐場之雙人正職機電技師順便施作（免收 $10,000 出車底價！點擊下方產生報價單將自動為您建立『社區水塔＋公設冷氣合購報價單』）";
       } else {
         // 單獨派車專案包套模式（保障雙師傅 $5,000 工資＋油錢勞健保＋公司合理獲利）
         const pkgBase = isPriority ? cfg.pkgA : cfg.pkgB;
@@ -1673,15 +1700,21 @@
 
         let extraCnt = 0;
         if (acQtyVal === "add_2") extraCnt = 2;
+        else if (acQtyVal === "add_3") extraCnt = 3;
         else if (acQtyVal === "add_4") extraCnt = 4;
+        else if (acQtyVal === "add_6") extraCnt = 6;
         else if (acQtyVal === "add_8") extraCnt = 8;
 
         if (isTankCombo) {
-          // 水塔同日順洗模式：免收二次工程車出車底價，按實際順洗台數計價
+          // 水塔或冷卻水塔同日順洗模式：免收二次工程車出車底價，按實際順洗台數計價
           const comboUnits = (extraCnt === 0) ? 1 : extraCnt;
+          const comboPrefix = (cat === "ct_ac")
+            ? "【冷卻水塔同日順洗特惠】"
+            : (cat === "all_three" ? "【全棟總包同日順洗特惠】" : "【水塔同日順洗特惠】");
+          const comboWorkName = (cat === "ct_ac") ? "冷卻水塔保養" : "水塔清洗工程";
           items.push({
-            title: "【水塔同日順洗特惠】" + acCfg.name + "深層拆洗保養（共 " + comboUnits + " 台）",
-            spec: "與水塔工程同日施作免二次出車底價｜LOTO斷電與電腦板防水保護、" + acCfg.spec,
+            title: comboPrefix + acCfg.name + "深層拆洗保養（共 " + comboUnits + " 台）",
+            spec: "與" + comboWorkName + "同日施作免二次出車底價｜LOTO斷電與電腦板防水保護、" + acCfg.spec,
             unit: comboUnits + " 台",
             priceA: comboUnits * acCfg.unitA,
             priceB: comboUnits * acCfg.unitB
@@ -1967,7 +2000,7 @@
         }
       }
 
-      // 依工程類別智慧動態切換專屬「職安合規免責承諾書暨機電保護／保固條款」 (v21.0)
+      // 依工程類別智慧動態切換專屬「職安合規免責承諾書暨機電保護／保固條款」 (v21.1)
       if (outComplianceArea) {
         if (cat === "ac_cleaning") {
           outComplianceArea.innerHTML =
@@ -2263,6 +2296,10 @@
         if (params.get("inv") !== null) urlPatch.chkInverter = (params.get("inv") === "1");
         if (params.get("sgs") !== null) urlPatch.chkSgs = (params.get("sgs") === "1");
         if (params.get("tax") !== null) urlPatch.chkTax = (params.get("tax") === "1");
+        if (urlPatch.serviceCategory === "ct_ac") {
+          urlPatch.acType = "cassette";
+          urlPatch.acQty = "base";
+        }
         saveQuoteDraft(urlPatch);
       }
     } catch (e) {
@@ -2313,7 +2350,7 @@
 
 
   // ============================================================================
-  // 5. 首頁 Google 地圖官方地標 (MEO) 雙模式切換與離線防破版保護 (v21.0)
+  // 5. 首頁 Google 地圖官方地標 (MEO) 雙模式切換與離線防破版保護 (v21.1)
   // ============================================================================
   function initMeoMapTabs() {
     const btnGmap = document.getElementById("btn-meo-tab-gmap");
