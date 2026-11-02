@@ -24,7 +24,7 @@
   <meta name="twitter:description" content="輸入社區管委會或公司名稱，10秒產出帶統編 90221911 報價章、5% 營業稅與職安免責承諾書之單頁 A4 PDF 報價單！">
   <meta name="twitter:image" content="https://5390857.com/assets/og-quote.jpg">
   <meta name="twitter:image:alt" content="皓盛有限公司社區自來水塔與商用空調冷卻水塔 A/B 雙軌單頁 A4 正式工程報價單產生器">
-  <link rel="stylesheet" href="assets/style.css?v=15.0">
+  <link rel="stylesheet" href="assets/style.css?v=17.0">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -198,13 +198,13 @@
             <input type="text" id="q-client-name" class="calc-input" style="border-color:#38bdf8;font-weight:700;" placeholder="例如：板橋新埔○○社區管理委員會" value="貴社區管理委員會 ／ 貴公司廠務部">
           </div>
 
-          <div class="grid-2" style="gap:12px;margin-bottom:16px;">
+          <div class="quote-field-pair">
             <div>
               <label class="calc-label" for="q-contact-person">聯絡人與職稱</label>
               <input type="text" id="q-contact-person" class="calc-input" placeholder="例如：林總幹事 / 吳工程師" value="總幹事 ／ 廠務主管 鈞啟">
             </div>
             <div>
-              <label class="calc-label" for="q-client-addr">案場地區或地址</label>
+              <label class="calc-label" for="q-client-addr">施工案場地區或地址</label>
               <input type="text" id="q-client-addr" class="calc-input" placeholder="例如：新北市板橋區..." value="台北市 / 新北市">
             </div>
           </div>
@@ -231,7 +231,7 @@
 
           <!-- 智慧規格收合切換列：從試算器跳轉過來時自動收合已選好的規格，不讓使用者感覺重複填表 -->
           <button type="button" id="btn-toggle-tech-specs" class="tech-specs-toggle-btn" aria-expanded="true">
-            <span id="tech-specs-toggle-label">🔧 3. 工程規格與機電加購明細（已同步帶入右側報價單・點此收合/展開微調 ▾）</span>
+            <span id="tech-specs-toggle-label">🔧 3. 工程規格與機電加購明細（點此收合/展開設定 ▾）</span>
           </button>
 
           <div id="q-tech-specs-collapse" class="tech-specs-collapse-box">
@@ -249,7 +249,7 @@
               <div class="calc-form-group">
                 <label class="calc-label" for="q-wt-tonnage">水塔總噸數規模</label>
                 <select id="q-wt-tonnage" class="calc-select">
-                  <option value="10">10 噸以內（頂樓不鏽鋼塔專車4,600 / 平日3,800；入槽RC池/FRP塔按局限空間3人編制計）</option>
+                  <option value="10">10 噸以內（頂樓不鏽鋼塔專車4,600 / 平日3,800；入槽RC池/FRP塔專車13,000 / 平日10,500）</option>
                   <option value="50">20 ~ 50 噸（中小型華廈上下池｜專車13,000 / 平日10,500）</option>
                   <option value="120" selected>60 ~ 120 噸（標準社區大樓上下池｜專車23,000 / 平日17,500）</option>
                   <option value="200">150 ~ 250 噸以上（大型社區/商場雙池｜專車27,000 / 平日24,000）</option>
@@ -259,7 +259,7 @@
                 <label class="calc-label" for="q-wt-material">水池結構材質</label>
                 <select id="q-wt-material" class="calc-select">
                   <option value="concrete" selected>RC 鋼筋水泥蓄水池（須進入人孔，配置3人局限空間編制）</option>
-                  <option value="stainless">SUS304 不鏽鋼水塔（20噸以上表面光滑享減免優惠 $700~$1,500）</option>
+                  <option value="stainless">SUS304 不鏽鋼水塔（10噸內免入槽快洗；20噸以上大型槽體配置3人局限空間編制）</option>
                   <option value="frp">FRP 玻璃纖維組合式水塔（須進入人孔，配置3人局限空間編制）</option>
                 </select>
               </div>
@@ -329,14 +329,16 @@
             </div>
           </div>
 
-          <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.35);border-radius:10px;padding:12px;margin-bottom:16px;">
-            <div style="font-weight:800;color:#fbbf24;font-size:0.9rem;margin-bottom:8px;">✍️ 現場自訂追加項目或老客戶折讓（選填，可輸入負數折讓）</div>
-            <div class="grid-2" style="gap:10px;margin-bottom:0;">
+          <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.35);border-radius:10px;padding:14px;margin-bottom:16px;">
+            <div style="font-weight:800;color:#fbbf24;font-size:0.92rem;margin-bottom:10px;">4. ✍️ 現場自訂追加項目或老客戶折讓（選填，負數為折讓）</div>
+            <div class="quote-custom-pair">
               <div>
-                <input type="text" id="q-custom-name" class="calc-input" placeholder="項目名稱（如：換白鐵人孔蓋）" value="">
+                <label class="calc-label" for="q-custom-name" style="font-size:0.84rem;color:#cbd5e1;">自訂追加或折讓項目名稱</label>
+                <input type="text" id="q-custom-name" class="calc-input" placeholder="例如：更換頂樓白鐵人孔蓋 ／ 老客戶專案折讓" value="">
               </div>
               <div>
-                <input type="number" id="q-custom-price" class="calc-input" placeholder="金額（折讓可填 -1000）" value="0" step="500">
+                <label class="calc-label" for="q-custom-price" style="font-size:0.84rem;color:#cbd5e1;">金額（元，折讓請填負數如 -1000）</label>
+                <input type="number" id="q-custom-price" class="calc-input" placeholder="0" value="0" step="500">
               </div>
             </div>
           </div>
@@ -371,7 +373,7 @@
               <div class="qp-company-title">皓盛有限公司 HAO SHENG CO., LTD.</div>
               <div class="qp-company-sub">
                 政府合法統一編號：<strong>90221911</strong> ｜ 專案負責人：<strong>李思遠</strong> ｜ 24H 專線 / LINE：<strong>0916-093-125</strong><br>
-                客服信箱：<strong>ssuyuan@kimo.com</strong> ｜ 官方網站：<strong>https://5390857.com</strong>（自來水塔清洗・空調冷卻水塔維保・機電閥件工程）
+                公司地址：<strong>臺北市士林區社子里社正路45巷4弄2號（登記：1號1樓）</strong> ｜ 信箱：<strong>ssuyuan@kimo.com</strong> ｜ 官網：<strong>https://5390857.com</strong>
               </div>
             </div>
             <div class="qp-doc-badge">
@@ -487,22 +489,31 @@
           </ul>
         </div>
         <div>
-          <h3 style="color:#ffffff;margin-bottom:10px;">直接聯繫工程總管</h3>
-          <p>手機 / LINE ID：<a href="tel:0916093125" style="color:#34d399;font-weight:800;">0916-093-125</a></p>
-          <p>電子信箱：<a href="mailto:ssuyuan@kimo.com">ssuyuan@kimo.com</a></p>
-          <p>服務範圍：台北市、新北市、桃園市、新竹縣市及全台大型商場廠房專案</p>
-          <p style="margin-top:10px;font-size:0.82rem;color:#64748b;">© 2026 皓盛有限公司 版權所有｜官方唯一標準主網域 https://5390857.com</p>
+          <h3 style="color:#ffffff;margin-bottom:10px;">直接聯繫工程總管（Google 5.0★ 地標）</h3>
+          <p>手機 / LINE ID：<a href="tel:0916093125" style="color:#34d399;font-weight:800;">0916-093-125</a>｜信箱：<a href="mailto:ssuyuan@kimo.com">ssuyuan@kimo.com</a></p>
+          <p>Google 地標地址：<a href="https://www.google.com/maps/place/?q=place_id:ChIJ1duZi7GvQjQRUBaotvuDlVg" target="_blank" rel="noopener noreferrer" style="color:#38bdf8;font-weight:700;">11164 臺北市士林區社子里社正路45巷4弄2號 📍</a>（工商登記：1號1樓）</p>
+          <p>服務範圍：台北市、新北市（免車馬費）、桃園市、新竹縣市及全台大型商場廠房專案</p>
+          <p style="margin-top:10px;font-size:0.82rem;color:#64748b;">© 2026 皓盛有限公司（統編 90221911）版權所有｜官方主網域 https://5390857.com</p>
         </div>
       </div>
     </div>
   </footer>
 
-  <!-- 手機端底部安全區固定轉換列（大拇指熱區 >= 46px） -->
+  <!-- 手機端底部安全區固定轉換列（上下雙行精緻膠囊，100% 零切字、大拇指熱區 >= 48px） -->
   <div class="mobile-sticky-bar">
-    <a href="tel:0916093125" class="btn btn-primary">📞 直撥專線 0916-093-125</a>
-    <a href="quote.html" class="btn btn-amber">📄 產出單頁 PDF 報價單</a>
-    <a href="https://line.me/ti/p/~0916093125" target="_blank" rel="noopener noreferrer" class="btn btn-line">💬 加 LINE 詢價</a>
+    <a href="tel:0916093125" class="btn btn-primary sticky-dual-btn">
+      <span class="sticky-btn-main">📞 直撥專線</span>
+      <span class="sticky-btn-sub">0916-093-125</span>
+    </a>
+    <a href="quote.html" class="btn btn-amber sticky-dual-btn">
+      <span class="sticky-btn-main">📄 正式報價單</span>
+      <span class="sticky-btn-sub">單頁 A4 PDF</span>
+    </a>
+    <a href="https://line.me/ti/p/~0916093125" target="_blank" rel="noopener noreferrer" class="btn btn-line sticky-dual-btn">
+      <span class="sticky-btn-main">💬 加 LINE 詢價</span>
+      <span class="sticky-btn-sub">傳照片估價</span>
+    </a>
   </div>
-  <script src="assets/cad-engine.js?v=15.0"></script>
+  <script src="assets/cad-engine.js?v=17.0"></script>
 </body>
 </html>

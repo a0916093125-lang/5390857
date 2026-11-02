@@ -1,5 +1,5 @@
 /**
- * 皓盛有限公司 (5390857.com) - 雙引擎試算與 A4 單頁智慧鎖定報價核心系統 (v15.0 雙專家滿分完全體正式版)
+ * 皓盛有限公司 (5390857.com) - 雙引擎試算與 A4 單頁智慧鎖定報價核心系統 (v17.0 雙專家滿分完全體正式版)
  * 涵蓋模組：
  * 1. Before/After 清洗前後視覺對比拉桿（Pointer Events ＋ 鍵盤無障礙 A11y ＋ rAF 節流與失焦保護）
  * 2. 社區大樓自來水塔 A/B 雙軌試算器 ＋ 跨頁雙向記憶與無汙染帶入報價單生成器 (localStorage + pageshow/storage)
@@ -478,20 +478,17 @@
             ? "【指定時段專車】頂樓免入槽快洗編制（正職勞健保技師＋長柄高壓水刀＋50~100ppm次氯酸鈉消毒；同棟多顆併洗享3,000起優惠）"
             : "【平日順路併單】頂樓免入槽快洗編制（正職勞健保技師＋長柄高壓水刀＋50~100ppm次氯酸鈉消毒；同棟多顆併洗享3,000起優惠）";
         } else {
-          basePrice = isPriority ? 13000 : 10000;
+          basePrice = isPriority ? 13000 : 10500;
           hours = "2.0 ~ 2.5 小時";
         }
       } else if (tonVal <= 50) {
         basePrice = isPriority ? 13000 : 10500;
-        if (matVal === "stainless") basePrice = isPriority ? 12000 : 9800;
         hours = "2.5 ~ 3.0 小時";
       } else if (tonVal <= 120) {
         basePrice = isPriority ? 23000 : 17500;
-        if (matVal === "stainless") basePrice = isPriority ? 21500 : 16500;
         hours = "3.0 ~ 3.5 小時";
       } else {
         basePrice = isPriority ? 27000 : 24000;
-        if (matVal === "stainless") basePrice = isPriority ? 25500 : 22500;
         hours = "3.5 ~ 4.0 小時（雙機同步高速抽排不隔夜）";
       }
 
@@ -1068,17 +1065,13 @@
       const isWt = (cat === "water_tank" || cat === "both");
       const isCt = (cat === "cooling_tower" || cat === "both");
 
-      function toggleAddonItem(checkboxEl, enabled, badgeHint) {
+      function toggleAddonItem(checkboxEl, enabled) {
         if (!checkboxEl) return;
         const labelEl = checkboxEl.closest(".calc-check-item");
         checkboxEl.disabled = !enabled;
         if (labelEl) {
           labelEl.classList.toggle("is-disabled-addon", !enabled);
-          if (!enabled && badgeHint) {
-            labelEl.setAttribute("title", badgeHint);
-          } else {
-            labelEl.removeAttribute("title");
-          }
+          labelEl.style.display = enabled ? "flex" : "none";
         }
       }
 
@@ -1244,22 +1237,22 @@
               : "10噸內頂樓不鏽鋼水塔基本清洗（正職勞健保技師＋高壓水刀除垢＋50~100ppm次氯酸鈉消毒；跨棟多顆移機費另列於次項）";
           } else if (mat === "frp") {
             priceA = 13000;
-            priceB = 10000;
+            priceB = 10500;
             specDesc = "10噸內入槽FRP組合水塔（配置3人局限空間標準編制：缺氧作業主管＋雙人戒護＋強制通風與50~100ppm次氯酸鈉消毒）";
           } else {
             priceA = 13000;
-            priceB = 10000;
+            priceB = 10500;
             specDesc = "10噸內入槽RC水泥蓄水池（配置3人局限空間標準編制：缺氧作業主管＋雙人戒護＋強制通風與50~100ppm次氯酸鈉消毒）";
           }
         } else if (ton <= 50) {
-          priceA = (mat === "stainless") ? 12000 : 13000;
-          priceB = (mat === "stainless") ? 9800 : 10500;
+          priceA = 13000;
+          priceB = 10500;
         } else if (ton <= 120) {
-          priceA = (mat === "stainless") ? 21500 : 23000;
-          priceB = (mat === "stainless") ? 16500 : 17500;
+          priceA = 23000;
+          priceB = 17500;
         } else {
-          priceA = (mat === "stainless") ? 25500 : 27000;
-          priceB = (mat === "stainless") ? 22500 : 24000;
+          priceA = 27000;
+          priceB = 24000;
           specDesc += "（雙機高速抽排，停水控制在3.5~4hr）";
         }
 
@@ -1624,7 +1617,7 @@
 
       const priceText = (displayMode === "ab_compare")
         ? ("★ A方案（指定專車）：NT$ " + totalA.toLocaleString() + (includeTax ? " (含5%稅)" : " (未稅)") +
-           "\n⚡ B方案（平日併單）：NT$ " + totalB.toLocaleString() + (includeTax ? " (含5%稅，現省$" + savedDiff.toLocaleString() + ")" : " (未稅)"))
+           "\n⚡ B方案（平日併單）：NT$ " + totalB.toLocaleString() + (includeTax ? " (含5%稅，現省$" + savedDiff.toLocaleString() + ")" : " (未稅，現省$" + savedDiff.toLocaleString() + ")"))
         : ("核定總金額：NT$ " + ((displayMode === "only_a") ? totalA : totalB).toLocaleString() + (includeTax ? " (含5%營業稅)" : " (未稅)"));
 
       return "📄 報價單號：" + docNo +
@@ -1855,10 +1848,58 @@
     }
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
+
+  // ============================================================================
+  // 5. 首頁 Google 地圖官方地標 (MEO) 雙模式切換與離線防破版保護 (v17.0)
+  // ============================================================================
+  function initMeoMapTabs() {
+    const btnGmap = document.getElementById("btn-meo-tab-gmap");
+    const btnRadar = document.getElementById("btn-meo-tab-radar");
+    const paneGmap = document.getElementById("meo-pane-gmap");
+    const paneRadar = document.getElementById("meo-pane-radar");
+    const iframe = document.getElementById("meo-gmap-iframe");
+    if (!btnGmap || !btnRadar || !paneGmap || !paneRadar) return;
+
+    function switchTab(mode) {
+      if (mode === "radar") {
+        btnRadar.classList.add("active");
+        btnGmap.classList.remove("active");
+        btnRadar.setAttribute("aria-selected", "true");
+        btnGmap.setAttribute("aria-selected", "false");
+        paneRadar.style.display = "flex";
+        paneGmap.style.display = "none";
+      } else {
+        btnGmap.classList.add("active");
+        btnRadar.classList.remove("active");
+        btnGmap.setAttribute("aria-selected", "true");
+        btnRadar.setAttribute("aria-selected", "false");
+        paneGmap.style.display = "block";
+        paneRadar.style.display = "none";
+      }
+    }
+
+    btnGmap.addEventListener("click", function () { switchTab("gmap"); });
+    btnRadar.addEventListener("click", function () { switchTab("radar"); });
+
+    // 防禦性工程：若於無外網環境（如內部封閉網路或離線預覽 about:/file:）自動切換呈現高解析 SVG 地標雷達圖，避免出現瀏覽器斷網圖示
+    const isOfflineEnv = (window.location.protocol === "about:" || window.location.protocol === "file:" || navigator.onLine === false);
+    if (isOfflineEnv) {
+      if (iframe) iframe.removeAttribute("src");
+      switchTab("radar");
+    }
+  }
+
+  function bootAllModules() {
     initBeforeAfterSlider();
+    initMeoMapTabs();
     initWaterTankCalculator();
     initCoolingTowerCalculator();
     initQuoteGenerator();
-  });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bootAllModules);
+  } else {
+    bootAllModules();
+  }
 })();
