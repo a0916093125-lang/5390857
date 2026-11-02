@@ -1,5 +1,5 @@
 /**
- * 皓盛有限公司 (5390857.com) - 雙引擎試算與 A4 單頁智慧鎖定報價核心系統 (v20.1 雙專家滿分完全體正式版)
+ * 皓盛有限公司 (5390857.com) - 雙引擎試算與 A4 單頁智慧鎖定報價核心系統 (v21.0 雙專家滿分完全體正式版)
  * 涵蓋模組：
  * 1. Before/After 清洗前後視覺對比拉桿（Pointer Events ＋ 鍵盤無障礙 A11y ＋ rAF 節流與失焦保護）
  * 2. 社區大樓自來水塔 A/B 雙軌試算器 ＋ 跨頁雙向記憶與無汙染帶入報價單生成器 (localStorage + pageshow/storage)
@@ -412,6 +412,7 @@
     const chkLevel = document.getElementById("chk-level");
     const chkSgsWater = document.getElementById("chk-sgs-water");
     const chkCool = document.getElementById("chk-cooling");
+    const chkAcCombo = document.getElementById("chk-ac-combo");
     const chkTax = document.getElementById("chk-tax");
 
     const outPrice = document.getElementById("calc-price-output");
@@ -453,7 +454,10 @@
         chkSgsWater.checked = Boolean(draft.chkSgs);
       }
       if (chkCool && draft.serviceCategory !== undefined) {
-        chkCool.checked = (draft.serviceCategory === "both");
+        chkCool.checked = (draft.serviceCategory === "both" || draft.serviceCategory === "all_three");
+      }
+      if (chkAcCombo && draft.serviceCategory !== undefined) {
+        chkAcCombo.checked = (draft.serviceCategory === "wt_ac" || draft.serviceCategory === "all_three");
       }
       if (chkTax && draft.chkTax !== undefined) {
         chkTax.checked = Boolean(draft.chkTax);
@@ -532,6 +536,11 @@
         basePrice += coolPrice;
         addons.push("加購商用空調冷卻水塔(50RT內基準)同步清洗保養 (+NT$" + coolPrice.toLocaleString() + "起)");
       }
+      if (chkAcCombo && chkAcCombo.checked) {
+        const acComboPrice = isPriority ? 2200 : 1800;
+        basePrice += acComboPrice;
+        addons.push("加購同日順洗社區公設／管理室冷氣（免$10,000出車底價｜分離式基準 +NT$" + acComboPrice.toLocaleString() + "起/台）");
+      }
 
       let maxPrice = Math.round(basePrice * 1.18);
       let taxNote = "未稅";
@@ -564,9 +573,12 @@
 
       if (shouldPersistDraft) {
         const existingDraft = loadQuoteDraft() || {};
-        const isBoth = Boolean(chkCool && chkCool.checked);
+        const isCoolChecked = Boolean(chkCool && chkCool.checked);
+        const isAcChecked = Boolean(chkAcCombo && chkAcCombo.checked);
+        const nextCatWt = (isCoolChecked && isAcChecked) ? "all_three" : (isCoolChecked ? "both" : (isAcChecked ? "wt_ac" : "water_tank"));
+        const isBoth = isCoolChecked;
         const draftPayload = {
-          serviceCategory: isBoth ? "both" : "water_tank",
+          serviceCategory: nextCatWt,
           scheduleMode: scheduleMode,
           region: regionVal,
           wtTonnage: String(tonVal),
@@ -580,6 +592,12 @@
         };
         // 修復 [冷卻水塔專家 C2]：當在自來水塔頁勾選「加購商用空調冷卻水塔(50RT內)同步清洗保養」時，
         // 若正點擊跳轉至報價單 (isJumpingToQuote) 或原本無設定，強制對齊為 50RT 單座開放式圓型水塔，消除舊草稿 100RT 造成的 $6,000 價差
+        if (isAcChecked) {
+          if (isJumpingToQuote || !existingDraft.acType) {
+            draftPayload.acType = "split";
+            draftPayload.acQty = "base";
+          }
+        }
         if (isBoth) {
           if (isJumpingToQuote || !existingDraft.ctRtScale) {
             draftPayload.ctRtScale = "50";
@@ -635,10 +653,12 @@
     if (btnToQuote) {
       btnToQuote.addEventListener("click", function () {
         calculate(true, true);
-        const isBoth = Boolean(chkCool && chkCool.checked);
+        const isCoolChecked = Boolean(chkCool && chkCool.checked);
+        const isAcChecked = Boolean(chkAcCombo && chkAcCombo.checked);
+        const nextCatWt = (isCoolChecked && isAcChecked) ? "all_three" : (isCoolChecked ? "both" : (isAcChecked ? "wt_ac" : "water_tank"));
         const qParams = new URLSearchParams({
           from: "water-tank",
-          cat: isBoth ? "both" : "water_tank",
+          cat: nextCatWt,
           mode: scheduleSelect ? scheduleSelect.value : "priority_50",
           reg: regionSelect ? regionSelect.value : "台北市 / 新北市",
           ton: tonSelect ? tonSelect.value : "50",
@@ -671,6 +691,7 @@
     const chkBallValve = document.getElementById("ct-chk-ballvalve");
     const chkInverter = document.getElementById("ct-chk-inverter");
     const chkCtSgs = document.getElementById("ct-chk-sgs");
+    const chkCtAcCombo = document.getElementById("ct-chk-ac-combo");
     const chkTax = document.getElementById("ct-chk-tax");
 
     const outPrice = document.getElementById("ct-price-output");
@@ -713,6 +734,9 @@
       }
       if (chkCtSgs && draft.chkSgs !== undefined) {
         chkCtSgs.checked = Boolean(draft.chkSgs);
+      }
+      if (chkCtAcCombo && draft.serviceCategory !== undefined) {
+        chkCtAcCombo.checked = (draft.serviceCategory === "ct_ac" || draft.serviceCategory === "all_three");
       }
       if (chkTax && draft.chkTax !== undefined) {
         chkTax.checked = Boolean(draft.chkTax);
@@ -795,6 +819,11 @@
         basePrice += sgsPrice;
         addons.push("加購代客採樣送驗 SGS 冷卻水塔水質／退伍軍人菌（Legionella）檢測報告 (+NT$" + sgsPrice.toLocaleString() + ")");
       }
+      if (chkCtAcCombo && chkCtAcCombo.checked) {
+        const ctAcPrice = isPriority ? 4000 : 3500;
+        basePrice += ctAcPrice;
+        addons.push("加購同日順洗室內四方吹／FCU送風機／AHU空調（免二次出車底價｜四方吹基準 +NT$" + ctAcPrice.toLocaleString() + "起/台）");
+      }
 
       let maxPrice = Math.round(basePrice * 1.18);
       let taxNote = "未稅";
@@ -827,7 +856,8 @@
 
       if (shouldPersistDraft) {
         const existingDraft = loadQuoteDraft() || {};
-        const nextCat = (existingDraft.serviceCategory === "both") ? "both" : "cooling_tower";
+        const isCtAc = Boolean(chkCtAcCombo && chkCtAcCombo.checked);
+        const nextCat = isCtAc ? "ct_ac" : ((existingDraft.serviceCategory === "both") ? "both" : "cooling_tower");
         const draftPayload = {
           serviceCategory: nextCat,
           scheduleMode: scheduleMode,
@@ -891,7 +921,8 @@
       btnCtToQuote.addEventListener("click", function () {
         calcCoolingTower(true, true);
         const existingDraft = loadQuoteDraft() || {};
-        const nextCat = (existingDraft.serviceCategory === "both") ? "both" : "cooling_tower";
+        const isCtAc = Boolean(chkCtAcCombo && chkCtAcCombo.checked);
+        const nextCat = isCtAc ? "ct_ac" : ((existingDraft.serviceCategory === "both") ? "both" : "cooling_tower");
         const qParams = new URLSearchParams({
           from: "cooling-tower",
           cat: nextCat,
@@ -913,7 +944,7 @@
   }
 
 
-  /* 3B. 新增引擎：冷氣與商用中央空調（四方吹/吊隱FCU/大型AHU/分離式）A/B 雙軌包套＆水塔同日順洗試算器 (v20.1) */
+  /* 3B. 新增引擎：冷氣與商用中央空調（四方吹/吊隱FCU/大型AHU/分離式）A/B 雙軌包套＆水塔同日順洗試算器 (v21.0) */
   function initAcCleaningCalculator() {
     const form = document.getElementById("ac-cleaning-calc-form");
     if (!form) return;
@@ -1295,8 +1326,8 @@
     /* 依據工程類別動態管控專屬加購項顯示狀態，防止跨類別幽靈計價 */
     function syncAddonAvailability(cat) {
       const isWt = (cat === "water_tank" || cat === "both" || cat === "wt_ac" || cat === "all_three");
-      const isCt = (cat === "cooling_tower" || cat === "both" || cat === "all_three");
-      const isAc = (cat === "ac_cleaning" || cat === "wt_ac" || cat === "all_three");
+      const isCt = (cat === "cooling_tower" || cat === "both" || cat === "ct_ac" || cat === "all_three");
+      const isAc = (cat === "ac_cleaning" || cat === "wt_ac" || cat === "ct_ac" || cat === "all_three");
 
       function toggleAddonItem(checkboxEl, enabled) {
         if (!checkboxEl) return;
@@ -1336,10 +1367,10 @@
       }
 
       if (fromParamVal === "water-tank" && elCategory) {
-        const targetCat = (draft.serviceCategory === "both") ? "both" : "water_tank";
+        const targetCat = draft.serviceCategory || "water_tank";
         setSelectValueSafely(elCategory, targetCat, "water_tank");
       } else if (fromParamVal === "cooling-tower" && elCategory) {
-        const targetCat = (draft.serviceCategory === "both") ? "both" : "cooling_tower";
+        const targetCat = draft.serviceCategory || "cooling_tower";
         setSelectValueSafely(elCategory, targetCat, "cooling_tower");
       } else if (fromParamVal === "ac-cleaning" && elCategory) {
         const targetCat = (draft.serviceCategory === "wt_ac") ? "wt_ac" : "ac_cleaning";
@@ -1454,8 +1485,8 @@
       const displayMode = elDisplayMode ? elDisplayMode.value : "ab_compare";
       const cat = elCategory ? elCategory.value : "water_tank";
       const isWtActive = (cat === "water_tank" || cat === "both" || cat === "wt_ac" || cat === "all_three");
-      const isCtActive = (cat === "cooling_tower" || cat === "both" || cat === "all_three");
-      const isAcActive = (cat === "ac_cleaning" || cat === "wt_ac" || cat === "all_three");
+      const isCtActive = (cat === "cooling_tower" || cat === "both" || cat === "ct_ac" || cat === "all_three");
+      const isAcActive = (cat === "ac_cleaning" || cat === "wt_ac" || cat === "ct_ac" || cat === "all_three");
 
       if (boxWtGroup) {
         boxWtGroup.style.display = isWtActive ? "block" : "none";
@@ -1629,7 +1660,7 @@
       if (isAcActive) {
         const acTypeVal = elAcType ? elAcType.value : "cassette";
         const acQtyVal = elAcQty ? elAcQty.value : "base";
-        const isTankCombo = (cat === "wt_ac" || cat === "all_three");
+        const isTankCombo = (cat === "wt_ac" || cat === "ct_ac" || cat === "all_three");
 
         const acMap = {
           split:    { pkgA: 12500, pkgB: 10000, unitA: 2200, unitB: 1800, inc: "含 4 台內", name: "壁掛分離式冷氣", spec: "拆洗外殼、濾網、貫流風鼓葉輪、蒸發器親水藥洗與排水管疏通" },
@@ -1936,7 +1967,7 @@
         }
       }
 
-      // 依工程類別智慧動態切換專屬「職安合規免責承諾書暨機電保護／保固條款」 (v20.1)
+      // 依工程類別智慧動態切換專屬「職安合規免責承諾書暨機電保護／保固條款」 (v21.0)
       if (outComplianceArea) {
         if (cat === "ac_cleaning") {
           outComplianceArea.innerHTML =
@@ -2192,10 +2223,14 @@
         if (params.get("lvl") !== null) urlPatch.chkLevel = (params.get("lvl") === "1");
         if (params.get("sgs") !== null) urlPatch.chkSgs = (params.get("sgs") === "1");
         if (params.get("tax") !== null) urlPatch.chkTax = (params.get("tax") === "1");
-        if (urlPatch.serviceCategory === "both") {
+        if (urlPatch.serviceCategory === "both" || urlPatch.serviceCategory === "all_three") {
           urlPatch.ctRtScale = "50";
           urlPatch.ctTowerType = "open_round";
           urlPatch.ctTowerCount = "0";
+        }
+        if (urlPatch.serviceCategory === "wt_ac" || urlPatch.serviceCategory === "all_three") {
+          urlPatch.acType = "split";
+          urlPatch.acQty = "base";
         }
         saveQuoteDraft(urlPatch);
       } else if (fromParamVal === "ac-cleaning") {
@@ -2278,7 +2313,7 @@
 
 
   // ============================================================================
-  // 5. 首頁 Google 地圖官方地標 (MEO) 雙模式切換與離線防破版保護 (v20.1)
+  // 5. 首頁 Google 地圖官方地標 (MEO) 雙模式切換與離線防破版保護 (v21.0)
   // ============================================================================
   function initMeoMapTabs() {
     const btnGmap = document.getElementById("btn-meo-tab-gmap");
