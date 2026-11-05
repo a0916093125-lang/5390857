@@ -75,6 +75,7 @@
     if (stateObj.chkCtSprinkler) q.set("ctspr", "1");
     if (stateObj.chkInverter) q.set("inv", "1");
     if (stateObj.chkSgs) q.set("sgs", "1");
+    if (stateObj.chkChlorine25kg) q.set("cl25", "1");
     if (stateObj.chkAcDrain) q.set("acdrain", "1");
     if (stateObj.chkAcOutdoor) q.set("acout", "1");
     if (stateObj.chkAcSteam) q.set("acsteam", "1");
@@ -473,6 +474,7 @@
     const chkButterfly = document.getElementById("chk-butterfly-valve");
     const chkLevel = document.getElementById("chk-level");
     const chkSgsWater = document.getElementById("chk-sgs-water");
+    const chkWtChlorine = document.getElementById("chk-wt-chlorine");
     const chkCool = document.getElementById("chk-cooling");
     const chkAcCombo = document.getElementById("chk-ac-combo");
     const chkTax = document.getElementById("chk-tax");
@@ -520,6 +522,9 @@
       }
       if (chkSgsWater && draft.chkSgs !== undefined) {
         chkSgsWater.checked = Boolean(draft.chkSgs);
+      }
+      if (chkWtChlorine && draft.chkChlorine25kg !== undefined) {
+        chkWtChlorine.checked = Boolean(draft.chkChlorine25kg);
       }
       if (chkCool && draft.serviceCategory !== undefined) {
         chkCool.checked = (draft.serviceCategory === "both" || draft.serviceCategory === "all_three");
@@ -609,6 +614,10 @@
         basePrice += sgsPrice;
         addons.push("加購代客無菌採樣送驗 SGS 飲用水水質檢驗報告（大腸桿菌群／總菌落數）(+NT$" + sgsPrice.toLocaleString() + ")");
       }
+      if (chkWtChlorine && chkWtChlorine.checked) {
+        basePrice += 2680;
+        addons.push("順載 25公斤大桶裝 90% TCCA 長效慢溶強效氯錠（隨工程車免 $500 運費特惠 +NT$2,680/桶）");
+      }
       if (chkCool && chkCool.checked) {
         const coolPrice = isPriority ? 7000 : 5500;
         basePrice += coolPrice;
@@ -670,6 +679,7 @@
           chkButterfly: Boolean(chkButterfly && chkButterfly.checked),
           chkLevel: Boolean(chkLevel && chkLevel.checked),
           chkSgs: Boolean(chkSgsWater && chkSgsWater.checked),
+          chkChlorine25kg: Boolean(chkWtChlorine && chkWtChlorine.checked),
           chkTax: Boolean(chkTax && chkTax.checked)
         };
         // 修復 [冷卻水塔專家 C2]：當在自來水塔頁勾選「加購商用空調冷卻水塔(50RT內)同步清洗保養」時，
@@ -752,6 +762,7 @@
           bf: (chkButterfly && chkButterfly.checked) ? "1" : "0",
           lvl: (chkLevel && chkLevel.checked) ? "1" : "0",
           sgs: (chkSgsWater && chkSgsWater.checked) ? "1" : "0",
+          cl25: (chkWtChlorine && chkWtChlorine.checked) ? "1" : "0",
           tax: (chkTax && chkTax.checked) ? "1" : "0"
         });
         window.location.href = "quote.html?" + qParams.toString() + "#qp-workspace-anchor";
@@ -777,6 +788,7 @@
     const chkBallValve = document.getElementById("ct-chk-ballvalve");
     const chkInverter = document.getElementById("ct-chk-inverter");
     const chkCtSgs = document.getElementById("ct-chk-sgs");
+    const chkCtChlorine = document.getElementById("ct-chk-chlorine");
     const chkCtAcCombo = document.getElementById("ct-chk-ac-combo");
     const chkTax = document.getElementById("ct-chk-tax");
 
@@ -826,6 +838,9 @@
       }
       if (chkCtSgs && draft.chkSgs !== undefined) {
         chkCtSgs.checked = Boolean(draft.chkSgs);
+      }
+      if (chkCtChlorine && draft.chkChlorine25kg !== undefined) {
+        chkCtChlorine.checked = Boolean(draft.chkChlorine25kg);
       }
       if (chkCtAcCombo && draft.serviceCategory !== undefined) {
         chkCtAcCombo.checked = (draft.serviceCategory === "ct_ac" || draft.serviceCategory === "all_three");
@@ -921,6 +936,10 @@
         basePrice += sgsPrice;
         addons.push("加購代客採樣送驗 SGS 冷卻水塔水質／退伍軍人菌（Legionella）檢測報告 (+NT$" + sgsPrice.toLocaleString() + ")");
       }
+      if (chkCtChlorine && chkCtChlorine.checked) {
+        basePrice += 2680;
+        addons.push("順載 25公斤大桶裝 90% TCCA 長效慢溶強效氯錠（抑菌除藻｜隨工程車免 $500 貨運費特惠 +NT$2,680/桶）");
+      }
       if (chkCtAcCombo && chkCtAcCombo.checked) {
         const ctAcPrice = isPriority ? 4000 : 3500;
         basePrice += ctAcPrice;
@@ -976,6 +995,7 @@
           chkPvcValve: Boolean(chkBallValve && chkBallValve.checked),
           chkInverter: Boolean(chkInverter && chkInverter.checked),
           chkSgs: Boolean(chkCtSgs && chkCtSgs.checked),
+          chkChlorine25kg: Boolean(chkCtChlorine && chkCtChlorine.checked),
           chkTax: Boolean(chkTax && chkTax.checked)
         };
         if (isCtAc) {
@@ -1050,6 +1070,7 @@
           pvc: (chkBallValve && chkBallValve.checked) ? "1" : "0",
           inv: (chkInverter && chkInverter.checked) ? "1" : "0",
           sgs: (chkCtSgs && chkCtSgs.checked) ? "1" : "0",
+          cl25: (chkCtChlorine && chkCtChlorine.checked) ? "1" : "0",
           tax: (chkTax && chkTax.checked) ? "1" : "0"
         });
         window.location.href = "quote.html?" + qParams.toString() + "#qp-workspace-anchor";
@@ -1295,6 +1316,21 @@
   // 3B. 第四引擎：「會轉都會修！」機電馬達・風鼓軸承・幫浦與蝶閥逆止閥試算器 (v22.2 嚴格遞增 3 檔級距＋雙向連動)
   // ============================================================================
   const MPV_SPEC_MAP = {
+    rp258_install: {
+      cat: "cat1_split_ac",
+      comboCleanCat: "ac_cleaning",
+      comboAcType: "split",
+      name: "Realise 瑞林 RP-258 分離式冷氣自動排水器（2.1kg重型蔽極式馬達）連工帶料到府安裝＋排水管疏通＋全室冷氣免費健檢",
+      spec: "只賣到府安裝服務（不單售裸機）：換裝重達 2.1kg 瑞林 RP-258 蔽極式馬達超靜音排水器（50mm大葉輪、揚程3.5M、防火溫升保護）、高壓打通 2 分排水管果凍淤泥，並免費健檢全室冷氣出風溫差(ΔT)與電容電流（當場加洗冷氣順換現折 $1,000！）",
+      unitName: "組",
+      tiers: {
+        tier_std:   { minB: 3500, maxB: 3500, minA: 3500, maxA: 3500, qB: 3500, qA: 3500, label: "標準單台到府連工帶料安裝＋通管＋冷氣健檢" },
+        tier_mid:   { minB: 3500, maxB: 4200, minA: 3500, maxA: 4500, qB: 3500, qA: 4200, label: "挑高天花板／長距離明管重拉配電安裝" },
+        tier_heavy: { minB: 4200, maxB: 4800, minA: 4500, maxA: 5200, qB: 4500, qA: 5000, label: "大型落地箱型／多台冷氣共用大水量排水工程" }
+      },
+      rangeLabel: "NT$ 3,500 起 / 組（含通排水管＋全室冷氣免費健檢）",
+      hours: "1.0 ~ 1.5 小時"
+    },
     split_minor: {
       cat: "cat1_split_ac",
       comboCleanCat: "ac_cleaning",
@@ -1490,7 +1526,8 @@
     const outCrew = document.getElementById("mpv-crew-output");
     const outSummary = document.getElementById("mpv-summary-text");
 
-    const btnToQuote = document.getElementById("btn-mpv-to-quote");
+    const btnToQuote = document.getElementById("btn-mpv-to-quote") ||
+      document.getElementById("btn-shop-to-quote");
     const btnLine = document.getElementById("btn-mpv-line");
 
     const catDefaultSpec = {
@@ -1723,6 +1760,7 @@
     const chkQCtSprinkler = document.getElementById("q-chk-ct-sprinkler");
     const chkInverter = document.getElementById("q-chk-inverter");
     const chkSgs = document.getElementById("q-chk-sgs");
+    const chkChlorine25kg = document.getElementById("q-chk-chlorine-25kg");
     const lblSgsText = document.getElementById("q-lbl-sgs-text");
     const boxAcGroup = document.getElementById("q-ac-group");
     const elAcType = document.getElementById("q-ac-type");
@@ -1908,6 +1946,7 @@
       toggleAddonItem(chkQCtSprinkler, isCt);
       toggleAddonItem(chkInverter, isCt);
       toggleAddonItem(chkSgs, isWt || isCt);
+      toggleAddonItem(chkChlorine25kg, isWt || isCt || (cat === "shop_chlorine") || isAc || isMpv);
       toggleAddonItem(chkAcDrain, isAc);
       toggleAddonItem(chkAcOutdoor, isAc);
       toggleAddonItem(chkAcSteam, isAc);
@@ -1994,6 +2033,7 @@
       if (chkQCtSprinkler && draft.chkCtSprinkler !== undefined) chkQCtSprinkler.checked = Boolean(draft.chkCtSprinkler);
       if (chkInverter && draft.chkInverter !== undefined) chkInverter.checked = Boolean(draft.chkInverter);
       if (chkSgs && draft.chkSgs !== undefined) chkSgs.checked = Boolean(draft.chkSgs);
+      if (chkChlorine25kg && draft.chkChlorine25kg !== undefined) chkChlorine25kg.checked = Boolean(draft.chkChlorine25kg);
       if (draft.acType && elAcType) setSelectValueSafely(elAcType, draft.acType, "cassette");
       if (draft.acQty && elAcQty) setSelectValueSafely(elAcQty, draft.acQty, "base");
       if (chkAcDrain && draft.chkAcDrain !== undefined) chkAcDrain.checked = Boolean(draft.chkAcDrain);
@@ -2048,6 +2088,7 @@
         chkCtSprinkler: Boolean(chkQCtSprinkler && chkQCtSprinkler.checked),
         chkInverter: Boolean(chkInverter && chkInverter.checked),
         chkSgs: Boolean(chkSgs && chkSgs.checked),
+        chkChlorine25kg: Boolean(chkChlorine25kg && chkChlorine25kg.checked),
         acType: elAcType ? elAcType.value : "cassette",
         acQty: elAcQty ? elAcQty.value : "base",
         chkAcDrain: Boolean(chkAcDrain && chkAcDrain.checked),
@@ -2419,10 +2460,41 @@
           priceB: 3000
         });
       }
-      if (isAcActive && chkAcDrain && chkAcDrain.checked) {
+      if (cat === "shop_chlorine") {
         items.push({
-          title: "冷氣自動排水器（Drain Pump）換新 ＋ 排水管果凍淤泥高壓疏通",
-          spec: "換裝靜音高揚程自動排水器並以高壓水刀／氣壓徹底打通排水管路，根治冷氣滴水漏水",
+          title: "工業級 90% TCCA 長效慢溶強效氯錠（25 公斤原裝密封大桶）",
+          spec: "有效氯含量 ≧ 90% 慢溶錠（冷卻水塔抑菌除藻、預防退伍軍人菌與大型蓄水池消毒專用）｜A方案含大榮/新竹貨運宅配到府（含$500運費）；B方案為搭配本公司水塔工程順車免運價",
+          unit: "1 桶(25kg)",
+          priceA: 3200,
+          priceB: 2680
+        });
+        items.push({
+          title: "【專案免費贈送】冷卻水塔散熱效率／水垢淤泥評估 ＆ RT 噸數精準投藥週期規劃",
+          spec: "免費協助廠務與管委會核算每週標準氯錠投放量，並巡檢散熱膠片、旋轉播水頭與進水蝴蝶閥狀態",
+          unit: "1 式",
+          priceA: 0,
+          priceB: 0,
+          isFreeGift: true
+        });
+      }
+      if (cat !== "shop_chlorine" && chkChlorine25kg && chkChlorine25kg.checked) {
+        const isWithTankTruck = (isWtActive || isCtActive);
+        items.push({
+          title: isWithTankTruck
+            ? "【水塔工程順車免運特惠】工業級 90% TCCA 長效慢溶強效氯錠（25公斤大桶裝）"
+            : "工業級 90% TCCA 長效慢溶強效氯錠（25公斤大桶裝｜含貨運宅配 / 隨車免運）",
+          spec: isWithTankTruck
+            ? "由清洗水塔/冷卻水塔工程車同趟順載直送機房（直接免除 $500 貨運費！含免費精算 RT 投藥量）"
+            : "有效氯 ≧ 90% 長效抑菌除青苔慢溶錠（A方案含大榮/新竹貨運宅配 $3,200 / B方案隨工程車順載免運 $2,680）",
+          unit: "1 桶(25kg)",
+          priceA: isWithTankTruck ? 2680 : 3200,
+          priceB: 2680
+        });
+      }
+      if (isAcActive && chkAcDrain && chkAcDrain.checked && !(isMpvActive && elMpvSpec && elMpvSpec.value === "rp258_install")) {
+        items.push({
+          title: "【洗冷氣同日順換現折 $1,000】Realise 瑞林 RP-258 重型蔽極式冷氣自動排水器換新＋排水管高壓疏通",
+          spec: "原單獨到府安裝價 $3,500，搭配洗冷氣同日順換現折 $1,000！換裝 2.1kg 瑞林 RP-258 蔽極式馬達排水器（50mm大葉輪、35dB超靜音）並高壓打通排水管果凍淤泥",
           unit: "1 組",
           priceA: 2500,
           priceB: 2200
@@ -2955,6 +3027,7 @@
         urlPatch.chkCtSprinkler = (params.get("ctspr") === "1");
         urlPatch.chkInverter = (params.get("inv") === "1");
         urlPatch.chkSgs = (params.get("sgs") === "1");
+        urlPatch.chkChlorine25kg = (params.get("cl25") === "1");
         urlPatch.chkAcDrain = (params.get("acdrain") === "1");
         urlPatch.chkAcOutdoor = (params.get("acout") === "1");
         urlPatch.chkAcSteam = (params.get("acsteam") === "1");
@@ -2964,6 +3037,54 @@
         if (params.get("custn") !== null) urlPatch.customName = params.get("custn");
         if (params.get("custp") !== null) urlPatch.customPrice = params.get("custp");
         if (params.get("tax") !== null) urlPatch.chkTax = (params.get("tax") === "1");
+        saveQuoteDraft(urlPatch);
+      } else if (fromParamVal === "shop") {
+        const shopMode = params.get("shopmode") || "rp258_standalone";
+        const urlPatch = {
+          displayMode: "ab_compare",
+          region: params.get("reg") || "台北市 / 新北市",
+          chkTax: (params.get("tax") !== null) ? (params.get("tax") === "1") : true
+        };
+        if (shopMode === "rp258_standalone") {
+          urlPatch.serviceCategory = "mpv_repair";
+          urlPatch.chkAddMpv = true;
+          urlPatch.mpvSpec = "rp258_install";
+          urlPatch.mpvTier = "tier_std";
+          urlPatch.mpvQty = params.get("qty") || "1";
+          urlPatch.chkChlorine25kg = false;
+        } else if (shopMode === "rp258_combo" || shopMode === "rp258_with_ac") {
+          urlPatch.serviceCategory = "ac_cleaning";
+          urlPatch.acType = "split";
+          urlPatch.acQty = "base";
+          urlPatch.chkAcDrain = true;
+          urlPatch.chkAddMpv = false;
+          urlPatch.chkChlorine25kg = false;
+        } else if (shopMode === "chlorine_only") {
+          urlPatch.serviceCategory = "shop_chlorine";
+          urlPatch.chkChlorine25kg = true;
+          urlPatch.chkAddMpv = false;
+        } else if (shopMode === "chlorine_ct_combo" || shopMode === "chlorine_with_ct") {
+          urlPatch.serviceCategory = "cooling_tower";
+          urlPatch.ctRtScale = "100";
+          urlPatch.ctTowerType = "open_round";
+          urlPatch.ctTowerCount = "0";
+          urlPatch.chkChlorine25kg = true;
+          urlPatch.chkAddMpv = false;
+        } else if (shopMode === "chlorine_with_wt") {
+          urlPatch.serviceCategory = "water_tank";
+          urlPatch.wtTonnage = "120";
+          urlPatch.wtMaterial = "concrete";
+          urlPatch.wtPoolCount = "0";
+          urlPatch.chkChlorine25kg = true;
+          urlPatch.chkAddMpv = false;
+        } else if (shopMode === "both_shop_items") {
+          urlPatch.serviceCategory = "mpv_repair";
+          urlPatch.chkAddMpv = true;
+          urlPatch.mpvSpec = "rp258_install";
+          urlPatch.mpvTier = "tier_std";
+          urlPatch.mpvQty = params.get("qty") || "1";
+          urlPatch.chkChlorine25kg = true;
+        }
         saveQuoteDraft(urlPatch);
       } else if (fromParamVal === "water-tank") {
         const urlPatch = {
@@ -2981,6 +3102,7 @@
         if (params.get("bf") !== null) urlPatch.chkButterfly = (params.get("bf") === "1");
         if (params.get("lvl") !== null) urlPatch.chkLevel = (params.get("lvl") === "1");
         if (params.get("sgs") !== null) urlPatch.chkSgs = (params.get("sgs") === "1");
+        if (params.get("cl25") !== null) urlPatch.chkChlorine25kg = (params.get("cl25") === "1");
         if (params.get("tax") !== null) urlPatch.chkTax = (params.get("tax") === "1");
         if (urlPatch.serviceCategory === "both" || urlPatch.serviceCategory === "all_three") {
           urlPatch.ctRtScale = "50";
@@ -3048,6 +3170,7 @@
         if (params.get("pvc") !== null) urlPatch.chkPvcValve = (params.get("pvc") === "1");
         if (params.get("inv") !== null) urlPatch.chkInverter = (params.get("inv") === "1");
         if (params.get("sgs") !== null) urlPatch.chkSgs = (params.get("sgs") === "1");
+        if (params.get("cl25") !== null) urlPatch.chkChlorine25kg = (params.get("cl25") === "1");
         if (params.get("tax") !== null) urlPatch.chkTax = (params.get("tax") === "1");
         if (urlPatch.serviceCategory === "ct_ac") {
           urlPatch.acType = "cassette";
@@ -3169,11 +3292,144 @@
       document.getElementById("btn-calc-to-quote") ||
       document.getElementById("btn-ct-to-quote") ||
       document.getElementById("btn-ac-to-quote") ||
-      document.getElementById("btn-mpv-to-quote");
+      document.getElementById("btn-mpv-to-quote") ||
+      document.getElementById("btn-shop-to-quote");
     if (calcQuoteBtn) {
       stickyQuoteBtn.addEventListener("click", function (e) {
         e.preventDefault();
         calcQuoteBtn.click();
+      });
+    }
+  }
+
+
+  // ============================================================================
+  // 3D. 第五引擎：機電嚴選商城（瑞林 RP-258 排水器到府安裝 ＆ 25kg 桶裝強效氯錠）試算器 (v24.0)
+  // ============================================================================
+  function initShopCalculator() {
+    const form = document.getElementById("shop-calc-form");
+    if (!form) return;
+
+    const itemSelect = document.getElementById("shop-item-select");
+    const regionSelect = document.getElementById("shop-region");
+    const qtySelect = document.getElementById("shop-qty");
+    const chkInspect = document.getElementById("shop-chk-free-inspect");
+    const chkTax = document.getElementById("shop-chk-tax");
+
+    const outPrice = document.getElementById("shop-price-output");
+    const outDelivery = document.getElementById("shop-delivery-output");
+    const outBonus = document.getElementById("shop-bonus-output");
+    const outSummary = document.getElementById("shop-summary-text");
+
+    const btnToQuote = document.getElementById("btn-shop-to-quote");
+    const btnLine = document.getElementById("btn-shop-line");
+
+    function calcShop() {
+      const mode = itemSelect ? itemSelect.value : "rp258_standalone";
+      const reg = regionSelect ? regionSelect.value : "台北市 / 新北市";
+      const qty = clampNumber(qtySelect ? qtySelect.value : 1, 1, 20, 1);
+      const includeTax = Boolean(chkTax && chkTax.checked);
+      const freeInspect = Boolean(chkInspect && chkInspect.checked);
+
+      let priceStr = "";
+      let deliveryStr = "";
+      let bonusStr = "";
+      let itemTitle = "";
+
+      if (mode === "rp258_standalone") {
+        let tot = 3500 * qty;
+        if (includeTax) tot = Math.round(tot * 1.05);
+        priceStr = "NT$ " + tot.toLocaleString() + " 元（" + (includeTax ? "含 5% 營業稅" : "未稅") + "｜連工帶料到府完工價）";
+        deliveryStr = "正職冷氣機電師傅專車到府換裝 Realise 瑞林 RP-258（2.1kg重型蔽極式馬達）＋ 高壓疏通 2 分排水管果凍淤泥（約 1.0~1.5 小時）";
+        bonusStr = "★ 免費贈送全室冷氣空調健康診斷（出風溫差 ΔT、風鼓黑黴與電容檢測）！若當場決定加洗冷氣，RP-258 現折 $1,000（僅收 $2,500）！";
+        itemTitle = "Realise 瑞林 RP-258 冷氣排水器到府安裝＋通排水管＋全室冷氣免費健檢（共 " + qty + " 組）";
+      } else if (mode === "rp258_with_ac") {
+        let baseB = 10000 + (2200 * qty);
+        let baseA = 12500 + (2500 * qty);
+        if (includeTax) {
+          baseB = Math.round(baseB * 1.05);
+          baseA = Math.round(baseA * 1.05);
+        }
+        priceStr = "平日併單 NT$ " + baseB.toLocaleString() + " ／ 指定專車 NT$ " + baseA.toLocaleString() + "（" + (includeTax ? "含 5% 稅" : "未稅") + "）";
+        deliveryStr = "雙人正職機電工程車到府：含 4 台內分離式冷氣深層拆洗包套 ＋ 同日順換瑞林 RP-258 排水器（已現折 $1,000~$1,300/組！）";
+        bonusStr = "★ 徹底根治集水盤果凍狀生物膜與排水器卡死問題，享洗後冷氣不滴水與 RP-258 雙重保固！";
+        itemTitle = "冷氣深層拆洗包套 ＋ 順換瑞林 RP-258 排水器（" + qty + " 組・已折抵出車費）";
+      } else if (mode === "chlorine_only") {
+        let tot = 3200 * qty;
+        if (includeTax) tot = Math.round(tot * 1.05);
+        priceStr = "NT$ " + tot.toLocaleString() + " 元（" + (includeTax ? "含 5% 營業稅" : "未稅") + "｜已含每桶 $500 貨運宅配費）";
+        deliveryStr = "大榮／新竹貨運重物宅配直送貴社區管理室、商場收發室或工廠倉庫（每桶 25 公斤原裝防潮大桶）";
+        bonusStr = "💡 若改為預約皓盛『洗冷卻水塔／洗自來水塔』由工程車順載，每桶直接省下 $520 運費（特惠 $2,680/桶）！";
+        itemTitle = "單買 25 公斤大桶裝 90% TCCA 長效慢溶強效氯錠（共 " + qty + " 桶・含貨運宅配）";
+      } else if (mode === "chlorine_with_ct") {
+        let baseB = 10500 + (2680 * qty);
+        let baseA = 13000 + (2680 * qty);
+        if (includeTax) {
+          baseB = Math.round(baseB * 1.05);
+          baseA = Math.round(baseA * 1.05);
+        }
+        priceStr = "平日併單 NT$ " + baseB.toLocaleString() + " ／ 指定專車 NT$ " + baseA.toLocaleString() + "（含 100RT 水塔清洗＋" + qty + "桶氯錠免運）";
+        deliveryStr = "雙人正職機電工程車到場執行冷卻水塔 LOTO 斷電清洗保養，並順車免運載送 25kg 強效氯錠至機房（每桶僅 $2,680！）";
+        bonusStr = "★ 除垢吸泥＋長效抑菌除藻一次到位！師傅現場免費幫您依水塔 RT 噸數精算每週氯錠投放量與點檢蝴蝶閥。";
+        itemTitle = "商用空調冷卻水塔清洗保養 ＋ 順車免運加購 25kg 強效氯錠（" + qty + " 桶）";
+      } else if (mode === "chlorine_with_wt") {
+        let baseB = 17500 + (2680 * qty);
+        let baseA = 23000 + (2680 * qty);
+        if (includeTax) {
+          baseB = Math.round(baseB * 1.05);
+          baseA = Math.round(baseA * 1.05);
+        }
+        priceStr = "平日併單 NT$ " + baseB.toLocaleString() + " ／ 指定專車 NT$ " + baseA.toLocaleString() + "（含標準社區洗水塔＋" + qty + "桶氯錠免運）";
+        deliveryStr = "法定 3 人局限空間編制清洗社區上下水池（免費測餘氯/pH/TDS＋$4,500機電健檢），並順車免運配送 25kg 強效氯錠（$2,680/桶）";
+        bonusStr = "★ 免除 $500 重物貨運費，一次備妥社區水池、景觀池或冷卻塔全年消毒除藻耗材！";
+        itemTitle = "社區大樓自來水塔清洗消毒 ＋ 順車免運加購 25kg 強效氯錠（" + qty + " 桶）";
+      } else {
+        let tot = (3500 * qty) + (2680 * qty);
+        if (includeTax) tot = Math.round(tot * 1.05);
+        priceStr = "NT$ " + tot.toLocaleString() + " 元（" + (includeTax ? "含 5% 營業稅" : "未稅") + "｜RP-258 到府安裝＋順載 25kg 氯錠免運）";
+        deliveryStr = "冷氣師傅專車到府換裝瑞林 RP-258 排水器（含通管與冷氣健檢），並同車免運順載 25kg 桶裝強效氯錠（現省 $520 運費！）";
+        bonusStr = "★ 一趟工程車同時解決室內冷氣滴水與頂樓水塔除藻備品，再送全室空調與水塔機電免費巡檢！";
+        itemTitle = "瑞林 RP-258 冷氣排水器到府安裝 ＋ 同車免運順載 25kg 強效氯錠（各 " + qty + " 組/桶）";
+      }
+
+      if (outPrice) outPrice.textContent = priceStr;
+      if (outDelivery) outDelivery.textContent = deliveryStr;
+      if (outBonus) outBonus.textContent = bonusStr;
+
+      const summary = "【皓盛機電商城：瑞林RP-258排水器安裝 ＆ 25kg強效氯錠採購】" +
+        "\n📍 地區：" + reg +
+        "\n🛒 選購方案：" + itemTitle +
+        "\n🚚 交付與施工：" + deliveryStr +
+        (freeInspect ? "\n🔍 免費健檢：已勾選請師傅順便提供冷氣空調／冷卻水塔專業診斷建議" : "") +
+        "\n💰 預估金額：" + priceStr;
+
+      if (outSummary) {
+        outSummary.textContent = summary.replace(/\n/g, " ｜ ");
+      }
+      return summary;
+    }
+
+    form.addEventListener("change", calcShop);
+    form.addEventListener("input", calcShop);
+    calcShop();
+
+    if (btnLine) {
+      btnLine.addEventListener("click", function () {
+        copyAndOpenLine(calcShop(), "【皓盛機電商城 5390857.com 排水器安裝／25kg氯錠訂購單】");
+      });
+    }
+    if (btnToQuote) {
+      btnToQuote.addEventListener("click", function () {
+        calcShop();
+        const mode = itemSelect ? itemSelect.value : "rp258_standalone";
+        const qParams = new URLSearchParams({
+          from: "shop",
+          shopmode: mode,
+          reg: regionSelect ? regionSelect.value : "台北市 / 新北市",
+          qty: qtySelect ? qtySelect.value : "1",
+          tax: (chkTax && chkTax.checked) ? "1" : "0"
+        });
+        window.location.href = "quote.html?" + qParams.toString() + "#qp-workspace-anchor";
       });
     }
   }
@@ -3186,6 +3442,7 @@
     initCoolingTowerCalculator();
     initAcCleaningCalculator();
     initMpvCalculator();
+    initShopCalculator();
     initQuoteGenerator();
   }
 
