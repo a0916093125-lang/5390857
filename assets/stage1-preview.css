@@ -7,3 +7,81 @@
 @media(max-width:850px){.stage1-hero{padding:26px 22px!important}.stage1-hero h1{font-size:36px}}
 @media(max-width:420px){.stage1-hero{padding:24px 18px!important}.stage1-hero h1{font-size:30px}}
 @media(max-width:420px){.stage1-hero h1{font-size:26px;line-height:1.45}}
+
+/* 2026-11: screen-only reading and touch improvements.
+   Deliberately excludes print and the A4 measurement sandbox. */
+@media screen {
+  html { scroll-padding-top: 210px; }
+  .container { padding-inline: clamp(16px, 3vw, 32px); }
+  .nav-container { padding-inline: clamp(16px, 3vw, 32px); }
+  .nav-links { row-gap: 8px; }
+  .nav-link { min-height: 44px; }
+  .btn { text-align: center; white-space: normal; overflow-wrap: anywhere; }
+  .calc-input, .calc-select, .quote-field-pair .calc-input {
+    min-height: 48px;
+    font-size: 16px;
+    line-height: 1.5;
+    max-width: 100%;
+    min-width: 0;
+  }
+  .calc-label { line-height: 1.65; }
+  .calc-check-item { min-height: 48px; align-items: flex-start; line-height: 1.7; }
+  .calc-check-item input[type="checkbox"] { margin-top: 4px; }
+  .calc-check-item span { min-width: 0; overflow-wrap: anywhere; }
+  .qp-live-jump-btn { min-height: 44px; font-size: 14px; white-space: normal; }
+  a:focus-visible, button:focus-visible, input:focus-visible,
+  select:focus-visible, textarea:focus-visible, summary:focus-visible {
+    outline: 3px solid #f8d979;
+    outline-offset: 3px;
+  }
+  .stage1-cards p, .stage1-service-grid p { font-size: 16px; line-height: 1.85; }
+  .stage1-focus-panel small { font-size: 14px; line-height: 1.7; }
+  .stage1-inquiry p, .stage1-note { font-size: 15px; }
+  .table-scroll-container, .qp-table-wrap { overscroll-behavior-inline: contain; }
+  .toast-msg { max-width: calc(100vw - 32px); text-align: center; }
+}
+@media screen and (min-width: 1081px) {
+  .quote-workspace-grid { grid-template-columns: minmax(360px, .85fr) minmax(0, 1.45fr); gap: 24px; }
+  .quote-control-panel { padding: 24px; }
+}
+@media screen and (max-width: 860px) {
+  html { scroll-padding-top: 145px; }
+  .nav-links { gap: 8px; padding: 3px 2px 8px; scrollbar-width: thin; scrollbar-color: #64748b #0f172a; }
+  .nav-links::-webkit-scrollbar { display: block; height: 4px; }
+  .nav-links::-webkit-scrollbar-thumb { background: #64748b; border-radius: 4px; }
+  .nav-link { min-height: 44px; padding: 8px 12px; font-size: 14px; }
+  .brand-sub { line-height: 1.6; }
+  .hero-section { padding: 24px 20px; }
+  .subtitle-pill { font-size: 16px; line-height: 1.8; }
+  .mobile-sticky-bar .btn { min-height: 48px; white-space: normal; line-height: 1.35; }
+  .qp-live-summary-bar { position: static; font-size: 14px; gap: 12px; padding: 14px; }
+  .qp-live-jump-btn { width: 100%; }
+  .site-footer { padding-bottom: calc(115px + env(safe-area-inset-bottom, 0px)); }
+  .stage1-section-head>p:not(.stage1-eyebrow) { line-height: 1.85; }
+}
+@media screen and (max-width: 600px) {
+  .quote-field-pair { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .quote-workspace-grid { gap: 24px; }
+  .quote-control-panel { padding: 18px 14px; }
+  .calc-checkbox-grid { grid-template-columns: minmax(0, 1fr); }
+  .btn-group { gap: 10px; }
+  .btn-group > .btn { width: 100%; }
+  .stage1-actions { gap: 12px; }
+  .stage1-actions .btn, .stage1-inquiry .btn { width: 100%; }
+  .stage1-hero h1 { font-size: clamp(27px, 7vw, 36px); line-height: 1.4; }
+  .stage1-focus-panel { padding: 20px; }
+  .stage1-cards article, .stage1-service-grid>a { padding: 22px; }
+  .stage1-note { padding: 18px; }
+  .quote-paper-sheet { padding: 18px 12px; }
+  .quote-paper-sheet .qp-table { min-width: 580px; }
+  .quote-paper-sheet .qp-table th, .quote-paper-sheet .qp-table td { font-size: 14px; padding: 9px; line-height: 1.55; }
+  .quote-paper-sheet .qp-company-sub, .quote-paper-sheet .qp-meta-grid,
+  .quote-paper-sheet .qp-compliance-box { font-size: 14px; line-height: 1.65; }
+  .quote-paper-sheet .qp-total-grid { grid-template-columns: minmax(0, 1fr); }
+  .quote-paper-sheet .qp-plan-price { font-size: 26px; }
+  .spec-table th:first-child, .spec-table td:first-child { position: static; }
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  html, body { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
