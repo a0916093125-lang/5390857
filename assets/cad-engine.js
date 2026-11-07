@@ -699,7 +699,7 @@
         "\n📅 排程方案：" + scheduleLabel +
         "\n💧 水塔規模：約 " + tonVal + " 噸（" + matName + "｜" + poolName + "）" +
         "\n👷 出勤編制：" + crewMode +
-        "\n⏱️ 預估停水工時：" + hours +
+        "\n⏱️ 施工與停水時段：依現場條件另行確認" +
         "\n🔧 檢修與加購：" + addons.join("、") +
         "\n💰 系統預估區間：NT$ " + basePrice.toLocaleString() + " ~ " + maxPrice.toLocaleString() + " 元（" + taxNote + "）";
 
@@ -989,7 +989,7 @@
         "\n📅 排程方案：" + scheduleLabel +
         "\n❄️ 水塔規模：約 " + rtVal + " RT 冷凍噸（" + typeName + "｜" + countName + "）" +
         "\n👷 出勤編制：" + crewMode +
-        "\n⏱️ 預估施工工時：" + hours +
+        "\n⏱️ 施工時段：依現場條件另行確認" +
         "\n🔧 檢修與加購：" + addons.join("、") +
         "\n💰 系統預估區間：NT$ " + basePrice.toLocaleString() + " ~ " + maxPrice.toLocaleString() + " 元（" + taxNote + "）";
 
@@ -1169,7 +1169,7 @@
       if (chkSteam && chkSteam.checked) {
         const sPrice = isPriority ? 1800 : 1500;
         basePrice += sPrice;
-        addons.push("加購高溫蒸氣／臭氧深層除臭殺菌 (+NT$" + sPrice.toLocaleString() + ")");
+        addons.push("冷氣蒸氣／臭氧處理需求（適用性與安全措施待評估） (+NT$" + sPrice.toLocaleString() + ")");
       }
 
       let maxPrice = Math.round(basePrice * 1.15);
@@ -1222,7 +1222,7 @@
         "\n📍 地區：" + regionVal +
         "\n❄️ 空調機型：" + cfg.name + "（" + qtyLabel + "）" +
         "\n👷 出勤編制：" + crewMode +
-        "\n⏱️ 預估施工工時：" + hours +
+        "\n⏱️ 施工時段：依現場條件另行確認" +
         "\n🔧 檢修與選配：" + addons.join("、") +
         "\n💰 系統預估區間：NT$ " + basePrice.toLocaleString() + " ~ " + maxPrice.toLocaleString() + " 元（" + taxNote + "）";
 
