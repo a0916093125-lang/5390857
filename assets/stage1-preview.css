@@ -85,3 +85,17 @@
   html, body { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* Mobile navigation cues and a direct route to the quote controls. */
+.nav-swipe-hint { display: none; }
+@media screen {
+  .quote-quick-start { margin: 16px 0; }
+  #qp-workspace-anchor:focus { outline: 3px solid #f8d979; outline-offset: 4px; }
+}
+@media screen and (max-width: 860px) {
+  .nav-swipe-hint { display: block; width: 100%; margin: -4px 0 0; color: #c4d7e8; font-size: 12px; line-height: 1.5; text-align: right; }
+  html { scroll-padding-top: 180px; }
+}
+@media screen and (max-width: 600px) {
+  .quote-quick-start .btn { width: 100%; }
+}
