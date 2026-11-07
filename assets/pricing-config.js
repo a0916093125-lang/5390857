@@ -20,21 +20,21 @@ window.HS_PRICING_CONFIG = {
     domain: "https://5390857.com"
   },
   waterTank: {
-    ton10_stainless: { priceA: 4600, priceB: 3800, multiDiscountB: 3000, hours: "1.5 ~ 2.0 小時" },
-    ton10_confined:  { priceA: 13000, priceB: 10500, hours: "2.0 ~ 2.5 小時" },
-    ton50:           { priceA: 13000, priceB: 10500, hours: "2.5 ~ 3.0 小時" },
-    ton120:          { priceA: 23000, priceB: 17500, hours: "3.0 ~ 3.5 小時" },
-    ton200:          { priceA: 27000, priceB: 24000, hours: "3.5 ~ 4.0 小時" },
+    ton10_stainless: { priceA: 4600, priceB: 3800, multiDiscountB: 3000, hours: "工時須現場確認" },
+    ton10_confined:  { priceA: 13000, priceB: 10500, hours: "工時須現場確認" },
+    ton50:           { priceA: 13000, priceB: 10500, hours: "工時須現場確認" },
+    ton120:          { priceA: 23000, priceB: 17500, hours: "工時須現場確認" },
+    ton200:          { priceA: 27000, priceB: 24000, hours: "工時須現場確認" },
     poolSurcharge: {
       level1_3to4pools: { priceA: 4500, priceB: 3800 },
       level2_5plusPools: { priceA: 9000, priceB: 7500 }
     }
   },
   coolingTower: {
-    rt50:  { priceA: 7000,  priceB: 5500,  hours: "2.0 ~ 2.5 小時" },
-    rt150: { priceA: 13000, priceB: 10500, hours: "2.5 ~ 3.5 小時" },
-    rt350: { priceA: 23000, priceB: 17500, hours: "3.5 ~ 4.5 小時" },
-    rt500: { priceA: 27000, priceB: 24000, hours: "4.0 ~ 5.5 小時" },
+    rt50:  { priceA: 7000,  priceB: 5500,  hours: "工時須現場確認" },
+    rt150: { priceA: 13000, priceB: 10500, hours: "工時須現場確認" },
+    rt350: { priceA: 23000, priceB: 17500, hours: "工時須現場確認" },
+    rt500: { priceA: 27000, priceB: 24000, hours: "工時須現場確認" },
     typeSurcharge: {
       open_round:     { priceA: 0,    priceB: 0 },
       open_square:    { priceA: 1500, priceB: 1000 },
@@ -60,17 +60,17 @@ window.HS_PRICING_CONFIG = {
       comboWithAcCleanPriceA: 2500,
       comboWithAcCleanPriceB: 2200,
       sellHardwareOnly: false,
-      note: "本項只賣連工帶料到府安裝服務（$3,500），不單售裸機；內含排水管果凍淤泥高壓疏通與全室冷氣免費健檢診斷。若當場加購洗冷氣包套，排水器順換現折 $1,000（僅 +$2,500）！"
+      note: "沿用到府安裝與合併方案試算金額，不單售裸機。設備適配、施工與檢查範圍須現場確認。"
     },
     chlorineTablet25kg: {
       sku: "HS-TCCA90-25KG",
-      name: "工業級 90% TCCA 長效慢溶強效氯錠（25公斤大桶裝｜冷卻水塔抑菌除藻・水池消毒專用）",
+      name: "25公斤 TCCA 氯錠（原設定規格，實際用途與標示待確認）",
       shippedPrice: 3200,
       withServiceTruckPrice: 2680,
       costBase: 2000,
       freightBase: 500,
       sellHardwareOnly: true,
-      note: "可單買宅配到府（含25kg大榮/新竹貨運費 $3,200/桶），或搭配洗冷卻水塔/洗水塔工程由工程車順載免運特惠 $2,680/桶（免費代算RT投藥量）！"
+      note: "沿用單購 $3,200／合併方案 $2,680 試算。庫存、產品標示、安全資料、用途及配送承運條件須另行確認，不可逕用於飲用水儲水設備。"
     }
   },
   addons: {

@@ -4,11 +4,11 @@
  * 1. Before/After 清洗前後視覺對比拉桿（Pointer Events ＋ 鍵盤無障礙 A11y ＋ rAF 節流與失焦保護）
  * 2. 社區大樓自來水塔 A/B 雙軌試算器 ＋ 跨頁雙向記憶與無汙染帶入報價單生成器 (localStorage + pageshow/storage)
  * 3. 商用空調冷卻水塔（10RT~500RT+）A/B 雙軌試算器 ＋ 跨頁雙向記憶與無汙染帶入報價單生成器
- * 4. 正式工程報價單生成器 (quote.html)：
+ * 4. 線上立即估價 (quote.html)：
  *    - 涵蓋紅藍軍 v11.0 全部 8 項資安、會計大寫、跨類別加購隔離與離線 A4 沙盒量測修復
  *    - 升級 [自來水塔專家 W1]：修正 10 噸內選 FRP 組合式水塔或多棟不鏽鋼塔時，報價單誤印「入槽 RC 水池」之材質文字矛盾
  *    - 升級 [自來水塔專家 W2]：精準化 Omron 61F-G2 液位開關說明（E1~E3 高低水位與共用接地極除垢＋下水池防無水空轉保護迴路測試）
- *    - 升級 [自來水塔專家 W3]：納入自來水處規範之 50~100 ppm 食品級次氯酸鈉消毒與完工自由有效餘氯（0.2~1.0 mg/L）驗收標準
+ *    - 水質、藥劑使用與驗收需求須依實際用途、標示及適用規範確認
  *    - 升級 [冷卻水塔專家 C1]：依水塔型式（圓型開放式／方型開放式／密閉式）動態分流「旋轉播水頭／雙側重力播水盆／內循環熱交換盤管」專業規格說明
  *    - 升級 [冷卻水塔專家 C2]：修正從自來水塔頁勾選「加購 50RT 內冷卻水塔 (+7,000/+5,500)」跳轉報價單時，強制對齊 50RT 單座圓型塔，消除舊草稿 100RT 造成的 $6,000 價差
  *    - 升級 [冷卻水塔專家 C3]：200RT~500RT+ 大型冷卻水塔納入「減速齒輪箱(Gear Reducer)／多溝皮帶點檢」與「底盤吸水濾網及管路 Y 型過濾器清洗」
@@ -28,7 +28,7 @@
     email: "ssuyuan@kimo.com"
   };
 
-  /* [v23.0 新增] 報價單 4 碼動態防偽檢核碼演算法 (Anti-Tamper Verification Hash) */
+  /* [v23.0 新增] 報價單 4 碼動態計算參考碼演算法 (Calculation Reference Hash) */
   function computeQuoteVerifyHash(cat, itemCount, totalA, totalB, includeTax) {
     const rawPayload = [
       String(cat || "wt"),
@@ -53,9 +53,8 @@
     q.set("from", "share");
     if (stateObj.displayMode) q.set("dmode", stateObj.displayMode);
     if (stateObj.serviceCategory) q.set("cat", stateObj.serviceCategory);
-    if (stateObj.clientName) q.set("cname", String(stateObj.clientName).slice(0, 40));
-    if (stateObj.contactPerson) q.set("cperson", String(stateObj.contactPerson).slice(0, 24));
-    if (stateObj.clientAddr) q.set("caddr", String(stateObj.clientAddr).slice(0, 50));
+    // Share only specifications and amounts. Keep personal/free-text fields in the local draft.
+    // URLs may be retained in browser history, server logs, forwarded messages and analytics.
     if (stateObj.wtTonnage) q.set("ton", stateObj.wtTonnage);
     if (stateObj.wtMaterial) q.set("mat", stateObj.wtMaterial);
     if (stateObj.wtPoolCount !== undefined) q.set("pools", stateObj.wtPoolCount);
@@ -77,15 +76,22 @@
     if (stateObj.chkSgs) q.set("sgs", "1");
     if (stateObj.chkChlorine25kg) q.set("cl25", "1");
     if (stateObj.chkAcDrain) q.set("acdrain", "1");
+    if (stateObj.chkAcRepair) q.set("acrepair", "1");
+    if (stateObj.shopMode) {
+      q.set("shopmode", stateObj.shopMode);
+      q.set("shopqty", stateObj.shopQty || "1");
+    }
     if (stateObj.chkAcOutdoor) q.set("acout", "1");
     if (stateObj.chkAcSteam) q.set("acsteam", "1");
     if (stateObj.chkValve24) q.set("v24", "1");
     if (stateObj.chkMpvElec) q.set("mpvelec", "1");
     if (stateObj.chkMpvUrgent) q.set("mpvurg", "1");
-    if (stateObj.customName) q.set("custn", String(stateObj.customName).slice(0, 30));
     if (Number(stateObj.customPrice) !== 0) q.set("custp", String(stateObj.customPrice));
     q.set("tax", stateObj.chkTax ? "1" : "0");
-    return "https://5390857.com/quote.html?" + q.toString() + "#qp-workspace-anchor";
+    const quoteBase = window.location && /^https?:$/.test(window.location.protocol)
+      ? window.location.origin + window.location.pathname
+      : "quote.html";
+    return quoteBase + "?" + q.toString() + "#qp-workspace-anchor";
   }
 
   const DRAFT_STORAGE_KEY = "hs_5390857_quote_draft_v11";
@@ -174,7 +180,7 @@
 
   let memoryDraftFallback = null;
 
-  /* 跨頁草稿讀取（支援記憶體保底 memoryDraftFallback，即使無痕模式或 WebView 封鎖 localStorage 亦 100% 可用） */
+  /* 跨頁草稿讀取（支援記憶體保底 memoryDraftFallback，即使無痕模式或 WebView 封鎖 localStorage 亦 可用性須依瀏覽器驗證） */
   function loadQuoteDraft() {
     try {
       let raw = localStorage.getItem(DRAFT_STORAGE_KEY);
@@ -195,7 +201,7 @@
     return memoryDraftFallback;
   }
 
-  /* 跨頁草稿儲存（同時寫入記憶體保底與 localStorage，確保 URL 參數直傳在任何沙盒或無痕環境下 100% 生效） */
+  /* 跨頁草稿儲存（同時寫入記憶體保底與 localStorage，確保 URL 參數直傳在任何沙盒或無痕環境下 依瀏覽器狀態生效） */
   function saveQuoteDraft(draftPatch) {
     const existing = loadQuoteDraft() || {};
     const merged = Object.assign({}, existing, draftPatch, {
@@ -287,7 +293,7 @@
   /* 一鍵複製並開啟 LINE（先執行同步複製確保手勢不中斷，再非同步雙重寫入剪貼簿） */
   function copyAndOpenLine(summaryText, customHeader) {
     const header = customHeader || "【皓盛官網 5390857.com 線上工程試算詢價】";
-    const fullText = header + "\n" + summaryText + "\n請李先生協助評估現場檔期與正式報價單！";
+    const fullText = header + "\n" + summaryText + "\n請李先生協助評估現場檔期與估價試算單！";
 
     const syncCopied = fallbackCopyText(fullText);
     if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
@@ -476,7 +482,6 @@
     const chkSgsWater = document.getElementById("chk-sgs-water");
     const chkWtChlorine = document.getElementById("chk-wt-chlorine");
     const chkCool = document.getElementById("chk-cooling");
-    const chkAcCombo = document.getElementById("chk-ac-combo");
     const chkTax = document.getElementById("chk-tax");
 
     const outPrice = document.getElementById("calc-price-output");
@@ -529,9 +534,6 @@
       if (chkCool && draft.serviceCategory !== undefined) {
         chkCool.checked = (draft.serviceCategory === "both" || draft.serviceCategory === "all_three");
       }
-      if (chkAcCombo && draft.serviceCategory !== undefined) {
-        chkAcCombo.checked = (draft.serviceCategory === "wt_ac" || draft.serviceCategory === "all_three");
-      }
       if (chkTax && draft.chkTax !== undefined) {
         chkTax.checked = Boolean(draft.chkTax);
       }
@@ -548,16 +550,16 @@
       let basePrice = isPriority ? 13000 : 10500;
       let hours = "2.5 ~ 3.0 小時";
       let crewMode = isPriority
-        ? "【A方案：專車全責】法定局限空間3人標準編制（雙人施作戒護＋缺氧作業主管氣體測定簽證＋500萬職災團保＋價值4,500元給水機電深度健檢）"
-        : "【B方案：平日彈性併單】法定局限空間3人標準編制（由本公司安排平日順路時段施作，同享缺氧作業主管＋雙人戒護＋500萬職災團保）";
+        ? "【A方案：指定時段專車】依進入方式與空間條件確認人員、資格、監視、通風及氣體測定；保險與實際配置於進場前核對"
+        : "【B方案：平日彈性併單】平日順路時段；依進入方式與空間條件確認人員、資格、監視、通風及氣體測定，保險與實際配置於進場前核對";
 
       if (tonVal <= 10) {
         if (matVal === "stainless") {
           basePrice = isPriority ? 4600 : 3800;
           hours = (poolLevel === 0) ? "1.5 ~ 2.0 小時" : "2.5 ~ 3.5 小時（多顆/跨棟分批停水快洗）";
           crewMode = isPriority
-            ? "【指定時段專車】頂樓免入槽快洗編制（正職勞健保技師＋長柄高壓水刀＋50~100ppm次氯酸鈉消毒；同棟多顆併洗享3,000起優惠）"
-            : "【平日順路併單】頂樓免入槽快洗編制（正職勞健保技師＋長柄高壓水刀＋50~100ppm次氯酸鈉消毒；同棟多顆併洗享3,000起優惠）";
+            ? "【指定時段專車】10噸內白鐵方案限已確認開放式且全程不入槽；若需入槽或條件未明須另評估，作業資格依適用法規及現場危害評估"
+            : "【平日順路併單】10噸內白鐵方案限已確認開放式且全程不入槽；若需入槽或條件未明須另評估，作業資格依適用法規及現場危害評估";
         } else {
           basePrice = isPriority ? 13000 : 10500;
           hours = "2.0 ~ 2.5 小時";
@@ -570,7 +572,7 @@
         hours = "3.0 ~ 3.5 小時";
       } else {
         basePrice = isPriority ? 27000 : 24000;
-        hours = "3.5 ~ 4.0 小時（雙機同步高速抽排不隔夜）";
+        hours = "3.5 ~ 4.0 小時（雙機同步高速抽排時程待確認）";
       }
 
       let poolSurcharge = 0;
@@ -579,11 +581,11 @@
         if (tonVal >= 50) hours = "3.5 ~ 4.5 小時";
       } else if (poolLevel === 2) {
         poolSurcharge = isPriority ? 9000 : 7500;
-        hours = "4.0 ~ 5.5 小時（分棟分池輪流停水，不影響住戶全天用水）";
+        hours = "4.0 ~ 5.5 小時（分棟分池輪流停水，停水安排待確認）";
       }
       basePrice += poolSurcharge;
 
-      const addons = ["免費附贈：(1) 完工現場 3 項水質實測（自由有效餘氯 0.2~1.0mg/L、酸鹼值 pH 6.0~8.5、總溶解固體 TDS≦500mg/L）＋ (2) Omron 61F-G2 極棒除垢、防空轉測試、馬達電流與進水閥健檢（價值NT$4,500）"];
+      const addons = ["可洽詢水質指標量測與給水設備檢查；項目、方法及費用以確認後的書面明細為準，現場少數指標不能單獨證明飲用水安全"];
       if (chkPvcValve && chkPvcValve.checked) {
         const pvcPrice = isPriority ? 3800 : 3500;
         basePrice += pvcPrice;
@@ -616,17 +618,12 @@
       }
       if (chkWtChlorine && chkWtChlorine.checked) {
         basePrice += 2680;
-        addons.push("順載 25公斤大桶裝 90% TCCA 長效慢溶強效氯錠（隨工程車免 $500 運費特惠 +NT$2,680/桶）");
+        addons.push("順載 25公斤大桶裝 90% TCCA 氯錠（用途與標示待確認）（原合併方案試算 +NT$2,680/桶；用途、交付方式與費用待確認）");
       }
       if (chkCool && chkCool.checked) {
         const coolPrice = isPriority ? 7000 : 5500;
         basePrice += coolPrice;
         addons.push("加購商用空調冷卻水塔(50RT內基準)同步清洗保養 (+NT$" + coolPrice.toLocaleString() + "起)");
-      }
-      if (chkAcCombo && chkAcCombo.checked) {
-        const acComboPrice = isPriority ? 2200 : 1800;
-        basePrice += acComboPrice;
-        addons.push("加購同日順洗社區公設／管理室冷氣（免$10,000出車底價｜分離式基準 +NT$" + acComboPrice.toLocaleString() + "起/台）");
       }
 
       let maxPrice = Math.round(basePrice * 1.18);
@@ -638,14 +635,14 @@
       }
 
       const scheduleLabel = isPriority
-        ? "A方案：指定時段專車全責專案（含職安簽證＋機電深度健檢總包）"
+        ? "A方案：指定時段專車專案（作業資格及檢查項目待確認）"
         : "B方案：平日彈性併單特惠檔期（由皓盛安排順路時段施作）";
 
       if (outPrice) {
         outPrice.textContent = "NT$ " + basePrice.toLocaleString() + " ~ " + maxPrice.toLocaleString() + " 元（" + taxNote + "）";
       }
       if (outHours) {
-        outHours.textContent = hours;
+        outHours.textContent = "施工與停水時段須依現場條件確認";
       }
       if (outCrew) {
         outCrew.textContent = crewMode;
@@ -661,8 +658,7 @@
       if (shouldPersistDraft) {
         const existingDraft = loadQuoteDraft() || {};
         const isCoolChecked = Boolean(chkCool && chkCool.checked);
-        const isAcChecked = Boolean(chkAcCombo && chkAcCombo.checked);
-        const nextCatWt = (isCoolChecked && isAcChecked) ? "all_three" : (isCoolChecked ? "both" : (isAcChecked ? "wt_ac" : "water_tank"));
+        const nextCatWt = isCoolChecked ? "both" : "water_tank";
         const isBoth = isCoolChecked;
         const draftPayload = {
           serviceCategory: nextCatWt,
@@ -684,12 +680,6 @@
         };
         // 修復 [冷卻水塔專家 C2]：當在自來水塔頁勾選「加購商用空調冷卻水塔(50RT內)同步清洗保養」時，
         // 若正點擊跳轉至報價單 (isJumpingToQuote) 或原本無設定，強制對齊為 50RT 單座開放式圓型水塔，消除舊草稿 100RT 造成的 $6,000 價差
-        if (isAcChecked) {
-          if (isJumpingToQuote || !existingDraft.acType) {
-            draftPayload.acType = "split";
-            draftPayload.acQty = "base";
-          }
-        }
         if (isBoth) {
           if (isJumpingToQuote || !existingDraft.ctRtScale) {
             draftPayload.ctRtScale = "50";
@@ -746,8 +736,7 @@
       btnToQuote.addEventListener("click", function () {
         calculate(true, true);
         const isCoolChecked = Boolean(chkCool && chkCool.checked);
-        const isAcChecked = Boolean(chkAcCombo && chkAcCombo.checked);
-        const nextCatWt = (isCoolChecked && isAcChecked) ? "all_three" : (isCoolChecked ? "both" : (isAcChecked ? "wt_ac" : "water_tank"));
+        const nextCatWt = isCoolChecked ? "both" : "water_tank";
         const qParams = new URLSearchParams({
           from: "water-tank",
           cat: nextCatWt,
@@ -789,7 +778,6 @@
     const chkInverter = document.getElementById("ct-chk-inverter");
     const chkCtSgs = document.getElementById("ct-chk-sgs");
     const chkCtChlorine = document.getElementById("ct-chk-chlorine");
-    const chkCtAcCombo = document.getElementById("ct-chk-ac-combo");
     const chkTax = document.getElementById("ct-chk-tax");
 
     const outPrice = document.getElementById("ct-price-output");
@@ -842,9 +830,6 @@
       if (chkCtChlorine && draft.chkChlorine25kg !== undefined) {
         chkCtChlorine.checked = Boolean(draft.chkChlorine25kg);
       }
-      if (chkCtAcCombo && draft.serviceCategory !== undefined) {
-        chkCtAcCombo.checked = (draft.serviceCategory === "ct_ac" || draft.serviceCategory === "all_three");
-      }
       if (chkTax && draft.chkTax !== undefined) {
         chkTax.checked = Boolean(draft.chkTax);
       }
@@ -861,8 +846,8 @@
       let basePrice = isPriority ? 13000 : 10500;
       let hours = "2.5 ~ 3.5 小時";
       let crewMode = isPriority
-        ? "【A方案：專車全責】正職勞健保雙人機電技師＋風機斷電上鎖(LOTO)戒護＋500萬職災團保＋風機電流與軸承點檢"
-        : "【B方案：平日彈性併單】由本公司安排平日順路時段進場，同享正職勞健保雙人技師＋風機電流點檢＋500萬職災團保";
+        ? "【A方案：指定時段專車】技術人員（配置與資格於派工前確認）＋風機斷電上鎖(LOTO)戒護＋風機電流與軸承點檢"
+        : "【B方案：平日彈性併單】由本公司安排平日順路時段進場，同享技術人員（配置與資格於派工前確認）＋風機電流點檢";
 
       if (rtVal <= 50) {
         basePrice = isPriority ? 7000 : 5500;
@@ -874,12 +859,12 @@
         basePrice = isPriority ? 23000 : 17500;
         hours = "3.5 ~ 4.5 小時";
         crewMode = isPriority
-          ? "【A方案：大型塔高處/入塔3人編制】雙人塔內外協作＋職安主管戒護＋500萬團保＋免費風機馬達絕緣、減速齒輪箱/皮帶與Y型過濾器點檢"
-          : "【B方案：平日併單3人編制】雙人塔內外協作＋職安主管戒護＋500萬團保＋免費風機馬達電流、減速齒輪箱/皮帶與Y型過濾器點檢";
+          ? "【A方案：大型塔高處/入塔配置待確認】入塔人員、監視與安全措施依現場評估＋可洽詢風機馬達絕緣、減速齒輪箱/皮帶與Y型過濾器點檢"
+          : "【B方案：平日併單配置待確認】入塔人員、監視與安全措施依現場評估＋可洽詢風機馬達電流、減速齒輪箱/皮帶與Y型過濾器點檢";
       } else {
         basePrice = isPriority ? 27000 : 24000;
         hours = "4.0 ~ 5.5 小時（雙機高壓水刀與工業吸塵同步施作）";
-        crewMode = "【巨型水塔全責3人編制】雙機同步清洗＋高處防墜與入塔職安主管戒護＋500萬職災團保＋減速齒輪箱(Gear Reducer)與Y型過濾器全檢";
+        crewMode = "【巨型水塔作業配置待確認】雙機同步清洗＋高處防墜與入塔職安主管戒護＋減速齒輪箱(Gear Reducer)與Y型過濾器全檢";
       }
 
       if (towerType === "closed_circuit") {
@@ -900,7 +885,7 @@
       const distPartName = (towerType === "closed_circuit")
         ? "內循環熱交換盤管沖洗＋噴淋嘴疏通"
         : (towerType === "open_square" ? "雙側重力播水盆噴孔疏通" : "頂部旋轉播水頭與散水管疏通");
-      const addons = ["免費附贈：冷卻循環水質 pH/TDS 導電度檢測＋散熱風機電流檢測＋皮帶張力/減速齒輪箱點檢＋" + distPartName + "＋底盤吸水濾網與浮球止水檢查"];
+      const addons = ["可洽詢循環水量測與設備檢查，實際範圍及費用須另行確認"];
       if (chkFill && chkFill.checked) {
         const fillPrice = isPriority ? 8500 : 7500;
         basePrice += fillPrice;
@@ -938,12 +923,7 @@
       }
       if (chkCtChlorine && chkCtChlorine.checked) {
         basePrice += 2680;
-        addons.push("順載 25公斤大桶裝 90% TCCA 長效慢溶強效氯錠（抑菌除藻｜隨工程車免 $500 貨運費特惠 +NT$2,680/桶）");
-      }
-      if (chkCtAcCombo && chkCtAcCombo.checked) {
-        const ctAcPrice = isPriority ? 4000 : 3500;
-        basePrice += ctAcPrice;
-        addons.push("加購同日順洗室內四方吹／FCU送風機／AHU空調（免二次出車底價｜四方吹基準 +NT$" + ctAcPrice.toLocaleString() + "起/台）");
+        addons.push("順載 25公斤大桶裝 90% TCCA 氯錠（用途與標示待確認）（原合併方案試算 +NT$2,680/桶；用途、交付方式與費用待確認）");
       }
 
       let maxPrice = Math.round(basePrice * 1.18);
@@ -955,14 +935,14 @@
       }
 
       const scheduleLabel = isPriority
-        ? "A方案：指定時段專車全責專案（含職安戒護＋空調機電深度點檢）"
+        ? "A方案：指定時段專車專案（含職安戒護＋空調機電深度點檢）"
         : "B方案：平日彈性併單特惠檔期（由皓盛安排平日順路時段施作）";
 
       if (outPrice) {
         outPrice.textContent = "NT$ " + basePrice.toLocaleString() + " ~ " + maxPrice.toLocaleString() + " 元（" + taxNote + "）";
       }
       if (outHours) {
-        outHours.textContent = hours;
+        outHours.textContent = "施工與停水時段須依現場條件確認";
       }
       if (outCrew) {
         outCrew.textContent = crewMode;
@@ -977,8 +957,7 @@
 
       if (shouldPersistDraft) {
         const existingDraft = loadQuoteDraft() || {};
-        const isCtAc = Boolean(chkCtAcCombo && chkCtAcCombo.checked);
-        const nextCat = isCtAc ? "ct_ac" : ((existingDraft.serviceCategory === "both") ? "both" : "cooling_tower");
+        const nextCat = (existingDraft.serviceCategory === "both") ? "both" : "cooling_tower";
         const draftPayload = {
           serviceCategory: nextCat,
           scheduleMode: scheduleMode,
@@ -998,12 +977,6 @@
           chkChlorine25kg: Boolean(chkCtChlorine && chkCtChlorine.checked),
           chkTax: Boolean(chkTax && chkTax.checked)
         };
-        if (isCtAc) {
-          if (isJumpingToQuote || !existingDraft.acType) {
-            draftPayload.acType = "cassette";
-            draftPayload.acQty = "base";
-          }
-        }
         if (isJumpingToQuote) {
           draftPayload.displayMode = "ab_compare";
           draftPayload.lastJumpSource = "cooling-tower";
@@ -1053,8 +1026,7 @@
       btnCtToQuote.addEventListener("click", function () {
         calcCoolingTower(true, true);
         const existingDraft = loadQuoteDraft() || {};
-        const isCtAc = Boolean(chkCtAcCombo && chkCtAcCombo.checked);
-        const nextCat = isCtAc ? "ct_ac" : ((existingDraft.serviceCategory === "both") ? "both" : "cooling_tower");
+        const nextCat = (existingDraft.serviceCategory === "both") ? "both" : "cooling_tower";
         const qParams = new URLSearchParams({
           from: "cooling-tower",
           cat: nextCat,
@@ -1079,7 +1051,7 @@
   }
 
 
-  /* 3B. 新增引擎：冷氣與商用中央空調（四方吹/吊隱FCU/大型AHU/分離式）A/B 雙軌包套＆水塔同日順洗試算器 (v21.1) */
+  /* 3B. 新增引擎：冷氣與商用中央空調（四方吹/吊隱FCU/大型AHU/分離式）A/B 雙軌包套試算器 (v21.1) */
   function initAcCleaningCalculator() {
     const form = document.getElementById("ac-cleaning-calc-form");
     if (!form) return;
@@ -1126,14 +1098,13 @@
     }
 
     function calcAcCleaning(shouldPersistDraft, isJumpingToQuote) {
-      const modeVal = scheduleSelect ? scheduleSelect.value : "priority_50";
-      const isAddonWithTank = (modeVal === "addon_with_tank");
+      const modeVal = scheduleSelect && scheduleSelect.value === "weekday_35" ? "weekday_35" : "priority_50";
       const isPriority = (modeVal === "priority_50");
       const regionVal = regionSelect ? regionSelect.value : "台北市 / 新北市";
       const acType = typeSelect ? typeSelect.value : "cassette";
       const acQty = qtySelect ? qtySelect.value : "base";
 
-      // 各機型：單獨派車基本包套價 (A/B) 與 超台/水塔順洗單台價 (A/B)
+      // 各機型：基本包套價 (A/B) 與 超出台數單台價 (A/B)
       const acPricingMap = {
         split:    { pkgA: 12500, pkgB: 10000, unitA: 2200, unitB: 1800, baseIncluded: "4 台內", name: "壁掛分離式冷氣" },
         fcu:      { pkgA: 13000, pkgB: 10500, unitA: 3200, unitB: 2800, baseIncluded: "3 台內", name: "吊隱式冷氣／冰水送風機(FCU)" },
@@ -1150,53 +1121,36 @@
       else if (acQty === "add_6") extraCount = 6;
       else if (acQty === "add_8") extraCount = 8;
 
-      // 動態同步第 4 題下拉選單文字：單獨派車顯示包套台數，水塔同日順洗直接顯示順洗台數，手機觀看秒懂不混淆
+      // 動態同步第 4 題下拉選單文字：包套台數與追加台數。
       if (qtySelect && qtySelect.options.length >= 6) {
-        if (isAddonWithTank) {
-          qtySelect.options[0].text = "同日順洗 1 台（公設大廳／管理室／機房冷氣免出車底價）";
-          qtySelect.options[1].text = "同日順洗 2 台（免二次出車底價・按 2 台單價計算）";
-          qtySelect.options[2].text = "同日順洗 3 台（免二次出車底價・按 3 台單價計算）";
-          qtySelect.options[3].text = "同日順洗 4 台（免二次出車底價・按 4 台單價計算）";
-          qtySelect.options[4].text = "同日順洗 6 台（免二次出車底價・按 6 台單價計算）";
-          qtySelect.options[5].text = "同日順洗 8 台（免二次出車底價・按 8 台單價計算）";
-        } else {
-          qtySelect.options[0].text = "標準基本包套（" + cfg.name + "含 " + cfg.baseIncluded + " 精洗）";
-          qtySelect.options[1].text = "包套外追加 2 台（共約 5~6 台商辦／店面常規規模）";
-          qtySelect.options[2].text = "包套外追加 3 台（共約 6~7 台商辦／社區公設規模）";
-          qtySelect.options[3].text = "包套外追加 4 台（共約 7~8 台大型門市規模）";
-          qtySelect.options[4].text = "包套外追加 6 台（共約 9~10 台商辦規模）";
-          qtySelect.options[5].text = "包套外追加 8 台（共約 11~12 台整層商辦／團購規模）";
-        }
+        qtySelect.options[0].text = "標準基本包套（" + cfg.name + "含 " + cfg.baseIncluded + " 精洗）";
+        qtySelect.options[1].text = "基本包套外追加 2 台";
+        qtySelect.options[2].text = "基本包套外追加 3 台";
+        qtySelect.options[3].text = "基本包套外追加 4 台";
+        qtySelect.options[4].text = "基本包套外追加 6 台";
+        qtySelect.options[5].text = "基本包套外追加 8 台";
       }
 
       let basePrice = 0;
       let hours = "3.0 ~ 4.5 小時";
       let crewMode = "";
 
-      if (isAddonWithTank) {
-        // 水塔／冷卻塔客戶同日順洗模式：免二次出車底價，1 台起按單台特惠價計算
-        const totalUnits = (extraCount === 0) ? 1 : extraCount;
-        basePrice = totalUnits * cfg.unitB;
-        hours = (totalUnits <= 2) ? "1.0 ~ 2.0 小時（洗水塔同日順便施作）" : "2.5 ~ 4.0 小時（洗水塔同日順便施作）";
-        crewMode = "【水塔客戶同日順洗特惠】由洗水塔當日駐場之雙人正職機電技師順便施作（免收 $10,000 出車底價！點擊下方產生報價單將自動為您建立『社區水塔＋公設冷氣合購報價單』）";
+      // 原單獨派車包套計價模式，金額不變
+      const pkgBase = isPriority ? cfg.pkgA : cfg.pkgB;
+      const unitAdd = isPriority ? cfg.unitA : cfg.unitB;
+      basePrice = pkgBase + (extraCount * unitAdd);
+      if (extraCount === 0) {
+        hours = "2.5 ~ 4.0 小時";
+      } else if (extraCount <= 4) {
+        hours = "4.0 ~ 6.0 小時";
       } else {
-        // 單獨派車專案包套模式（保障雙師傅 $5,000 工資＋油錢勞健保＋公司合理獲利）
-        const pkgBase = isPriority ? cfg.pkgA : cfg.pkgB;
-        const unitAdd = isPriority ? cfg.unitA : cfg.unitB;
-        basePrice = pkgBase + (extraCount * unitAdd);
-        if (extraCount === 0) {
-          hours = "2.5 ~ 4.0 小時";
-        } else if (extraCount <= 4) {
-          hours = "4.0 ~ 6.0 小時";
-        } else {
-          hours = "6.0 ~ 8.0 小時（雙人機電技師全天駐場精洗）";
-        }
-        crewMode = isPriority
-          ? "【A方案：指定時段／假日夜間雙人機電專車】2 位正職勞健保空調機電技師＋LOTO 斷電掛牌＋電腦板全密封防水保護＋500萬職災團保"
-          : "【B方案：平日彈性併單雙人機電專車】由本公司安排平日順路時段雙人正職機電技師施作，同享電腦板防水保護＋集水盤疏通＋500萬團保";
+        hours = "6.0 ~ 8.0 小時（機電技術人員全天駐場精洗）";
       }
+      crewMode = isPriority
+        ? "【A方案：指定時段／假日夜間機電專車】空調技術人員（配置與資格於派工前確認）＋LOTO 斷電掛牌＋電腦板防水保護（依設備現況確認）"
+        : "【B方案：平日彈性併單機電專車】由本公司安排平日順路時段機電技術人員施作，同享電腦板防水保護＋集水盤疏通";
 
-      const addons = ["免費內含：LOTO斷電與電腦機板防水罩保護＋集水盤果凍淤泥抽除與排水管疏通＋出風溫差(ΔT)與運轉電流實測"];
+      const addons = ["可洽詢：LOTO斷電與電腦機板防水罩保護＋集水盤果凍淤泥抽除與排水管疏通＋出風溫差(ΔT)與運轉電流實測"];
       if (chkDrain && chkDrain.checked) {
         const dPrice = isPriority ? 2500 : 2200;
         basePrice += dPrice;
@@ -1230,7 +1184,7 @@
         outPrice.textContent = "NT$ " + basePrice.toLocaleString() + " ~ " + maxPrice.toLocaleString() + " 元（" + taxNote + "）";
       }
       if (outHours) {
-        outHours.textContent = hours;
+        outHours.textContent = "施工與停水時段須依現場條件確認";
       }
       if (outCrew) {
         outCrew.textContent = crewMode;
@@ -1241,18 +1195,18 @@
         : "標準基本包套規模";
 
       if (shouldPersistDraft) {
-        const targetCat = isAddonWithTank ? "wt_ac" : "ac_cleaning";
+        const targetCat = "ac_cleaning";
         const draftPayload = {
           serviceCategory: targetCat,
-          scheduleMode: isAddonWithTank ? "weekday_35" : modeVal,
+          scheduleMode: modeVal,
           acScheduleMode: modeVal,
           region: regionVal,
           acType: acType,
           acQty: acQty,
           chkAcDrain: Boolean(chkDrain && chkDrain.checked),
           chkAcMpv: Boolean(chkAcMpv && chkAcMpv.checked),
-          chkAddMpv: Boolean(chkAcMpv && chkAcMpv.checked),
-          mpvSpec: (chkAcMpv && chkAcMpv.checked) ? ((acType === "ahu") ? "ahu_overhaul" : ((acType === "fcu" || acType === "cassette") ? "fcu_repair" : "split_major")) : "split_major",
+          chkAcRepair: Boolean(chkAcMpv && chkAcMpv.checked),
+          chkAddMpv: false,
           chkAcOutdoor: Boolean(chkOutdoor && chkOutdoor.checked),
           chkAcSteam: Boolean(chkSteam && chkSteam.checked),
           chkTax: Boolean(chkTax && chkTax.checked)
@@ -1291,12 +1245,11 @@
     if (btnAcToQuote) {
       btnAcToQuote.addEventListener("click", function () {
         calcAcCleaning(true, true);
-        const modeVal = scheduleSelect ? scheduleSelect.value : "priority_50";
-        const isAddonWithTank = (modeVal === "addon_with_tank");
+        const modeVal = scheduleSelect && scheduleSelect.value === "weekday_35" ? "weekday_35" : "priority_50";
         const qParams = new URLSearchParams({
           from: "ac-cleaning",
-          cat: isAddonWithTank ? "wt_ac" : "ac_cleaning",
-          mode: isAddonWithTank ? "weekday_35" : modeVal,
+          cat: "ac_cleaning",
+          mode: modeVal,
           reg: regionSelect ? regionSelect.value : "台北市 / 新北市",
           actype: typeSelect ? typeSelect.value : "cassette",
           acqty: qtySelect ? qtySelect.value : "base",
@@ -1320,15 +1273,15 @@
       cat: "cat1_split_ac",
       comboCleanCat: "ac_cleaning",
       comboAcType: "split",
-      name: "Realise 瑞林 RP-258 分離式冷氣自動排水器（2.1kg重型蔽極式馬達）連工帶料到府安裝＋排水管疏通＋全室冷氣免費健檢",
-      spec: "只賣到府安裝服務（不單售裸機）：換裝重達 2.1kg 瑞林 RP-258 蔽極式馬達超靜音排水器（50mm大葉輪、揚程3.5M、防火溫升保護）、高壓打通 2 分排水管果凍淤泥，並免費健檢全室冷氣出風溫差(ΔT)與電容電流（當場加洗冷氣順換現折 $1,000！）",
+      name: "Realise 瑞林 RP-258 分離式冷氣自動排水器（馬達規格待核對）連工帶料到府安裝＋排水管疏通＋全室冷氣檢查項目待確認",
+      spec: "只賣到府安裝服務（不單售裸機）：換裝規格待核對 瑞林 RP-258 蔽極式馬達噪音規格待核對排水器（葉輪規格待核對、揚程待核對、保護功能待核對）、高壓打通 2 分排水管果凍淤泥，並檢查項目待確認全室冷氣出風溫差(ΔT)與電容電流（當場加洗冷氣順換現折 $1,000！）",
       unitName: "組",
       tiers: {
         tier_std:   { minB: 3500, maxB: 3500, minA: 3500, maxA: 3500, qB: 3500, qA: 3500, label: "標準單台到府連工帶料安裝＋通管＋冷氣健檢" },
         tier_mid:   { minB: 3500, maxB: 4200, minA: 3500, maxA: 4500, qB: 3500, qA: 4200, label: "挑高天花板／長距離明管重拉配電安裝" },
         tier_heavy: { minB: 4200, maxB: 4800, minA: 4500, maxA: 5200, qB: 4500, qA: 5000, label: "大型落地箱型／多台冷氣共用大水量排水工程" }
       },
-      rangeLabel: "NT$ 3,500 起 / 組（含通排水管＋全室冷氣免費健檢）",
+      rangeLabel: "NT$ 3,500 起 / 組（含通排水管＋全室冷氣檢查項目待確認）",
       hours: "1.0 ~ 1.5 小時"
     },
     split_minor: {
@@ -1351,7 +1304,7 @@
       comboCleanCat: "ac_cleaning",
       comboAcType: "split",
       name: "分離式冷氣（室內外機）DC/AC 風扇馬達・貫流扇風鼓總成或日本 NSK 培林更換",
-      spec: "拆機更換原廠規格室內/室外風扇馬達、貫流扇風鼓葉輪或日本 NSK/SKF 精密靜音滾珠軸承（培林），根治尖叫異音與不轉跳機",
+      spec: "拆機更換原廠規格室內/室外風扇馬達、貫流扇風鼓葉輪或日本 NSK/SKF 精密靜音滾珠軸承（培林），檢查異音與不轉跳機的原因",
       unitName: "台",
       tiers: {
         tier_std:   { minB: 4500, maxB: 5800, minA: 5500, maxA: 7000,  qB: 4500, qA: 6000,  label: "標準 2.8~5.0kW 機種" },
@@ -1381,7 +1334,7 @@
       comboCleanCat: "ac_cleaning",
       comboAcType: "ahu",
       name: "大型中央空調箱(AHU)／大樓排風車傳動大修（重型連座軸承＋皮帶輪對心＋三相送風馬達）",
-      spec: "專用拔輪器無損拆卸更換重型連座軸承(Pillow Block Bearing)、雷射/直尺皮帶輪平行對心、抗靜電三角皮帶更新與三相馬達絕緣電流實測（級距 $28,000~$38,000 起/組）",
+      spec: "依設備現況使用拔輪工具拆卸更換重型連座軸承(Pillow Block Bearing)、雷射/直尺皮帶輪平行對心、抗靜電三角皮帶更新與三相馬達絕緣電流實測（級距 $28,000~$38,000 起/組）",
       unitName: "組",
       tiers: {
         tier_std:   { minB: 28000, maxB: 31000, minA: 29500, maxA: 33000, qB: 28000, qA: 30000, label: "標準 5~10HP 空調箱傳動組" },
@@ -1423,7 +1376,7 @@
       cat: "cat4_water_pump",
       comboCleanCat: "water_tank",
       name: "社區大樓揚水（抽水）馬達／頂樓恆壓加壓泵浦 耐磨碳化矽機械軸封與滾珠培林現場搶修",
-      spec: "關水洩壓拆解泵浦本體，換裝耐磨碳化矽(SiC)機械軸封根治漏水、更新日本 NSK 前後滾珠軸承消除尖叫異音，並點檢穩壓壓力桶與壓力開關",
+      spec: "關水洩壓拆解泵浦本體，換裝耐磨碳化矽(SiC)機械軸封處理漏水問題、更新日本 NSK 前後滾珠軸承處理異音問題，並點檢穩壓壓力桶與壓力開關",
       unitName: "台",
       tiers: {
         tier_std:   { minB: 5500, maxB: 7200,  minA: 6800,  maxA: 8800,  qB: 5500,  qA: 7500,  label: "標準 1~3HP 抽水/加壓馬達軸封培林" },
@@ -1451,7 +1404,7 @@
       cat: "cat5_valves",
       comboCleanCat: "water_tank",
       name: "2吋~4吋 蝶閥／不鏽鋼無聲逆止閥（消除停泵水錘巨響）／高壓防震軟管／減壓閥抽換",
-      spec: "管路排空洩壓、舊閥拆卸、法蘭密封面除鏽清潔、換裝 CNS 認證 2吋~4吋蝶閥/無聲逆止閥/防震軟管、更新 EPDM 墊片與 SUS304 不鏽鋼螺栓及復水耐壓測試（級距 $11,000~$15,000 起/處）",
+      spec: "管路排空洩壓、舊閥拆卸、法蘭密封面除鏽清潔、換裝 規格待核對的 2吋~4吋蝶閥/無聲逆止閥/防震軟管、更新 EPDM 墊片與 SUS304 不鏽鋼螺栓及復水耐壓測試（級距 $11,000~$15,000 起/處）",
       unitName: "處",
       tiers: {
         tier_std:   { minB: 11000, maxB: 12200, minA: 11800, maxA: 13000, qB: 11000, qA: 12000, label: "2吋~2.5吋 手柄式蝶閥/逆止閥/軟管" },
@@ -1465,7 +1418,7 @@
       cat: "cat5_valves",
       comboCleanCat: "cooling_tower",
       name: "6吋~10吋 大口徑齒輪式蝴蝶閥／無聲逆止閥吊裝抽換工程",
-      spec: "雙人正職機電編制搭配手拉吊車吊裝、拆除鏽死舊閥、換裝 6吋~10吋 FCD鑄鐵本體＋SUS304不鏽鋼蝶板重型齒輪式蝴蝶閥或無聲逆止閥，含 EPDM 墊片與 304 白鐵螺栓對角鎖固試壓（級距 $22,000~$32,000 起/處）",
+      spec: "現場作業安排搭配手拉吊車吊裝、拆除鏽死舊閥、換裝 6吋~10吋 FCD鑄鐵本體＋SUS304不鏽鋼蝶板重型齒輪式蝴蝶閥或無聲逆止閥，含 EPDM 墊片與 304 白鐵螺栓對角鎖固試壓（級距 $22,000~$32,000 起/處）",
       unitName: "處",
       tiers: {
         tier_std:   { minB: 22000, maxB: 24500, minA: 23500, maxA: 26000, qB: 22000, qA: 24500, label: "6吋 大口徑齒輪式蝴蝶閥/逆止閥" },
@@ -1493,7 +1446,7 @@
       cat: "cat6_level_ctrl",
       comboCleanCat: "water_tank",
       name: "大口徑水力定水位閥（主閥＋導閥膜片總成）或雙泵交替自動控制盤檢修更新",
-      spec: "拆檢更換水塔進水大口徑水力定水位閥（主閥膜片、導閥與過濾器清洗更新）或揚水泵雙泵交替控制盤改造，徹底根治水塔滿水溢流與單泵過載",
+      spec: "拆檢更換水塔進水大口徑水力定水位閥（主閥膜片、導閥與過濾器清洗更新）或揚水泵雙泵交替控制盤改造，檢查水塔溢流與單泵過載的原因",
       unitName: "組",
       tiers: {
         tier_std:   { minB: 7500,  maxB: 9800,  minA: 8800,  maxA: 11500, qB: 7500,  qA: 9500,  label: "2吋~2.5吋 定水位閥導閥膜片總成檢修" },
@@ -1605,7 +1558,7 @@
       const addons = [
         isAddonClean
           ? "同日搭配清洗保養順修特惠：免收 $2,500 單獨查修出工底價（自動合併清洗＋維修同單報價）"
-          : "含雙人正職機電技師到場儀器診斷（單獨叫修基本出工檢測保底 $2,000~$2,500 起/趟，確認委修全額併入折抵）"
+          : "含機電技術人員到場儀器診斷（單獨叫修基本出工檢測保底 $2,000~$2,500 起/趟，確認委修全額併入折抵）"
       ];
 
       if (chkElec && chkElec.checked) {
@@ -1618,7 +1571,7 @@
         const urgAdd = isPriority ? 4500 : 3500;
         lowPrice += urgAdd;
         highPrice += Math.round(urgAdd * 1.35);
-        addons.push("⚡ 24H 當日急件插單搶修／夜間與例假日緊急出勤調度 (+NT$" + urgAdd.toLocaleString() + "起)");
+        addons.push("⚡ 急件調度洽詢／夜間與例假日緊急出勤調度 (+NT$" + urgAdd.toLocaleString() + "起)");
       }
 
       let taxNote = "未稅";
@@ -1636,10 +1589,10 @@
       }
       if (outCrew) {
         outCrew.textContent = isPriority
-          ? "【A方案：企業合規長效保固專車】雙人正職勞健保機電技師＋LOTO斷電掛牌＋日本NSK/原廠級料件＋電流絕緣簽認報告（180~365天保固）"
+          ? "【A方案：指定時段檢修專車】技術人員（配置與資格於派工前確認）＋LOTO斷電掛牌＋日本NSK/原廠級料件＋電流絕緣簽認報告（料件與後續服務條件另行確認）"
           : (isAddonClean
-            ? "【清洗客戶同日順修特惠】由駐場雙人正職機電技師趁排空或拆機時同步檢修（免收 $2,500 單獨查修出工費！）"
-            : "【B方案：標準完修經濟排程】雙人正職勞健保機電技師＋工業級標準新品料件＋運轉測試（90天完修保固）");
+            ? "【清洗客戶同日順修特惠】由駐場機電技術人員趁排空或拆機時同步檢修（免收 $2,500 單獨查修出工費！）"
+            : "【B方案：平日彈性檢修排程】技術人員（配置與資格於派工前確認）＋工業級標準新品料件＋運轉測試（後續服務條件另行確認）");
       }
 
       const targetCategory = isAddonClean ? (specCfg.comboCleanCat || "water_tank") : "mpv_repair";
@@ -1673,7 +1626,7 @@
       const summary = "【會轉都會修！機電馬達・風鼓軸承・幫浦閥件搶修詢價】" +
         "\n📍 地區：" + regionVal +
         "\n⚡ 檢修項目：" + specCfg.name + "（規格檔位：" + tierCfg.label + "｜數量：" + qtyNum + " " + specCfg.unitName + "｜全級距：" + specCfg.rangeLabel + "）" +
-        "\n👷 保固與編制：" + (outCrew ? outCrew.textContent : "") +
+        "\n👷 作業安排：" + (outCrew ? outCrew.textContent : "") +
         "\n⏱️ 預估完修工時：" + (outHours ? outHours.textContent : specCfg.hours) +
         "\n🔧 附加設定：" + addons.join("、") +
         "\n💰 系統預估浮動區間：NT$ " + lowPrice.toLocaleString() + " ~ " + highPrice.toLocaleString() + " 元起（" + taxNote + "）";
@@ -1723,7 +1676,7 @@
     }
   }
 
-  /* 4. 第三引擎：A/B 雙軌正式工程報價單生成器 (quote.html - 內建 100% 單頁 A4 PDF 智慧動態縮放鎖定) */
+  /* 4. 第三引擎：A/B 雙軌線上立即估價 (quote.html - 內建 A4 PDF 排版 智慧動態縮放鎖定) */
   function initQuoteGenerator() {
     const form = document.getElementById("hs-quote-builder-form");
     if (!form) return;
@@ -1766,6 +1719,10 @@
     const elAcType = document.getElementById("q-ac-type");
     const elAcQty = document.getElementById("q-ac-qty");
     const chkAcDrain = document.getElementById("q-chk-ac-drain");
+    const chkAcRepair = document.getElementById("q-chk-ac-repair");
+    const elShopMode = document.getElementById("q-shop-mode");
+    const elShopQty = document.getElementById("q-shop-qty");
+    const boxShopQty = document.getElementById("q-shop-qty-group");
     const chkAcOutdoor = document.getElementById("q-chk-ac-outdoor");
     const chkAcSteam = document.getElementById("q-chk-ac-steam");
     const chkAddMpv = document.getElementById("q-chk-add-mpv");
@@ -1900,7 +1857,7 @@
         renderedHeight = measureTrueA4Height();
       }
 
-      // 若升級至最高密度 mega 後高度仍超過 A4_SAFE_HEIGHT_PX (985px)，依真實高度比精準微縮，保證 100% 不跨頁
+      // 若升級至最高密度 mega 後高度仍超過 A4_SAFE_HEIGHT_PX (985px)，依真實高度比精準微縮，嘗試縮減頁數，仍須實際列印驗證
       if (renderedHeight > A4_SAFE_HEIGHT_PX) {
         const heightRatio = A4_SAFE_HEIGHT_PX / renderedHeight;
         const safeRatio = Math.floor(heightRatio * 100) / 100;
@@ -1918,7 +1875,7 @@
         const modeDesc = density === "mega"
           ? "極限多工項單頁模式"
           : (density === "ultra" ? "超緊湊單頁模式" : (density === "compact" ? "緊湊單頁模式" : "標準單頁模式"));
-        statusText.textContent = "✓ 單頁 A4 智慧鎖定已啟動：目前共 " + itemCount + " 個工項 ｜ 自動切換「" + modeDesc + "（適配比例 " + pct + "%）」・保證 100% 單頁 PDF 輸出不跨頁";
+        statusText.textContent = "A4 排版預覽：目前共 " + itemCount + " 個工項，適配比例 " + pct + "%；請在列印預覽確認頁數、字級及內容完整性。";
       }
     }
 
@@ -1948,6 +1905,7 @@
       toggleAddonItem(chkSgs, isWt || isCt);
       toggleAddonItem(chkChlorine25kg, isWt || isCt || (cat === "shop_chlorine") || isAc || isMpv);
       toggleAddonItem(chkAcDrain, isAc);
+      toggleAddonItem(chkAcRepair, isAc);
       toggleAddonItem(chkAcOutdoor, isAc);
       toggleAddonItem(chkAcSteam, isAc);
       toggleAddonItem(chkValve24, isWt || isCt || isMpv);
@@ -2007,7 +1965,7 @@
           elClientAddr.value = String(draft.region);
         }
       }
-      if (draft.clientAddr && elClientAddr && !fromParamVal) {
+      if (draft.clientAddr && elClientAddr && (!fromParamVal || fromParamVal === "share")) {
         elClientAddr.value = String(draft.clientAddr);
       } else if (draft.region && elClientAddr && fromParamVal) {
         elClientAddr.value = String(draft.region);
@@ -2037,6 +1995,9 @@
       if (draft.acType && elAcType) setSelectValueSafely(elAcType, draft.acType, "cassette");
       if (draft.acQty && elAcQty) setSelectValueSafely(elAcQty, draft.acQty, "base");
       if (chkAcDrain && draft.chkAcDrain !== undefined) chkAcDrain.checked = Boolean(draft.chkAcDrain);
+      if (chkAcRepair && draft.chkAcRepair !== undefined) chkAcRepair.checked = Boolean(draft.chkAcRepair);
+      if (elShopMode) elShopMode.value = String(draft.shopMode || "");
+      if (elShopQty) setSelectValueSafely(elShopQty, String(draft.shopQty || "1"), "1");
       if (chkAcOutdoor && draft.chkAcOutdoor !== undefined) chkAcOutdoor.checked = Boolean(draft.chkAcOutdoor);
       if (chkAcSteam && draft.chkAcSteam !== undefined) chkAcSteam.checked = Boolean(draft.chkAcSteam);
       if (chkAddMpv && draft.chkAddMpv !== undefined) chkAddMpv.checked = Boolean(draft.chkAddMpv);
@@ -2092,6 +2053,10 @@
         acType: elAcType ? elAcType.value : "cassette",
         acQty: elAcQty ? elAcQty.value : "base",
         chkAcDrain: Boolean(chkAcDrain && chkAcDrain.checked),
+        chkAcRepair: Boolean(chkAcRepair && chkAcRepair.checked),
+        chkAcMpv: Boolean(chkAcRepair && chkAcRepair.checked),
+        shopMode: elShopMode ? elShopMode.value : "",
+        shopQty: elShopQty ? elShopQty.value : "1",
         chkAcOutdoor: Boolean(chkAcOutdoor && chkAcOutdoor.checked),
         chkAcSteam: Boolean(chkAcSteam && chkAcSteam.checked),
         chkAddMpv: Boolean(chkAddMpv && chkAddMpv.checked),
@@ -2125,6 +2090,24 @@
       if (boxAcGroup) {
         boxAcGroup.style.display = isAcActive ? "block" : "none";
       }
+      // Keep storefront quantities and its published per-unit price distinct from repair bulk pricing.
+      const shopCategories = { rp258_standalone: "mpv_repair", rp258_with_ac: "ac_cleaning", chlorine_only: "shop_chlorine", chlorine_with_ct: "cooling_tower", chlorine_with_wt: "water_tank", both_shop_items: "mpv_repair" };
+      let shopMode = elShopMode ? elShopMode.value : "";
+      if (shopCategories[shopMode] !== cat ||
+          ((shopMode === "rp258_standalone" || shopMode === "both_shop_items") &&
+           (!elMpvSpec || elMpvSpec.value !== "rp258_install" || !elMpvTier || elMpvTier.value !== "tier_std"))) {
+        shopMode = "";
+        if (elShopMode) elShopMode.value = "";
+      }
+      const shopQty = shopMode ? clampNumber(elShopQty ? elShopQty.value : 1, 1, 20, 1) : 1;
+      const isShopInstall = shopMode === "rp258_standalone" || shopMode === "both_shop_items";
+      if (boxShopQty) boxShopQty.style.display = shopMode ? "block" : "none";
+      if (elMpvQty) {
+        if (isShopInstall) setSelectValueSafely(elMpvQty, String(shopQty), "1");
+        elMpvQty.disabled = isShopInstall;
+        const qtyWrap = elMpvQty.closest(".calc-form-group");
+        if (qtyWrap) qtyWrap.style.display = isShopInstall ? "none" : "block";
+      }
       const isMpvStandalone = (cat === "mpv_repair");
       const isMpvActive = isMpvStandalone || Boolean(chkAddMpv && chkAddMpv.checked);
       if (chkAddMpv) {
@@ -2149,7 +2132,7 @@
       if (outContact) outContact.textContent = contactPerson;
       if (outAddr) outAddr.textContent = clientAddr;
       if (outDocNo) outDocNo.textContent = docNo;
-      if (outDocDate) outDocDate.textContent = docDate + "（效期15天）";
+      if (outDocDate) outDocDate.textContent = docDate + "（估價試算）";
 
       const items = [];
 
@@ -2161,23 +2144,23 @@
 
         let priceA = 23000;
         let priceB = 17500;
-        let specDesc = "高壓水刀除垢、50~100ppm食品級次氯酸鈉消毒（完工餘氯符合0.2~1.0mg/L飲用水標準）、缺氧作業主管氣體測定與雙人專責戒護";
+        let specDesc = "清洗範圍、消毒方式與檢驗項目依設備用途、產品標示及現場條件確認；入槽作業須另評估人員、監視、通風與氣體測定需求";
 
         if (ton <= 10) {
           if (mat === "stainless") {
             priceA = 4600;
             priceB = 3800;
             specDesc = (poolLv === 0)
-              ? "頂樓免入槽單人快洗編制（正職勞健保技師＋高壓水刀除垢＋50~100ppm次氯酸鈉消毒，完工餘氯0.2~1.0mg/L）"
-              : "10噸內頂樓不鏽鋼水塔基本清洗（正職勞健保技師＋高壓水刀除垢＋50~100ppm次氯酸鈉消毒；跨棟多顆移機費另列於次項）";
+              ? "開放式白鐵水塔、已確認全程不入槽之清洗方案；若需入槽、出入受限或通風條件有疑慮，本試算不適用，須另評估作業配置與費用"
+              : "10噸內開放式白鐵水塔基本清洗（限已確認全程不入槽；需入槽者另評估，跨棟多顆移機費另列於次項）";
           } else if (mat === "frp") {
             priceA = 13000;
             priceB = 10500;
-            specDesc = "10噸內入槽FRP組合水塔（配置3人局限空間標準編制：缺氧作業主管＋雙人戒護＋強制通風與50~100ppm次氯酸鈉消毒）";
+            specDesc = "10噸內FRP組合水塔清洗；是否入槽、空間條件、作業資格及安全配置須另依現場確認";
           } else {
             priceA = 13000;
             priceB = 10500;
-            specDesc = "10噸內入槽RC水泥蓄水池（配置3人局限空間標準編制：缺氧作業主管＋雙人戒護＋強制通風與50~100ppm次氯酸鈉消毒）";
+            specDesc = "10噸內RC水泥蓄水池清洗；是否入槽、空間條件、作業資格及安全配置須另依現場確認";
           }
         } else if (ton <= 50) {
           priceA = 13000;
@@ -2188,7 +2171,7 @@
         } else {
           priceA = 27000;
           priceB = 24000;
-          specDesc += "（雙機高速抽排，停水控制在3.5~4hr）";
+          specDesc += "（停水與作業時段依現場確認）";
         }
 
         const matLabel = (mat === "stainless") ? "SUS304不鏽鋼塔" : (mat === "frp" ? "FRP組合水塔" : "RC水泥上下蓄水池");
@@ -2211,7 +2194,7 @@
         } else if (poolLv === 2) {
           items.push({
             title: "大型多棟社區連通水池分棟輪洗作業費（5 池以上）",
-            spec: "分棟分池輪流停水抽排，確保住戶非停水棟別正常供水",
+            spec: "分棟分池停水與抽排方式須依現場管路條件確認",
             unit: "1 式",
             priceA: 9000,
             priceB: 7500
@@ -2219,8 +2202,8 @@
         }
 
         items.push({
-          title: "【專案免費贈送】給水機電安全健檢 ＋ 完工現場 3 項水質實測（原價 $4,500）",
-          spec: "現場實測自由有效餘氯(0.2~1.0mg/L)、酸鹼值(pH 6.0~8.5)、總溶解固體(TDS≦500mg/L)＋Omron 61F-G2極棒除垢、防空轉測試與馬達電流點檢",
+          title: "【洽詢項目】給水設備檢查與水質量測",
+          spec: "可洽詢餘氯、pH、TDS 與給水設備檢查；方法及費用另行確認，現場指標不能單獨證明飲用水安全",
           unit: "1 式",
           priceA: 0,
           priceB: 0,
@@ -2260,9 +2243,9 @@
         if (ctType === "closed_circuit") {
           ctSpecDetail = "密閉式冷卻水塔｜含風機與噴淋泵 LOTO 斷電掛牌、內循環熱交換銅管/不鏽鋼盤管定壓除垢沖洗、噴淋嘴疏通、底盤吸泥與" + driveCheckText;
         } else if (ctType === "open_square") {
-          ctSpecDetail = "方型低噪音開放式水塔｜含風機 LOTO 斷電掛牌、雙側重力播水盆與散水孔疏通、低壓大流量扇形水刀定壓沖洗（絕不擊穿散熱膠片）、底盤吸泥與" + driveCheckText;
+          ctSpecDetail = "方型低噪音開放式水塔｜含風機 LOTO 斷電掛牌、雙側重力播水盆與散水孔疏通、低壓大流量扇形水刀定壓沖洗（依材質與現況選擇工法）、底盤吸泥與" + driveCheckText;
         } else {
-          ctSpecDetail = "良機/跨廠牌圓型開放式水塔｜含風機 LOTO 斷電掛牌、頂部旋轉播水頭與散水管疏通、低壓大流量扇形水刀定壓沖洗（絕不擊穿散熱膠片）、底盤吸泥與" + driveCheckText;
+          ctSpecDetail = "良機/跨廠牌圓型開放式水塔｜含風機 LOTO 斷電掛牌、頂部旋轉播水頭與散水管疏通、低壓大流量扇形水刀定壓沖洗（依材質與現況選擇工法）、底盤吸泥與" + driveCheckText;
         }
 
         items.push({
@@ -2293,14 +2276,13 @@
       }
 
 
-      // 2B. 計算室內冷氣與中央空調主工項（支援單獨派車雙人工程車包套 ＆ 水塔客戶同日順洗免出車底價特惠）
+      // 2B. 計算室內冷氣與中央空調主工項（所有報價類別均使用相同基本包套與追加台數計價）
       if (isAcActive) {
         const acTypeVal = elAcType ? elAcType.value : "cassette";
         const acQtyVal = elAcQty ? elAcQty.value : "base";
-        const isTankCombo = (cat === "wt_ac" || cat === "ct_ac" || cat === "all_three");
 
         const acMap = {
-          split:    { pkgA: 12500, pkgB: 10000, unitA: 2200, unitB: 1800, inc: "含 4 台內", name: "壁掛分離式冷氣", spec: "拆洗外殼、濾網、貫流風鼓葉輪、蒸發器親水藥洗與排水管疏通" },
+          split:    { pkgA: 12500, pkgB: 10000, unitA: 2200, unitB: 1800, inc: "含 4 台內", name: "壁掛分離式冷氣", spec: "拆洗外殼、濾網、貫流風鼓葉輪、蒸發器親水藥洗與排水管疏通。家用分離式未滿4台仍以4台計價，未使用台數可轉給隔壁鄰居家團購" },
           fcu:      { pkgA: 13000, pkgB: 10500, unitA: 3200, unitB: 2800, inc: "含 3 台內", name: "吊隱式冷氣／冰水送風機(FCU)", spec: "天花板維修孔拆洗風車葉輪、鰭片高壓藥洗、集水盤果凍淤泥抽除與浮球點檢" },
           cassette: { pkgA: 13500, pkgB: 11000, unitA: 4000, unitB: 3500, inc: "含 3 台內", name: "四方吹嵌入式卡式冷氣", spec: "拆卸四方出風面板、內建排水泵浦與浮球清潔、全方位蒸發器鰭片精洗與電流實測" },
           package:  { pkgA: 13500, pkgB: 11000, unitA: 4500, unitB: 3800, inc: "含 2 台內", name: "落地箱型冷氣(氣冷/水冷櫃機)", spec: "大型排管蒸發器高壓藥洗、雙風鼓葉輪除垢、冷凝水盤與排水管疏通" },
@@ -2315,38 +2297,22 @@
         else if (acQtyVal === "add_6") extraCnt = 6;
         else if (acQtyVal === "add_8") extraCnt = 8;
 
-        if (isTankCombo) {
-          // 水塔或冷卻水塔同日順洗模式：免收二次工程車出車底價，按實際順洗台數計價
-          const comboUnits = (extraCnt === 0) ? 1 : extraCnt;
-          const comboPrefix = (cat === "ct_ac")
-            ? "【冷卻水塔同日順洗特惠】"
-            : (cat === "all_three" ? "【全棟總包同日順洗特惠】" : "【水塔同日順洗特惠】");
-          const comboWorkName = (cat === "ct_ac") ? "冷卻水塔保養" : "水塔清洗工程";
+        // 單獨派車專案包套模式（機電工程車基本出勤包套）
+        items.push({
+          title: acCfg.name + "深層拆洗保養專案包套（機電專車・" + acCfg.inc + "）",
+          spec: "技術人員（配置與資格於派工前確認）出勤｜LOTO斷電與電腦板防水保護（依設備現況確認）、" + acCfg.spec,
+          unit: "1 式",
+          priceA: acCfg.pkgA,
+          priceB: acCfg.pkgB
+        });
+        if (extraCnt > 0) {
           items.push({
-            title: comboPrefix + acCfg.name + "深層拆洗保養（共 " + comboUnits + " 台）",
-            spec: "與" + comboWorkName + "同日施作免二次出車底價｜LOTO斷電與電腦板防水保護、" + acCfg.spec,
-            unit: comboUnits + " 台",
-            priceA: comboUnits * acCfg.unitA,
-            priceB: comboUnits * acCfg.unitB
+            title: acCfg.name + "同案場追加清洗台數（追加 " + extraCnt + " 台量販優惠）",
+            spec: "同趟工程車連續施作追加台數（每台 A:$" + acCfg.unitA.toLocaleString() + " / B:$" + acCfg.unitB.toLocaleString() + "）",
+            unit: extraCnt + " 台",
+            priceA: extraCnt * acCfg.unitA,
+            priceB: extraCnt * acCfg.unitB
           });
-        } else {
-          // 單獨派車專案包套模式（雙人正職機電工程車基本出勤包套）
-          items.push({
-            title: acCfg.name + "深層拆洗保養專案包套（雙人機電專車・" + acCfg.inc + "）",
-            spec: "雙人正職勞健保機電技師出勤｜LOTO斷電與電腦板全密封防水保護、" + acCfg.spec,
-            unit: "1 式",
-            priceA: acCfg.pkgA,
-            priceB: acCfg.pkgB
-          });
-          if (extraCnt > 0) {
-            items.push({
-              title: acCfg.name + "同案場追加清洗台數（追加 " + extraCnt + " 台量販優惠）",
-              spec: "同趟工程車連續施作追加台數（每台 A:$" + acCfg.unitA.toLocaleString() + " / B:$" + acCfg.unitB.toLocaleString() + "）",
-              unit: extraCnt + " 台",
-              priceA: extraCnt * acCfg.unitA,
-              priceB: extraCnt * acCfg.unitB
-            });
-          }
         }
       }
 
@@ -2357,14 +2323,14 @@
         const mCfg = MPV_SPEC_MAP[specKey];
         const tierKey = (elMpvTier && mCfg.tiers[elMpvTier.value]) ? elMpvTier.value : "tier_std";
         const tCfg = mCfg.tiers[tierKey] || mCfg.tiers.tier_std;
-        const mQty = clampNumber(elMpvQty ? elMpvQty.value : 1, 1, 10, 1);
+        const mQty = isShopInstall ? shopQty : clampNumber(elMpvQty ? elMpvQty.value : 1, 1, 10, 1);
         let disc = 1.0;
         if (mQty === 2) disc = 0.90;
         else if (mQty === 3) disc = 0.88;
         else if (mQty >= 4) disc = 0.85;
 
-        const pA = Math.round(tCfg.qA * mQty * disc);
-        const pB = Math.round(tCfg.qB * mQty * disc);
+        const pA = isShopInstall ? 3500 * mQty : Math.round(tCfg.qA * mQty * disc);
+        const pB = isShopInstall ? 3500 * mQty : Math.round(tCfg.qB * mQty * disc);
         const prefixTag = isMpvStandalone ? "【會轉都會修】" : "【會轉都會修・清洗同日順修特惠】";
 
         items.push({
@@ -2377,8 +2343,8 @@
 
         if (isMpvStandalone) {
           items.push({
-            title: "【專案包含】雙人正職機電技師儀器查修 ＋ 三相電流／絕緣阻抗實測驗收（原價 $2,500）",
-            spec: "確認委修直接免除 $2,500 單獨出工檢測費｜含 LOTO 斷電掛牌、三用電錶/鉤錶/高阻計實測與完修保固（A方案180~365天 / B方案90天）",
+            title: "【專案包含】機電技術人員儀器查修 ＋ 三相電流／絕緣阻抗實測驗收（範圍待確認）",
+            spec: "確認委修直接免除 $2,500 單獨出工檢測費｜含 LOTO 斷電掛牌、三用電錶/鉤錶/高阻計實測；後續服務條件另行確認",
             unit: "1 式",
             priceA: 0,
             priceB: 0,
@@ -2388,7 +2354,7 @@
       }
 
       // 3. 計算機電閥件與選配加購項（依類別啟用狀態精準過濾，阻絕跨系統殘留汙染）
-      if (chkPvc && chkPvc.checked) {
+      if ((isWtActive || isCtActive) && chkPvc && chkPvc.checked) {
         items.push({
           title: "2 吋內進水／冷卻塔補給水 PVC 球閥與青銅浮球閥更新工程",
           spec: "含舊閥拆卸、南亞 PVC 雙由令球閥或重型青銅浮球閥換裝與止水測試",
@@ -2406,7 +2372,7 @@
           priceB: 4200
         });
       }
-      if (chkButterfly && chkButterfly.checked && !(isMpvActive && elMpvSpec && elMpvSpec.value === "valve_6_10")) {
+      if ((isWtActive || isCtActive) && chkButterfly && chkButterfly.checked && !(isMpvActive && elMpvSpec && elMpvSpec.value === "valve_6_10")) {
         items.push({
           title: "大口徑 6吋~10吋 FCD/SUS304 齒輪式蝴蝶閥／無聲逆止閥抽換（級距 $22,000~$32,000起）",
           spec: "鑄鐵/不鏽鋼本體＋304蝶板＋重型齒輪箱、EPDM 法蘭墊片與304白鐵螺栓連工帶料吊裝試壓",
@@ -2444,13 +2410,13 @@
       }
       if (chkSgs && chkSgs.checked) {
         let sgsTitle = "代客無菌採樣送驗 SGS 飲用水水質檢驗報告（大腸桿菌群／總菌落數）";
-        let sgsSpec = "依環境部飲用水水質標準無菌採樣送交 SGS 實驗室檢驗大腸桿菌群(≦6 CFU/100mL)與總菌落數，附正式檢驗報告";
+        let sgsSpec = "採樣方法、檢驗項目、受託機構與報告形式須依用途先行確認；本試算不代表水質已合格或可直接飲用";
         if (cat === "cooling_tower" || cat === "ct_ac") {
           sgsTitle = "代客採樣送驗 SGS 冷卻水塔水質／退伍軍人菌（Legionella）檢測報告";
-          sgsSpec = "無菌採樣送交 SGS 等第三方認證實驗室執行冷卻水塔退伍軍人菌(Legionella)培養檢測，附正式檢驗報告";
+          sgsSpec = "採樣方法、檢驗項目、受託機構與報告形式須依用途先行確認；本試算不代表水質已合格或可直接飲用";
         } else if (cat === "both" || cat === "all_three") {
           sgsTitle = "代客無菌採樣送驗 SGS 實驗室水質檢驗報告（大腸桿菌群／退伍軍人菌）";
-          sgsSpec = "無菌採樣送交 SGS 認證實驗室執行飲用水大腸桿菌群或冷卻塔退伍軍人菌定量檢測，附正式檢驗報告";
+          sgsSpec = "採樣方法、檢驗項目、受託機構與報告形式須依用途先行確認；本試算不代表水質已合格或可直接飲用";
         }
         items.push({
           title: sgsTitle,
@@ -2462,15 +2428,15 @@
       }
       if (cat === "shop_chlorine") {
         items.push({
-          title: "工業級 90% TCCA 長效慢溶強效氯錠（25 公斤原裝密封大桶）",
-          spec: "有效氯含量 ≧ 90% 慢溶錠（冷卻水塔抑菌除藻、預防退伍軍人菌與大型蓄水池消毒專用）｜A方案含大榮/新竹貨運宅配到府（含$500運費）；B方案為搭配本公司水塔工程順車免運價",
-          unit: "1 桶(25kg)",
-          priceA: 3200,
-          priceB: 2680
+          title: "工業級 90% TCCA 氯錠（用途與標示待確認）（25 公斤原裝密封大桶）",
+          spec: "沿用 25kg TCCA 原規格與價格試算；實際標示、用途、安全資料及承運條件待確認，不可逕用於飲用水設備",
+          unit: shopQty + " 桶(25kg)",
+          priceA: 3200 * shopQty,
+          priceB: 2680 * shopQty
         });
         items.push({
-          title: "【專案免費贈送】冷卻水塔散熱效率／水垢淤泥評估 ＆ RT 噸數精準投藥週期規劃",
-          spec: "免費協助廠務與管委會核算每週標準氯錠投放量，並巡檢散熱膠片、旋轉播水頭與進水蝴蝶閥狀態",
+          title: "【洽詢項目】水系統與藥劑使用條件評估",
+          spec: "檢查範圍及費用待確認；投藥須依產品標示、水質及現場條件由專業人員評估，不能僅依設備 RT 決定",
           unit: "1 式",
           priceA: 0,
           priceB: 0,
@@ -2478,32 +2444,41 @@
         });
       }
       if (cat !== "shop_chlorine" && chkChlorine25kg && chkChlorine25kg.checked) {
-        const isWithTankTruck = (isWtActive || isCtActive);
+        const isWithTankTruck = (isWtActive || isCtActive || shopMode === "both_shop_items");
         items.push({
           title: isWithTankTruck
-            ? "【水塔工程順車免運特惠】工業級 90% TCCA 長效慢溶強效氯錠（25公斤大桶裝）"
-            : "工業級 90% TCCA 長效慢溶強效氯錠（25公斤大桶裝｜含貨運宅配 / 隨車免運）",
+            ? "【水塔工程合併方案特惠】工業級 90% TCCA 氯錠（用途與標示待確認）（25公斤大桶裝）"
+            : "工業級 90% TCCA 氯錠（用途與標示待確認）（25公斤大桶裝｜配送條件待確認）",
           spec: isWithTankTruck
-            ? "由清洗水塔/冷卻水塔工程車同趟順載直送機房（直接免除 $500 貨運費！含免費精算 RT 投藥量）"
-            : "有效氯 ≧ 90% 長效抑菌除青苔慢溶錠（A方案含大榮/新竹貨運宅配 $3,200 / B方案隨工程車順載免運 $2,680）",
-          unit: "1 桶(25kg)",
-          priceA: isWithTankTruck ? 2680 : 3200,
-          priceB: 2680
+            ? "依原合併方案試算；實際產品用途、配送方式及承運條件待確認，不表示可用於飲用水設備"
+            : "沿用原方案 A 每桶 $3,200／B 每桶 $2,680 試算；產品標示、用途、安全資料及配送條件另行確認",
+          unit: shopQty + " 桶(25kg)",
+          priceA: (isWithTankTruck ? 2680 : 3200) * shopQty,
+          priceB: 2680 * shopQty
         });
       }
       if (isAcActive && chkAcDrain && chkAcDrain.checked && !(isMpvActive && elMpvSpec && elMpvSpec.value === "rp258_install")) {
         items.push({
           title: "【洗冷氣同日順換現折 $1,000】Realise 瑞林 RP-258 重型蔽極式冷氣自動排水器換新＋排水管高壓疏通",
-          spec: "原單獨到府安裝價 $3,500，搭配洗冷氣同日順換現折 $1,000！換裝 2.1kg 瑞林 RP-258 蔽極式馬達排水器（50mm大葉輪、35dB超靜音）並高壓打通排水管果凍淤泥",
-          unit: "1 組",
-          priceA: 2500,
-          priceB: 2200
+          spec: "原單獨到府安裝價 $3,500，搭配洗冷氣同日順換現折 $1,000！換裝 規格待核對 瑞林 RP-258 蔽極式馬達排水器（葉輪規格待核對、35dB噪音規格待核對）並高壓打通排水管果凍淤泥",
+          unit: (shopMode === "rp258_with_ac" ? shopQty : 1) + " 組",
+          priceA: 2500 * (shopMode === "rp258_with_ac" ? shopQty : 1),
+          priceB: 2200 * (shopMode === "rp258_with_ac" ? shopQty : 1)
+        });
+      }
+      if (isAcActive && chkAcRepair && chkAcRepair.checked) {
+        items.push({
+          title: "【冷氣清洗同日加購】風鼓異音／馬達培林／啟動電容或 FCU 二通閥順修",
+          spec: "依冷氣清洗頁原加購項目帶入；不等同 AHU 大修或整組機電設備更換，實際故障與工作範圍須另確認",
+          unit: "1 式",
+          priceA: 4500,
+          priceB: 3500
         });
       }
       if (isAcActive && chkAcOutdoor && chkAcOutdoor.checked) {
         items.push({
           title: "分離式／箱型冷氣室外機散熱鰭片高壓沖洗（4 台內）",
-          spec: "清除室外機冷凝器鋁鰭片厚重灰塵與油垢，提升熱交換效率、降低壓縮機高壓跳機並省電 15%",
+          spec: "清洗室外機冷凝器鰭片；工法、可達範圍及設備狀況須先評估，不承諾固定節電幅度",
           unit: "1 式",
           priceA: 2000,
           priceB: 1600
@@ -2511,8 +2486,8 @@
       }
       if (isAcActive && chkAcSteam && chkAcSteam.checked) {
         items.push({
-          title: "冷氣出風口醫療級高溫蒸氣 ／ 臭氧深層除臭殺菌處理",
-          spec: "針對風道與蒸發器執行高溫蒸氣與臭氧抑菌除臭，消除陳年霉味與過敏原",
+          title: "冷氣蒸氣／臭氧處理需求（適用性待評估）",
+          spec: "是否採用及作業方法須依設備、產品資料與現場安全評估；不保證除菌、除過敏原或健康效果",
           unit: "1 式",
           priceA: 1800,
           priceB: 1500
@@ -2521,13 +2496,13 @@
       if ((isWtActive || isCtActive || isMpvActive) && chkValve24 && chkValve24.checked && !(isMpvActive && elMpvSpec && elMpvSpec.value === "valve_2_4")) {
         items.push({
           title: "2吋~4吋 蝶閥／不鏽鋼無聲逆止閥（消除停泵水錘）／防震軟管抽換（級距 $11,000~$15,000起）",
-          spec: "含管路排空洩壓、舊閥拆卸、CNS認證閥體、EPDM墊片與SUS304不鏽鋼螺栓換裝試壓",
+          spec: "含管路排空洩壓、舊閥拆卸、規格待核對的閥體、EPDM墊片與SUS304不鏽鋼螺栓換裝試壓",
           unit: "1 處",
           priceA: 12500,
           priceB: 11000
         });
       }
-      if (chkMpvElec && chkMpvElec.checked) {
+      if ((isMpvActive || isWtActive || isCtActive || isAcActive) && chkMpvElec && chkMpvElec.checked) {
         items.push({
           title: "機電控制盤電磁接觸器／積熱電驛／啟動電容更新 ＋ 三相絕緣阻抗實測",
           spec: "更換老化燒熔之電磁接觸器(Magnetic Contactor)、過載積熱電驛或防爆運轉電容，並實測迴路絕緣",
@@ -2538,8 +2513,8 @@
       }
       if (isMpvActive && chkMpvUrgent && chkMpvUrgent.checked) {
         items.push({
-          title: "⚡ 24H 當日急件插單搶修 ／ 夜間（18:00後）與例假日緊急出勤調度費",
-          spec: "針對緊急停水、冰水機跳高壓或營業場所空調停擺，優先調度雙人正職機電工程車與備品救火",
+          title: "⚡ 急件調度洽詢 ／ 夜間（18:00後）與例假日緊急出勤調度費",
+          spec: "針對緊急停水、冰水機跳高壓或營業場所空調停擺，優先調度機電工程車與備品救火",
           unit: "1 趟",
           priceA: 4500,
           priceB: 3500
@@ -2611,7 +2586,7 @@
       // 輔助格式化單價（正數與負數折讓優雅顯示）
       function formatItemPrice(val, isFreeGift) {
         if (isFreeGift) {
-          return "<span style='color:#16a34a;font-weight:900;'>免費贈送</span>";
+          return "<span style='color:#16a34a;font-weight:900;'>範圍待確認</span>";
         }
         if (val < 0) {
           return "<span style='color:#dc2626;font-weight:800;'>- NT$ " + Math.abs(val).toLocaleString() + "</span>";
@@ -2627,11 +2602,11 @@
             "<th style='width:33%;'>工程與機電檢修項目</th>" +
             "<th style='width:32%;'>施工規格與職安配置說明</th>" +
             "<th style='width:7%;'>單位</th>" +
-            "<th class='num-col' style='width:11.5%;'>A方案：專車全責</th>" +
+            "<th class='num-col' style='width:11.5%;'>A方案：指定時段專車</th>" +
             "<th class='num-col' style='width:11.5%;'>B方案：平日併單</th>" +
             "</tr>";
         } else {
-          const singleTitle = (displayMode === "only_a") ? "A方案：專車全責單價" : "B方案：平日併單單價";
+          const singleTitle = (displayMode === "only_a") ? "A方案：指定時段專車單價" : "B方案：平日併單單價";
           outThead.innerHTML = "<tr>" +
             "<th style='width:6%;'>項次</th>" +
             "<th style='width:36%;'>工程與機電檢修項目</th>" +
@@ -2681,7 +2656,7 @@
           outSummaryArea.innerHTML =
             "<div class='qp-total-grid'>" +
               "<div class='qp-plan-card'>" +
-                "<div class='qp-plan-title'>★ A方案：指定時段專車全責專案（可指定日期/急件）</div>" +
+                "<div class='qp-plan-title'>★ A方案：指定時段專車專案（可指定日期/急件）</div>" +
                 "<div style='font-size:0.8rem;color:#475569;'>未稅小計：NT$ " + subA.toLocaleString() +
                 (includeTax ? (" ＋ 5%營業稅：NT$ " + taxA.toLocaleString()) : "（未稅，開發票另加5%）") + "</div>" +
                 "<div class='qp-plan-price'>總計 NT$ " + totalA.toLocaleString() + " 元" + (includeTax ? "（含稅）" : "（未稅）") + "</div>" +
@@ -2701,8 +2676,8 @@
           const tax = isA ? taxA : taxB;
           const tot = isA ? totalA : totalB;
           const planTitle = isA
-            ? "★ 核定採行【A方案：指定時段專車全責專案】"
-            : "⚡ 核定採行【B方案：平日彈性順路併單特惠檔期】";
+            ? "★ 目前選擇【A方案：指定時段專車專案】"
+            : "⚡ 目前選擇【B方案：平日彈性順路併單特惠檔期】";
           outSummaryArea.innerHTML =
             "<div class='qp-plan-card' style='border-width:1.5px;'>" +
               "<div class='qp-plan-title'>" + escapeHtml(planTitle) + "</div>" +
@@ -2714,79 +2689,35 @@
         }
       }
 
-      // 依工程類別智慧動態切換專屬「職安合規免責承諾書暨機電保護／保固條款」 (v21.1)
+      // Nonbinding scope and safety checklist, not a contract or qualification assurance.
       if (outComplianceArea) {
-        if (cat === "mpv_repair") {
-          outComplianceArea.innerHTML =
-            "<div style='font-weight:900;color:#0369a1;margin-bottom:2px;font-size:0.84rem;'>" +
-              "🛡️ 皓盛有限公司【「會轉都會修」機電馬達・風鼓軸承・泵浦閥件檢修職安免責承諾書】暨【保固條款】" +
-            "</div>" +
-            "<ol style='padding-left:16px;margin:0;'>" +
-              "<li><strong>雙人正職機電編制、LOTO 斷電掛牌與無損拔輪工法</strong>：由具備實戰中央空調與機電配電資歷之雙人正職技師出勤（具甲種職安與缺氧作業主管雙證）。拆修前嚴格執行電源與管路閥門掛牌上鎖（LOTO），全程使用專用拔輪器（Puller）與對心工具換裝日本 NSK/SKF 精密軸承、耐磨碳化矽機械軸封與 CNS 認證大口徑蝶閥／無聲逆止閥。</li>" +
-              "<li><strong>三段式透明浮動核價與先報價後施工原則</strong>：單獨叫修基本出工檢測保底 $2,000~$2,500 起/趟（確認委修直接折抵併入總價；同日搭配清洗免收出車檢測費）。因馬力噸數（HP）、管徑與拆裝高度難度差異，現場若涉及特殊高空、動火切割或原廠變頻模組更換，必先提出書面明細經客戶簽認後始得施作。</li>" +
-              "<li><strong>正職勞健保、500萬職災團保免責與最高 365 天保固</strong>：全體出勤人員均具正職勞健保與 500 萬職災團保，施工安全概由本公司負全責（<strong>貴公司與管委會 100% 免責</strong>）；完修後實測三相平衡電流、軸承溫升與耐壓零滲漏，所更換之新品零件享 B方案 90 天 ／ A方案 180~365 天保固。</li>" +
-            "</ol>";
-        } else if (cat === "ac_cleaning") {
-          outComplianceArea.innerHTML =
-            "<div style='font-weight:900;color:#0369a1;margin-bottom:2px;font-size:0.84rem;'>" +
-              "🛡️ 皓盛有限公司【冷氣與中央空調機電防護・職安免責承諾書】暨【洗後保固條款】" +
-            "</div>" +
-            "<ol style='padding-left:16px;margin:0;'>" +
-              "<li><strong>雙人正職機電編制與 LOTO 電腦板防水保護</strong>：由具備實戰中央空調背景之雙人正職技師出勤（具甲種職安業務主管合格認證），施工前執行迴路斷電驗電（LOTO 掛牌）並以專用防水隔離罩完整包覆電腦主機板、變頻模組與感溫器，絕不洗壞機板。</li>" +
-              "<li><strong>親水鋁鰭片環保藥洗與果凍淤泥根治滴水</strong>：採用不傷藍波親水塗層之環保洗劑深層拆洗風鼓葉輪與蒸發器鰭片，徹底抽除集水盤「果凍狀生物膜」、高壓打通排水管路並點檢自動排水器（Drain Pump）與浮球開關，根治冷氣滴水與酸臭霉味。</li>" +
-              "<li><strong>正職勞健保、500萬團保免責與測溫驗收保固</strong>：全體出勤人員均具正職勞健保與 500 萬職災團保，高處爬梯與機電作業安全概由本公司負全責（<strong>貴公司與管委會 100% 免除連帶風險</strong>）；完工實測出風溫差（ΔT）與運轉電流，附前後對比照片驗收並享洗後運轉與排水暢通保固。</li>" +
-            "</ol>";
-        } else if (cat === "cooling_tower") {
-          outComplianceArea.innerHTML =
-            "<div style='font-weight:900;color:#0369a1;margin-bottom:2px;font-size:0.84rem;'>" +
-              "🛡️ 皓盛有限公司【商用空調冷卻水塔 EHS 職安免責承諾書】暨【機電 LOTO 保護條款】" +
-            "</div>" +
-            "<ol style='padding-left:16px;margin:0;'>" +
-              "<li><strong>甲種職安＆缺氧主管雙證與風機 LOTO 斷電掛牌</strong>：本公司具備政府核發「甲種職業安全衛生業務主管」與「缺氧作業主管」雙證資格（進場隨附證照與保單備查）。入塔作業前嚴格執行散熱風機與水泵斷電掛牌上鎖（LOTO）及高處防墜戒護，防止風機誤啟動造成工安風險。</li>" +
-              "<li><strong>散熱材定壓沖洗、底盤吸泥與循環水質檢測</strong>：逐孔疏通頂部旋轉播水頭／雙側重力播水盆，以定壓水刀沖洗 PVC 散熱材填料、徹底吸除水盤鐵鏽青苔淤泥並清洗吸水濾網與 Y 型過濾器；完工免費檢測循環水 pH/TDS 指標，並支援代客送驗 SGS 退伍軍人菌正式報告。</li>" +
-              "<li><strong>正職勞健保、500萬團保免責與電流實測驗收</strong>：全體出勤人員均具正職勞健保與 500 萬雇主職災團保，施工期間職安責任概由本公司完全承擔（<strong>貴商場與貴公司 100% 免除連帶風險</strong>）；復水後實測風機三相電流、皮帶張力與減速機運轉，交付前後對比照片報告驗收付款。</li>" +
-            "</ol>";
-        } else if (cat === "water_tank") {
-          outComplianceArea.innerHTML =
-            "<div style='font-weight:900;color:#0369a1;margin-bottom:2px;font-size:0.84rem;'>" +
-              "🛡️ 皓盛有限公司【國家級雙職安主管資格・局限空間合規免責承諾書】暨【機電保護條款】" +
-            "</div>" +
-            "<ol style='padding-left:16px;margin:0;'>" +
-              "<li><strong>甲種職安＆缺氧作業主管雙證與法定 3 人編制</strong>：本公司具備政府核發「甲種職業安全衛生業務主管」與「缺氧作業主管」雙證資格（進場隨附證照與保單正影本供查驗）。凡入槽作業一律配置「池內技師＋池外人孔專責監視＋缺氧作業主管」3 人以上編制，入槽前執行強制通風與氣體測定（O₂ ≧ 18%），以 50~100ppm 食品級次氯酸鈉消毒，完工免費實測現場 3 項水質（餘氯 0.2~1.0mg/L、pH 6.0~8.5、TDS ≦500mg/L），並支援代客送驗 SGS 大腸桿菌群正式報告。</li>" +
-              "<li><strong>正職勞健保與 500 萬職災團保免責保障</strong>：全體出勤人員均具正職勞健保與 500 萬雇主意外責任險／職災團保；施工期間若發生任何職安事故概由本公司負完全法律責任，<strong>貴社區管委會與貴公司 100% 免除連帶賠償與勞檢罰則風險</strong>。</li>" +
-              "<li><strong>機電排氣復歸與驗收付款</strong>：施工前切斷揚水／加壓泵浦電源（LOTO 掛牌防止無水空轉燒毀軸封），完工注水後執行公共管路排氣、電流實測與液位迴路測試；工程完畢交付「清洗前後實景對比照片報告」驗收無誤後一次付清款項。</li>" +
-            "</ol>";
-        } else {
-          outComplianceArea.innerHTML =
-            "<div style='font-weight:900;color:#0369a1;margin-bottom:2px;font-size:0.84rem;'>" +
-              "🛡️ 皓盛有限公司【水系統與空調機電全責職安免責承諾書】暨【複合工程保固條款】" +
-            "</div>" +
-            "<ol style='padding-left:16px;margin:0;'>" +
-              "<li><strong>國家級雙職安證照、局限空間 3 人編制與水質實測</strong>：具備「甲種職安業務主管＋缺氧作業主管」雙證資格。蓄水池入槽嚴格配置 3 人編制並實測氧氣（O₂ ≧ 18%），以 50~100ppm 次氯酸鈉消毒並免費實測餘氯（0.2~1.0mg/L）、pH 與 TDS 水質（支援代驗 SGS 大腸桿菌群／退伍軍人菌）。</li>" +
-              "<li><strong>給水泵浦與冷氣／冷卻塔 LOTO 電腦板防水保護</strong>：施工前標準切換揚水／加壓泵浦與空調電源（LOTO 斷電掛牌），冷氣拆洗全程以專用防水罩密封電腦機板、抽除集水盤果凍淤泥並高壓疏通排水管；復歸後實測管路排氣、出風溫差（ΔT）與馬達運轉電流。</li>" +
-              "<li><strong>正職勞健保、500萬職災團保免責與驗收保固</strong>：全體出勤技師均具正職勞健保與 500 萬職災團保，施工期間職安責任概由本公司負完全法律責任（<strong>貴社區管委會與貴公司 100% 免責</strong>）；完工交付「清洗前後實景對比照片報告」驗收無誤後一次付清款項。</li>" +
-            "</ol>";
-        }
+        outComplianceArea.innerHTML =
+          "<div style='font-weight:900;color:#0369a1;margin-bottom:2px;font-size:0.84rem;'>施工前確認事項</div>" +
+          "<ol style='padding-left:16px;margin:0;'>" +
+          "<li><strong>範圍與報價</strong>：本頁為估價試算。實際設備、料件、施工範圍、排程、驗收、付款及保固條件，須由雙方另以書面確認；不以此頁推定承諾。</li>" +
+          "<li><strong>作業安全</strong>：進場方式、人員配置、資格與訓練、停機隔離、防墜及入槽監視、通風、氣體測定需求，須依現場風險與適用規範評估。各方依法應負的義務不因本試算而免除。</li>" +
+          "<li><strong>清洗、水質與產品</strong>：藥劑用途、產品標示及安全資料、清洗方法與檢驗項目須先核對。工業用氯錠不可直接套用於飲用水儲水設備；餘氯、pH、TDS 等現場指標不能單獨證明飲用水安全。配送方式及承運條件另行確認。</li>" +
+          "</ol>";
       }
 
       // 渲染管委會／客戶簽核勾選區（依類別智慧調整停水公告或空調斷電提示）
       if (outDecisionArea) {
         const scheduleNotice = (cat === "ac_cleaning")
           ? "（施工前協調分區空調斷電與施作動線）"
-          : (cat === "cooling_tower" ? "（施工前協調冷卻水塔分塔隔離或停機時段）" : "（停水公告於施工前3日張貼）");
+          : (cat === "cooling_tower" ? "（施工前協調冷卻水塔分塔隔離或停機時段）" : "（停水公告及施工時段另行協調）");
         if (displayMode === "ab_compare") {
           outDecisionArea.innerHTML =
-            "<div style='font-weight:900;color:#0f172a;margin-bottom:4px;font-size:0.84rem;'>【客戶／社區管委會決議簽核欄（二選一打勾回傳）】</div>" +
-            "<div style='margin-bottom:3px;font-size:0.8rem;'>□ 採行 <strong>A方案（指定專車：NT$ " + totalA.toLocaleString() + "）</strong>，預計日期：" + escapeHtml(docYear) + "年____月____日</div>" +
-            "<div style='margin-bottom:8px;font-size:0.8rem;'>□ 採行 <strong>B方案（平日併單：NT$ " + totalB.toLocaleString() + "）</strong>，授權協調平日順路檔期</div>" +
-            "<div style='margin-top:8px;border-top:1px solid #94a3b8;padding-top:6px;font-size:0.8rem;'>主委／客戶代表簽章：____________________ 日期：____/____/____</div>";
+            "<div style='font-weight:900;color:#0f172a;margin-bottom:4px;font-size:0.84rem;'>【方案比較備註（不構成委託）】</div>" +
+            "<div style='margin-bottom:3px;font-size:0.8rem;'>□ 參考 <strong>A方案（指定專車：NT$ " + totalA.toLocaleString() + "）</strong>，預計日期：" + escapeHtml(docYear) + "年____月____日</div>" +
+            "<div style='margin-bottom:8px;font-size:0.8rem;'>□ 參考 <strong>B方案（平日併單：NT$ " + totalB.toLocaleString() + "）</strong>，可洽詢平日排程</div>" +
+            "<div style='margin-top:8px;border-top:1px solid #94a3b8;padding-top:6px;font-size:0.8rem;'>需求備註：____________________ 日期：____/____/____</div>";
         } else {
           const chosenTot = (displayMode === "only_a") ? totalA : totalB;
           outDecisionArea.innerHTML =
-            "<div style='font-weight:900;color:#0f172a;margin-bottom:4px;font-size:0.84rem;'>【客戶／社區管委會正式委託簽認欄】</div>" +
-            "<div style='margin-bottom:6px;font-size:0.8rem;'>茲同意委託皓盛有限公司依本報價單規格進場施作，核定總額 <strong>NT$ " + chosenTot.toLocaleString() + " 元</strong>。</div>" +
+            "<div style='font-weight:900;color:#0f172a;margin-bottom:4px;font-size:0.84rem;'>【需求討論欄（不構成委託）】</div>" +
+            "<div style='margin-bottom:6px;font-size:0.8rem;'>本頁依目前所選規格試算，參考總額 <strong>NT$ " + chosenTot.toLocaleString() + " 元</strong>。</div>" +
             "<div style='margin-bottom:8px;font-size:0.8rem;'>預計施工日期：" + escapeHtml(docYear) + " 年 ____ 月 ____ 日" + scheduleNotice + "</div>" +
-            "<div style='margin-top:8px;border-top:1px solid #94a3b8;padding-top:6px;font-size:0.8rem;'>主委／客戶代表簽章：____________________ 日期：____/____/____</div>";
+            "<div style='margin-top:8px;border-top:1px solid #94a3b8;padding-top:6px;font-size:0.8rem;'>需求備註：____________________ 日期：____/____/____</div>";
         }
       }
 
@@ -2796,7 +2727,7 @@
       }
       const outVerifyEl = document.getElementById("qp-out-verify-hash");
       if (outVerifyEl) {
-        outVerifyEl.textContent = "防偽檢核碼：" + verifyHash + "｜免預付訂金・完工驗收無誤後匯款";
+        outVerifyEl.textContent = "計算參考碼：" + verifyHash + "｜僅供數值比對，不具簽章或身分驗證效力";
       }
 
       // 同步更新手機/桌機即時懸浮總價列 (#qp-live-summary-text)
@@ -2810,7 +2741,7 @@
         } else {
           const singleTot = (displayMode === "only_a") ? totalA : totalB;
           liveBarText.innerHTML =
-            "已選 <strong>" + items.length + "</strong> 項｜核定總計 <strong style='color:#34d399;'>NT$ " + singleTot.toLocaleString() + "</strong>";
+            "已選 <strong>" + items.length + "</strong> 項｜試算總計 <strong style='color:#34d399;'>NT$ " + singleTot.toLocaleString() + "</strong>";
         }
       }
 
@@ -2826,9 +2757,9 @@
       const extraTextLen = clientName.length + clientAddr.length + customNameVal.length;
       autoFitSinglePagePDF(items.length, extraTextLen);
 
-      // 回傳純文字摘要供 LINE 複製使用（附帶一鍵還原報價單連結與防偽檢核碼）
+      // 回傳純文字摘要供 LINE 複製使用（附帶一鍵還原報價單連結與計算參考碼）
       const lineItemsText = items.map(function (it, i) {
-        if (it.isFreeGift) return (i + 1) + ". " + it.title + "：免費附贈";
+        if (it.isFreeGift) return (i + 1) + ". " + it.title + "：可洽詢";
         if (it.priceA < 0 || it.priceB < 0) {
           if (displayMode === "ab_compare" && it.priceA !== it.priceB) {
             return (i + 1) + ". " + it.title + "：A專車折讓 -$" + Math.abs(it.priceA).toLocaleString() + " / B平日折讓 -$" + Math.abs(it.priceB).toLocaleString();
@@ -2846,17 +2777,17 @@
       const priceText = (displayMode === "ab_compare")
         ? ("★ A方案（指定專車）：NT$ " + totalA.toLocaleString() + (includeTax ? " (含5%稅)" : " (未稅)") +
            "\n⚡ B方案（平日併單）：NT$ " + totalB.toLocaleString() + (includeTax ? " (含5%稅，現省$" + savedDiff.toLocaleString() + ")" : " (未稅，現省$" + savedDiff.toLocaleString() + ")"))
-        : ("核定總金額：NT$ " + ((displayMode === "only_a") ? totalA : totalB).toLocaleString() + (includeTax ? " (含5%營業稅)" : " (未稅)"));
+        : ("試算總金額：NT$ " + ((displayMode === "only_a") ? totalA : totalB).toLocaleString() + (includeTax ? " (含5%營業稅)" : " (未稅)"));
 
-      return "📄 報價單號：" + docNo + " [防偽檢核:" + verifyHash + "]" +
+      return "📄 報價單號：" + docNo + " [計算參考:" + verifyHash + "]" +
         "\n🏢 客戶寶號：" + clientName + "（" + contactPerson + "）" +
         "\n📍 案場位置：" + clientAddr +
         "\n-------------------------\n" +
         lineItemsText +
         "\n-------------------------\n" +
         priceText +
-        (cat === "ac_cleaning" ? "\n✓ 均含雙人正職機電技師、LOTO斷電與電腦板防水保護、果凍淤泥疏通、500萬職災團保與洗後保固" : "\n✓ 均含甲種職安業務主管、法定缺氧作業主管、雙人專責戒護與500萬雇主職災團保（進場隨附證照與保單備查）") +
-        "\n🔗 點此一鍵還原單頁 A4 報價單：\n" + shareUrl;
+        (cat === "ac_cleaning" ? "\n✓ 人員、作業方式、範圍與後續服務條件須另行確認" : "\n✓ 人員資格、職安訓練、戒護配置與保險文件，須依實際工程及派工另行核對") +
+        "\n🔗 還原規格與金額（不含客戶資料及自訂項目名稱）：\n" + shareUrl;
     }
 
     // 處理中文輸入法 (IME Composition) 與 rAF 節流，避免打字過程頻繁重繪 DOM 卡頓
@@ -2913,7 +2844,7 @@
       }
       const cName = sanitizeFilenamePart(elClientName ? elClientName.value : "", "社區與商場專案", 32);
       const dNo = sanitizeFilenamePart(elDocNo ? elDocNo.value : "", "HS報價單", 24);
-      document.title = "皓盛有限公司_單頁正式報價單_" + cName + "_" + dNo;
+      document.title = "皓盛有限公司_估價試算單_" + cName + "_" + dNo;
 
       if (printTitleFallbackTimerId !== null) clearTimeout(printTitleFallbackTimerId);
       printTitleFallbackTimerId = setTimeout(function () {
@@ -3000,14 +2931,29 @@
     try {
       const params = new URLSearchParams(window.location.search || "");
       fromParamVal = params.get("from") || "";
+      // A new calculator selection must not inherit unrelated extras or old custom charges.
+      if (["shop", "water-tank", "cooling-tower", "ac-cleaning", "motor-pump-valve"].indexOf(fromParamVal) !== -1) {
+        saveQuoteDraft({
+          chkPvcValve: false, chkLevel: false, chkButterfly: false, chkFill: false,
+          chkCtSprinkler: false, chkInverter: false, chkSgs: false, chkChlorine25kg: false,
+          chkAcDrain: false, chkAcRepair: false, chkAcOutdoor: false, chkAcSteam: false,
+          chkAddMpv: false, chkValve24: false, chkMpvElec: false, chkMpvUrgent: false,
+          mpvQty: "1", shopMode: "", shopQty: "1", customName: "", customPrice: "0"
+        });
+      }
       if (fromParamVal === "share") {
         const urlPatch = {
           displayMode: params.get("dmode") || "ab_compare",
-          serviceCategory: params.get("cat") || "water_tank"
+          serviceCategory: params.get("cat") || "water_tank",
+          // Clear omitted identity fields instead of borrowing a different customer's stored draft.
+          // Legacy links remain readable; all newly generated links omit these fields.
+          clientName: params.get("cname") || "貴社區管理委員會 ／ 貴公司廠務部",
+          contactPerson: params.get("cperson") || "總幹事 ／ 廠務主管 鈞啟",
+          clientAddr: params.get("caddr") || "台北市 / 新北市",
+          customName: params.get("custn") || (Number(params.get("custp")) < 0
+            ? "自訂折讓（名稱請另填）" : "自訂追加（名稱請另填）"),
+          customPrice: params.get("custp") || "0"
         };
-        if (params.get("cname")) urlPatch.clientName = params.get("cname");
-        if (params.get("cperson")) urlPatch.contactPerson = params.get("cperson");
-        if (params.get("caddr")) urlPatch.clientAddr = params.get("caddr");
         if (params.get("ton")) urlPatch.wtTonnage = params.get("ton");
         if (params.get("mat")) urlPatch.wtMaterial = params.get("mat");
         if (params.get("pools") !== null) urlPatch.wtPoolCount = params.get("pools");
@@ -3029,13 +2975,14 @@
         urlPatch.chkSgs = (params.get("sgs") === "1");
         urlPatch.chkChlorine25kg = (params.get("cl25") === "1");
         urlPatch.chkAcDrain = (params.get("acdrain") === "1");
+        urlPatch.chkAcRepair = (params.get("acrepair") === "1");
+        urlPatch.shopMode = params.get("shopmode") || "";
+        urlPatch.shopQty = params.get("shopqty") || "1";
         urlPatch.chkAcOutdoor = (params.get("acout") === "1");
         urlPatch.chkAcSteam = (params.get("acsteam") === "1");
         urlPatch.chkValve24 = (params.get("v24") === "1");
         urlPatch.chkMpvElec = (params.get("mpvelec") === "1");
         urlPatch.chkMpvUrgent = (params.get("mpvurg") === "1");
-        if (params.get("custn") !== null) urlPatch.customName = params.get("custn");
-        if (params.get("custp") !== null) urlPatch.customPrice = params.get("custp");
         if (params.get("tax") !== null) urlPatch.chkTax = (params.get("tax") === "1");
         saveQuoteDraft(urlPatch);
       } else if (fromParamVal === "shop") {
@@ -3043,6 +2990,8 @@
         const urlPatch = {
           displayMode: "ab_compare",
           region: params.get("reg") || "台北市 / 新北市",
+          shopMode: shopMode === "rp258_combo" ? "rp258_with_ac" : (shopMode === "chlorine_ct_combo" ? "chlorine_with_ct" : shopMode),
+          shopQty: params.get("qty") || "1",
           chkTax: (params.get("tax") !== null) ? (params.get("tax") === "1") : true
         };
         if (shopMode === "rp258_standalone") {
@@ -3050,7 +2999,7 @@
           urlPatch.chkAddMpv = true;
           urlPatch.mpvSpec = "rp258_install";
           urlPatch.mpvTier = "tier_std";
-          urlPatch.mpvQty = params.get("qty") || "1";
+          urlPatch.mpvQty = "1";
           urlPatch.chkChlorine25kg = false;
         } else if (shopMode === "rp258_combo" || shopMode === "rp258_with_ac") {
           urlPatch.serviceCategory = "ac_cleaning";
@@ -3082,7 +3031,7 @@
           urlPatch.chkAddMpv = true;
           urlPatch.mpvSpec = "rp258_install";
           urlPatch.mpvTier = "tier_std";
-          urlPatch.mpvQty = params.get("qty") || "1";
+          urlPatch.mpvQty = "1";
           urlPatch.chkChlorine25kg = true;
         }
         saveQuoteDraft(urlPatch);
@@ -3142,7 +3091,8 @@
         if (params.get("actype")) urlPatch.acType = params.get("actype");
         if (params.get("acqty")) urlPatch.acQty = params.get("acqty");
         if (params.get("acdrain") !== null) urlPatch.chkAcDrain = (params.get("acdrain") === "1");
-        if (params.get("acmpv") === "1") { urlPatch.chkAddMpv = true; urlPatch.mpvSpec = (urlPatch.acType === "ahu") ? "ahu_overhaul" : ((urlPatch.acType === "fcu" || urlPatch.acType === "cassette") ? "fcu_repair" : "split_major"); urlPatch.mpvTier = "tier_std"; } else { urlPatch.chkAddMpv = false; }
+        urlPatch.chkAcRepair = (params.get("acmpv") === "1");
+        urlPatch.chkAddMpv = false;
         if (params.get("acout") !== null) urlPatch.chkAcOutdoor = (params.get("acout") === "1");
         if (params.get("acsteam") !== null) urlPatch.chkAcSteam = (params.get("acsteam") === "1");
         if (params.get("tax") !== null) urlPatch.chkTax = (params.get("tax") === "1");
@@ -3219,7 +3169,7 @@
     if (btnCopyLine) {
       btnCopyLine.addEventListener("click", function () {
         const text = renderQuotation(true);
-        copyAndOpenLine(text, "【皓盛有限公司 統編90221911 正式工程報價單】");
+        copyAndOpenLine(text, "【皓盛有限公司 統編90221911 估價試算單】");
       });
     }
     const btnShareLink = document.getElementById("btn-q-share-url");
@@ -3228,11 +3178,34 @@
         renderQuotation(true);
         const snap = persistCurrentQuoteState();
         const url = buildShareableQuoteUrl(snap);
-        fallbackCopyText(url);
-        if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
-          navigator.clipboard.writeText(url).catch(function () {});
+        const manualBox = document.getElementById("quote-share-fallback");
+        const manualField = document.getElementById("quote-share-link-value");
+        if (manualBox) manualBox.hidden = true;
+        if (manualField) manualField.value = url;
+        const syncCopied = fallbackCopyText(url);
+        let copyConfirmed = false;
+        function confirmCopy() {
+          if (copyConfirmed) return;
+          copyConfirmed = true;
+          if (manualBox) manualBox.hidden = true;
+          showToast("✓ 已複製規格與金額連結；不含客戶資料及自訂項目名稱，開啟後請另填。");
         }
-        showToast("✓ 已複製「報價單一鍵還原專屬連結」！可貼給主委、採購或李先生直接開啟。");
+        function showManualCopy() {
+          if (copyConfirmed) return;
+          if (manualBox) manualBox.hidden = false;
+          if (manualField) {
+            try { manualField.focus(); manualField.select(); } catch (err) {}
+          }
+          showToast("瀏覽器未允許自動複製；請複製下方顯示的連結。");
+        }
+        if (syncCopied) confirmCopy();
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+          try {
+            navigator.clipboard.writeText(url).then(confirmCopy, showManualCopy);
+          } catch (err) { showManualCopy(); }
+        } else if (!syncCopied) {
+          showManualCopy();
+        }
       });
     }
     const btnLiveJump = document.getElementById("btn-qp-live-jump");
@@ -3304,7 +3277,7 @@
 
 
   // ============================================================================
-  // 3D. 第五引擎：機電嚴選商城（瑞林 RP-258 排水器到府安裝 ＆ 25kg 桶裝強效氯錠）試算器 (v24.0)
+  // 3D. 第五引擎：機電嚴選商城（瑞林 RP-258 排水器到府安裝 ＆ 25kg 桶裝氯錠（用途與標示待確認））試算器 (v24.0)
   // ============================================================================
   function initShopCalculator() {
     const form = document.getElementById("shop-calc-form");
@@ -3340,9 +3313,9 @@
         let tot = 3500 * qty;
         if (includeTax) tot = Math.round(tot * 1.05);
         priceStr = "NT$ " + tot.toLocaleString() + " 元（" + (includeTax ? "含 5% 營業稅" : "未稅") + "｜連工帶料到府完工價）";
-        deliveryStr = "正職冷氣機電師傅專車到府換裝 Realise 瑞林 RP-258（2.1kg重型蔽極式馬達）＋ 高壓疏通 2 分排水管果凍淤泥（約 1.0~1.5 小時）";
-        bonusStr = "★ 免費贈送全室冷氣空調健康診斷（出風溫差 ΔT、風鼓黑黴與電容檢測）！若當場決定加洗冷氣，RP-258 現折 $1,000（僅收 $2,500）！";
-        itemTitle = "Realise 瑞林 RP-258 冷氣排水器到府安裝＋通排水管＋全室冷氣免費健檢（共 " + qty + " 組）";
+        deliveryStr = "RP-258 排水器到府安裝及排水管檢查；設備適配、工法與工時待現場確認";
+        bonusStr = "可洽詢冷氣檢查及合併清洗方案；實際範圍另行確認。排水器單獨與合併方案依原試算價格列示。";
+        itemTitle = "Realise 瑞林 RP-258 冷氣排水器到府安裝＋通排水管＋全室冷氣檢查項目待確認（共 " + qty + " 組）";
       } else if (mode === "rp258_with_ac") {
         let baseB = 10000 + (2200 * qty);
         let baseA = 12500 + (2500 * qty);
@@ -3351,16 +3324,16 @@
           baseA = Math.round(baseA * 1.05);
         }
         priceStr = "平日併單 NT$ " + baseB.toLocaleString() + " ／ 指定專車 NT$ " + baseA.toLocaleString() + "（" + (includeTax ? "含 5% 稅" : "未稅") + "）";
-        deliveryStr = "雙人正職機電工程車到府：含 4 台內分離式冷氣深層拆洗包套 ＋ 同日順換瑞林 RP-258 排水器（已現折 $1,000~$1,300/組！）";
-        bonusStr = "★ 徹底根治集水盤果凍狀生物膜與排水器卡死問題，享洗後冷氣不滴水與 RP-258 雙重保固！";
+        deliveryStr = "機電工程車到府：含 4 台內分離式冷氣深層拆洗包套 ＋ 同日順換瑞林 RP-258 排水器（已現折 $1,000~$1,300/組！）";
+        bonusStr = "冷氣排水與排水器問題須先查明原因；施工範圍及後續服務條件另行確認。";
         itemTitle = "冷氣深層拆洗包套 ＋ 順換瑞林 RP-258 排水器（" + qty + " 組・已折抵出車費）";
       } else if (mode === "chlorine_only") {
         let tot = 3200 * qty;
         if (includeTax) tot = Math.round(tot * 1.05);
         priceStr = "NT$ " + tot.toLocaleString() + " 元（" + (includeTax ? "含 5% 營業稅" : "未稅") + "｜已含每桶 $500 貨運宅配費）";
-        deliveryStr = "大榮／新竹貨運重物宅配直送貴社區管理室、商場收發室或工廠倉庫（每桶 25 公斤原裝防潮大桶）";
-        bonusStr = "💡 若改為預約皓盛『洗冷卻水塔／洗自來水塔』由工程車順載，每桶直接省下 $520 運費（特惠 $2,680/桶）！";
-        itemTitle = "單買 25 公斤大桶裝 90% TCCA 長效慢溶強效氯錠（共 " + qty + " 桶・含貨運宅配）";
+        deliveryStr = "25kg 原規格配送試算；庫存、包裝、交付地點、配送方式與承運條件均待確認";
+        bonusStr = "原設定單購 $3,200、合併方案 $2,680，每桶價差 $520；此為方案價差，不視為已確認的運費或可承運保證。";
+        itemTitle = "單買 25 公斤大桶裝 90% TCCA 氯錠（用途與標示待確認）（共 " + qty + " 桶・含貨運宅配）";
       } else if (mode === "chlorine_with_ct") {
         let baseB = 10500 + (2680 * qty);
         let baseA = 13000 + (2680 * qty);
@@ -3368,10 +3341,10 @@
           baseB = Math.round(baseB * 1.05);
           baseA = Math.round(baseA * 1.05);
         }
-        priceStr = "平日併單 NT$ " + baseB.toLocaleString() + " ／ 指定專車 NT$ " + baseA.toLocaleString() + "（含 100RT 水塔清洗＋" + qty + "桶氯錠免運）";
-        deliveryStr = "雙人正職機電工程車到場執行冷卻水塔 LOTO 斷電清洗保養，並順車免運載送 25kg 強效氯錠至機房（每桶僅 $2,680！）";
-        bonusStr = "★ 除垢吸泥＋長效抑菌除藻一次到位！師傅現場免費幫您依水塔 RT 噸數精算每週氯錠投放量與點檢蝴蝶閥。";
-        itemTitle = "商用空調冷卻水塔清洗保養 ＋ 順車免運加購 25kg 強效氯錠（" + qty + " 桶）";
+        priceStr = "平日併單 NT$ " + baseB.toLocaleString() + " ／ 指定專車 NT$ " + baseA.toLocaleString() + "（含 100RT 水塔清洗＋" + qty + "桶氯錠，配送待確認）";
+        deliveryStr = "冷卻水塔清洗與 25kg 氯錠合併方案試算；產品用途及配送條件須分別確認（氯錠沿用每桶 $2,680）";
+        bonusStr = "藥劑用途、標示、水質及現場條件須先確認，不提供僅依 RT 噸數推定的投藥量。";
+        itemTitle = "商用空調冷卻水塔清洗保養 ＋ 合併方案加購 25kg 氯錠（用途與標示待確認）（" + qty + " 桶）";
       } else if (mode === "chlorine_with_wt") {
         let baseB = 17500 + (2680 * qty);
         let baseA = 23000 + (2680 * qty);
@@ -3379,28 +3352,28 @@
           baseB = Math.round(baseB * 1.05);
           baseA = Math.round(baseA * 1.05);
         }
-        priceStr = "平日併單 NT$ " + baseB.toLocaleString() + " ／ 指定專車 NT$ " + baseA.toLocaleString() + "（含標準社區洗水塔＋" + qty + "桶氯錠免運）";
-        deliveryStr = "法定 3 人局限空間編制清洗社區上下水池（免費測餘氯/pH/TDS＋$4,500機電健檢），並順車免運配送 25kg 強效氯錠（$2,680/桶）";
-        bonusStr = "★ 免除 $500 重物貨運費，一次備妥社區水池、景觀池或冷卻塔全年消毒除藻耗材！";
-        itemTitle = "社區大樓自來水塔清洗消毒 ＋ 順車免運加購 25kg 強效氯錠（" + qty + " 桶）";
+        priceStr = "平日併單 NT$ " + baseB.toLocaleString() + " ／ 指定專車 NT$ " + baseA.toLocaleString() + "（含標準社區洗水塔＋" + qty + "桶氯錠，配送待確認）";
+        deliveryStr = "水池清洗與氯錠分開評估用途；沿用每桶 $2,680 的合併試算，不表示適用於飲用水儲水設備，實際配送待確認";
+        bonusStr = "工業用氯錠不可直接套用於飲用水儲水設備，產品用途與交付條件須先確認。";
+        itemTitle = "社區大樓自來水塔清洗消毒 ＋ 合併方案加購 25kg 氯錠（用途與標示待確認）（" + qty + " 桶）";
       } else {
         let tot = (3500 * qty) + (2680 * qty);
         if (includeTax) tot = Math.round(tot * 1.05);
-        priceStr = "NT$ " + tot.toLocaleString() + " 元（" + (includeTax ? "含 5% 營業稅" : "未稅") + "｜RP-258 到府安裝＋順載 25kg 氯錠免運）";
-        deliveryStr = "冷氣師傅專車到府換裝瑞林 RP-258 排水器（含通管與冷氣健檢），並同車免運順載 25kg 桶裝強效氯錠（現省 $520 運費！）";
-        bonusStr = "★ 一趟工程車同時解決室內冷氣滴水與頂樓水塔除藻備品，再送全室空調與水塔機電免費巡檢！";
-        itemTitle = "瑞林 RP-258 冷氣排水器到府安裝 ＋ 同車免運順載 25kg 強效氯錠（各 " + qty + " 組/桶）";
+        priceStr = "NT$ " + tot.toLocaleString() + " 元（" + (includeTax ? "含 5% 營業稅" : "未稅") + "｜RP-258 到府安裝＋順載 25kg 氯錠，配送待確認）";
+        deliveryStr = "RP-258 安裝與 25kg 氯錠合併方案試算；設備適配、施工範圍與藥劑配送條件須分別確認";
+        bonusStr = "可一併洽詢冷氣排水與水系統需求；實際診斷、服務範圍及費用須另行確認。";
+        itemTitle = "瑞林 RP-258 冷氣排水器到府安裝 ＋ 合併方案順載 25kg 氯錠（用途與標示待確認）（各 " + qty + " 組/桶）";
       }
 
       if (outPrice) outPrice.textContent = priceStr;
       if (outDelivery) outDelivery.textContent = deliveryStr;
       if (outBonus) outBonus.textContent = bonusStr;
 
-      const summary = "【皓盛機電商城：瑞林RP-258排水器安裝 ＆ 25kg強效氯錠採購】" +
+      const summary = "【皓盛機電商城：瑞林RP-258排水器安裝 ＆ 25kg氯錠（用途與標示待確認）採購】" +
         "\n📍 地區：" + reg +
         "\n🛒 選購方案：" + itemTitle +
         "\n🚚 交付與施工：" + deliveryStr +
-        (freeInspect ? "\n🔍 免費健檢：已勾選請師傅順便提供冷氣空調／冷卻水塔專業診斷建議" : "") +
+        (freeInspect ? "\n🔍 檢查項目待確認：已勾選請師傅順便提供冷氣空調／冷卻水塔專業診斷建議" : "") +
         "\n💰 預估金額：" + priceStr;
 
       if (outSummary) {
