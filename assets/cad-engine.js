@@ -1766,116 +1766,15 @@
       elDocNo.value = "HS-" + yyyy + mm + dd + "-01";
     }
 
-    /*
-     * 離線標準 A4 可列印寬度 (733px) 真實列印高度量測：
-     * 統一透過套用 `.hs-print-sim-sheet` 列印度量衡之離線分身精準量測，消除桌機與手機的高度誤差
-     */
-    function measureTrueA4Height() {
-      if (!paperSheet || !document.body) return 0;
-      let sandbox = document.getElementById("hs-a4-measure-sandbox");
-      if (!sandbox) {
-        sandbox = document.createElement("div");
-        sandbox.id = "hs-a4-measure-sandbox";
-        sandbox.className = "hs-print-sim-sandbox";
-        sandbox.setAttribute("aria-hidden", "true");
-        sandbox.style.cssText =
-          "position:fixed;top:-9999px;left:-9999px;width:" + A4_PRINTABLE_WIDTH_PX +
-          "px;visibility:hidden;pointer-events:none;z-index:-1;overflow:hidden;";
-        document.body.appendChild(sandbox);
-      }
-      const clone = paperSheet.cloneNode(true);
-      clone.removeAttribute("id");
-      clone.classList.add("hs-print-sim-sheet");
-      clone.style.width = A4_PRINTABLE_WIDTH_PX + "px";
-      clone.style.padding = "0";
-      clone.style.margin = "0";
-      clone.style.boxShadow = "none";
-      clone.style.border = "none";
-      clone.style.zoom = "1";
-      clone.style.transform = "none";
-
-      // 強制分身內的雙欄網格比照 @media print 雙欄並排
-      const metaGrids = clone.querySelectorAll(".qp-meta-grid");
-      metaGrids.forEach(function (g) { g.style.gridTemplateColumns = "1.35fr 1fr"; });
-      const totalGrids = clone.querySelectorAll(".qp-total-grid");
-      totalGrids.forEach(function (g) { g.style.gridTemplateColumns = "repeat(2, minmax(0, 1fr))"; });
-      const signGrids = clone.querySelectorAll(".qp-sign-grid");
-      signGrids.forEach(function (g) { g.style.gridTemplateColumns = "1.25fr 1fr"; });
-
-      sandbox.innerHTML = "";
-      sandbox.appendChild(clone);
-      const trueHeight = clone.scrollHeight || 0;
-      sandbox.innerHTML = "";
-      return trueHeight;
-    }
-
-    /*
-     * 智慧單頁 A4 鎖定引擎：
-     * 當密度從 normal 升級至 compact 或 ultra 時，先重新量測新密度下的真實高度，
-     * 僅當升級密度後高度仍超過 A4_SAFE_HEIGHT_PX 時才計算 CSS zoom
-     */
+    // Keep readable A4 typography. Long estimates may span pages; never shrink or clip content.
     function autoFitSinglePagePDF(itemCount, extraTextLength) {
       if (!paperSheet) return;
-      let density = "normal";
-      let zoomFactor = 1.0;
-      const effectiveLoad = itemCount + (extraTextLength > 65 ? 1 : 0);
-
-      if (effectiveLoad >= 10) {
-        density = "mega";
-        zoomFactor = 0.92;
-      } else if (effectiveLoad >= 8) {
-        density = "ultra";
-        zoomFactor = Math.max(0.84, 1.0 - (effectiveLoad - 7) * 0.025);
-      } else if (effectiveLoad >= 5) {
-        density = "compact";
-        zoomFactor = Math.max(0.92, 1.0 - (effectiveLoad - 4) * 0.015);
-      } else {
-        density = "normal";
-        zoomFactor = 1.0;
-      }
-
-      paperSheet.setAttribute("data-density", density);
+      paperSheet.setAttribute("data-density", "normal");
       paperSheet.setAttribute("data-item-count", String(itemCount));
-
-      // 第 1 次量測：檢查當前密度下的標準 A4 列印高度
-      let renderedHeight = measureTrueA4Height();
-
-      // 依序升級密度等級（normal -> compact -> ultra -> mega），先靠排版壓縮減少高度，避免無謂縮小字體
-      if (renderedHeight > A4_SAFE_HEIGHT_PX && density === "normal") {
-        density = "compact";
-        paperSheet.setAttribute("data-density", density);
-        renderedHeight = measureTrueA4Height();
-      }
-      if (renderedHeight > A4_SAFE_HEIGHT_PX && density === "compact") {
-        density = "ultra";
-        paperSheet.setAttribute("data-density", density);
-        renderedHeight = measureTrueA4Height();
-      }
-      if (renderedHeight > A4_SAFE_HEIGHT_PX && density === "ultra") {
-        density = "mega";
-        paperSheet.setAttribute("data-density", density);
-        renderedHeight = measureTrueA4Height();
-      }
-
-      // 若升級至最高密度 mega 後高度仍超過 A4_SAFE_HEIGHT_PX (985px)，依真實高度比精準微縮，嘗試縮減頁數，仍須實際列印驗證
-      if (renderedHeight > A4_SAFE_HEIGHT_PX) {
-        const heightRatio = A4_SAFE_HEIGHT_PX / renderedHeight;
-        const safeRatio = Math.floor(heightRatio * 100) / 100;
-        zoomFactor = Math.max(0.48, Math.min(zoomFactor, safeRatio));
-      } else {
-        zoomFactor = 1.0;
-      }
-
-      const zoomStr = zoomFactor.toFixed(2);
-      document.documentElement.style.setProperty("--qp-print-zoom", zoomStr);
-      paperSheet.style.setProperty("--qp-print-zoom", zoomStr);
-
+      document.documentElement.style.setProperty("--qp-print-zoom", "1");
+      paperSheet.style.setProperty("--qp-print-zoom", "1");
       if (statusText) {
-        const pct = Math.round(zoomFactor * 100);
-        const modeDesc = density === "mega"
-          ? "極限多工項單頁模式"
-          : (density === "ultra" ? "超緊湊單頁模式" : (density === "compact" ? "緊湊單頁模式" : "標準單頁模式"));
-        statusText.textContent = "A4 排版預覽：目前共 " + itemCount + " 個工項，適配比例 " + pct + "%；請在列印預覽確認頁數、字級及內容完整性。";
+        statusText.textContent = "A4 排版預覽：目前共 " + itemCount + " 個工項；依內容自然分頁，請在列印預覽確認頁數與內容完整性。";
       }
     }
 
