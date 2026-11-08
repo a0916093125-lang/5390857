@@ -1771,10 +1771,15 @@
       if (!paperSheet) return;
       paperSheet.setAttribute("data-density", "normal");
       paperSheet.setAttribute("data-item-count", String(itemCount));
+      // Conservative content-density hint, not a promise of exact page count.
+      // Keep all text and readable font sizes; compact only vertical whitespace.
+      const contentLength = String(paperSheet.textContent || "").replace(/\s/g, "").length;
+      const compact = itemCount >= 4 || contentLength > 1500 || extraTextLength > 180;
+      paperSheet.setAttribute("data-print-layout", compact ? "compact" : "standard");
       document.documentElement.style.setProperty("--qp-print-zoom", "1");
       paperSheet.style.setProperty("--qp-print-zoom", "1");
       if (statusText) {
-        statusText.textContent = "A4 排版預覽：目前共 " + itemCount + " 個工項；依內容自然分頁，請在列印預覽確認頁數與內容完整性。";
+        statusText.textContent = "A4 排版預覽：目前共 " + itemCount + " 個工項，採" + (compact ? "緊湊間距" : "標準間距") + "優先排入一頁；維持可讀字級，內容較多時自動分頁，請確認列印預覽。";
       }
     }
 

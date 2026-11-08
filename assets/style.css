@@ -2565,3 +2565,31 @@ h1.main-title {
   body.quote-print-page .qp-red-stamp { flex-shrink: 0; }
   body.quote-print-page .qp-meta-val { overflow-wrap: anywhere; }
 }
+
+
+/* Content-adaptive spacing only: no tiny text, clipping, or forced one-page promise. */
+@media print {
+  body.quote-print-page .quote-paper-sheet[data-print-layout="compact"] .qp-header {
+    padding-bottom: 4px !important; margin-bottom: 5px !important; gap: 6px !important;
+  }
+  body.quote-print-page .quote-paper-sheet[data-print-layout="compact"] .qp-meta-grid {
+    padding: 4px 8px !important; margin-bottom: 5px !important; gap: 3px 10px !important;
+  }
+  body.quote-print-page .quote-paper-sheet[data-print-layout="compact"] .qp-table th,
+  body.quote-print-page .quote-paper-sheet[data-print-layout="compact"] .qp-table td {
+    padding: 3px 4px !important; line-height: 1.22 !important;
+  }
+  body.quote-print-page .quote-paper-sheet[data-print-layout="compact"] .qp-table-wrap,
+  body.quote-print-page .quote-paper-sheet[data-print-layout="compact"] .qp-summary-box,
+  body.quote-print-page .quote-paper-sheet[data-print-layout="compact"] .qp-compliance-box {
+    margin-bottom: 5px !important;
+  }
+  body.quote-print-page .quote-paper-sheet[data-print-layout="compact"] .qp-plan-card,
+  body.quote-print-page .quote-paper-sheet[data-print-layout="compact"] .qp-summary-box,
+  body.quote-print-page .quote-paper-sheet[data-print-layout="compact"] .qp-compliance-box {
+    padding: 4px 8px !important;
+  }
+  body.quote-print-page .quote-paper-sheet[data-print-layout="compact"] .qp-sign-grid {
+    padding-top: 5px !important; gap: 8px !important;
+  }
+}
