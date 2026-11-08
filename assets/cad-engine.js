@@ -2583,6 +2583,20 @@ window.hsPendingPrice = function () { return ''; };
           }
         });
         outTbody.innerHTML = rowsHtml.join("");
+        // Preserve the same table and values; labels support a readable stacked screen layout.
+        const headings = Array.from(outThead.querySelectorAll('th'));
+        outTbody.closest('table').setAttribute('role', 'table');
+        outThead.setAttribute('role', 'rowgroup');
+        outTbody.setAttribute('role', 'rowgroup');
+        outThead.querySelector('tr').setAttribute('role', 'row');
+        headings.forEach(function (heading) { heading.scope = 'col'; heading.setAttribute('role', 'columnheader'); });
+        Array.from(outTbody.rows).forEach(function (row) {
+          row.setAttribute('role', 'row');
+          Array.from(row.cells).forEach(function (cell, i) {
+            cell.setAttribute('role', 'cell');
+            cell.setAttribute('data-column-label', headings[i] ? headings[i].textContent.trim() : '');
+          });
+        });
       }
 
       // 渲染總金額彙整區（含國字大寫金額）
