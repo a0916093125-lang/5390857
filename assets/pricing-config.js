@@ -65,10 +65,13 @@ window.HS_PRICING_CONFIG = {
     chlorineTablet25kg: {
       sku: "HS-TCCA90-25KG",
       name: "25公斤 TCCA 氯錠（原設定規格，實際用途與標示待確認）",
-      shippedPrice: 3200,
-      withServiceTruckPrice: 2680,
+      productPrice: 2900,
+      freightPerBucket: 500,
+      shippedPrice: 3400,
+      withServiceTruckPrice: 2900,
+      freeShippingService: "cooling_tower",
       sellHardwareOnly: true,
-      note: "單購每桶 $3,200／搭配工程每桶 $2,680，合併交付省運費。庫存、產品標示、安全資料、用途及配送承運條件須另行確認，不可逕用於飲用水儲水設備。"
+      note: "氯錠每桶 $2,900，運費每桶 $500；單購每桶 $3,400，僅搭配空調冷卻水塔清洗免運。庫存、產品標示、安全資料、用途及配送承運條件須另行確認，不可逕用於飲用水儲水設備。"
     }
   },
   addons: {
@@ -80,7 +83,7 @@ window.HS_PRICING_CONFIG = {
     ctSprinklerAddon: { priceA: 6000,  priceB: 4500 },
     tecoInverter:     { priceA: 4500,  priceB: 4200 },
     sgsLabTest:       { priceA: 3500,  priceB: 3000 },
-    chlorine25kg:     { standalonePrice: 3200, withServicePrice: 2680 },
+    chlorine25kg:     { standalonePrice: 3400, productPrice: 2900, freightPerBucket: 500, withServicePrice: 2900, freeShippingService: "cooling_tower" },
     acDrainPump:      { priceA: 2500,  priceB: 2200, standaloneA: 3500, standaloneB: 3500 },
     acOutdoorWash:    { priceA: 2000,  priceB: 1600 },
     acSteamOzone:     { priceA: 1800,  priceB: 1500 },
