@@ -14,13 +14,8 @@
  *    - 升級 [冷卻水塔專家 C3]：200RT~500RT+ 大型冷卻水塔納入「減速齒輪箱(Gear Reducer)／多溝皮帶點檢」與「底盤吸水濾網及管路 Y 型過濾器清洗」
  */
 
-window.hsPendingPrice = function () {
- const el=id=>document.getElementById(id), val=id=>el(id)?.value||'', checked=id=>!!(el(id)?.checked&&!el(id)?.disabled);
- const cat=val('q-service-category'), mode=val('shop-item-select');
- if(cat==='shop_chlorine'||/chlorine|both_shop_items/.test(mode)||['chk-wt-chlorine','ct-chk-chlorine','q-chk-chlorine-25kg'].some(checked)) return '氯錠價格與配送條件需由公司確認，暫不產生金額報價。請透過右下角 LINE 提供需求詢價。';
- if((el('mpv-calc-form')&&Number(val('mpv-qty'))>1)||((cat==='mpv_repair'||checked('q-chk-add-mpv'))&&Number(val('q-mpv-qty'))>1&&!['rp258_standalone','both_shop_items'].includes(val('q-shop-mode')))) return '多件設備維修的數量優惠需由公司確認，暫不產生金額報價。請透過右下角 LINE 提供數量與規格詢價。';
- return '';
-};
+// Pricing policy confirmed by the owner: chlorine standalone 3200, with work 2680; repair quantities >=2 are 10% off all repair units.
+window.hsPendingPrice = function () { return ''; };
 (function () {
   "use strict";
 
@@ -655,7 +650,7 @@ window.hsPendingPrice = function () {
       }
       if (chkWtChlorine && chkWtChlorine.checked) {
         basePrice += 2680;
-        addons.push("順載 25公斤大桶裝 90% TCCA 氯錠（用途與標示待確認）（原合併方案報價 +NT$2,680/桶；用途、交付方式與費用待確認）");
+        addons.push("順載 25公斤大桶裝 90% TCCA 氯錠（用途與標示待確認）（搭配工程 +NT$2,680/桶，合併交付省運費；用途與承運條件須確認）");
       }
       if (chkCool && chkCool.checked) {
         const coolPrice = isPriority ? 7000 : 5500;
@@ -966,7 +961,7 @@ window.hsPendingPrice = function () {
       }
       if (chkCtChlorine && chkCtChlorine.checked) {
         basePrice += 2680;
-        addons.push("順載 25公斤大桶裝 90% TCCA 氯錠（用途與標示待確認）（原合併方案報價 +NT$2,680/桶；用途、交付方式與費用待確認）");
+        addons.push("順載 25公斤大桶裝 90% TCCA 氯錠（用途與標示待確認）（搭配工程 +NT$2,680/桶，合併交付省運費；用途與承運條件須確認）");
       }
 
       let maxPrice = Math.round(basePrice * 1.18);
@@ -1602,10 +1597,7 @@ window.hsPendingPrice = function () {
       const tierCfg = specCfg.tiers[tierKey] || specCfg.tiers.tier_std;
       const qtyNum = clampNumber(qtySelect ? qtySelect.value : 1, 1, 10, 1);
 
-      let discountFactor = 1.0;
-      if (qtyNum === 2) discountFactor = 0.90;
-      else if (qtyNum === 3) discountFactor = 0.88;
-      else if (qtyNum >= 4) discountFactor = 0.85;
+      const discountFactor = qtyNum >= 2 ? 0.90 : 1;
 
       // 每一檔位 (tier_std / tier_mid / tier_heavy) 均嚴格遞增，並隨 指定時間方案 / 平日順路方案 動態切換
       let lowPrice = Math.round((isPriority ? tierCfg.minA : tierCfg.minB) * qtyNum * discountFactor);
@@ -2306,10 +2298,7 @@ window.hsPendingPrice = function () {
         const tierKey = (elMpvTier && mCfg.tiers[elMpvTier.value]) ? elMpvTier.value : "tier_std";
         const tCfg = mCfg.tiers[tierKey] || mCfg.tiers.tier_std;
         const mQty = isShopInstall ? shopQty : clampNumber(elMpvQty ? elMpvQty.value : 1, 1, 10, 1);
-        let disc = 1.0;
-        if (mQty === 2) disc = 0.90;
-        else if (mQty === 3) disc = 0.88;
-        else if (mQty >= 4) disc = 0.85;
+        const disc = mQty >= 2 ? 0.90 : 1;
 
         const pA = isShopInstall ? 3500 * mQty : Math.round(tCfg.qA * mQty * disc);
         const pB = isShopInstall ? 3500 * mQty : Math.round(tCfg.qB * mQty * disc);
@@ -2317,7 +2306,7 @@ window.hsPendingPrice = function () {
 
         items.push({
           title: prefixTag + mCfg.name + "（" + tCfg.label + "｜基準級距 " + mCfg.rangeLabel + "）",
-          spec: mCfg.spec + (isMpvStandalone ? "" : "｜與清洗保養工程同日施作，檢測與出工費另確認"),
+          spec: mCfg.spec + (!isShopInstall && mQty >= 2 ? "｜同項維修滿2件，全部維修件數打9折（不含其他加購或清洗費）" : "") + (isMpvStandalone ? "" : "｜與清洗保養工程同日施作，檢測與出工費另確認"),
           unit: mQty + " " + mCfg.unitName,
           priceA: pA,
           priceB: pB
@@ -2411,10 +2400,10 @@ window.hsPendingPrice = function () {
       if (cat === "shop_chlorine") {
         items.push({
           title: "工業級 90% TCCA 氯錠（用途與標示待確認）（25 公斤原裝密封大桶）",
-          spec: "25kg TCCA 氯錠加購報價；實際標示、用途、安全資料及承運條件待確認，不可逕用於飲用水設備",
+          spec: "25kg TCCA 氯錠單購每桶 $3,200；實際標示、用途、安全資料及承運條件待確認，不可逕用於飲用水設備",
           unit: shopQty + " 桶(25kg)",
           priceA: 3200 * shopQty,
-          priceB: 2680 * shopQty
+          priceB: 3200 * shopQty
         });
         items.push({
           title: "【洽詢項目】水系統與藥劑使用條件評估",
@@ -2426,17 +2415,17 @@ window.hsPendingPrice = function () {
         });
       }
       if (cat !== "shop_chlorine" && chkChlorine25kg && chkChlorine25kg.checked) {
-        const isWithTankTruck = (isWtActive || isCtActive || shopMode === "both_shop_items");
+        const isWithTankTruck = isWtActive || isCtActive || isAcActive || isMpvActive;
         items.push({
           title: isWithTankTruck
-            ? "【水塔工程合併方案特惠】工業級 90% TCCA 氯錠（用途與標示待確認）（25公斤大桶裝）"
+            ? "【搭配工程合併交付】工業級 90% TCCA 氯錠（用途與標示待確認）（25公斤大桶裝）"
             : "工業級 90% TCCA 氯錠（用途與標示待確認）（25公斤大桶裝｜配送條件待確認）",
           spec: isWithTankTruck
-            ? "依原合併方案報價；實際產品用途、配送方式及承運條件待確認，不表示可用於飲用水設備"
-            : "單購 指定時間方案每桶 $3,200／平日順路方案每桶 $2,680；產品標示、用途、安全資料及配送條件另行確認",
+            ? "搭配工程每桶 $2,680，合併交付節省運費；產品用途及承運條件須確認，不表示可用於飲用水設備"
+            : "單購每桶 $3,200，不因排程改變；產品標示、用途、安全資料及配送條件另行確認",
           unit: shopQty + " 桶(25kg)",
           priceA: (isWithTankTruck ? 2680 : 3200) * shopQty,
-          priceB: 2680 * shopQty
+          priceB: (isWithTankTruck ? 2680 : 3200) * shopQty
         });
       }
       if (isAcActive && chkAcDrain && chkAcDrain.checked && !(isMpvActive && elMpvSpec && elMpvSpec.value === "rp258_install")) {
@@ -3311,7 +3300,7 @@ window.hsPendingPrice = function () {
         if (includeTax) tot = Math.round(tot * 1.05);
         priceStr = "NT$ " + tot.toLocaleString() + " 元（" + (includeTax ? "含 5% 營業稅" : "未稅") + "｜配送方式與費用另行確認）";
         deliveryStr = "25kg 氯錠交付評估；庫存、包裝、交付地點、配送方式與承運條件均待確認";
-        bonusStr = "單購報價 $3,200、合併方案 $2,680，每桶價差 $520；此為方案價差，不視為已確認的運費或可承運保證。";
+        bonusStr = "單購每桶 $3,200；搭配工程合併交付每桶 $2,680，節省運費。產品用途及承運條件仍須確認。";
         itemTitle = "單買 25 公斤大桶裝 90% TCCA 氯錠（用途與標示待確認）（共 " + qty + " 桶・配送另行確認）";
       } else if (mode === "chlorine_with_ct") {
         let baseB = 10500 + (2680 * qty);
