@@ -1,9 +1,11 @@
 name: Isolated compact consent audit
 on:
-  pull_request:
+  push:
+    branches:
+      - 'qa/consent-remember-20261108'
     paths:
       - '.qa/**'
-      - '.github/workflows/consent-audit.yml'
+      - '.github/workflows/consent-privacy-audit.yml'
 permissions:
   contents: read
 jobs:
