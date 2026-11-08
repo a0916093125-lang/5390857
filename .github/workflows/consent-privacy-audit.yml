@@ -1,0 +1,28 @@
+name: Isolated compact consent audit
+on:
+  pull_request:
+    paths:
+      - '.qa/**'
+      - '.github/workflows/consent-audit.yml'
+permissions:
+  contents: read
+jobs:
+  runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-save --ignore-scripts playwright@1.56.1
+      - run: npx playwright install --with-deps chromium
+      - run: node .qa/runtime.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: consent-runtime-audit
+          path: |
+            consent-audit.json
+            consent-*.png
+          retention-days: 7
