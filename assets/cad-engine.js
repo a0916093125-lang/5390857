@@ -293,7 +293,7 @@
   /* 一鍵複製並開啟 LINE（先執行同步複製確保手勢不中斷，再非同步雙重寫入剪貼簿） */
   function copyAndOpenLine(summaryText, customHeader) {
     const header = customHeader || "【皓盛官網 5390857.com 線上工程試算詢價】";
-    const fullText = header + "\n" + summaryText + "\n請李先生協助評估現場檔期與估價試算單！";
+    const fullText = header + "\n" + summaryText + "\n請李先生協助評估現場檔期與報價單！";
 
     const syncCopied = fallbackCopyText(fullText);
     if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
@@ -2038,7 +2038,7 @@
       if (outContact) outContact.textContent = contactPerson;
       if (outAddr) outAddr.textContent = clientAddr;
       if (outDocNo) outDocNo.textContent = docNo;
-      if (outDocDate) outDocDate.textContent = docDate + "（估價試算）";
+      if (outDocDate) outDocDate.textContent = docDate + "（報價單）";
 
       const items = [];
 
@@ -2600,8 +2600,8 @@
         outComplianceArea.innerHTML =
           "<div style='font-weight:900;color:#0369a1;margin-bottom:2px;font-size:0.84rem;'>施工前確認事項</div>" +
           "<ol style='padding-left:16px;margin:0;'>" +
-          "<li><strong>範圍與報價</strong>：本頁為估價試算。實際設備、料件、施工範圍、排程、驗收、付款及保固條件，須由雙方另以書面確認；不以此頁推定承諾。</li>" +
-          "<li><strong>作業安全</strong>：進場方式、人員配置、資格與訓練、停機隔離、防墜及入槽監視、通風、氣體測定需求，須依現場風險與適用規範評估。各方依法應負的義務不因本試算而免除。</li>" +
+          "<li><strong>範圍與報價</strong>：依客戶填寫的資料報價；若現場條件不同，施工前由雙方確認調整。設備、料件、施工範圍、排程、驗收、付款及保固條件由雙方確認。</li>" +
+          "<li><strong>作業安全</strong>：進場方式、人員配置、資格與訓練、停機隔離、防墜及入槽監視、通風、氣體測定需求，須依現場風險與適用規範評估。各方依法應負的義務不因本報價而免除。</li>" +
           "<li><strong>清洗、水質與產品</strong>：藥劑用途、產品標示及安全資料、清洗方法與檢驗項目須先核對。工業用氯錠不可直接套用於飲用水儲水設備；餘氯、pH、TDS 等現場指標不能單獨證明飲用水安全。配送方式及承運條件另行確認。</li>" +
           "</ol>";
       }
@@ -2613,15 +2613,15 @@
           : (cat === "cooling_tower" ? "（施工前協調冷卻水塔分塔隔離或停機時段）" : "（停水公告及施工時段另行協調）");
         if (displayMode === "ab_compare") {
           outDecisionArea.innerHTML =
-            "<div style='font-weight:900;color:#0f172a;margin-bottom:4px;font-size:0.84rem;'>【方案比較備註（不構成委託）】</div>" +
-            "<div style='margin-bottom:3px;font-size:0.8rem;'>□ 參考 <strong>A方案（指定專車：NT$ " + totalA.toLocaleString() + "）</strong>，預計日期：" + escapeHtml(docYear) + "年____月____日</div>" +
-            "<div style='margin-bottom:8px;font-size:0.8rem;'>□ 參考 <strong>B方案（平日併單：NT$ " + totalB.toLocaleString() + "）</strong>，可洽詢平日排程</div>" +
+            "<div style='font-weight:900;color:#0f172a;margin-bottom:4px;font-size:0.84rem;'>【方案選擇與備註】</div>" +
+            "<div style='margin-bottom:3px;font-size:0.8rem;'>□ 選擇 <strong>A方案（指定專車：NT$ " + totalA.toLocaleString() + "）</strong>，預計日期：" + escapeHtml(docYear) + "年____月____日</div>" +
+            "<div style='margin-bottom:8px;font-size:0.8rem;'>□ 選擇 <strong>B方案（平日併單：NT$ " + totalB.toLocaleString() + "）</strong>，可洽詢平日排程</div>" +
             "<div style='margin-top:8px;border-top:1px solid #94a3b8;padding-top:6px;font-size:0.8rem;'>需求備註：____________________ 日期：____/____/____</div>";
         } else {
           const chosenTot = (displayMode === "only_a") ? totalA : totalB;
           outDecisionArea.innerHTML =
-            "<div style='font-weight:900;color:#0f172a;margin-bottom:4px;font-size:0.84rem;'>【需求討論欄（不構成委託）】</div>" +
-            "<div style='margin-bottom:6px;font-size:0.8rem;'>本頁依目前所選規格試算，參考總額 <strong>NT$ " + chosenTot.toLocaleString() + " 元</strong>。</div>" +
+            "<div style='font-weight:900;color:#0f172a;margin-bottom:4px;font-size:0.84rem;'>【施工安排與備註】</div>" +
+            "<div style='margin-bottom:6px;font-size:0.8rem;'>本頁依所填資料報價，報價總額 <strong>NT$ " + chosenTot.toLocaleString() + " 元</strong>。</div>" +
             "<div style='margin-bottom:8px;font-size:0.8rem;'>預計施工日期：" + escapeHtml(docYear) + " 年 ____ 月 ____ 日" + scheduleNotice + "</div>" +
             "<div style='margin-top:8px;border-top:1px solid #94a3b8;padding-top:6px;font-size:0.8rem;'>需求備註：____________________ 日期：____/____/____</div>";
         }
@@ -2647,7 +2647,7 @@
         } else {
           const singleTot = (displayMode === "only_a") ? totalA : totalB;
           liveBarText.innerHTML =
-            "已選 <strong>" + items.length + "</strong> 項｜試算總計 <strong style='color:#34d399;'>NT$ " + singleTot.toLocaleString() + "</strong>";
+            "已選 <strong>" + items.length + "</strong> 項｜報價總計 <strong style='color:#34d399;'>NT$ " + singleTot.toLocaleString() + "</strong>";
         }
       }
 
@@ -2683,7 +2683,7 @@
       const priceText = (displayMode === "ab_compare")
         ? ("★ A方案（指定專車）：NT$ " + totalA.toLocaleString() + (includeTax ? " (含5%稅)" : " (未稅)") +
            "\n⚡ B方案（平日併單）：NT$ " + totalB.toLocaleString() + (includeTax ? " (含5%稅，現省$" + savedDiff.toLocaleString() + ")" : " (未稅，現省$" + savedDiff.toLocaleString() + ")"))
-        : ("試算總金額：NT$ " + ((displayMode === "only_a") ? totalA : totalB).toLocaleString() + (includeTax ? " (含5%營業稅)" : " (未稅)"));
+        : ("報價總金額：NT$ " + ((displayMode === "only_a") ? totalA : totalB).toLocaleString() + (includeTax ? " (含5%營業稅)" : " (未稅)"));
 
       return "📄 報價單號：" + docNo + " [計算參考:" + verifyHash + "]" +
         "\n🏢 客戶寶號：" + clientName + "（" + contactPerson + "）" +
@@ -2693,6 +2693,7 @@
         "\n-------------------------\n" +
         priceText +
         (cat === "ac_cleaning" ? "\n✓ 人員、作業方式、範圍與後續服務條件須另行確認" : "\n✓ 人員資格、職安訓練、戒護配置與保險文件，須依實際工程及派工另行核對") +
+        "\n依客戶填寫的資料報價；若現場條件不同，施工前由雙方確認調整。" +
         "\n🔗 還原規格與金額（不含客戶資料及自訂項目名稱）：\n" + shareUrl;
     }
 
@@ -2750,7 +2751,7 @@
       }
       const cName = sanitizeFilenamePart(elClientName ? elClientName.value : "", "社區與商場專案", 32);
       const dNo = sanitizeFilenamePart(elDocNo ? elDocNo.value : "", "HS報價單", 24);
-      document.title = "皓盛有限公司_估價試算單_" + cName + "_" + dNo;
+      document.title = "皓盛有限公司_報價單_" + cName + "_" + dNo;
 
       if (printTitleFallbackTimerId !== null) clearTimeout(printTitleFallbackTimerId);
       printTitleFallbackTimerId = setTimeout(function () {
@@ -3075,7 +3076,7 @@
     if (btnCopyLine) {
       btnCopyLine.addEventListener("click", function () {
         const text = renderQuotation(true);
-        copyAndOpenLine(text, "【皓盛有限公司 統編90221911 估價試算單】");
+        copyAndOpenLine(text, "【皓盛有限公司 統編90221911 報價單】");
       });
     }
     const btnShareLink = document.getElementById("btn-q-share-url");
