@@ -1,5 +1,6 @@
 /* Choice-first quotation UI. Prices and document rendering stay in cad-engine.js. */
 (()=>{'use strict';
+function initChoiceCards(){
  const params=new URLSearchParams(location.search);
  if(window.self!==window.top&&params.get('_preview')==='1')return;
  const form=document.querySelector('#water-tank-calc-form,#cooling-tower-calc-form,#ac-cleaning-calc-form,#mpv-calc-form,#shop-calc-form,#hs-quote-builder-form');
@@ -34,13 +35,13 @@
  const warning=document.createElement('p');warning.className='hs-choice-warning';warning.textContent='選配預設不勾選，請依本次需求選取。不確定或未列出的規格，請用右下角 LINE 傳照片詢問，勿套用相近選項。';form.prepend(warning);
  const safety=document.createElement('label');safety.className='calc-check-item hs-entry-check';safety.hidden=true;
  const entry=document.createElement('input');entry.type='checkbox';entry.id='hs-confirm-no-entry';
- const entryText=document.createElement('span');entryText.textContent='我已確認這個 10 噸內白鐵水塔是開放式，且施工全程不入槽。未確認或需要入槽，請先詢問，不套用此價格。';safety.append(entry,entryText);form.append(safety);
+ const entryText=document.createElement('span');entryText.textContent='我已確認這個 10 噸內白鐵水塔是開放式，且施工全程不入槽。未確認或需要入槽，請先詢問，不套用此價格。';safety.append(entry,entryText);const material=document.getElementById(isQuote?'q-wt-material':'calc-material');if(material)material.closest('.calc-form-group').after(safety);else form.append(safety);
  let preview=null,paper=null,openLink=null,frame=null,generation=0,timer=null,lastUrl='',completed=false;
  if(!isQuote){
   result.hidden=true;
   preview=document.createElement('section');preview.className='hs-inline-quote no-print';preview.hidden=true;preview.id='hs-inline-quote';
-  preview.innerHTML='<h2>您的報價單</h2><p class="hs-preview-note">以下沿用原報價引擎。客戶資料尚待填寫，施工條件與排程須另行確認；不會自動預約、列印或傳送。</p><div class="hs-inline-paper"></div><a class="btn btn-primary hs-open-quote">填寫客戶資料／下載 PDF／LINE 確認</a><p class="hs-preview-status" role="status"></p>';
-  paper=preview.querySelector('.hs-inline-paper');openLink=preview.querySelector('.hs-open-quote');form.after(preview);
+  preview.innerHTML='<h2>您的報價單</h2><p class="hs-preview-note">客戶資料尚待填寫，施工條件與排程須另行確認；表格可左右滑動查看。需要加購可回上方選取，不會自動預約、列印或傳送。</p><div class="hs-inline-paper"></div><a class="btn btn-primary hs-open-quote">填寫客戶資料／下載 PDF／LINE 確認</a><p class="hs-preview-status" role="status"></p>';
+  paper=preview.querySelector('.hs-inline-paper');openLink=preview.querySelector('.hs-open-quote');const grid=form.closest('section.grid-2');if(grid)grid.after(preview);else form.after(preview);
  }
  const shortText=(s)=>s.replace(/^[★⚡✓❄️💧🌬️🪣🛒🏢🏘️🏬🏛️\s]+/u,'').split(/[（(｜]/)[0].trim();
  function applicable(s){
@@ -140,4 +141,6 @@
  // Imported calculator links contain explicit choices; retain them instead of making users repeat the form.
  if(forwarded&&needsEntry()&&params.get('noentry')==='1')entry.checked=true;
  refresh(false);
+}
+if(document.readyState==='complete')initChoiceCards();else document.addEventListener('DOMContentLoaded',initChoiceCards,{once:true});
 })();
