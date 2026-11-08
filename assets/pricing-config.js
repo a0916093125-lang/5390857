@@ -15,7 +15,7 @@ window.HS_PRICING_CONFIG = {
     lineId: "0916093125",
     lineUrl: "https://line.me/ti/p/~0916093125",
     email: "ssuyuan@kimo.com",
-    address: "11164 臺北市士林區社子里社正路45巷4弄2號（工商登記：1號1樓）",
+    address: "11164 臺北市士林區社子里社正路45巷4弄1號1樓",
     placeId: "ChIJ1duZi7GvQjQRUBaotvuDlVg",
     domain: "https://5390857.com"
   },
