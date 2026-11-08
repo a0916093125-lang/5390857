@@ -174,6 +174,8 @@
 <style id="hs-action-flow">
 .hero-cta-primary-row{grid-template-columns:1fr;max-width:520px}.service-flow-note{font-size:.86rem;line-height:1.7;color:#b9c8dc;margin:10px 0}.service-related-link{font-size:.88rem;line-height:1.8;margin:14px 0;color:#a7c9db}.service-related-link a{color:inherit;text-decoration:underline}.service-related-link summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:6px}.service-related-link summary:before{content:"＋"}.service-related-link[open] summary:before{content:"－"}.quote-actions{margin:20px 0;padding:20px;border:1px solid #334155;border-radius:12px;background:#0f172a}.quote-actions h2{font-size:1.1rem;margin:0 0 14px;color:#f1f5f9}.quote-actions .btn-group{display:flex;flex-direction:column;gap:12px}.quote-more-actions summary{cursor:pointer;min-height:44px;padding:12px 0;color:#bae6fd}.quote-more-actions button{margin:8px 0}.quote-actions :focus-visible{outline:3px solid #38bdf8;outline-offset:3px}@media(min-width:861px){.mobile-sticky-bar{display:flex!important;left:auto;right:20px;bottom:20px;background:transparent;border:0;padding:0;backdrop-filter:none;width:auto}.mobile-sticky-bar>.btn:not(.btn-line){display:none}.mobile-sticky-bar>.btn-line{width:160px;box-shadow:0 8px 24px #0005;display:flex;flex-direction:column;align-items:center;gap:3px}.mobile-sticky-bar>.btn-line span{display:block;white-space:nowrap}.mobile-sticky-bar>.btn-line .sticky-btn-sub{font-size:.75rem}.nav-link-cta{display:none!important}}@media(max-width:860px){.nav-link-cta{display:none!important}}@media print{.quote-actions,.mobile-sticky-bar{display:none!important}}
 </style>
+<link rel="stylesheet" href="assets/mobile-ux.css?v=20261108-1"/>
+<script defer src="assets/mobile-ux.js?v=20261108-1"></script>
 </head>
 <body>
 
@@ -193,10 +195,11 @@
 <header class="site-header">
 <div class="nav-container">
 <a class="brand-logo" href="index.html">
-<span>皓盛有限公司 HAO SHENG CO., LTD.</span>
+<span>皓盛有限公司 <span class="brand-english">HAO SHENG CO., LTD.</span></span>
 <span class="brand-sub">商用空調年度維保・全台清洗專案・北部機電維修</span>
 </a>
-<nav aria-label="主導航選單" class="nav-links">
+<button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation">服務選單 <span aria-hidden="true">☰</span></button>
+<nav id="site-navigation" aria-label="主導航選單" class="nav-links">
 <a class="nav-link" href="index.html">企業工程總覽</a>
 <a class="nav-link" href="index.html#annual-maintenance">商用空調年度維保</a>
 <a class="nav-link" href="cooling-tower.html">❄️ 洗冷卻水塔試算</a>
@@ -211,9 +214,7 @@
 </div>
 </header>
 
-<main class="container"><div class="stage1-note no-print"><strong>服務條件以個案確認為準</strong><p>本頁提供服務介紹與費用參考；報價依客戶填寫的資料產生，若現場條件不同，施工前由雙方確認調整。人員配置、使用料件、檢查測項、施工與交付時間、驗收、發票及保固條件，須於承接前逐項確認；不以本頁作合規或成果保證。</p></div><div class="stage1-note"><strong>產品與交付核對</strong><p>選購前請先確認產品規格、設備相容性與供貨情況。下單前須核對實物標示、適用性、安全資料表（SDS）、供貨及承運條件；未核對前不作交付承諾。</p></div><div class="stage1-note no-print"><strong>估價說明</strong><p>家用分離式冷氣清洗採四台包套；三台以下仍以四台計價，未使用的台數可轉給隔壁鄰居家，一起湊成團購。</p><p>四台計價與鄰居團購僅適用家用分離式冷氣。分離式單獨派車採四台包套；吊隱式 FCU／四方吹採三台包套、箱型機採兩台包套、AHU 採單座專案，各機型依對應方案計價。冷氣與水塔、冷卻水塔合併詢價時，各依原包套及單價加總。團購與施工安排請先聯絡確認。</p><p>工業用氯錠的用途、許可及產品標示須先確認，不可直接套用於飲用水儲水設備；投藥須依產品標示、水質與現場條件由專業人員評估。</p></div>
-<!-- 第一區塊：雙欄旗艦首屏 (Hero Section) -->
-<section aria-label="瑞林RP-258冷氣排水器連工帶料到府安裝與25公斤氯錠採購商城核心宣言" class="hero-section hero-flagship">
+<main class="container"><section aria-label="瑞林RP-258冷氣排水器連工帶料到府安裝與25公斤氯錠採購商城核心宣言" class="hero-section hero-flagship">
 <div class="hero-split-grid">
 <div class="hero-copy-col">
 <div class="hero-badge-row">
@@ -274,12 +275,14 @@
 </div>
 <div class="hero-rate-footer">
 <span>支援一鍵併入報價單供管委會與採購審閱</span>
-<a class="hero-rate-link" href="quote.html">開啟 A4 線上立即估價 →</a>
+
 </div>
 </div>
 </aside>
 </div>
-</section>
+</section><details class="mobile-service-note stage1-note no-print" open><summary>服務條件以個案確認為準</summary><p>本頁提供服務介紹與費用參考；報價依客戶填寫的資料產生，若現場條件不同，施工前由雙方確認調整。人員配置、使用料件、檢查測項、施工與交付時間、驗收、發票及保固條件，須於承接前逐項確認；不以本頁作合規或成果保證。</p></details><details class="mobile-service-note stage1-note" open><summary>產品與交付核對</summary><p>選購前請先確認產品規格、設備相容性與供貨情況。下單前須核對實物標示、適用性、安全資料表（SDS）、供貨及承運條件；未核對前不作交付承諾。</p></details><details class="mobile-service-note stage1-note no-print" open><summary>估價說明</summary><p>家用分離式冷氣清洗採四台包套；三台以下仍以四台計價，未使用的台數可轉給隔壁鄰居家，一起湊成團購。</p><p>四台計價與鄰居團購僅適用家用分離式冷氣。分離式單獨派車採四台包套；吊隱式 FCU／四方吹採三台包套、箱型機採兩台包套、AHU 採單座專案，各機型依對應方案計價。冷氣與水塔、冷卻水塔合併詢價時，各依原包套及單價加總。團購與施工安排請先聯絡確認。</p><p>工業用氯錠的用途、許可及產品標示須先確認，不可直接套用於飲用水儲水設備；投藥須依產品標示、水質與現場條件由專業人員評估。</p></details>
+<!-- 第一區塊：雙欄旗艦首屏 (Hero Section) -->
+
 
 <!-- 第二區塊：雙旗艦主力產品深度剖析卡（RP-258 只賣服務 vs 25kg 氯錠雙軌銷售） -->
 <section aria-labelledby="flagship-products-heading" style="margin-bottom:40px;">
@@ -483,7 +486,7 @@ Realise 瑞林 RP-258 冷氣自動排水器「到府換裝＋管路疏通＋空�
 <div style="margin-top:6px;font-size:0.88rem;color:#fde68a;">
 🎁 專屬轉單優惠：<span id="shop-bonus-output">師傅到場檢測後，若決定同步清洗冷氣，本顆 RP-258 排水器當場現折 NT$1,000（僅收 $2,500）！</span>
 </div>
-<p id="shop-summary-text" style="margin-top:10px;font-size:0.84rem;color:#cbd5e1;background:rgba(7,13,25,0.6);padding:8px 12px;border-radius:8px;"></p>
+<details class="mobile-result-details" open><summary>查看完整費用與作業明細</summary><p id="shop-summary-text" style="margin-top:10px;font-size:0.84rem;color:#cbd5e1;background:rgba(7,13,25,0.6);padding:8px 12px;border-radius:8px;"></p></details>
 
 <div class="btn-group">
 <button class="btn btn-amber" id="btn-shop-to-quote" style="width:100%;" type="button">查看報價與詢價</button>
@@ -627,7 +630,7 @@ Realise 瑞林 RP-258 冷氣自動排水器「到府換裝＋管路疏通＋空�
 </a>
 </div>
 <script src="assets/pricing-config.js?v=20261108"></script>
-<script src="assets/cad-engine.js?v=actions-20261108"></script>
+<script src="assets/cad-engine.js?v=mobile-20261108"></script>
 <section id="hs-analytics-choice" aria-label="網站分析選擇">
 <p>允許 Google Analytics 分析瀏覽與入口點擊，協助改善網站？不同意也能正常估價與聯絡。</p>
 <details><summary>了解更多</summary>
@@ -696,6 +699,7 @@ Realise 瑞林 RP-258 冷氣自動排水器「到府換裝＋管路疏通＋空�
 
 </body>
 </html>
+
 
 
 

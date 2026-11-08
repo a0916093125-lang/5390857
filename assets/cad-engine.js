@@ -633,7 +633,7 @@
       if (chkSgsWater && chkSgsWater.checked) {
         const sgsPrice = isPriority ? 3500 : 3000;
         basePrice += sgsPrice;
-        addons.push("加購代客無菌採樣送驗 SGS 飲用水水質檢驗報告（大腸桿菌群／總菌落數）(+NT$" + sgsPrice.toLocaleString() + ")");
+        addons.push("水質送驗需求（實驗室、測項與安排另確認）(+NT$" + sgsPrice.toLocaleString() + ")");
       }
       if (chkWtChlorine && chkWtChlorine.checked) {
         basePrice += 2680;
@@ -938,7 +938,7 @@
       if (chkCtSgs && chkCtSgs.checked) {
         const sgsPrice = isPriority ? 3500 : 3000;
         basePrice += sgsPrice;
-        addons.push("加購代客採樣送驗 SGS 冷卻水塔水質／退伍軍人菌（Legionella）檢測報告 (+NT$" + sgsPrice.toLocaleString() + ")");
+        addons.push("水質送驗需求（實驗室、測項與安排另確認） (+NT$" + sgsPrice.toLocaleString() + ")");
       }
       if (chkCtChlorine && chkCtChlorine.checked) {
         basePrice += 2680;
@@ -1850,11 +1850,11 @@
       toggleAddonItem(chkMpvUrgent, isMpv);
       if (lblSgsText) {
         if (cat === "water_tank") {
-          lblSgsText.textContent = "🧪 代客無菌採樣送驗 SGS 飲用水水質檢驗報告（大腸桿菌群／總菌落數｜專車+3,500 / 平日+3,000）";
+          lblSgsText.textContent = "🧪 水質送驗需求（實驗室、測項與安排另確認｜專車+3,500 / 平日+3,000）";
         } else if (cat === "cooling_tower") {
-          lblSgsText.textContent = "🧪 代客採樣送驗 SGS 冷卻水塔水質／退伍軍人菌（Legionella）檢測報告（專車+3,500 / 平日+3,000）";
+          lblSgsText.textContent = "🧪 水質送驗需求（實驗室、測項與安排另確認｜專車+3,500 / 平日+3,000）";
         } else {
-          lblSgsText.textContent = "🧪 代客採樣送驗 SGS 實驗室水質檢驗報告（自來水大腸桿菌群／冷卻塔退伍軍人菌｜專車+3,500 / 平日+3,000）";
+          lblSgsText.textContent = "🧪 水質送驗需求（實驗室、測項與安排另確認｜專車+3,500 / 平日+3,000）";
         }
       }
     }
@@ -2342,13 +2342,13 @@
         });
       }
       if (chkSgs && chkSgs.checked) {
-        let sgsTitle = "代客無菌採樣送驗 SGS 飲用水水質檢驗報告（大腸桿菌群／總菌落數）";
+        let sgsTitle = "水質送驗需求（實驗室、測項與安排另確認）";
         let sgsSpec = "採樣方法、檢驗項目、受託機構與報告形式須依用途先行確認；本試算不代表水質已合格或可直接飲用";
         if (cat === "cooling_tower" || cat === "ct_ac") {
-          sgsTitle = "代客採樣送驗 SGS 冷卻水塔水質／退伍軍人菌（Legionella）檢測報告";
+          sgsTitle = "水質送驗需求（實驗室、測項與安排另確認）";
           sgsSpec = "採樣方法、檢驗項目、受託機構與報告形式須依用途先行確認；本試算不代表水質已合格或可直接飲用";
         } else if (cat === "both" || cat === "all_three") {
-          sgsTitle = "代客無菌採樣送驗 SGS 實驗室水質檢驗報告（大腸桿菌群／退伍軍人菌）";
+          sgsTitle = "水質送驗需求（實驗室、測項與安排另確認）";
           sgsSpec = "採樣方法、檢驗項目、受託機構與報告形式須依用途先行確認；本試算不代表水質已合格或可直接飲用";
         }
         items.push({
