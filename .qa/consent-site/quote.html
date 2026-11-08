@@ -624,11 +624,11 @@
 <p>允許 Google Analytics 分析瀏覽與入口點擊，協助改善網站？不同意也能正常估價與聯絡。</p>
 <details><summary>了解更多</summary>
 <p>同意後，皓盛會使用 Google Analytics Cookie 統計一般頁面與電話、LINE、服務及估價入口的點擊，協助改善網站。Google 會處理瀏覽器、裝置及網路連線資訊；本網站不把報價內容、姓名、電話、地址或完整來源網址傳入分析。不載入報價頁的分析，也不統計含查詢參數或片段的頁面。不同意不影響估價與聯絡功能。</p>
-<p>選擇會盡可能在此瀏覽器保存 180 天，適用本網站各頁；可隨時按「分析設定」變更或撤回。清除瀏覽器資料或無法保存時，可能需要重新選擇。Google 分析 Cookie 期限為 180 天。<a href="https://policies.google.com/technologies/partner-sites?hl=zh-TW" target="_blank" rel="noopener noreferrer">Google 如何使用資料</a></p>
+<p>選擇會盡可能在此瀏覽器保存 180 天，適用本網站各頁；可隨時按「隱私設定」變更或撤回。清除瀏覽器資料或無法保存時，可能需要重新選擇。Google 分析 Cookie 期限為 180 天。<a href="https://policies.google.com/technologies/partner-sites?hl=zh-TW" target="_blank" rel="noopener noreferrer">Google 如何使用資料</a></p>
 </details>
 <div class="hs-analytics-actions"><button type="button" data-analytics-choice="denied">不同意分析</button><button type="button" data-analytics-choice="granted">同意分析</button></div>
 </section>
-<p class="hs-analytics-settings-wrap" style="text-align:center"><button id="hs-analytics-settings" type="button">分析設定</button></p>
+<p class="hs-analytics-settings-wrap" style="text-align:center"><button id="hs-analytics-settings" type="button">隱私設定</button></p>
 <style>
 #hs-analytics-choice{box-sizing:border-box;margin:20px auto;padding:16px;width:calc(100% - 32px);max-width:720px;border:1px solid #64748b;border-radius:12px;background:#0f172a;color:#f1f5f9;font-size:14px;line-height:1.6}
 #hs-analytics-choice[hidden]{display:none!important}
@@ -639,30 +639,41 @@
 .hs-analytics-actions{display:flex;gap:12px;margin-top:8px}
 #hs-analytics-choice button,#hs-analytics-settings{font:inherit;min-height:44px;padding:10px 16px;border:1px solid #94a3b8;border-radius:8px;background:#1e293b;color:#f8fafc;cursor:pointer}
 #hs-analytics-choice button{flex:1}
+#hs-analytics-settings{background:transparent;border:0;border-radius:0;color:#94a3b8;font-size:13px;text-decoration:underline;text-underline-offset:3px}
 #hs-analytics-choice :focus-visible,#hs-analytics-settings:focus-visible{outline:3px solid #38bdf8;outline-offset:3px}
 @media(max-width:860px){.hs-analytics-settings-wrap{padding-bottom:calc(160px + env(safe-area-inset-bottom));margin-bottom:0}}
 @media print{#hs-analytics-choice,#hs-analytics-settings,.hs-analytics-settings-wrap{display:none!important}}
 </style>
 <script>
-// Privacy controls stay usable even when analytics scripts are blocked.
+// Privacy controls and choices remain usable when the optional analytics file is blocked.
 (function () {
   var panel = document.getElementById('hs-analytics-choice');
   var settings = document.getElementById('hs-analytics-settings');
   if (!panel || !settings) return;
+  var key = 'hs_analytics_consent_v2', veto = 'hs_analytics_denied', ttl = 15552000000;
+  function valid(expires) { return Number.isFinite(expires) && expires > Date.now() && expires <= Date.now() + ttl; }
+  // Only restore presentation here. This code never loads or starts analytics.
+  var previous = null, deniedUntil = 0;
+  try { previous = JSON.parse(localStorage.getItem(key)); } catch (_) {}
+  try { deniedUntil = Number(sessionStorage.getItem(veto)) || 0; } catch (_) {}
+  try { document.cookie.split(';').forEach(function (entry) {
+    var pair = entry.trim().split('=');
+    if (pair[0] === veto) deniedUntil = Math.max(deniedUntil, Number(pair[1]) || 0);
+  }); } catch (_) {}
+  if ((previous && ['granted','denied'].includes(previous.choice) && valid(previous.expires)) || valid(deniedUntil)) panel.hidden = true;
   panel.querySelectorAll('[data-analytics-choice]').forEach(function (button) {
     button.addEventListener('click', function () {
       panel.hidden = true;
-      // A refusal must remain effective even if the optional analytics file was blocked.
-      if (button.getAttribute('data-analytics-choice') === 'denied') {
-        window['ga-disable-G-DXSNKRSPBE'] = true;
-        var now = Date.now(), expires = now + 15552000000;
-        try { localStorage.setItem('hs_analytics_consent_v2', JSON.stringify({choice:'denied',chosenAt:now,expires:expires})); } catch (_) {}
-        try { sessionStorage.setItem('hs_analytics_denied', String(expires)); } catch (_) {}
-        try { document.cookie = 'hs_analytics_denied=' + expires + '; Max-Age=15552000; path=/; SameSite=Lax; Secure'; } catch (_) {}
-        try { var channel = new BroadcastChannel('hs-analytics-consent-v1'); channel.postMessage('denied'); channel.close(); } catch (_) {}
-      }
       var details = panel.querySelector('details');
       if (details) details.open = false;
+      var choice = button.getAttribute('data-analytics-choice');
+      if (choice !== 'granted' && choice !== 'denied') return;
+      var denied = choice === 'denied', now = Date.now(), expires = now + ttl;
+      if (denied) window['ga-disable-G-DXSNKRSPBE'] = true;
+      try { localStorage.setItem(key, JSON.stringify({choice:choice,chosenAt:now,expires:expires})); } catch (_) {}
+      try { if (denied) sessionStorage.setItem(veto, String(expires)); else sessionStorage.removeItem(veto); } catch (_) {}
+      try { document.cookie = veto + '=' + (denied ? expires : '') + '; Max-Age=' + (denied ? 15552000 : 0) + '; path=/; SameSite=Lax; Secure'; } catch (_) {}
+      if (denied) { try { var channel = new BroadcastChannel('hs-analytics-consent-v1'); channel.postMessage('denied'); channel.close(); } catch (_) {} }
     });
   });
   settings.addEventListener('click', function () {
