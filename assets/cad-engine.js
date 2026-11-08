@@ -101,6 +101,13 @@ window.hsPendingPrice = function () { return ''; };
     "hs_5390857_quote_draft_v10",
     "hs_5390857_quote_draft_v8"
   ];
+  // Shared drafts contain specifications only. Customer identity stays in this document's DOM.
+  const PRIVATE_DRAFT_FIELDS = ["clientName", "contactPerson", "clientAddr", "customName"];
+  function specificationOnly(draft) {
+    const clean = Object.assign({}, draft);
+    PRIVATE_DRAFT_FIELDS.forEach(function (key) { delete clean[key]; });
+    return clean;
+  }
   const DRAFT_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
   const A4_SAFE_HEIGHT_PX = 985;
   const A4_PRINTABLE_WIDTH_PX = 733; // A4 794px 扣除左右各 8mm (約 30.2px * 2) 列印邊界後之真實可用寬度
@@ -206,6 +213,17 @@ window.hsPendingPrice = function () { return ''; };
   function loadQuoteDraft() {
     if (draftWriteFailed && isFreshQuoteDraft(memoryDraftFallback)) return memoryDraftFallback;
     try {
+      // Clean every legacy key independently, including when the current key is already safe.
+      [DRAFT_STORAGE_KEY].concat(LEGACY_STORAGE_KEYS).forEach(function (key) {
+        try {
+          const rawDraft = localStorage.getItem(key);
+          if (!rawDraft) return;
+          const oldDraft = JSON.parse(rawDraft);
+          if (oldDraft && typeof oldDraft === "object" && PRIVATE_DRAFT_FIELDS.some(function (field) {
+            return Object.prototype.hasOwnProperty.call(oldDraft, field);
+          })) localStorage.setItem(key, JSON.stringify(specificationOnly(oldDraft)));
+        } catch (e) {}
+      });
       let raw = localStorage.getItem(DRAFT_STORAGE_KEY);
       if (!raw) {
         for (let i = 0; i < LEGACY_STORAGE_KEYS.length; i++) {
@@ -223,7 +241,13 @@ window.hsPendingPrice = function () { return ''; };
         clearQuoteDraft();
         return null;
       }
-      memoryDraftFallback = Object.assign({}, parsed);
+      memoryDraftFallback = specificationOnly(parsed);
+      // Remove legacy identity from this site's draft keys without touching unrelated storage.
+      if (PRIVATE_DRAFT_FIELDS.some(function (key) { return Object.prototype.hasOwnProperty.call(parsed, key); })) {
+        [DRAFT_STORAGE_KEY].concat(LEGACY_STORAGE_KEYS).forEach(function (key) {
+          try { localStorage.setItem(key, JSON.stringify(memoryDraftFallback)); } catch (e) {}
+        });
+      }
       return memoryDraftFallback;
     } catch (e) {}
     if (!isFreshQuoteDraft(memoryDraftFallback)) memoryDraftFallback = null;
@@ -233,9 +257,9 @@ window.hsPendingPrice = function () { return ''; };
   /* 跨頁草稿儲存（同時寫入記憶體保底與 localStorage，確保 URL 參數直傳在任何沙盒或無痕環境下 依瀏覽器狀態生效） */
   function saveQuoteDraft(draftPatch) {
     const existing = loadQuoteDraft() || {};
-    const merged = Object.assign({}, existing, draftPatch, {
+    const merged = specificationOnly(Object.assign({}, existing, draftPatch, {
       updatedAt: Date.now()
-    });
+    }));
     memoryDraftFallback = merged;
     try {
       const serialized = JSON.stringify(merged);
@@ -1150,7 +1174,7 @@ window.hsPendingPrice = function () { return ''; };
 
       // 各機型：基本包套價 (A/B) 與 超出台數單台價 (A/B)
       const acPricingMap = {
-        split:    { pkgA: 12500, pkgB: 10000, unitA: 2200, unitB: 1800, baseIncluded: "4 台內", name: "壁掛分離式冷氣" },
+        split:    { pkgA: 12500, pkgB: 10000, unitA: 12500 / 4, unitB: 10000 / 4, baseIncluded: "4 台內", name: "壁掛分離式冷氣" },
         fcu:      { pkgA: 13000, pkgB: 10500, unitA: 3200, unitB: 2800, baseIncluded: "3 台內", name: "吊隱式冷氣／冰水送風機(FCU)" },
         cassette: { pkgA: 13500, pkgB: 11000, unitA: 4000, unitB: 3500, baseIncluded: "3 台內", name: "四方吹嵌入式卡式冷氣" },
         package:  { pkgA: 13500, pkgB: 11000, unitA: 4500, unitB: 3800, baseIncluded: "2 台內", name: "落地箱型冷氣(氣冷/水冷櫃機)" },
@@ -1158,21 +1182,15 @@ window.hsPendingPrice = function () { return ''; };
       };
       const cfg = acPricingMap[acType] || acPricingMap.cassette;
 
-      let extraCount = 0;
-      if (acQty === "add_2") extraCount = 2;
-      else if (acQty === "add_3") extraCount = 3;
-      else if (acQty === "add_4") extraCount = 4;
-      else if (acQty === "add_6") extraCount = 6;
-      else if (acQty === "add_8") extraCount = 8;
+      const extraCount = /^add_([1-9][0-9]?|100)$/.test(acQty) ? Number(acQty.slice(4)) : 0;
 
       // 動態同步第 4 題下拉選單文字：包套台數與追加台數。
-      if (qtySelect && qtySelect.options.length >= 6) {
-        qtySelect.options[0].text = "標準基本包套（" + cfg.name + "含 " + cfg.baseIncluded + " 精洗）";
-        qtySelect.options[1].text = "基本包套外追加 2 台";
-        qtySelect.options[2].text = "基本包套外追加 3 台";
-        qtySelect.options[3].text = "基本包套外追加 4 台";
-        qtySelect.options[4].text = "基本包套外追加 6 台";
-        qtySelect.options[5].text = "基本包套外追加 8 台";
+      if (qtySelect) {
+        Array.from(qtySelect.options).forEach(option => {
+          option.text = option.value === "base"
+            ? "標準基本包套（" + cfg.name + "含 " + cfg.baseIncluded + " 精洗）"
+            : "基本包套外追加 " + option.value.slice(4) + " 台";
+        });
       }
 
       let basePrice = 0;
@@ -1754,6 +1772,12 @@ window.hsPendingPrice = function () { return ''; };
     const elClientAddr = document.getElementById("q-client-addr");
     const elDocNo = document.getElementById("q-doc-no");
     const elDocDate = document.getElementById("q-doc-date");
+    function clearCustomerFields() {
+      [elClientName, elContactPerson, elClientAddr].forEach(function (el) {
+        if (el) { el.value = ""; el.autocomplete = "off"; }
+      });
+    }
+    clearCustomerFields();
 
     // 自來水塔設定區
     const boxWtGroup = document.getElementById("q-wt-group");
@@ -1922,22 +1946,11 @@ window.hsPendingPrice = function () { return ''; };
         }
       }
 
-      if (draft.clientName && elClientName) {
-        elClientName.value = String(draft.clientName);
-      }
-      if (draft.contactPerson && elContactPerson) {
-        elContactPerson.value = String(draft.contactPerson);
-      }
-      if (draft.region && elClientAddr) {
-        const curAddr = elClientAddr.value.trim();
-        if (!curAddr || curAddr === "台北市 / 新北市" || curAddr === "桃園市 / 新竹縣市" || curAddr === "其他外縣市專案") {
-          elClientAddr.value = String(draft.region);
-        }
-      }
-      if (draft.clientAddr && elClientAddr && (!fromParamVal || fromParamVal === "share")) {
-        elClientAddr.value = String(draft.clientAddr);
-      } else if (draft.region && elClientAddr && fromParamVal) {
-        elClientAddr.value = String(draft.region);
+      // New quotes and explicit specification restores never borrow customer identity.
+      // A known region is not a customer's street address.
+      if (draft.region && elClientAddr && !elClientAddr.value.trim()) {
+        const allowedRegions = ["台北市 / 新北市", "桃園市 / 新竹縣市", "其他外縣市專案"];
+        if (allowedRegions.indexOf(draft.region) !== -1) elClientAddr.value = draft.region;
       }
       if (restoreDocumentIdentity && draft.docNo && elDocNo) {
         elDocNo.value = String(draft.docNo);
@@ -1995,9 +2008,7 @@ window.hsPendingPrice = function () { return ''; };
       const snapshot = {
         displayMode: elDisplayMode ? elDisplayMode.value : "ab_compare",
         serviceCategory: elCategory ? elCategory.value : "water_tank",
-        clientName: elClientName ? elClientName.value.trim() : "",
-        contactPerson: elContactPerson ? elContactPerson.value.trim() : "",
-        clientAddr: elClientAddr ? elClientAddr.value.trim() : "",
+        // Customer identity is deliberately not saved to shared browser storage.
         docNo: elDocNo ? elDocNo.value.trim() : "",
         docDate: elDocDate ? elDocDate.value.trim() : "",
         wtTonnage: elWtTonnage ? elWtTonnage.value : "120",
@@ -2256,7 +2267,7 @@ window.hsPendingPrice = function () { return ''; };
         const acQtyVal = elAcQty ? elAcQty.value : "base";
 
         const acMap = {
-          split:    { pkgA: 12500, pkgB: 10000, unitA: 2200, unitB: 1800, inc: "含 4 台內", name: "壁掛分離式冷氣", spec: "拆洗外殼、濾網、貫流風鼓葉輪、蒸發器親水藥洗與排水管疏通。家用分離式未滿4台仍以4台計價，未使用台數可轉給隔壁鄰居家團購" },
+          split:    { pkgA: 12500, pkgB: 10000, unitA: 12500 / 4, unitB: 10000 / 4, inc: "含 4 台內", name: "壁掛分離式冷氣", spec: "拆洗外殼、濾網、貫流風鼓葉輪、蒸發器親水藥洗與排水管疏通。家用分離式未滿4台仍以4台計價，未使用台數可轉給隔壁鄰居家團購" },
           fcu:      { pkgA: 13000, pkgB: 10500, unitA: 3200, unitB: 2800, inc: "含 3 台內", name: "吊隱式冷氣／冰水送風機(FCU)", spec: "天花板維修孔拆洗風車葉輪、鰭片高壓藥洗、集水盤果凍淤泥抽除與浮球點檢" },
           cassette: { pkgA: 13500, pkgB: 11000, unitA: 4000, unitB: 3500, inc: "含 3 台內", name: "四方吹嵌入式卡式冷氣", spec: "拆卸四方出風面板、內建排水泵浦與浮球清潔、全方位蒸發器鰭片精洗與電流實測" },
           package:  { pkgA: 13500, pkgB: 11000, unitA: 4500, unitB: 3800, inc: "含 2 台內", name: "落地箱型冷氣(氣冷/水冷櫃機)", spec: "大型排管蒸發器高壓藥洗、雙風鼓葉輪除垢、冷凝水盤與排水管疏通" },
@@ -2264,12 +2275,7 @@ window.hsPendingPrice = function () { return ''; };
         };
         const acCfg = acMap[acTypeVal] || acMap.cassette;
 
-        let extraCnt = 0;
-        if (acQtyVal === "add_2") extraCnt = 2;
-        else if (acQtyVal === "add_3") extraCnt = 3;
-        else if (acQtyVal === "add_4") extraCnt = 4;
-        else if (acQtyVal === "add_6") extraCnt = 6;
-        else if (acQtyVal === "add_8") extraCnt = 8;
+        const extraCnt = /^add_([1-9][0-9]?|100)$/.test(acQtyVal) ? Number(acQtyVal.slice(4)) : 0;
 
         // 單獨派車專案包套模式（機電工程車基本出勤包套）
         items.push({
@@ -2773,17 +2779,25 @@ window.hsPendingPrice = function () { return ''; };
       });
     }
 
-    // Clear stale on-screen customer data as well as storage after removal/expiry.
+    // Do not merge another tab's specifications into the current customer's document.
+    // Returning from browser history clears identity before the document can be reused.
     window.addEventListener("pageshow", function (e) {
       if (e && e.persisted) {
-        if (loadQuoteDraft()) applyStoredDraft(false, "");
-        else clearVisibleDraft();
+        clearCustomerFields();
+        if (!loadQuoteDraft()) clearVisibleDraft();
+        else renderQuotation(false);
+      } else {
+        // Clear browser-restored customer values on a newly opened document too.
+        if (elClientName) elClientName.value = "";
+        if (elContactPerson) elContactPerson.value = "";
+        if (elClientAddr && ["", "台北市 / 新北市", "桃園市 / 新竹縣市", "其他外縣市專案"].indexOf(elClientAddr.value) === -1) elClientAddr.value = "";
+        renderQuotation(false);
       }
     });
     window.addEventListener("storage", function (e) {
-      if (!e || e.key === DRAFT_STORAGE_KEY || e.key === null || LEGACY_STORAGE_KEYS.indexOf(e.key) !== -1) {
-        if (loadQuoteDraft()) applyStoredDraft(false, "");
-        else clearVisibleDraft();
+      if (!e || e.key === null ||
+          ((e.key === DRAFT_STORAGE_KEY || LEGACY_STORAGE_KEYS.indexOf(e.key) !== -1) && e.newValue === null)) {
+        clearVisibleDraft();
       }
     });
 
@@ -2896,10 +2910,8 @@ window.hsPendingPrice = function () { return ''; };
           displayMode: params.get("dmode") || "ab_compare",
           serviceCategory: params.get("cat") || "water_tank",
           // Clear omitted identity fields instead of borrowing a different customer's stored draft.
-          // Legacy links remain readable; all newly generated links omit these fields.
-          clientName: params.get("cname") || "貴社區管理委員會 ／ 貴公司廠務部",
-          contactPerson: params.get("cperson") || "總幹事 ／ 廠務主管 鈞啟",
-          clientAddr: params.get("caddr") || "台北市 / 新北市",
+          // Legacy identity query parameters are ignored; only specifications are imported.
+          // Ignore customer fields in legacy URLs too; recipients enter their own details.
           customName: "",
           customPrice: "0"
         };
@@ -3090,8 +3102,9 @@ window.hsPendingPrice = function () { return ''; };
 
     if (btnLoadDraft) {
       btnLoadDraft.addEventListener("click", function () {
+        clearCustomerFields();
         applyStoredDraft(true, "", true);
-        showToast("已載入儲存草稿（含原日期與參考編號），請確認是否適用本次報價。");
+        showToast("已載入儲存規格；請重新填寫本次客戶資料，並確認日期及參考編號。");
       });
     }
 

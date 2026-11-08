@@ -204,19 +204,19 @@
 <form id="hs-quote-builder-form" onsubmit="return false;">
 <div class="calc-form-group">
 <label class="calc-label" for="q-client-name">1. 客戶寶號 ／ 社區管委會名稱（直接印於右側報價單抬頭）</label>
-<input class="calc-input" id="q-client-name" placeholder="例如：板橋新埔○○社區管理委員會" style="border-color:#38bdf8;font-weight:700;" type="text" value="貴社區管理委員會 ／ 貴公司廠務部"/>
+<input class="calc-input" id="q-client-name" autocomplete="off" placeholder="例如：板橋新埔○○社區管理委員會" style="border-color:#38bdf8;font-weight:700;" type="text" value="貴社區管理委員會 ／ 貴公司廠務部"/>
 </div>
 <div class="quote-field-pair">
 <div>
 <label class="calc-label" for="q-contact-person">聯絡人與職稱</label>
-<input class="calc-input" id="q-contact-person" placeholder="例如：林總幹事 / 吳工程師" type="text" value="總幹事 ／ 廠務主管 鈞啟"/>
+<input class="calc-input" id="q-contact-person" autocomplete="off" placeholder="例如：林總幹事 / 吳工程師" type="text" value="總幹事 ／ 廠務主管 鈞啟"/>
 </div>
 <div>
 <label class="calc-label" for="q-client-addr">施工案場地區或地址</label>
-<input class="calc-input" id="q-client-addr" placeholder="例如：新北市板橋區..." type="text" value="台北市 / 新北市"/>
+<input class="calc-input" id="q-client-addr" autocomplete="off" placeholder="例如：新北市板橋區..." type="text" value="台北市 / 新北市"/>
 </div>
 </div>
-<button class="btn btn-outline" id="btn-q-load-draft" type="button">延續已儲存草稿（含原日期與參考編號）</button>
+<button class="btn btn-outline" id="btn-q-load-draft" type="button">載入已儲存規格（客戶資料需重填）</button>
 <div class="grid-2" style="gap:12px;margin-bottom:16px;">
 <div>
 <label class="calc-label" for="q-doc-no">報價參考編號（非公司流水號）</label>
@@ -323,7 +323,7 @@
 <select class="calc-select" id="q-ac-type">
 <option selected="" value="cassette">四方吹嵌入式卡式冷氣（專車包套含3台內 A:13,500 / B:11,000；超台 +4,000 / +3,500）</option>
 <option value="fcu">吊隱式冷氣／冰水送風機 FCU（專車包套含3台內 A:13,000 / B:10,500；超台 +3,200 / +2,800）</option>
-<option value="split">壁掛分離式冷氣（家用未滿4台仍以4台計價，可與隔壁鄰居團購｜專車包套含4台內 A:12,500 / B:10,000；超台 +2,200 / +1,800）</option>
+<option value="split">壁掛分離式冷氣（家用未滿4台仍以4台計價，可與隔壁鄰居團購｜專車包套含4台內 A:12,500 / B:10,000；追加每台依四台包套均價：指定時間 $3,125／平日順路 $2,500）</option>
 <option value="package">落地箱型冷氣（專車包套含2台內 A:13,500 / B:11,000；超台 +4,500 / +3,800）</option>
 <option value="ahu">大型中央空調箱 AHU（單座大型機房專案 A:15,000 / B:12,500；第2座起 +8,500 / +7,500）</option>
 </select>
@@ -331,12 +331,107 @@
 <div class="calc-form-group" style="margin-bottom:0;">
 <label class="calc-label" for="q-ac-qty">清洗台數與規模</label>
 <select class="calc-select" id="q-ac-qty">
-<option selected="" value="base">標準基本規模（依機型基本包套；AHU 單座）</option>
-<option value="add_2">追加 2 台（依機型基本包套另加 2 台）</option>
-<option value="add_3">追加 3 台（依機型基本包套另加 3 台）</option>
-<option value="add_4">追加 4 台（依機型基本包套另加 4 台）</option>
-<option value="add_6">追加 6 台（依機型基本包套另加 6 台）</option>
-<option value="add_8">追加 8 台（依機型基本包套另加 8 台）</option>
+<option value="base">標準基本包套（不追加台數）</option>
+<option value="add_1">基本包套外追加 1 台</option>
+<option value="add_2">基本包套外追加 2 台</option>
+<option value="add_3">基本包套外追加 3 台</option>
+<option value="add_4">基本包套外追加 4 台</option>
+<option value="add_5">基本包套外追加 5 台</option>
+<option value="add_6">基本包套外追加 6 台</option>
+<option value="add_7">基本包套外追加 7 台</option>
+<option value="add_8">基本包套外追加 8 台</option>
+<option value="add_9">基本包套外追加 9 台</option>
+<option value="add_10">基本包套外追加 10 台</option>
+<option value="add_11">基本包套外追加 11 台</option>
+<option value="add_12">基本包套外追加 12 台</option>
+<option value="add_13">基本包套外追加 13 台</option>
+<option value="add_14">基本包套外追加 14 台</option>
+<option value="add_15">基本包套外追加 15 台</option>
+<option value="add_16">基本包套外追加 16 台</option>
+<option value="add_17">基本包套外追加 17 台</option>
+<option value="add_18">基本包套外追加 18 台</option>
+<option value="add_19">基本包套外追加 19 台</option>
+<option value="add_20">基本包套外追加 20 台</option>
+<option value="add_21">基本包套外追加 21 台</option>
+<option value="add_22">基本包套外追加 22 台</option>
+<option value="add_23">基本包套外追加 23 台</option>
+<option value="add_24">基本包套外追加 24 台</option>
+<option value="add_25">基本包套外追加 25 台</option>
+<option value="add_26">基本包套外追加 26 台</option>
+<option value="add_27">基本包套外追加 27 台</option>
+<option value="add_28">基本包套外追加 28 台</option>
+<option value="add_29">基本包套外追加 29 台</option>
+<option value="add_30">基本包套外追加 30 台</option>
+<option value="add_31">基本包套外追加 31 台</option>
+<option value="add_32">基本包套外追加 32 台</option>
+<option value="add_33">基本包套外追加 33 台</option>
+<option value="add_34">基本包套外追加 34 台</option>
+<option value="add_35">基本包套外追加 35 台</option>
+<option value="add_36">基本包套外追加 36 台</option>
+<option value="add_37">基本包套外追加 37 台</option>
+<option value="add_38">基本包套外追加 38 台</option>
+<option value="add_39">基本包套外追加 39 台</option>
+<option value="add_40">基本包套外追加 40 台</option>
+<option value="add_41">基本包套外追加 41 台</option>
+<option value="add_42">基本包套外追加 42 台</option>
+<option value="add_43">基本包套外追加 43 台</option>
+<option value="add_44">基本包套外追加 44 台</option>
+<option value="add_45">基本包套外追加 45 台</option>
+<option value="add_46">基本包套外追加 46 台</option>
+<option value="add_47">基本包套外追加 47 台</option>
+<option value="add_48">基本包套外追加 48 台</option>
+<option value="add_49">基本包套外追加 49 台</option>
+<option value="add_50">基本包套外追加 50 台</option>
+<option value="add_51">基本包套外追加 51 台</option>
+<option value="add_52">基本包套外追加 52 台</option>
+<option value="add_53">基本包套外追加 53 台</option>
+<option value="add_54">基本包套外追加 54 台</option>
+<option value="add_55">基本包套外追加 55 台</option>
+<option value="add_56">基本包套外追加 56 台</option>
+<option value="add_57">基本包套外追加 57 台</option>
+<option value="add_58">基本包套外追加 58 台</option>
+<option value="add_59">基本包套外追加 59 台</option>
+<option value="add_60">基本包套外追加 60 台</option>
+<option value="add_61">基本包套外追加 61 台</option>
+<option value="add_62">基本包套外追加 62 台</option>
+<option value="add_63">基本包套外追加 63 台</option>
+<option value="add_64">基本包套外追加 64 台</option>
+<option value="add_65">基本包套外追加 65 台</option>
+<option value="add_66">基本包套外追加 66 台</option>
+<option value="add_67">基本包套外追加 67 台</option>
+<option value="add_68">基本包套外追加 68 台</option>
+<option value="add_69">基本包套外追加 69 台</option>
+<option value="add_70">基本包套外追加 70 台</option>
+<option value="add_71">基本包套外追加 71 台</option>
+<option value="add_72">基本包套外追加 72 台</option>
+<option value="add_73">基本包套外追加 73 台</option>
+<option value="add_74">基本包套外追加 74 台</option>
+<option value="add_75">基本包套外追加 75 台</option>
+<option value="add_76">基本包套外追加 76 台</option>
+<option value="add_77">基本包套外追加 77 台</option>
+<option value="add_78">基本包套外追加 78 台</option>
+<option value="add_79">基本包套外追加 79 台</option>
+<option value="add_80">基本包套外追加 80 台</option>
+<option value="add_81">基本包套外追加 81 台</option>
+<option value="add_82">基本包套外追加 82 台</option>
+<option value="add_83">基本包套外追加 83 台</option>
+<option value="add_84">基本包套外追加 84 台</option>
+<option value="add_85">基本包套外追加 85 台</option>
+<option value="add_86">基本包套外追加 86 台</option>
+<option value="add_87">基本包套外追加 87 台</option>
+<option value="add_88">基本包套外追加 88 台</option>
+<option value="add_89">基本包套外追加 89 台</option>
+<option value="add_90">基本包套外追加 90 台</option>
+<option value="add_91">基本包套外追加 91 台</option>
+<option value="add_92">基本包套外追加 92 台</option>
+<option value="add_93">基本包套外追加 93 台</option>
+<option value="add_94">基本包套外追加 94 台</option>
+<option value="add_95">基本包套外追加 95 台</option>
+<option value="add_96">基本包套外追加 96 台</option>
+<option value="add_97">基本包套外追加 97 台</option>
+<option value="add_98">基本包套外追加 98 台</option>
+<option value="add_99">基本包套外追加 99 台</option>
+<option value="add_100">基本包套外追加 100 台</option>
 </select>
 </div>
 </div>
@@ -534,7 +629,7 @@
 </div>
 </article>
 <section id="quote-actions" hidden class="quote-actions no-print" aria-label="報價單下載與詢價"><h2>確認報價後</h2><div class="btn-group"><button class="btn btn-primary" id="btn-q-print" style="width:100%;font-size:1.05rem;" type="button">列印／存成 PDF</button><button class="btn btn-line" id="btn-q-line" style="width:100%;" type="button">複製報價並開啟 LINE</button></div><p class="service-flow-note">文字包含您填寫的客戶資料。開啟 LINE 後請確認收件者、貼上並自行傳送，不會自動送出。</p><details class="quote-more-actions"><summary>分享連結與資料管理</summary><button aria-describedby="quote-share-privacy-note" class="btn btn-outline" id="btn-q-share-url" style="width:100%;border-color:rgba(56,189,248,0.5);color:#7dd3fc;" type="button">複製規格連結（不含客戶資料）</button><button class="btn btn-outline" id="btn-q-clear-draft" type="button" style="width:100%;" aria-describedby="quote-share-privacy-note">清除此瀏覽器的草稿與客戶資料</button><div id="quote-share-fallback" hidden><label class="calc-label" for="quote-share-link-value">請手動複製此規格與金額連結</label><textarea class="calc-input" id="quote-share-link-value" readonly rows="3" aria-describedby="quote-share-privacy-note"></textarea></div>
-<p id="quote-share-privacy-note" style="font-size:0.82rem;color:#cbd5e1;line-height:1.65;margin:10px 0;">還原連結只帶入規格與金額，不含客戶名稱、聯絡人、案場地址或自訂項目名稱；收件者需另填。這些欄位仍保留於本機草稿及列印內容。本機草稿於最後更新 7 天後再次開啟時清除；共用裝置使用後請按「清除此瀏覽器的草稿與客戶資料」。此操作不會刪除已下載或傳送的文件。「複製報價單文字」仍含客戶資料，傳送前請確認收件者。</p></details></section>
+<p id="quote-share-privacy-note" style="font-size:0.82rem;color:#cbd5e1;line-height:1.65;margin:10px 0;">還原連結只帶入規格與金額，不含客戶名稱、聯絡人、案場地址或自訂項目名稱；收件者需另填。客戶名稱、聯絡人及完整地址只用於目前頁面與列印內容，不存入跨頁草稿；重新開啟或載入規格時需重填。本機草稿於最後更新 7 天後再次開啟時清除；共用裝置使用後請按「清除此瀏覽器的草稿與客戶資料」。此操作不會刪除已下載或傳送的文件。「複製報價單文字」仍含客戶資料，傳送前請確認收件者。</p></details></section>
 </div>
 </section>
 <section aria-labelledby="quote-faq-heading" class="faq-section no-print">
