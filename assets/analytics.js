@@ -15,7 +15,9 @@
   function vetoUntil() {
     let until = 0;
     try { until = Number(sessionStorage.getItem(VETO)) || 0; } catch (_) {}
-    document.cookie.split(';').forEach(function (v) {
+    let cookies = '';
+    try { cookies = document.cookie; } catch (_) {}
+    cookies.split(';').forEach(function (v) {
       const pair = v.trim().split('=');
       if (pair[0] === VETO) until = Math.max(until, Number(pair[1]) || 0);
     });
@@ -24,7 +26,7 @@
   function veto(on) {
     const until = on ? Date.now() + TTL : 0;
     try { if (on) sessionStorage.setItem(VETO, String(until)); else sessionStorage.removeItem(VETO); } catch (_) {}
-    document.cookie = VETO + '=' + (on ? until : '') + '; Max-Age=' + (on ? 15552000 : 0) + '; path=/; SameSite=Lax; Secure';
+    try { document.cookie = VETO + '=' + (on ? until : '') + '; Max-Age=' + (on ? 15552000 : 0) + '; path=/; SameSite=Lax; Secure'; } catch (_) {}
   }
   let channel = null;
   try { if (typeof BroadcastChannel !== 'undefined') channel = new BroadcastChannel('hs-analytics-consent-v1'); } catch (_) {}
@@ -105,6 +107,10 @@
     document.head.appendChild(script);
   }
   function choose(value, remote) {
+    // Withdraw synchronously, before any storage or cookie operation can fail.
+    if (value !== 'granted') { active = false; window['ga-disable-' + ID] = true; }
+    const panel = document.getElementById('hs-analytics-choice');
+    if (panel) panel.hidden = true;
     const saved = remote ? null : save(value);
     veto(value === 'denied');
     clearTimeout(expiryTimer);
@@ -113,11 +119,13 @@
     else {
       active = false; window['ga-disable-' + ID] = true;
       // Remove first-party GA cookies at known site scopes. No outbound consent ping.
-      document.cookie.split(';').forEach(function (entry) {
+      let cookies = '';
+      try { cookies = document.cookie; } catch (_) {}
+      cookies.split(';').forEach(function (entry) {
         const name = entry.trim().split('=')[0];
         if (!/^_ga(?:_|$)/.test(name)) return;
         ['', '; domain=5390857.com', '; domain=.5390857.com', '; domain=www.5390857.com'].forEach(function (domain) {
-          document.cookie = name + '=; Max-Age=0; path=/' + domain + '; SameSite=Lax; Secure';
+          try { document.cookie = name + '=; Max-Age=0; path=/' + domain + '; SameSite=Lax; Secure'; } catch (_) {}
         });
       });
       // Unload already-running Google code immediately after withdrawal.
@@ -133,7 +141,7 @@
   if (settings) settings.addEventListener('click', function () {
     const panel = document.getElementById('hs-analytics-choice');
     panel.hidden = false;
-    panel.scrollIntoView({block:'nearest'});
+    panel.scrollIntoView({block:'center'});
     panel.querySelector('[data-analytics-choice]').focus();
   });
   const notice = document.getElementById('hs-analytics-choice');
@@ -179,4 +187,6 @@
     } catch (_) {}
   }, true);
 })();
+
+
 
