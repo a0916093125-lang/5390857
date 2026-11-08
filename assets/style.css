@@ -2542,3 +2542,26 @@ h1.main-title {
   .quote-paper-sheet .qp-compliance-box,
   .quote-paper-sheet .qp-sign-grid { break-inside: avoid !important; page-break-inside: avoid !important; }
 }
+
+
+/* iPhone retest: do not let screen 100vw cap the physical A4 layout.
+   210mm paper minus 8mm left/right margins = 194mm content width. */
+@media print {
+  html { max-width: none !important; }
+  body.quote-print-page {
+    width: 194mm !important; min-width: 194mm !important; max-width: none !important;
+  }
+  body.quote-print-page main.container,
+  body.quote-print-page .quote-workspace-grid,
+  body.quote-print-page .quote-workspace-grid > div,
+  body.quote-print-page .quote-paper-sheet {
+    width: 194mm !important; max-width: none !important; min-width: 0 !important;
+  }
+  body.quote-print-page .quote-paper-sheet { border-radius: 0; }
+  body.quote-print-page .qp-company-sub,
+  body.quote-print-page .qp-meta-grid { font-size: 9pt !important; }
+  body.quote-print-page .qp-compliance-box { font-size: 8.5pt !important; line-height: 1.35 !important; }
+  body.quote-print-page .qp-stamp-box div { font-size: 8.5pt !important; }
+  body.quote-print-page .qp-red-stamp { flex-shrink: 0; }
+  body.quote-print-page .qp-meta-val { overflow-wrap: anywhere; }
+}
