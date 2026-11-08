@@ -216,7 +216,7 @@
 <input class="calc-input" id="q-client-addr" placeholder="例如：新北市板橋區..." type="text" value="台北市 / 新北市"/>
 </div>
 </div>
-<button class="btn btn-outline" id="btn-q-load-draft" type="button">延續已儲存草稿（含原日期與參考編號）</button>
+<button class="btn btn-outline" id="btn-q-load-draft" type="button">載入已儲存規格（客戶資料需重填）</button>
 <div class="grid-2" style="gap:12px;margin-bottom:16px;">
 <div>
 <label class="calc-label" for="q-doc-no">報價參考編號（非公司流水號）</label>
@@ -534,7 +534,7 @@
 </div>
 </article>
 <section id="quote-actions" hidden class="quote-actions no-print" aria-label="報價單下載與詢價"><h2>確認報價後</h2><div class="btn-group"><button class="btn btn-primary" id="btn-q-print" style="width:100%;font-size:1.05rem;" type="button">列印／存成 PDF</button><button class="btn btn-line" id="btn-q-line" style="width:100%;" type="button">複製報價並開啟 LINE</button></div><p class="service-flow-note">文字包含您填寫的客戶資料。開啟 LINE 後請確認收件者、貼上並自行傳送，不會自動送出。</p><details class="quote-more-actions"><summary>分享連結與資料管理</summary><button aria-describedby="quote-share-privacy-note" class="btn btn-outline" id="btn-q-share-url" style="width:100%;border-color:rgba(56,189,248,0.5);color:#7dd3fc;" type="button">複製規格連結（不含客戶資料）</button><button class="btn btn-outline" id="btn-q-clear-draft" type="button" style="width:100%;" aria-describedby="quote-share-privacy-note">清除此瀏覽器的草稿與客戶資料</button><div id="quote-share-fallback" hidden><label class="calc-label" for="quote-share-link-value">請手動複製此規格與金額連結</label><textarea class="calc-input" id="quote-share-link-value" readonly rows="3" aria-describedby="quote-share-privacy-note"></textarea></div>
-<p id="quote-share-privacy-note" style="font-size:0.82rem;color:#cbd5e1;line-height:1.65;margin:10px 0;">還原連結只帶入規格與金額，不含客戶名稱、聯絡人、案場地址或自訂項目名稱；收件者需另填。這些欄位仍保留於本機草稿及列印內容。本機草稿於最後更新 7 天後再次開啟時清除；共用裝置使用後請按「清除此瀏覽器的草稿與客戶資料」。此操作不會刪除已下載或傳送的文件。「複製報價單文字」仍含客戶資料，傳送前請確認收件者。</p></details></section>
+<p id="quote-share-privacy-note" style="font-size:0.82rem;color:#cbd5e1;line-height:1.65;margin:10px 0;">還原連結只帶入規格與金額，不含客戶名稱、聯絡人、案場地址或自訂項目名稱；收件者需另填。客戶名稱、聯絡人及完整地址只用於目前頁面與列印內容，不存入跨頁草稿；重新開啟或載入規格時需重填。本機草稿於最後更新 7 天後再次開啟時清除；共用裝置使用後請按「清除此瀏覽器的草稿與客戶資料」。此操作不會刪除已下載或傳送的文件。「複製報價單文字」仍含客戶資料，傳送前請確認收件者。</p></details></section>
 </div>
 </section>
 <section aria-labelledby="quote-faq-heading" class="faq-section no-print">
@@ -596,7 +596,7 @@
 </a>
 </div>
 <script src="assets/pricing-config.js?v=repair-20261108"></script>
-<script src="assets/cad-engine.js?v=confirmed-20261109-repair-20261108"></script>
+<script src="assets/cad-engine.js?v=20261109-identity"></script>
 <section id="hs-analytics-choice" aria-label="網站分析選擇">
 <p>允許 Google Analytics 分析瀏覽與入口點擊，協助改善網站？不同意也能正常估價與聯絡。</p>
 <details><summary>了解更多</summary>

@@ -101,6 +101,13 @@ window.hsPendingPrice = function () { return ''; };
     "hs_5390857_quote_draft_v10",
     "hs_5390857_quote_draft_v8"
   ];
+  // Shared drafts contain specifications only. Customer identity stays in this document's DOM.
+  const PRIVATE_DRAFT_FIELDS = ["clientName", "contactPerson", "clientAddr", "customName"];
+  function specificationOnly(draft) {
+    const clean = Object.assign({}, draft);
+    PRIVATE_DRAFT_FIELDS.forEach(function (key) { delete clean[key]; });
+    return clean;
+  }
   const DRAFT_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
   const A4_SAFE_HEIGHT_PX = 985;
   const A4_PRINTABLE_WIDTH_PX = 733; // A4 794px 扣除左右各 8mm (約 30.2px * 2) 列印邊界後之真實可用寬度
@@ -223,7 +230,13 @@ window.hsPendingPrice = function () { return ''; };
         clearQuoteDraft();
         return null;
       }
-      memoryDraftFallback = Object.assign({}, parsed);
+      memoryDraftFallback = specificationOnly(parsed);
+      // Remove legacy identity from this site's draft keys without touching unrelated storage.
+      if (PRIVATE_DRAFT_FIELDS.some(function (key) { return Object.prototype.hasOwnProperty.call(parsed, key); })) {
+        [DRAFT_STORAGE_KEY].concat(LEGACY_STORAGE_KEYS).forEach(function (key) {
+          try { localStorage.setItem(key, JSON.stringify(memoryDraftFallback)); } catch (e) {}
+        });
+      }
       return memoryDraftFallback;
     } catch (e) {}
     if (!isFreshQuoteDraft(memoryDraftFallback)) memoryDraftFallback = null;
@@ -233,9 +246,9 @@ window.hsPendingPrice = function () { return ''; };
   /* 跨頁草稿儲存（同時寫入記憶體保底與 localStorage，確保 URL 參數直傳在任何沙盒或無痕環境下 依瀏覽器狀態生效） */
   function saveQuoteDraft(draftPatch) {
     const existing = loadQuoteDraft() || {};
-    const merged = Object.assign({}, existing, draftPatch, {
+    const merged = specificationOnly(Object.assign({}, existing, draftPatch, {
       updatedAt: Date.now()
-    });
+    }));
     memoryDraftFallback = merged;
     try {
       const serialized = JSON.stringify(merged);
@@ -1754,6 +1767,12 @@ window.hsPendingPrice = function () { return ''; };
     const elClientAddr = document.getElementById("q-client-addr");
     const elDocNo = document.getElementById("q-doc-no");
     const elDocDate = document.getElementById("q-doc-date");
+    function clearCustomerFields() {
+      [elClientName, elContactPerson, elClientAddr].forEach(function (el) {
+        if (el) { el.value = ""; el.autocomplete = "off"; }
+      });
+    }
+    clearCustomerFields();
 
     // 自來水塔設定區
     const boxWtGroup = document.getElementById("q-wt-group");
@@ -1922,22 +1941,11 @@ window.hsPendingPrice = function () { return ''; };
         }
       }
 
-      if (draft.clientName && elClientName) {
-        elClientName.value = String(draft.clientName);
-      }
-      if (draft.contactPerson && elContactPerson) {
-        elContactPerson.value = String(draft.contactPerson);
-      }
-      if (draft.region && elClientAddr) {
-        const curAddr = elClientAddr.value.trim();
-        if (!curAddr || curAddr === "台北市 / 新北市" || curAddr === "桃園市 / 新竹縣市" || curAddr === "其他外縣市專案") {
-          elClientAddr.value = String(draft.region);
-        }
-      }
-      if (draft.clientAddr && elClientAddr && (!fromParamVal || fromParamVal === "share")) {
-        elClientAddr.value = String(draft.clientAddr);
-      } else if (draft.region && elClientAddr && fromParamVal) {
-        elClientAddr.value = String(draft.region);
+      // New quotes and explicit specification restores never borrow customer identity.
+      // A known region is not a customer's street address.
+      if (draft.region && elClientAddr && !elClientAddr.value.trim()) {
+        const allowedRegions = ["台北市 / 新北市", "桃園市 / 新竹縣市", "其他外縣市專案"];
+        if (allowedRegions.indexOf(draft.region) !== -1) elClientAddr.value = draft.region;
       }
       if (restoreDocumentIdentity && draft.docNo && elDocNo) {
         elDocNo.value = String(draft.docNo);
@@ -1995,9 +2003,7 @@ window.hsPendingPrice = function () { return ''; };
       const snapshot = {
         displayMode: elDisplayMode ? elDisplayMode.value : "ab_compare",
         serviceCategory: elCategory ? elCategory.value : "water_tank",
-        clientName: elClientName ? elClientName.value.trim() : "",
-        contactPerson: elContactPerson ? elContactPerson.value.trim() : "",
-        clientAddr: elClientAddr ? elClientAddr.value.trim() : "",
+        // Customer identity is deliberately not saved to shared browser storage.
         docNo: elDocNo ? elDocNo.value.trim() : "",
         docDate: elDocDate ? elDocDate.value.trim() : "",
         wtTonnage: elWtTonnage ? elWtTonnage.value : "120",
@@ -2773,17 +2779,19 @@ window.hsPendingPrice = function () { return ''; };
       });
     }
 
-    // Clear stale on-screen customer data as well as storage after removal/expiry.
+    // Do not merge another tab's specifications into the current customer's document.
+    // Returning from browser history clears identity before the document can be reused.
     window.addEventListener("pageshow", function (e) {
       if (e && e.persisted) {
-        if (loadQuoteDraft()) applyStoredDraft(false, "");
-        else clearVisibleDraft();
+        clearCustomerFields();
+        if (!loadQuoteDraft()) clearVisibleDraft();
+        else renderQuotation(false);
       }
     });
     window.addEventListener("storage", function (e) {
-      if (!e || e.key === DRAFT_STORAGE_KEY || e.key === null || LEGACY_STORAGE_KEYS.indexOf(e.key) !== -1) {
-        if (loadQuoteDraft()) applyStoredDraft(false, "");
-        else clearVisibleDraft();
+      if (!e || e.key === null ||
+          ((e.key === DRAFT_STORAGE_KEY || LEGACY_STORAGE_KEYS.indexOf(e.key) !== -1) && e.newValue === null)) {
+        clearVisibleDraft();
       }
     });
 
@@ -2897,9 +2905,7 @@ window.hsPendingPrice = function () { return ''; };
           serviceCategory: params.get("cat") || "water_tank",
           // Clear omitted identity fields instead of borrowing a different customer's stored draft.
           // Legacy links remain readable; all newly generated links omit these fields.
-          clientName: params.get("cname") || "貴社區管理委員會 ／ 貴公司廠務部",
-          contactPerson: params.get("cperson") || "總幹事 ／ 廠務主管 鈞啟",
-          clientAddr: params.get("caddr") || "台北市 / 新北市",
+          // Ignore customer fields in legacy URLs too; recipients enter their own details.
           customName: "",
           customPrice: "0"
         };
@@ -3090,8 +3096,9 @@ window.hsPendingPrice = function () { return ''; };
 
     if (btnLoadDraft) {
       btnLoadDraft.addEventListener("click", function () {
+        clearCustomerFields();
         applyStoredDraft(true, "", true);
-        showToast("已載入儲存草稿（含原日期與參考編號），請確認是否適用本次報價。");
+        showToast("已載入儲存規格；請重新填寫本次客戶資料，並確認日期及參考編號。");
       });
     }
 
