@@ -1174,7 +1174,7 @@ window.hsPendingPrice = function () { return ''; };
 
       // 各機型：基本包套價 (A/B) 與 超出台數單台價 (A/B)
       const acPricingMap = {
-        split:    { pkgA: 12500, pkgB: 10000, unitA: 2200, unitB: 1800, baseIncluded: "4 台內", name: "壁掛分離式冷氣" },
+        split:    { pkgA: 12500, pkgB: 10000, unitA: 12500 / 4, unitB: 10000 / 4, baseIncluded: "4 台內", name: "壁掛分離式冷氣" },
         fcu:      { pkgA: 13000, pkgB: 10500, unitA: 3200, unitB: 2800, baseIncluded: "3 台內", name: "吊隱式冷氣／冰水送風機(FCU)" },
         cassette: { pkgA: 13500, pkgB: 11000, unitA: 4000, unitB: 3500, baseIncluded: "3 台內", name: "四方吹嵌入式卡式冷氣" },
         package:  { pkgA: 13500, pkgB: 11000, unitA: 4500, unitB: 3800, baseIncluded: "2 台內", name: "落地箱型冷氣(氣冷/水冷櫃機)" },
@@ -1182,21 +1182,15 @@ window.hsPendingPrice = function () { return ''; };
       };
       const cfg = acPricingMap[acType] || acPricingMap.cassette;
 
-      let extraCount = 0;
-      if (acQty === "add_2") extraCount = 2;
-      else if (acQty === "add_3") extraCount = 3;
-      else if (acQty === "add_4") extraCount = 4;
-      else if (acQty === "add_6") extraCount = 6;
-      else if (acQty === "add_8") extraCount = 8;
+      const extraCount = /^add_([1-9][0-9]?|100)$/.test(acQty) ? Number(acQty.slice(4)) : 0;
 
       // 動態同步第 4 題下拉選單文字：包套台數與追加台數。
-      if (qtySelect && qtySelect.options.length >= 6) {
-        qtySelect.options[0].text = "標準基本包套（" + cfg.name + "含 " + cfg.baseIncluded + " 精洗）";
-        qtySelect.options[1].text = "基本包套外追加 2 台";
-        qtySelect.options[2].text = "基本包套外追加 3 台";
-        qtySelect.options[3].text = "基本包套外追加 4 台";
-        qtySelect.options[4].text = "基本包套外追加 6 台";
-        qtySelect.options[5].text = "基本包套外追加 8 台";
+      if (qtySelect) {
+        Array.from(qtySelect.options).forEach(option => {
+          option.text = option.value === "base"
+            ? "標準基本包套（" + cfg.name + "含 " + cfg.baseIncluded + " 精洗）"
+            : "基本包套外追加 " + option.value.slice(4) + " 台";
+        });
       }
 
       let basePrice = 0;
@@ -2273,7 +2267,7 @@ window.hsPendingPrice = function () { return ''; };
         const acQtyVal = elAcQty ? elAcQty.value : "base";
 
         const acMap = {
-          split:    { pkgA: 12500, pkgB: 10000, unitA: 2200, unitB: 1800, inc: "含 4 台內", name: "壁掛分離式冷氣", spec: "拆洗外殼、濾網、貫流風鼓葉輪、蒸發器親水藥洗與排水管疏通。家用分離式未滿4台仍以4台計價，未使用台數可轉給隔壁鄰居家團購" },
+          split:    { pkgA: 12500, pkgB: 10000, unitA: 12500 / 4, unitB: 10000 / 4, inc: "含 4 台內", name: "壁掛分離式冷氣", spec: "拆洗外殼、濾網、貫流風鼓葉輪、蒸發器親水藥洗與排水管疏通。家用分離式未滿4台仍以4台計價，未使用台數可轉給隔壁鄰居家團購" },
           fcu:      { pkgA: 13000, pkgB: 10500, unitA: 3200, unitB: 2800, inc: "含 3 台內", name: "吊隱式冷氣／冰水送風機(FCU)", spec: "天花板維修孔拆洗風車葉輪、鰭片高壓藥洗、集水盤果凍淤泥抽除與浮球點檢" },
           cassette: { pkgA: 13500, pkgB: 11000, unitA: 4000, unitB: 3500, inc: "含 3 台內", name: "四方吹嵌入式卡式冷氣", spec: "拆卸四方出風面板、內建排水泵浦與浮球清潔、全方位蒸發器鰭片精洗與電流實測" },
           package:  { pkgA: 13500, pkgB: 11000, unitA: 4500, unitB: 3800, inc: "含 2 台內", name: "落地箱型冷氣(氣冷/水冷櫃機)", spec: "大型排管蒸發器高壓藥洗、雙風鼓葉輪除垢、冷凝水盤與排水管疏通" },
@@ -2281,12 +2275,7 @@ window.hsPendingPrice = function () { return ''; };
         };
         const acCfg = acMap[acTypeVal] || acMap.cassette;
 
-        let extraCnt = 0;
-        if (acQtyVal === "add_2") extraCnt = 2;
-        else if (acQtyVal === "add_3") extraCnt = 3;
-        else if (acQtyVal === "add_4") extraCnt = 4;
-        else if (acQtyVal === "add_6") extraCnt = 6;
-        else if (acQtyVal === "add_8") extraCnt = 8;
+        const extraCnt = /^add_([1-9][0-9]?|100)$/.test(acQtyVal) ? Number(acQtyVal.slice(4)) : 0;
 
         // 單獨派車專案包套模式（機電工程車基本出勤包套）
         items.push({
