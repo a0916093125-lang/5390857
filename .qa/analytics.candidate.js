@@ -39,7 +39,7 @@
     window['ga-disable-' + ID] = false;
     window.dataLayer = window.dataLayer || [];
     tag('consent', 'default', {analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied'});
-    tag('set', Object.assign(safeFields(), {allow_google_signals: false, allow_ad_personalization_signals: false}));
+    tag('set', Object.assign(safeFields(), {send_page_view: false, allow_google_signals: false, allow_ad_personalization_signals: false}));
     tag('consent', 'update', {analytics_storage: 'granted'});
     tag('js', new Date());
     tag('config', ID, Object.assign(safeFields(), {send_page_view: false,
