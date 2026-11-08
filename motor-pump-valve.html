@@ -167,7 +167,7 @@
 </style>
 <link rel="stylesheet" href="assets/mobile-ux.css?v=20261108-1"/>
 <script defer src="assets/mobile-ux.js?v=20261108-1"></script>
-<link rel="stylesheet" href="assets/choice-cards.css?v=20261108-1"/>
+<link rel="stylesheet" href="assets/choice-cards.css?v=repair-20261108"/>
 </head>
 <body>
 
@@ -205,6 +205,8 @@
 <p class="nav-swipe-hint">左右滑動選單，查看更多服務 →</p>
 </div>
 </header>
+<p class="no-print" id="hs-estimate-loading" role="status">線上估價載入中；若持續未顯示選項，請重新整理或使用 LINE 詢價。</p>
+<noscript><p role="alert">線上估價需要啟用 JavaScript；無法使用時，請透過頁面聯絡方式提供規格詢價。</p></noscript>
 <main class="container"><section aria-label="機電檢修！機電馬達、空調風鼓軸承、幫浦與蝶閥逆止閥搶修核心宣言" class="hero-section hero-flagship">
 <div class="hero-split-grid">
 <div class="hero-copy-col">
@@ -241,7 +243,7 @@
 <div class="hero-metric-card">
 <div class="hero-metric-val hero-val-emerald">NT$ 0<span class="hero-metric-unit">檢測費</span></div>
 <div class="hero-metric-label">清洗客戶同日順手修特惠</div>
-<div class="hero-metric-desc">洗水塔/洗冷卻塔/洗冷氣同日順修，直接免收 $2,500 單獨查修出工費</div>
+<div class="hero-metric-desc">洗水塔/洗冷卻塔/洗冷氣同日順修，檢測與出工費另確認</div>
 </div>
 <div class="hero-metric-card">
 <div class="hero-metric-val">服務時間另洽<span class="hero-metric-unit">急件</span></div>
@@ -281,7 +283,7 @@
 <select class="calc-select" id="mpv-schedule-mode" style="border-color:#fbbf24;font-weight:700;">
 <option selected="" value="priority_50">★ 指定時間方案（指定時段檢修）：指定時段專車＋NSK（型號及產地須確認）/依確認規格料件＋電流絕緣簽認報告（保固條件另確認）</option>
 <option value="weekday_35">⚡ 平日順路方案（標準完修經濟型）：平日彈性順路排程＋工業級標準新品料件（保固條件另確認）</option>
-<option value="addon_with_clean">💧 洗水塔／冷卻塔／冷氣客戶同日順手修（免收 $2,500 單獨查修出工費，同趟排空拆機最省！）</option>
+<option value="addon_with_clean">💧 洗水塔／冷卻塔／冷氣客戶同日順手修（檢測與出工費另確認，同趟排空拆機最省！）</option>
 </select>
 </div>
 <div class="calc-form-group">
@@ -330,12 +332,12 @@
 </select>
 </div>
 <div class="calc-form-group">
-<label class="calc-label" for="mpv-qty">5. 現場檢修數量 ／ 台數 ／ 處數（同趟多件享免重覆出工折減）</label>
+<label class="calc-label" for="mpv-qty">5. 現場檢修數量 ／ 台數 ／ 處數（多件費用須先確認）</label>
 <select class="calc-select" id="mpv-qty">
 <option selected="" value="1">1 台 ／ 1 組 ／ 1 處（標準單件專車檢修）</option>
-<option value="2">2 台 ／ 2 組 ／ 2 處（同案場第 2 件起享同趟免重覆出車折減 10%）</option>
-<option value="3">3 台 ／ 3 組 ／ 3 處（同案場多件批次檢修折減 12%）</option>
-<option value="4">4 台 ／ 4 組 ／ 4 處以上（商場／社區全機房專案批次折減 15%）</option>
+<option value="2">2 台 ／ 2 組 ／ 2 處（多件費用請洽詢）</option>
+<option value="3">3 台 ／ 3 組 ／ 3 處（多件費用請洽詢）</option>
+<option value="4">4 台 ／ 4 組 ／ 4 處以上（多件費用請洽詢）</option>
 </select>
 </div>
 <div class="calc-form-group">
@@ -351,7 +353,7 @@
 </label>
 <label class="calc-check-item">
 <input id="mpv-chk-combo-clean" type="checkbox"/>
-<span>🧼 同日順便加購水塔／冷卻塔／冷氣深層清洗保養（直接折抵免收 $2,500 單獨查修出工底價！）</span>
+<span>🧼 同日順便加購水塔／冷卻塔／冷氣深層清洗保養（檢測與出工費另確認！）</span>
 </label>
 <label class="calc-check-item">
 <input id="mpv-chk-tax" type="checkbox"/>
@@ -359,9 +361,9 @@
 </label>
 </div>
 </div>
-<div class="calc-result-box">
+<div class="calc-result-box" hidden>
 <div style="font-size:0.9rem;color:#fde68a;font-weight:700;">預估連工帶料完修浮動級距（依馬力HP、管徑吋數與現場拆裝高度難度核定最終報價，先報價後施工）：</div>
-<div class="price-highlight" id="mpv-price-output">NT$ 4,500 ~ 11,000 元起（未稅）</div>
+<div class="price-highlight" id="mpv-price-output">請先選擇規格</div>
 <div style="margin-top:8px;font-size:0.95rem;color:#e2e8f0;">
 ⏱️ 預估完修工時：<strong id="mpv-hours-output" style="color:#38bdf8;">依現場確認（試算時間僅供參考）</strong>
 </div>
@@ -370,7 +372,7 @@
 </div>
 <details class="mobile-result-details" open><summary>查看完整費用與作業明細</summary><p id="mpv-summary-text" style="margin-top:10px;font-size:0.84rem;color:#cbd5e1;background:rgba(7,13,25,0.6);padding:8px 12px;border-radius:8px;"></p></details>
 <p style="margin-top:8px;font-size:0.82rem;color:#fde68a;font-weight:700;">
-💡 皓盛收費確認原則：(1) 單獨叫修基本出工檢測保底價 $2,000~$2,500 起/趟（確認委修直接折抵併入工程款；搭配清洗同日順修享 0 元免出車檢測費）；(2) 現場確認馬力噸數與拆裝難度後先報明價，經業主同意才動工，施工範圍與費用須先確認！
+💡 皓盛收費確認原則：(1) 單獨叫修基本出工檢測保底價 $2,000~$2,500 起/趟（是否折抵工程款及同日順修費用須先確認）；(2) 現場確認馬力噸數與拆裝難度後先報明價，經業主同意才動工，施工範圍與費用須先確認！
 </p>
 <div class="btn-group">
 <button class="btn btn-amber" id="btn-mpv-to-quote" style="width:100%;" type="button">查看報價與詢價</button>
@@ -514,8 +516,8 @@
 <div>
 <h3 style="color:#ffffff;margin-bottom:10px;">皓盛有限公司 (Hao Sheng Co., Ltd.)</h3>
 <p>統一編號：90221911｜負責人：李思遠</p>
-<p>【給水機電事業部】：社區大樓與商辦自來水塔清洗消毒、地下蓄水池清洗、水質檢測項目、範圍與費用依需求另行確認、Omron 61F-G2 液位開關與進水蝴蝶閥更換。</p>
-<p>【商空水系統事業部】：商用中央空調冷卻水塔清洗保養、良機與跨廠牌水塔散熱材更換、6吋~10吋齒輪式蝴蝶閥更新、東元 TECO F510 變頻器調校。</p>
+<p>【給水機電服務】：社區大樓與商辦自來水塔清洗消毒、地下蓄水池清洗、水質檢測項目、範圍與費用依需求另行確認、Omron 61F-G2 液位開關與進水蝴蝶閥更換。</p>
+<p>【商空水系統服務】：商用中央空調冷卻水塔清洗保養、良機與跨廠牌水塔散熱材更換、6吋~10吋齒輪式蝴蝶閥更新、東元 TECO F510 變頻器調校。</p>
 <p>【室內空調機電部】：商辦四方吹嵌入式冷氣、吊隱式送風機（FCU）、大型空調箱（AHU）、箱型機與分離式冷氣深層拆洗、改善果凍淤泥滴水。</p>
 <p>【機電馬達與閥件搶修部（機電檢修！）】：分離式與吊隱式冷氣風鼓馬達培林電容、AHU 空調箱連座軸承大修、水塔播水頭減速機循環泵、揚水加壓馬達與 2"~10" 蝶閥無聲逆止閥搶修。</p>
 </div>
@@ -523,8 +525,8 @@
 <h3 style="color:#ffffff;margin-bottom:10px;">全站七大核心頁面快速導覽</h3>
 <ul style="list-style:none;line-height:2.0;">
 <li>▸ <a href="index.html">皓盛有限公司企業形象與工程實力總覽首頁</a></li>
-<li>▸ <a href="water-tank.html">給水機電事業部：社區大樓洗自來水塔試算器</a></li>
-<li>▸ <a href="cooling-tower.html">商空水系統事業部：空調冷卻水塔 RT 試算器</a></li>
+<li>▸ <a href="water-tank.html">給水機電服務：社區大樓洗自來水塔試算器</a></li>
+<li>▸ <a href="cooling-tower.html">商空水系統服務：空調冷卻水塔 RT 試算器</a></li>
 <li>▸ <a href="ac-cleaning.html">室內空調機電部：冷氣與中央空調清洗試算器</a></li>
 <li>▸ <a href="motor-pump-valve.html">機電檢修！機電馬達・風鼓軸承・泵浦閥件試算器</a></li>
 <li>▸ <a href="shop.html">機電嚴選商城：瑞林RP-258排水器安裝＆25kg氯錠採購</a></li>
@@ -532,7 +534,7 @@
 </ul>
 </div>
 <div>
-<h3 style="color:#ffffff;margin-bottom:10px;">直接聯繫工程總管（聯絡資訊）</h3>
+<h3 style="color:#ffffff;margin-bottom:10px;">直接聯繫服務窗口（聯絡資訊）</h3>
 <p>手機 / LINE ID：<a href="tel:0916093125" style="color:#34d399;font-weight:800;">0916-093-125</a>｜信箱：<a href="mailto:ssuyuan@kimo.com">ssuyuan@kimo.com</a></p>
 <p>Google 地標地址：<a href="https://www.google.com/maps/place/?q=place_id:ChIJ1duZi7GvQjQRUBaotvuDlVg" rel="noopener noreferrer" style="color:#38bdf8;font-weight:700;" target="_blank">11164 臺北市士林區社子里社正路45巷4弄2號 📍</a>（工商登記：1號1樓）</p>
 <p>服務範圍：台北市、新北市（交通費依案確認）、桃園市、新竹縣市及全台大型商場廠房專案</p>
@@ -553,8 +555,8 @@
 <span class="sticky-btn-sub">傳照片估價</span>
 </a>
 </div>
-<script src="assets/pricing-config.js?v=20261108"></script>
-<script src="assets/cad-engine.js?v=plain-20261108"></script>
+<script src="assets/pricing-config.js?v=repair-20261108"></script>
+<script src="assets/cad-engine.js?v=repair-20261108"></script>
 <section id="hs-analytics-choice" aria-label="網站分析選擇">
 <p>允許 Google Analytics 分析瀏覽與入口點擊，協助改善網站？不同意也能正常估價與聯絡。</p>
 <details><summary>了解更多</summary>
@@ -621,7 +623,7 @@
 <script defer src="assets/analytics.js?v=consent-collapse-20261108"></script>
 
 
-<script defer src="assets/choice-cards.js?v=20261108-1"></script>
+<script defer src="assets/choice-cards.js?v=repair-20261108"></script>
 </body>
 </html>
 
