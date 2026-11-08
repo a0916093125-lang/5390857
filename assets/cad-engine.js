@@ -178,10 +178,16 @@
   }
 
   let memoryDraftFallback = null;
+  let draftWriteFailed = false;
+
+  window.addEventListener("storage", function (e) {
+    if (!e || e.key === null || e.key === DRAFT_STORAGE_KEY || LEGACY_STORAGE_KEYS.indexOf(e.key) !== -1) { draftWriteFailed = false; memoryDraftFallback = null; }
+  });
 
   // Only remove this site's known quote draft keys, never unrelated browser data.
   function clearQuoteDraft() {
     memoryDraftFallback = null;
+    draftWriteFailed = false;
     [DRAFT_STORAGE_KEY].concat(LEGACY_STORAGE_KEYS).forEach(function (key) {
       try { localStorage.removeItem(key); } catch (e) {}
     });
@@ -196,6 +202,7 @@
 
   /* Expire saved drafts after seven days without an update. */
   function loadQuoteDraft() {
+    if (draftWriteFailed && isFreshQuoteDraft(memoryDraftFallback)) return memoryDraftFallback;
     try {
       let raw = localStorage.getItem(DRAFT_STORAGE_KEY);
       if (!raw) {
@@ -205,6 +212,7 @@
         }
       }
       if (!raw) {
+        if (draftWriteFailed && isFreshQuoteDraft(memoryDraftFallback)) return memoryDraftFallback;
         memoryDraftFallback = null;
         return null;
       }
@@ -230,10 +238,11 @@
     try {
       const serialized = JSON.stringify(merged);
       localStorage.setItem(DRAFT_STORAGE_KEY, serialized);
+      draftWriteFailed = false;
       for (let i = 0; i < LEGACY_STORAGE_KEYS.length; i++) {
         localStorage.setItem(LEGACY_STORAGE_KEYS[i], serialized);
       }
-    } catch (e) {}
+    } catch (e) { draftWriteFailed = true; }
   }
 
   /* 同步開啟 LINE 視窗輔助（修復 window.open + noopener 必回傳 null 造成雙重開啟/跳轉之漏洞） */
@@ -751,8 +760,7 @@
         copyAndOpenLine(calculate(true, false));
       });
     }
-    if (btnToQuote) {
-      btnToQuote.addEventListener("click", function () {
+    function buildThisQuoteUrl() {
         calculate(true, true);
         const isCoolChecked = Boolean(chkCool && chkCool.checked);
         const nextCatWt = isCoolChecked ? "both" : "water_tank";
@@ -773,8 +781,13 @@
           cl25: (chkWtChlorine && chkWtChlorine.checked) ? "1" : "0",
           tax: (chkTax && chkTax.checked) ? "1" : "0"
         });
-        window.location.href = "quote.html?" + qParams.toString() + "#qp-workspace-anchor";
-      });
+        return "quote.html?" + qParams.toString() + "#qp-workspace-anchor";
+    }
+    form.addEventListener("hs:quote-request", function (event) {
+      if (event.detail) event.detail.url = buildThisQuoteUrl();
+    });
+    if (btnToQuote) {
+      btnToQuote.addEventListener("click", function () { window.location.href = buildThisQuoteUrl(); });
     }
   }
 
@@ -1041,8 +1054,7 @@
         copyAndOpenLine(calcCoolingTower(true, false));
       });
     }
-    if (btnCtToQuote) {
-      btnCtToQuote.addEventListener("click", function () {
+    function buildThisQuoteUrl() {
         calcCoolingTower(true, true);
         const existingDraft = loadQuoteDraft() || {};
         const nextCat = (existingDraft.serviceCategory === "both") ? "both" : "cooling_tower";
@@ -1064,8 +1076,13 @@
           cl25: (chkCtChlorine && chkCtChlorine.checked) ? "1" : "0",
           tax: (chkTax && chkTax.checked) ? "1" : "0"
         });
-        window.location.href = "quote.html?" + qParams.toString() + "#qp-workspace-anchor";
-      });
+        return "quote.html?" + qParams.toString() + "#qp-workspace-anchor";
+    }
+    form.addEventListener("hs:quote-request", function (event) {
+      if (event.detail) event.detail.url = buildThisQuoteUrl();
+    });
+    if (btnCtToQuote) {
+      btnCtToQuote.addEventListener("click", function () { window.location.href = buildThisQuoteUrl(); });
     }
   }
 
@@ -1261,8 +1278,7 @@
         copyAndOpenLine(calcAcCleaning(true, false));
       });
     }
-    if (btnAcToQuote) {
-      btnAcToQuote.addEventListener("click", function () {
+    function buildThisQuoteUrl() {
         calcAcCleaning(true, true);
         const modeVal = scheduleSelect && scheduleSelect.value === "weekday_35" ? "weekday_35" : "priority_50";
         const qParams = new URLSearchParams({
@@ -1278,8 +1294,13 @@
           acsteam: (chkSteam && chkSteam.checked) ? "1" : "0",
           tax: (chkTax && chkTax.checked) ? "1" : "0"
         });
-        window.location.href = "quote.html?" + qParams.toString() + "#qp-workspace-anchor";
-      });
+        return "quote.html?" + qParams.toString() + "#qp-workspace-anchor";
+    }
+    form.addEventListener("hs:quote-request", function (event) {
+      if (event.detail) event.detail.url = buildThisQuoteUrl();
+    });
+    if (btnAcToQuote) {
+      btnAcToQuote.addEventListener("click", function () { window.location.href = buildThisQuoteUrl(); });
     }
   }
 
@@ -1667,8 +1688,7 @@
         copyAndOpenLine(calcMpv(true, false));
       });
     }
-    if (btnToQuote) {
-      btnToQuote.addEventListener("click", function () {
+    function buildThisQuoteUrl() {
         calcMpv(true, true);
         const modeVal = scheduleSelect ? scheduleSelect.value : "priority_50";
         const isAddonClean = (modeVal === "addon_with_clean") || Boolean(chkComboClean && chkComboClean.checked);
@@ -1691,8 +1711,13 @@
         if (isAddonClean && specCfg.comboAcType) {
           qParams.set("actype", specCfg.comboAcType);
         }
-        window.location.href = "quote.html?" + qParams.toString() + "#qp-workspace-anchor";
-      });
+        return "quote.html?" + qParams.toString() + "#qp-workspace-anchor";
+    }
+    form.addEventListener("hs:quote-request", function (event) {
+      if (event.detail) event.detail.url = buildThisQuoteUrl();
+    });
+    if (btnToQuote) {
+      btnToQuote.addEventListener("click", function () { window.location.href = buildThisQuoteUrl(); });
     }
   }
 
@@ -3057,6 +3082,13 @@
       });
     }
 
+    // Readonly embedded previews never display a different customer's saved identity.
+    if (new URLSearchParams(window.location.search).get("_preview") === "1") {
+      if (elClientName) elClientName.value = "待填客戶名稱";
+      if (elContactPerson) elContactPerson.value = "待填聯絡人";
+      renderQuotation(false);
+    }
+
     // 若從試算器跳轉而來，自動收合已選好的重複規格欄並將視線聚焦至報價單工作台
     if (fromParamVal) {
       setSpecsCollapsed(true);
@@ -3311,8 +3343,7 @@
         copyAndOpenLine(calcShop(), "【皓盛機電商城 5390857.com 排水器安裝／25kg氯錠訂購單】");
       });
     }
-    if (btnToQuote) {
-      btnToQuote.addEventListener("click", function () {
+    function buildThisQuoteUrl() {
         calcShop();
         const mode = itemSelect ? itemSelect.value : "rp258_standalone";
         const qParams = new URLSearchParams({
@@ -3322,8 +3353,13 @@
           qty: qtySelect ? qtySelect.value : "1",
           tax: (chkTax && chkTax.checked) ? "1" : "0"
         });
-        window.location.href = "quote.html?" + qParams.toString() + "#qp-workspace-anchor";
-      });
+        return "quote.html?" + qParams.toString() + "#qp-workspace-anchor";
+    }
+    form.addEventListener("hs:quote-request", function (event) {
+      if (event.detail) event.detail.url = buildThisQuoteUrl();
+    });
+    if (btnToQuote) {
+      btnToQuote.addEventListener("click", function () { window.location.href = buildThisQuoteUrl(); });
     }
   }
 

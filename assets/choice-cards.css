@@ -1,0 +1,24 @@
+.hs-native-choice { display:none!important; }
+.hs-choice-enhanced [hidden] { display:none!important; }
+.hs-choice-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:10px 0; }
+.hs-choice-card { display:flex; align-items:flex-start; gap:9px; min-height:64px; padding:14px 12px; border:1px solid #4b607c; border-radius:10px; background:#101c30; color:#dce8f2; cursor:pointer; font-size:16px; line-height:1.6; overflow-wrap:anywhere; }
+.hs-choice-card input { flex:0 0 auto; width:18px; height:18px; margin-top:4px; accent-color:#38bdf8; }
+.hs-choice-card:has(input:checked) { border:2px solid #38bdf8; padding:13px 11px; background:#12334b; color:#fff; }
+.hs-choice-card:focus-within { outline:3px solid #f8d979; outline-offset:3px; }
+.hs-choice-description { font-size:14px; line-height:1.8; color:#b8cadd; margin:8px 0; }
+.hs-choice-progress { border-left:3px solid #38bdf8; padding:12px 14px; margin:14px 0 22px; background:#123047; color:#e0f2fe; font-size:16px; }
+.hs-choice-warning { color:#cbd5e1; font-size:14px; line-height:1.8; margin:12px 0; }
+.hs-unsure { background:transparent; border:0; color:#b8d9e8; text-decoration:underline; font:inherit; font-size:14px; min-height:44px; padding:8px 0; cursor:pointer; }
+.hs-confirm-select { border:1px solid #38bdf8; border-radius:8px; color:#e0f2fe; background:#123047; padding:10px 14px; font:inherit; min-height:44px; margin-top:10px; cursor:pointer; }
+.is-confirmed .hs-confirm-select { display:none; }
+.hs-entry-check { margin-block:18px; border:2px solid #fbbf24; }
+.hs-inline-quote { margin:24px 0; padding-top:20px; border-top:1px solid #47627c; scroll-margin-top:100px; }
+.hs-inline-quote h2 { font-size:24px; margin-bottom:12px; }
+.hs-preview-note,.hs-preview-status { color:#cbd5e1; font-size:15px; line-height:1.8; margin:12px 0; }
+.hs-inline-paper { margin:18px 0; min-width:0; }
+.hs-inline-paper .quote-paper-sheet { width:100%; max-width:100%; }
+.hs-open-quote { display:flex; justify-content:center; width:100%; }
+.hs-quote-render-frame { position:fixed; left:-10000px; top:0; width:800px; height:1000px; border:0; visibility:hidden; pointer-events:none; }
+@media screen and (max-width:480px) { .hs-choice-grid { gap:8px; } .hs-choice-card { padding:12px 10px; font-size:15px; } .hs-choice-card:has(input:checked) { padding:11px 9px; } .hs-inline-paper .quote-paper-sheet { padding:14px 10px; } }
+@media screen and (max-width:350px) { .hs-choice-grid { grid-template-columns:1fr; } }
+@media print { .hs-choice-progress,.hs-choice-warning,.hs-choice-control,.hs-entry-check,.hs-quote-render-frame,.hs-inline-quote { display:none!important; } }
