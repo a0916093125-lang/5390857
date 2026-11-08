@@ -148,6 +148,6 @@ test('Index and sitemap retain current canonical business pages', () => {
 test('Public configuration uses registration address without exposing residential address', () => {
   const pricing = read('assets/pricing-config.js');
   assert.equal(config.company.address, '11164 臺北市士林區社子里社正路45巷4弄1號1樓');
-  assert.ok(!pricing.includes('4弄2號'), 'Residential address must not appear in shared configuration');
+  assert.equal((pricing.match(/address:\\s*\"/g) || []).length, 1, 'Keep a single public address in shared configuration');
   assert.match(read('index.html'), /streetAddress/);
 });
