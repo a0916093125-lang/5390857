@@ -43,7 +43,7 @@ function initChoiceCards(){
  if(!isQuote){
   result.hidden=true;
   preview=document.createElement('section');preview.className='hs-inline-quote no-print';preview.hidden=true;preview.id='hs-inline-quote';
-  preview.innerHTML='<h2>您的報價單</h2><p class="hs-preview-note">客戶資料尚待填寫，施工條件與排程須另行確認；表格可左右滑動查看。需要加購可回上方選取，不會自動預約、列印或傳送。</p><div class="hs-inline-paper"></div><a class="btn btn-primary hs-open-quote">填寫客戶資料／下載 PDF／LINE 確認</a><p class="hs-preview-status" role="status"></p>';
+  preview.innerHTML='<h2>您的報價單</h2><p class="hs-preview-note">客戶資料尚待填寫，施工條件與排程須另行確認；手機可逐項查看明細。需要加購可回上方選取，不會自動預約、列印或傳送。</p><div class="hs-inline-paper"></div><a class="btn btn-primary hs-open-quote">填寫客戶資料／下載 PDF／LINE 確認</a><p class="hs-preview-status" role="status"></p>';
   paper=preview.querySelector('.hs-inline-paper');openLink=preview.querySelector('.hs-open-quote');const grid=form.closest('section.grid-2');if(grid)grid.after(preview);else form.after(preview);
  }
  const shortText=(s)=>s.replace(/^[★⚡✓❄️💧🌬️🪣🛒🏢🏘️🏬🏛️\s]+/u,'').split(/[（(｜]/)[0].trim();

@@ -1,0 +1,26 @@
+name: Isolated mobile quotation audit
+on:
+  push:
+    branches: [qa/mobile-quote-20261109]
+permissions:
+  contents: read
+jobs:
+  runtime:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-save --ignore-scripts playwright@1.56.1
+      - run: npx playwright install --with-deps chromium webkit
+      - run: node .qa/mobile-quote-runtime.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mobile-quote-runtime-audit
+          path: |
+            mobile-quote-audit.json
+            mobile-quote-*.png
+          retention-days: 7
