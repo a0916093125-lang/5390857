@@ -609,7 +609,7 @@
 </details>
 <div class="hs-analytics-actions"><button type="button" data-analytics-choice="denied">不同意分析</button><button type="button" data-analytics-choice="granted">同意分析</button></div>
 </section>
-<p style="text-align:center"><button id="hs-analytics-settings" type="button">分析設定</button></p>
+<p class="hs-analytics-settings-wrap" style="text-align:center"><button id="hs-analytics-settings" type="button">分析設定</button></p>
 <style>
 #hs-analytics-choice{box-sizing:border-box;margin:20px auto;padding:16px;width:calc(100% - 32px);max-width:720px;border:1px solid #64748b;border-radius:12px;background:#0f172a;color:#f1f5f9;font-size:14px;line-height:1.6}
 #hs-analytics-choice[hidden]{display:none!important}
@@ -621,6 +621,7 @@
 #hs-analytics-choice button,#hs-analytics-settings{font:inherit;min-height:44px;padding:10px 16px;border:1px solid #94a3b8;border-radius:8px;background:#1e293b;color:#f8fafc;cursor:pointer}
 #hs-analytics-choice button{flex:1}
 #hs-analytics-choice :focus-visible,#hs-analytics-settings:focus-visible{outline:3px solid #38bdf8;outline-offset:3px}
+@media(max-width:768px){.hs-analytics-settings-wrap{padding-bottom:calc(110px + env(safe-area-inset-bottom));margin-bottom:0}}
 @media print{#hs-analytics-choice,#hs-analytics-settings{display:none!important}}
 </style>
 <script defer src="assets/analytics.js?v=consent-remember-20261108"></script>
