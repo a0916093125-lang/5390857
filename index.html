@@ -153,7 +153,7 @@
           "name": "進場前應確認哪些人員資格與安全文件？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "進場前應依實際工作核對公司登記、派工人員、專業資格、職安訓練與保險文件。已提供的冷凍空調裝修乙級、丙級技術士證照屬個人技能資格；一般職業安全衛生教育訓練、甲種職業安全衛生業務主管教育訓練等資料另行列示。公司已確認持證人目前在皓盛任職；證照現行狀態及必要回訓尚待核對，不代表全體出勤人員均具相同資格。局限空間或高處作業的人員配置、安全措施及適用資格，須另依現場風險與法規確認；保險不代表免除業主法定責任。"
+            "text": "進場前依案件需求核對公司登記、派工人員、專業資格及職安文件。皓盛現職人員持有冷凍空調裝修乙級及丙級技術士證照，為同一持證人的不同級別，屬個人技能資格，不等同公司冷凍空調業登記許可或技師執照。一般職安與甲種職業安全衛生業務主管訓練資料另行列示，並於派工前核對有效狀態、回訓及適用作業；不代表每位出勤人員均具相同資格。局限空間、高處作業的人員與安全措施另依現場風險及適用法規確認。"
           }
         },
         {
@@ -169,6 +169,17 @@
   ]
 }</script>
 <link rel="stylesheet" href="assets/stage1-preview.css?v=20261108-mobile-nav"/>
+<style id="qualifications-layout">
+#professional-qualifications .qualifications-cards{gap:20px}
+#professional-qualifications .qualifications-cards article{padding:26px;min-width:0}
+#professional-qualifications .qualifications-cards h3{font-size:clamp(21px,2.1vw,26px);line-height:1.45;margin:12px 0 16px;overflow-wrap:anywhere}
+#professional-qualifications .qualifications-cards p{font-size:17px;line-height:1.8;margin:0}
+#professional-qualifications .qualifications-cards .qualification-detail{font-size:15px;line-height:1.75;color:#c4d3e3;border-top:1px solid #31475e;margin-top:18px;padding-top:14px}
+#professional-qualifications .qualifications-verification{background:#0e1c2d;border:1px solid #31475e;border-left:4px solid #51dccb;border-radius:14px;margin-top:20px;padding:22px 26px;color:#c4d3e3}
+#professional-qualifications .qualifications-verification h3{color:#f0f7ff;font-size:19px;line-height:1.5;margin:0 0 10px}
+#professional-qualifications .qualifications-verification p{font-size:16px;line-height:1.8;margin:6px 0}
+@media(max-width:640px){#professional-qualifications .qualifications-cards{grid-template-columns:1fr;gap:16px}#professional-qualifications .qualifications-cards article{padding:22px}#professional-qualifications .qualifications-verification{padding:20px 22px}}
+</style>
 </head>
 <body>
 
@@ -239,9 +250,12 @@
 <!-- 第四區塊：四大核心工程事業群導覽（給水機電事業部・商空水系統事業部・室內空調機電部） -->
 <!-- 人員專業資格與職安訓練分開說明 -->
 <section id="professional-qualifications" aria-labelledby="qualifications-heading" class="stage1-section">
-<div class="stage1-section-head"><p class="stage1-eyebrow">PROFESSIONAL QUALIFICATIONS</p><h2 id="qualifications-heading">冷凍空調專業資格資料</h2><p>專業技能資格與職安教育訓練分開說明，實際派工文件另行核對。</p></div>
-<div class="stage1-cards stage1-two"><article><span>個人技能資格</span><h3>冷凍空調裝修乙級、丙級技術士證照</h3><p>皓盛現職人員持有冷凍空調裝修乙級及丙級技術士證照，為同一持證人的不同級別，不代表兩名持證人，也不等同公司登記、冷凍空調業登記許可或技師執照。</p></article><article><span>職安教育訓練</span><h3>一般職安與甲種主管教育訓練</h3><p>另有一般職業安全衛生教育訓練、甲種職業安全衛生業務主管教育訓練等資料。訓練結業證明與技術士證照分開列示；適用作業、現行狀態及必要回訓，須依實際派工另行核對。</p></article></div>
-<div class="stage1-note stage1-pending"><strong>資格說明與個資保護</strong><p>持證人目前在皓盛任職；實際出勤人員依派工安排，不表示全體人員均具相同資格。承接需特定資格的案件前，應核對有效證件與適用要求。網站不展示證照照片或完整證號，完整資料僅於有需要且經授權時另行提供查核。</p></div>
+<div class="stage1-section-head"><p class="stage1-eyebrow">PROFESSIONAL QUALIFICATIONS</p><h2 id="qualifications-heading">專業資格與施工安全</h2><p>技術資格、職安訓練與派工文件，分項說明。</p></div>
+<div class="stage1-cards stage1-two qualifications-cards">
+<article><span>個人技術士資格</span><h3>冷凍空調裝修<br>乙級・丙級技術士</h3><p>皓盛現職人員持有上述證照，為同一位持證人的不同級別。</p><p class="qualification-detail">屬個人技能資格，不等同公司冷凍空調業登記許可或技師執照。</p></article>
+<article><span>職業安全衛生訓練</span><h3>一般職安訓練<br>甲種業務主管訓練</h3><p>人員具一般職業安全衛生及甲種職業安全衛生業務主管教育訓練資料。</p><p class="qualification-detail">訓練結業證明與技術士證照不同；有效狀態、回訓及適用作業於派工前核對。</p></article>
+</div>
+<div class="qualifications-verification" role="note"><h3>派工查核・個資保護</h3><p>依案件需求安排人員並核對資格，不代表每位出勤人員均具相同證照。</p><p>網站不公開證照照片或完整證號；有查核需求時，經授權提供必要資料。</p></div>
 </section>
 <section aria-labelledby="safety-badges-heading" id="safety-badges-section" class="stage1-section"><div class="stage1-section-head"><p class="stage1-eyebrow">BEFORE WORK BEGINS</p><h2 id="safety-badges-heading">進場前，確認安全與工作範圍</h2><p>設備隔離、停水停機、局限空間與高處作業，須依實際場況確認人員、資格、設備及安全措施。</p></div><div class="stage1-note"><strong>開放式白鐵水塔與入槽作業</strong><p>依水塔構造、是否入槽及現場危害，評估施工方式，並依適用法規安排受訓人員與安全措施。開放式白鐵水塔若確認全程不入槽，可按不入槽方式評估；如需入槽或現場條件未明，應先確認適用要求，不能僅以材質或「開放式」名稱判定免除。</p><strong>文件與責任</strong><p>職安資格、保險、作業計畫與驗收文件，以報價及進場前提供的有效資料為準。職安責任依適用法令、實際作業與契約認定；保險或承諾文件不代表業主免除法定責任。</p></div></section>
 
@@ -527,7 +541,7 @@
 </div>
 <div class="faq-item">
 <div class="faq-q">Q3：進場前應確認哪些人員資格與安全文件？</div>
-<div class="faq-a">進場前應依實際工作核對公司登記、派工人員、專業資格、職安訓練與保險文件。已提供的冷凍空調裝修乙級、丙級技術士證照屬個人技能資格；一般職業安全衛生教育訓練、甲種職業安全衛生業務主管教育訓練等資料另行列示。公司已確認持證人目前在皓盛任職；證照現行狀態及必要回訓尚待核對，不代表全體出勤人員均具相同資格。局限空間或高處作業的人員配置、安全措施及適用資格，須另依現場風險與法規確認；保險不代表免除業主法定責任。</div>
+<div class="faq-a">進場前依案件需求核對公司登記、派工人員、專業資格及職安文件。皓盛現職人員持有冷凍空調裝修乙級及丙級技術士證照，為同一持證人的不同級別，屬個人技能資格，不等同公司冷凍空調業登記許可或技師執照。一般職安與甲種職業安全衛生業務主管訓練資料另行列示，並於派工前核對有效狀態、回訓及適用作業；不代表每位出勤人員均具相同資格。局限空間、高處作業的人員與安全措施另依現場風險及適用法規確認。</div>
 </div>
 <div class="faq-item">
 <div class="faq-q">Q4：洗水塔時可以順便更換故障的 Omron 61F-G2 液位開關、蝴蝶閥，或順便清洗社區公設冷氣嗎？</div>
