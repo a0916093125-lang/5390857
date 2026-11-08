@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://5390857.com/sitemap.xml
