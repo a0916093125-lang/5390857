@@ -85,8 +85,9 @@
     tag('event', name, Object.assign({send_to: ID}, safeFields(), extra || {}));
   }
   function start(expires) {
-    if (active || !allowed()) return;
+    if (!allowed()) return;
     activeUntil = expires || Date.now() + TTL;
+    if (active) return;
     active = true;
     window['ga-disable-' + ID] = false;
     window.dataLayer = window.dataLayer || [];
