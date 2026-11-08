@@ -3126,6 +3126,8 @@
         }
       });
     }
+    const stickyLine = document.getElementById("btn-sticky-line");
+    if (stickyLine && btnCopyLine) stickyLine.addEventListener("click", function (e) { e.preventDefault(); btnCopyLine.click(); });
     const btnLiveJump = document.getElementById("btn-qp-live-jump");
     if (btnLiveJump && paperSheet) {
       btnLiveJump.addEventListener("click", function () {
@@ -3343,3 +3345,4 @@
     bootAllModules();
   }
 })();
+

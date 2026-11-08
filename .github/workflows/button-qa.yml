@@ -1,0 +1,26 @@
+name: Isolated button flow audit
+on:
+  push:
+    branches: [qa/button-flow-20261108]
+permissions:
+  contents: read
+jobs:
+  runtime:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-save --ignore-scripts playwright@1.56.1
+      - run: npx playwright install --with-deps chromium
+      - run: node .qa/button-runtime.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: button-runtime-audit
+          path: |
+            buttons-audit.json
+            buttons-*.png
+          retention-days: 7
