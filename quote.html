@@ -164,6 +164,9 @@
 }
 </script>
 <link rel="stylesheet" href="assets/stage1-preview.css?v=20261108-mobile-nav"/>
+<style id="hs-action-flow">
+.hero-cta-primary-row{grid-template-columns:1fr;max-width:520px}.service-flow-note{font-size:.86rem;line-height:1.7;color:#b9c8dc;margin:10px 0}.service-related-link{font-size:.88rem;line-height:1.8;margin:14px 0;color:#a7c9db}.service-related-link a{color:inherit;text-decoration:underline}.service-related-link summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:6px}.service-related-link summary:before{content:"＋"}.service-related-link[open] summary:before{content:"－"}.quote-actions{margin:20px 0;padding:20px;border:1px solid #334155;border-radius:12px;background:#0f172a}.quote-actions h2{font-size:1.1rem;margin:0 0 14px;color:#f1f5f9}.quote-actions .btn-group{display:flex;flex-direction:column;gap:12px}.quote-more-actions summary{cursor:pointer;min-height:44px;padding:12px 0;color:#bae6fd}.quote-more-actions button{margin:8px 0}.quote-actions :focus-visible{outline:3px solid #38bdf8;outline-offset:3px}@media(min-width:861px){.mobile-sticky-bar{display:flex!important;left:auto;right:20px;bottom:20px;background:transparent;border:0;padding:0;backdrop-filter:none;width:auto}.mobile-sticky-bar>.btn:not(.btn-line){display:none}.mobile-sticky-bar>.btn-line{width:160px;box-shadow:0 8px 24px #0005;display:flex;flex-direction:column;align-items:center;gap:3px}.mobile-sticky-bar>.btn-line span{display:block;white-space:nowrap}.mobile-sticky-bar>.btn-line .sticky-btn-sub{font-size:.75rem}.nav-link-cta{display:none!important}}@media(max-width:860px){.nav-link-cta{display:none!important}}@media print{.quote-actions,.mobile-sticky-bar{display:none!important}}
+</style>
 </head>
 <body class="quote-print-page">
 
@@ -208,8 +211,8 @@
 <p class="subtitle-pill">
         提供服務規格、稅額與 A/B 方案比較，支援填寫客戶資料及 A4 列印。列印前請確認頁數與完整性，依客戶填寫的資料報價；若現場條件不同，施工前由雙方確認調整。</p>
 <div class="btn-group">
-<a class="btn btn-outline" href="water-tank.html">💧 回自來水塔試算器</a>
-<a class="btn btn-outline" href="cooling-tower.html">❄️ 回空調冷卻水塔試算器</a>
+<a class="service-related-link" href="water-tank.html">💧 回自來水塔試算器</a>
+<a class="service-related-link" href="cooling-tower.html">❄️ 回空調冷卻水塔試算器</a>
 </div>
 </section>
 <div class="stage1-note no-print"><strong>開放式白鐵水塔與入槽作業</strong><p>依水塔構造、是否入槽及現場危害，評估施工方式，並依適用法規安排受訓人員與安全措施。開放式白鐵水塔若確認全程不入槽，可按不入槽方式評估；如需入槽或現場條件未明，應先確認適用要求，不能僅以材質或「開放式」名稱判定免除。</p></div><div class="stage1-note no-print"><strong>估價說明</strong><p>家用分離式冷氣清洗採四台包套；三台以下仍以四台計價，未使用的台數可轉給隔壁鄰居家，一起湊成團購。</p><p>四台計價與鄰居團購僅適用家用分離式冷氣。分離式單獨派車原本即為四台包套；吊隱式 FCU／四方吹維持三台包套、箱型機維持兩台包套、AHU 維持單座專案，價格與公式不變。冷氣與水塔、冷卻水塔合併詢價時，各依原包套及單價加總。未新增團購分攤、混合機型或施作時間規定。</p><p>工業用氯錠的用途、許可及產品標示須先確認，不可直接套用於飲用水儲水設備；投藥須依產品標示、水質與現場條件由專業人員評估。</p></div>
@@ -476,23 +479,10 @@
 <option value="exclude_5">僅顯示未稅金額（於備註欄註明開立統一發票另加 5% 營業稅）</option>
 </select>
 </div>
-<div class="btn-group" style="flex-direction:column;">
-<button class="btn btn-primary" id="btn-q-print" style="width:100%;font-size:1.05rem;" type="button">
-              🖨️ 一鍵列印 ／ 另存「A4 PDF」報價單
-            </button>
-<button class="btn btn-line" id="btn-q-line" style="width:100%;" type="button">
-              📋 一鍵複製報價單文字(含還原連結) 並開啟 LINE 傳送
-            </button>
-<button aria-describedby="quote-share-privacy-note" class="btn btn-outline" id="btn-q-share-url" style="width:100%;border-color:rgba(56,189,248,0.5);color:#7dd3fc;" type="button">
-              🔗 複製規格與金額連結（不含客戶資料）
-            </button>
-<button class="btn btn-outline" id="btn-q-clear-draft" type="button" style="width:100%;" aria-describedby="quote-share-privacy-note">清除此瀏覽器的草稿與客戶資料</button>
-</div>
-<div id="quote-share-fallback" hidden><label class="calc-label" for="quote-share-link-value">請手動複製此規格與金額連結</label><textarea class="calc-input" id="quote-share-link-value" readonly rows="3" aria-describedby="quote-share-privacy-note"></textarea></div>
-<p id="quote-share-privacy-note" style="font-size:0.82rem;color:#cbd5e1;line-height:1.65;margin:10px 0;">還原連結只帶入規格與金額，不含客戶名稱、聯絡人、案場地址或自訂項目名稱；收件者需另填。這些欄位仍保留於本機草稿及列印內容。本機草稿於最後更新 7 天後再次開啟時清除；共用裝置使用後請按「清除此瀏覽器的草稿與客戶資料」。此操作不會刪除已下載或傳送的文件。「複製報價單文字」仍含客戶資料，傳送前請確認收件者。</p>
+
 <div aria-live="polite" class="qp-live-summary-bar no-print" id="qp-live-summary-bar">
 <span id="qp-live-summary-text">已選 <strong>2</strong> 項｜即時計算 A/B 雙軌總價中...</span>
-<button class="qp-live-jump-btn" id="btn-qp-live-jump" type="button">預覽 A4 報價單 ↓</button>
+<button class="qp-live-jump-btn" id="btn-qp-live-jump" type="button">查看報價單 ↓</button>
 </div>
 </form>
 </aside>
@@ -563,6 +553,8 @@
 </div>
 </div>
 </article>
+<section id="quote-actions" class="quote-actions no-print" aria-label="報價單下載與詢價"><h2>確認報價後</h2><div class="btn-group"><button class="btn btn-primary" id="btn-q-print" style="width:100%;font-size:1.05rem;" type="button">列印／存成 PDF</button><button class="btn btn-line" id="btn-q-line" style="width:100%;" type="button">複製報價並開啟 LINE</button></div><p class="service-flow-note">文字包含您填寫的客戶資料。開啟 LINE 後請確認收件者、貼上並自行傳送，不會自動送出。</p><details class="quote-more-actions"><summary>分享連結與資料管理</summary><button aria-describedby="quote-share-privacy-note" class="btn btn-outline" id="btn-q-share-url" style="width:100%;border-color:rgba(56,189,248,0.5);color:#7dd3fc;" type="button">複製規格連結（不含客戶資料）</button><button class="btn btn-outline" id="btn-q-clear-draft" type="button" style="width:100%;" aria-describedby="quote-share-privacy-note">清除此瀏覽器的草稿與客戶資料</button><div id="quote-share-fallback" hidden><label class="calc-label" for="quote-share-link-value">請手動複製此規格與金額連結</label><textarea class="calc-input" id="quote-share-link-value" readonly rows="3" aria-describedby="quote-share-privacy-note"></textarea></div>
+<p id="quote-share-privacy-note" style="font-size:0.82rem;color:#cbd5e1;line-height:1.65;margin:10px 0;">還原連結只帶入規格與金額，不含客戶名稱、聯絡人、案場地址或自訂項目名稱；收件者需另填。這些欄位仍保留於本機草稿及列印內容。本機草稿於最後更新 7 天後再次開啟時清除；共用裝置使用後請按「清除此瀏覽器的草稿與客戶資料」。此操作不會刪除已下載或傳送的文件。「複製報價單文字」仍含客戶資料，傳送前請確認收件者。</p></details></section>
 </div>
 </section>
 <section aria-labelledby="quote-faq-heading" class="faq-section no-print">
@@ -605,7 +597,7 @@
 <h3 style="color:#ffffff;margin-bottom:10px;">直接聯繫工程總管（聯絡資訊）</h3>
 <p>手機 / LINE ID：<a href="tel:0916093125" style="color:#34d399;font-weight:800;">0916-093-125</a>｜信箱：<a href="mailto:ssuyuan@kimo.com">ssuyuan@kimo.com</a></p>
 <p>Google 地標地址：<a href="https://www.google.com/maps/place/?q=place_id:ChIJ1duZi7GvQjQRUBaotvuDlVg" rel="noopener noreferrer" style="color:#38bdf8;font-weight:700;" target="_blank">11164 臺北市士林區社子里社正路45巷4弄2號 📍</a>（工商登記：1號1樓）</p>
-<p>服務範圍：台北市、新北市（免車馬費）、桃園市、新竹縣市及全台大型商場廠房專案</p>
+<p>服務範圍：台北市、新北市（交通費依案件確認）、桃園市、新竹縣市及全台大型商場廠房專案</p>
 <p style="margin-top:10px;font-size:0.82rem;color:#64748b;">© 2026 皓盛有限公司（統編 90221911）版權所有｜官方主網域 https://5390857.com</p>
 </div>
 </div>
@@ -617,17 +609,14 @@
 <span class="sticky-btn-main">📞 直撥專線</span>
 <span class="sticky-btn-sub">0916-093-125</span>
 </a>
-<a class="btn btn-amber sticky-dual-btn" href="#qp-workspace-anchor">
-<span class="sticky-btn-main">線上立即估價</span>
-<span class="sticky-btn-sub">選項目・看估價</span>
-</a>
-<a class="btn btn-line sticky-dual-btn" href="https://line.me/ti/p/~0916093125" rel="noopener noreferrer" target="_blank">
-<span class="sticky-btn-main">💬 加 LINE 詢價</span>
-<span class="sticky-btn-sub">傳照片估價</span>
+
+<a class="btn btn-line sticky-dual-btn" id="btn-sticky-line" href="https://line.me/ti/p/~0916093125" rel="noopener noreferrer" target="_blank">
+<span class="sticky-btn-main">LINE 確認報價</span>
+<span class="sticky-btn-sub">複製後自行傳送</span>
 </a>
 </div>
 <script src="assets/pricing-config.js?v=20261108"></script>
-<script src="assets/cad-engine.js?v=text-audit-20261108"></script>
+<script src="assets/cad-engine.js?v=actions-20261108"></script>
 <section id="hs-analytics-choice" aria-label="網站分析選擇">
 <p>允許 Google Analytics 分析瀏覽與入口點擊，協助改善網站？不同意也能正常估價與聯絡。</p>
 <details><summary>了解更多</summary>
@@ -696,6 +685,7 @@
 
 </body>
 </html>
+
 
 
 

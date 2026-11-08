@@ -171,6 +171,9 @@
 }
 </script>
 <link rel="stylesheet" href="assets/stage1-preview.css?v=20261108-mobile-nav"/>
+<style id="hs-action-flow">
+.hero-cta-primary-row{grid-template-columns:1fr;max-width:520px}.service-flow-note{font-size:.86rem;line-height:1.7;color:#b9c8dc;margin:10px 0}.service-related-link{font-size:.88rem;line-height:1.8;margin:14px 0;color:#a7c9db}.service-related-link a{color:inherit;text-decoration:underline}.service-related-link summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:6px}.service-related-link summary:before{content:"＋"}.service-related-link[open] summary:before{content:"－"}.quote-actions{margin:20px 0;padding:20px;border:1px solid #334155;border-radius:12px;background:#0f172a}.quote-actions h2{font-size:1.1rem;margin:0 0 14px;color:#f1f5f9}.quote-actions .btn-group{display:flex;flex-direction:column;gap:12px}.quote-more-actions summary{cursor:pointer;min-height:44px;padding:12px 0;color:#bae6fd}.quote-more-actions button{margin:8px 0}.quote-actions :focus-visible{outline:3px solid #38bdf8;outline-offset:3px}@media(min-width:861px){.mobile-sticky-bar{display:flex!important;left:auto;right:20px;bottom:20px;background:transparent;border:0;padding:0;backdrop-filter:none;width:auto}.mobile-sticky-bar>.btn:not(.btn-line){display:none}.mobile-sticky-bar>.btn-line{width:160px;box-shadow:0 8px 24px #0005;display:flex;flex-direction:column;align-items:center;gap:3px}.mobile-sticky-bar>.btn-line span{display:block;white-space:nowrap}.mobile-sticky-bar>.btn-line .sticky-btn-sub{font-size:.75rem}.nav-link-cta{display:none!important}}@media(max-width:860px){.nav-link-cta{display:none!important}}@media print{.quote-actions,.mobile-sticky-bar{display:none!important}}
+</style>
 </head>
 <body>
 
@@ -227,24 +230,7 @@
 <p class="hero-lead">
 設備與產品適用性須先確認。皓盛以實戰機電工程標準提供雙主力方案：<strong>①【只賣服務・現場評估】Realise 瑞林 RP-258（型號及馬達規格待核對）冷氣排水器連工帶料到府換裝＋排水管果凍淤泥高壓疏通＋冷氣檢查（範圍及費用先確認）專案 NT$3,500</strong>（當場加購洗冷氣現折 $1,000！）；<strong>②【供貨另確認・可單買或合併交付預估】25kg 大桶裝 90% TCCA 氯錠</strong>（單買試算 $3,200 ／ 洗水塔合併交付預估 $2,680）。
 </p>
-<div class="hero-cta-stack">
-<div class="hero-cta-primary-row">
-<a class="btn btn-primary hero-btn-main" href="#shop-calc-heading">
-🛒 立即試算「RP-258 到府安裝 ／ 25kg 氯錠採購」↓
-</a>
-<a class="btn btn-amber hero-btn-main" href="quote.html?from=shop&amp;cat=ac_cleaning&amp;acdrain=1#qp-workspace-anchor">
-📄 產出「報價單 (PDF)」
-</a>
-</div>
-<div class="hero-cta-secondary-row">
-<a class="btn btn-emerald-glass" href="ac-cleaning.html">
-🌬️ 了解「冷氣深層拆洗＋順換 RP-258 現省 $1,000」專案
-</a>
-<a class="btn btn-line" href="https://line.me/ti/p/~0916093125" rel="noopener noreferrer" target="_blank">
-💬 加 LINE (0916-093-125) 傳滴水位置或訂購氯錠
-</a>
-</div>
-</div>
+<div class="hero-cta-stack"><div class="hero-cta-primary-row"><a class="btn btn-primary hero-btn-main" href="#shop-calc-heading">安裝與產品詢價 ↓</a></div><p class="service-flow-note">選擇規格 → 查看報價 → 存 PDF 或透過 LINE 確認</p></div>
 </div>
 
 <aside aria-label="皓盛機電商城雙箭頭指標看板" class="hero-bento-panel">
@@ -500,13 +486,10 @@ Realise 瑞林 RP-258 冷氣自動排水器「到府換裝＋管路疏通＋空�
 <p id="shop-summary-text" style="margin-top:10px;font-size:0.84rem;color:#cbd5e1;background:rgba(7,13,25,0.6);padding:8px 12px;border-radius:8px;"></p>
 
 <div class="btn-group">
-<button class="btn btn-amber" id="btn-shop-to-quote" style="width:100%;" type="button">
-📄 一鍵帶入「報價單」預覽與匯出 PDF
-</button>
-<button class="btn btn-line" id="btn-shop-line" style="width:100%;" type="button">
-📋 一鍵複製採購/安裝明細 並開啟 LINE 預約下單 (0916-093-125)
-</button>
+<button class="btn btn-amber" id="btn-shop-to-quote" style="width:100%;" type="button">查看報價與詢價</button>
+
 </div>
+
 </div>
 </form>
 </div>
@@ -524,10 +507,10 @@ Realise 瑞林 RP-258 冷氣自動排水器「到府換裝＋管路疏通＋空�
 <div style="background:rgba(15,23,42,0.9);border:1px solid rgba(56,189,248,0.35);border-radius:12px;padding:14px;">
 <div style="font-weight:800;color:#38bdf8;font-size:0.9rem;margin-bottom:10px;">🔗 從備品採購延伸至皓盛四大工程事業部（排水器順換與機電順修優惠依各項方案）：</div>
 <div class="grid-2" style="gap:8px;margin-bottom:0;">
-<a class="btn btn-outline" href="ac-cleaning.html" style="font-size:0.84rem;min-height:42px;padding:8px 10px;">🌬️ 洗冷氣空調試算（順換RP-258折$1,000）</a>
-<a class="btn btn-outline" href="cooling-tower.html" style="font-size:0.84rem;min-height:42px;padding:8px 10px;">❄️ 洗冷卻水塔試算（25kg氯錠交付另確認）</a>
-<a class="btn btn-outline" href="water-tank.html" style="font-size:0.84rem;min-height:42px;padding:8px 10px;">💧 洗自來水塔試算（檢查範圍及費用先確認）</a>
-<a class="btn btn-outline" href="motor-pump-valve.html" style="font-size:0.84rem;min-height:42px;padding:8px 10px;">⚡ 機電檢修（風鼓/軸承/幫浦/蝶閥）</a>
+<a class="service-related-link" href="ac-cleaning.html" style="font-size:0.84rem;min-height:42px;padding:8px 10px;">🌬️ 洗冷氣空調試算（順換RP-258折$1,000）</a>
+<a class="service-related-link" href="cooling-tower.html" style="font-size:0.84rem;min-height:42px;padding:8px 10px;">❄️ 洗冷卻水塔試算（25kg氯錠交付另確認）</a>
+<a class="service-related-link" href="water-tank.html" style="font-size:0.84rem;min-height:42px;padding:8px 10px;">💧 洗自來水塔試算（檢查範圍及費用先確認）</a>
+<a class="service-related-link" href="motor-pump-valve.html" style="font-size:0.84rem;min-height:42px;padding:8px 10px;">⚡ 機電檢修（風鼓/軸承/幫浦/蝶閥）</a>
 </div>
 </div>
 </div>
@@ -637,17 +620,14 @@ Realise 瑞林 RP-258 冷氣自動排水器「到府換裝＋管路疏通＋空�
 <span class="sticky-btn-main">📞 直撥專線</span>
 <span class="sticky-btn-sub">0916-093-125</span>
 </a>
-<a class="btn btn-amber sticky-dual-btn" href="quote.html?from=shop&amp;shopmode=rp258_standalone#qp-workspace-anchor" id="btn-sticky-to-quote">
-<span class="sticky-btn-main">線上立即估價</span>
-<span class="sticky-btn-sub">選項目・看估價</span>
-</a>
+
 <a class="btn btn-line sticky-dual-btn" href="https://line.me/ti/p/~0916093125" rel="noopener noreferrer" target="_blank">
 <span class="sticky-btn-main">💬 加 LINE 訂購</span>
 <span class="sticky-btn-sub">預約安裝/氯錠</span>
 </a>
 </div>
 <script src="assets/pricing-config.js?v=20261108"></script>
-<script src="assets/cad-engine.js?v=text-audit-20261108"></script>
+<script src="assets/cad-engine.js?v=actions-20261108"></script>
 <section id="hs-analytics-choice" aria-label="網站分析選擇">
 <p>允許 Google Analytics 分析瀏覽與入口點擊，協助改善網站？不同意也能正常估價與聯絡。</p>
 <details><summary>了解更多</summary>
@@ -716,6 +696,7 @@ Realise 瑞林 RP-258 冷氣自動排水器「到府換裝＋管路疏通＋空�
 
 </body>
 </html>
+
 
 
 

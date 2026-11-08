@@ -162,6 +162,9 @@
 }
 </script>
 <link rel="stylesheet" href="assets/stage1-preview.css?v=20261108-mobile-nav"/>
+<style id="hs-action-flow">
+.hero-cta-primary-row{grid-template-columns:1fr;max-width:520px}.service-flow-note{font-size:.86rem;line-height:1.7;color:#b9c8dc;margin:10px 0}.service-related-link{font-size:.88rem;line-height:1.8;margin:14px 0;color:#a7c9db}.service-related-link a{color:inherit;text-decoration:underline}.service-related-link summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:6px}.service-related-link summary:before{content:"＋"}.service-related-link[open] summary:before{content:"－"}.quote-actions{margin:20px 0;padding:20px;border:1px solid #334155;border-radius:12px;background:#0f172a}.quote-actions h2{font-size:1.1rem;margin:0 0 14px;color:#f1f5f9}.quote-actions .btn-group{display:flex;flex-direction:column;gap:12px}.quote-more-actions summary{cursor:pointer;min-height:44px;padding:12px 0;color:#bae6fd}.quote-more-actions button{margin:8px 0}.quote-actions :focus-visible{outline:3px solid #38bdf8;outline-offset:3px}@media(min-width:861px){.mobile-sticky-bar{display:flex!important;left:auto;right:20px;bottom:20px;background:transparent;border:0;padding:0;backdrop-filter:none;width:auto}.mobile-sticky-bar>.btn:not(.btn-line){display:none}.mobile-sticky-bar>.btn-line{width:160px;box-shadow:0 8px 24px #0005;display:flex;flex-direction:column;align-items:center;gap:3px}.mobile-sticky-bar>.btn-line span{display:block;white-space:nowrap}.mobile-sticky-bar>.btn-line .sticky-btn-sub{font-size:.75rem}.nav-link-cta{display:none!important}}@media(max-width:860px){.nav-link-cta{display:none!important}}@media print{.quote-actions,.mobile-sticky-bar{display:none!important}}
+</style>
 </head>
 <body>
 
@@ -213,24 +216,7 @@
 </div>
 <h1 class="hero-title">北部<span class="text-gradient-blue">馬達・風機・泵浦維修</span><br/>從故障現象，確認檢修方向</h1>
 <p class="hero-lead">服務雙北、桃園、新竹以北的空調與給水機電設備。提供設備銘牌、故障現象、異音或漏水照片，先評估檢查與維修範圍；實際零件、費用及時程依現場確認。</p>
-<div class="hero-cta-stack">
-<div class="hero-cta-primary-row">
-<a class="btn btn-amber hero-btn-main" href="#mpv-calc-heading">
-🧮 立即試算「機電檢修」6 大類搶修費用 ↓
-</a>
-<a class="btn btn-primary hero-btn-main" href="quote.html?from=motor-pump-valve&amp;cat=mpv_repair#qp-workspace-anchor">
-📄 產出「報價單」
-</a>
-</div>
-<div class="hero-cta-secondary-row">
-<a class="btn btn-emerald-glass" href="ac-cleaning.html">
-🌬️ 搭配「洗冷氣／洗水塔同日順修」免收 $2,500 出工檢測費
-</a>
-<a class="btn btn-line" href="https://line.me/ti/p/~0916093125" rel="noopener noreferrer" target="_blank">
-💬 拍故障影片/銘牌傳 LINE (0916-093-125) 立即診斷
-</a>
-</div>
-</div>
+<div class="hero-cta-stack"><div class="hero-cta-primary-row"><a class="btn btn-primary hero-btn-main" href="#mpv-calc-heading">設備維修報價 ↓</a></div><p class="service-flow-note">選擇規格 → 查看報價 → 存 PDF 或透過 LINE 確認</p></div>
 </div>
 <aside aria-label="皓盛機電檢修四大核心指標" class="hero-bento-panel">
 <div class="hero-bento-header">
@@ -383,13 +369,10 @@
 💡 皓盛收費確認原則：(1) 單獨叫修基本出工檢測保底價 $2,000~$2,500 起/趟（確認委修直接折抵併入工程款；搭配清洗同日順修享 0 元免出車檢測費）；(2) 現場確認馬力噸數與拆裝難度後先報明價，經業主同意才動工，施工範圍與費用須先確認！
 </p>
 <div class="btn-group">
-<button class="btn btn-amber" id="btn-mpv-to-quote" style="width:100%;" type="button">
-📄 一鍵產生「報價單」預覽與匯出 PDF
-</button>
-<button class="btn btn-line" id="btn-mpv-line" style="width:100%;" type="button">
-📋 一鍵複製上述機電搶修規格 並開啟 LINE 傳照片/影片詢價 (0916-093-125)
-</button>
+<button class="btn btn-amber" id="btn-mpv-to-quote" style="width:100%;" type="button">查看報價與詢價</button>
+
 </div>
+<p class="service-related-link"><a href="ac-cleaning.html">需要清洗保養？查看冷氣服務 →</a></p>
 </div>
 </form>
 </div>
@@ -560,17 +543,14 @@
 <span class="sticky-btn-main">📞 直撥專線</span>
 <span class="sticky-btn-sub">0916-093-125</span>
 </a>
-<a class="btn btn-amber sticky-dual-btn" id="btn-sticky-to-quote" href="quote.html?from=motor-pump-valve&amp;cat=mpv_repair#qp-workspace-anchor">
-<span class="sticky-btn-main">線上立即估價</span>
-<span class="sticky-btn-sub">選項目・看估價</span>
-</a>
+
 <a class="btn btn-line sticky-dual-btn" href="https://line.me/ti/p/~0916093125" rel="noopener noreferrer" target="_blank">
 <span class="sticky-btn-main">💬 加 LINE 詢價</span>
 <span class="sticky-btn-sub">傳照片估價</span>
 </a>
 </div>
 <script src="assets/pricing-config.js?v=20261108"></script>
-<script src="assets/cad-engine.js?v=text-audit-20261108"></script>
+<script src="assets/cad-engine.js?v=actions-20261108"></script>
 <section id="hs-analytics-choice" aria-label="網站分析選擇">
 <p>允許 Google Analytics 分析瀏覽與入口點擊，協助改善網站？不同意也能正常估價與聯絡。</p>
 <details><summary>了解更多</summary>
@@ -639,6 +619,7 @@
 
 </body>
 </html>
+
 
 
 
