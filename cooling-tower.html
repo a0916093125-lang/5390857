@@ -28,7 +28,7 @@
   "@graph": [
     {
       "@type": "WebApplication",
-      "name": "商用空調冷卻水塔清洗保養費用（RT冷凍噸數）A/B 雙軌即時試算器",
+      "name": "商用空調冷卻水塔清洗保養線上估價",
       "url": "https://5390857.com/cooling-tower.html",
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "All",
@@ -271,14 +271,14 @@
 
 <section aria-labelledby="ct-calc-heading" class="grid-2">
 <div class="card card-highlight" style="border-color:rgba(16,185,129,0.5);">
-<h2 class="section-title" id="ct-calc-heading">❄️ 商用空調冷卻水塔（RT）清洗保養 A/B 雙軌試算器</h2>
+<h2 class="section-title" id="ct-calc-heading">❄️ 冷卻水塔清洗｜選擇施工時間，立即估價</h2>
 <p class="section-sub">選擇水塔冷凍噸數（RT）與機電閥件檢修項目，即時估算指定時段專車或平日併單連工帶料費用。若設備噸數不在下列級距內，請先提供銘牌與照片詢價，勿自行套用較低級距：</p>
 <form id="cooling-tower-calc-form" onsubmit="return false;">
 <div class="calc-form-group">
-<label class="calc-label" for="ct-schedule-mode">1. 選擇排程方案（A方案指定時段專車 vs B方案平日順路併單特惠）</label>
+<label class="calc-label" for="ct-schedule-mode">1. 選擇施工時間</label>
 <select class="calc-select" id="ct-schedule-mode" style="border-color:#10b981;font-weight:700;">
-<option selected="" value="priority_50">★ A方案：指定時段專車專案（可配合休館/夜間或指定吉日｜50RT內7,000 / 150RT內13,000 / 350RT內23,000 / 500RT+ 27,000起）</option>
-<option value="weekday_35">⚡ B方案：平日彈性併單特惠檔期（由本公司安排週一至週五順路時段｜50RT內5,500 / 150RT內10,500 / 350RT內17,500 / 500RT+ 24,000起）</option>
+<option selected="" value="priority_50">★ 指定時間方案：指定時段專車專案（可配合休館/夜間或指定吉日｜50RT內7,000 / 150RT內13,000 / 350RT內23,000 / 500RT+ 27,000起）</option>
+<option value="weekday_35">⚡ 平日順路方案：平日彈性併單特惠檔期（由本公司安排週一至週五順路時段｜50RT內5,500 / 150RT內10,500 / 350RT內17,500 / 500RT+ 24,000起）</option>
 </select>
 </div>
 <div class="calc-form-group">
@@ -323,15 +323,15 @@
 </label>
 <label class="calc-check-item">
 <input id="ct-chk-sprinkler" type="checkbox"/>
-<span>🔄 機電檢修：冷卻水塔旋轉播水頭（散水頭）總成順修更新（級距 $4,500~$38,000起/組｜基準 A方案+6,000 / B方案+4,500起）</span>
+<span>🔄 機電檢修：冷卻水塔旋轉播水頭（散水頭）總成順修更新（級距 $4,500~$38,000起/組｜基準 指定時間方案+6,000 / 平日順路方案+4,500起）</span>
 </label>
 <label class="calc-check-item">
 <input id="ct-chk-motor-reducer" type="checkbox"/>
-<span>⚙️ 機電檢修：散熱風機馬達／減速齒輪箱／循環泵軸封培林順修（級距 $9,000~$98,000起/台｜基準 A方案+12,000 / B方案+9,000起）</span>
+<span>⚙️ 機電檢修：散熱風機馬達／減速齒輪箱／循環泵軸封培林順修（級距 $9,000~$98,000起/台｜基準 指定時間方案+12,000 / 平日順路方案+9,000起）</span>
 </label>
 <label class="calc-check-item">
 <input id="ct-chk-butterfly" type="checkbox"/>
-<span>6吋~10吋 大口徑齒輪式蝴蝶閥／無聲逆止閥抽換（$22,000 ~ $32,000 起 / 處｜A方案+25,000 / B方案+22,000）</span>
+<span>6吋~10吋 大口徑齒輪式蝴蝶閥／無聲逆止閥抽換（$22,000 ~ $32,000 起 / 處｜指定時間方案+25,000 / 平日順路方案+22,000）</span>
 </label>
 <label class="calc-check-item">
 <input id="ct-chk-ballvalve" type="checkbox"/>
@@ -362,7 +362,7 @@
               ⏱️ 預估施工工時：<strong id="ct-hours-output" style="color:#38bdf8;">依現場確認（試算時間僅供參考）</strong>
 </div>
 <div style="margin-top:6px;font-size:0.88rem;color:#fde68a;">
-              👷 預估作業安排（現場確認）：<span id="ct-crew-output">【A方案：指定時段專車】機電技術人員＋風機斷電上鎖(LOTO)戒護＋風機電流與軸承點檢</span>
+              👷 預估作業安排（現場確認）：<span id="ct-crew-output">【指定時間方案：指定時段專車】機電技術人員＋風機斷電上鎖(LOTO)戒護＋風機電流與軸承點檢</span>
 </div>
 <details class="mobile-result-details" open><summary>查看完整費用與作業明細</summary><p id="ct-summary-text" style="margin-top:10px;font-size:0.84rem;color:#cbd5e1;background:rgba(7,13,25,0.6);padding:8px 12px;border-radius:8px;"></p></details>
 <p style="margin-top:8px;font-size:0.82rem;color:#6ee7b7;font-weight:700;">
@@ -404,7 +404,7 @@
 <th>常見進出水主管管徑</th>
 <th>閥件規格參考（須核對原廠資料）</th>
 <th>風機與電控節能配置</th>
-<th>A/B 雙軌清洗保養參考價</th>
+<th>指定時間與平日順路參考價</th>
 </tr>
 </thead>
 <tbody>
@@ -499,7 +499,7 @@
 </a>
 </div>
 <script src="assets/pricing-config.js?v=20261108"></script>
-<script src="assets/cad-engine.js?v=cards-20261108"></script>
+<script src="assets/cad-engine.js?v=plain-20261108"></script>
 <section id="hs-analytics-choice" aria-label="網站分析選擇">
 <p>允許 Google Analytics 分析瀏覽與入口點擊，協助改善網站？不同意也能正常估價與聯絡。</p>
 <details><summary>了解更多</summary>

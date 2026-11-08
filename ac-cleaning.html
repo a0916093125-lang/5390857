@@ -28,7 +28,7 @@
   "@graph": [
     {
       "@type": "WebApplication",
-      "name": "商辦、社區公設與廠房冷氣空調深層清洗保養 A/B 雙軌費用即時試算器",
+      "name": "商辦、社區公設與廠房冷氣空調清洗線上估價",
       "url": "https://5390857.com/ac-cleaning.html",
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "All",
@@ -263,18 +263,18 @@
 <div class="stage1-scope">大型空調、冷卻水塔與自來水塔清洗提供全台專案評估；北部服務雙北、桃園、新竹以北。中南部以大型案場為主，其他需求可個別洽詢。</div>
 <!-- 第一區塊：雙欄旗艦首屏 (Hero Section) -->
 
-<!-- 第二區塊：🧮 冷氣空調清洗費用 A/B 雙軌即時試算器 -->
+<!-- 第二區塊：🧮 冷氣空調清洗費用 兩種施工時間即時試算器 -->
 <div class="stage1-note stage1-pending no-print"><strong>家用分離式四台包套・其他機型依各自包套計價</strong><p>家用分離式冷氣清洗採四台包套；三台以下仍以四台計價，未使用的台數可轉給隔壁鄰居家，一起湊成團購。</p><p>四台計價與鄰居團購僅適用家用分離式冷氣。分離式單獨派車採四台包套；吊隱式 FCU／四方吹採三台包套、箱型機採兩台包套、AHU 採單座專案，各機型依對應方案計價。冷氣與水塔、冷卻水塔合併詢價時，各依原包套及單價加總。團購與施工安排請先聯絡確認。</p></div>
 <section aria-labelledby="ac-calc-heading" class="grid-2">
 <div class="card card-highlight" style="border-color:rgba(56,189,248,0.5);">
-<h2 class="section-title" id="ac-calc-heading">🧮 冷氣與中央空調清洗 A/B 雙軌試算器</h2>
-<p class="section-sub">採「專案包套（機電工程車）」，算完可一鍵產出報價單：</p>
+<h2 class="section-title" id="ac-calc-heading">🧮 冷氣空調清洗｜選擇施工時間，立即估價</h2>
+<p class="section-sub">可選指定時間或平日順路安排。選好規格，下方會顯示報價單；實際施工時間需另行確認。</p>
 <form id="ac-cleaning-calc-form" onsubmit="return false;">
 <div class="calc-form-group">
-<label class="calc-label" for="ac-schedule-mode">1. 選擇預約模式與排程方案（A/B 雙軌包套）</label>
+<label class="calc-label" for="ac-schedule-mode">1. 選擇施工時間</label>
 <select class="calc-select" id="ac-schedule-mode" style="border-color:#38bdf8;font-weight:700;">
-<option selected="" value="priority_50">★ A方案（單獨派車）：指定時段／假日／夜間休館機電專車包套（含基本台數｜12,500 ~ 15,000起）</option>
-<option value="weekday_35">⚡ B方案（單獨派車）：平日彈性順路併單機電專車包套（含基本台數｜10,000 ~ 12,500起，立省 $2,500）</option>
+<option selected="" value="priority_50">★ 指定時間方案（單獨派車）：指定時段／假日／夜間休館機電專車包套（含基本台數｜12,500 ~ 15,000起）</option>
+<option value="weekday_35">⚡ 平日順路方案（單獨派車）：平日彈性順路併單機電專車包套（含基本台數｜10,000 ~ 12,500起，立省 $2,500）</option>
 </select>
 </div>
 <div class="calc-form-group">
@@ -315,7 +315,7 @@
 </label>
 <label class="calc-check-item">
 <input id="ac-chk-mpv-repair" type="checkbox"/>
-<span>⚡ 機電檢修：同日順修冷氣風鼓異音／馬達滾珠培林／室外機啟動電容或 FCU 電動二通閥（免$2,500檢測費｜A方案+4,500 / B方案+3,500起）</span>
+<span>⚡ 機電檢修：同日順修冷氣風鼓異音／馬達滾珠培林／室外機啟動電容或 FCU 電動二通閥（免$2,500檢測費｜指定時間方案+4,500 / 平日順路方案+3,500起）</span>
 </label>
 <label class="calc-check-item">
 <input id="ac-chk-outdoor" type="checkbox"/>
@@ -338,7 +338,7 @@
               ⏱️ 預估施工工時：<strong id="ac-hours-output" style="color:#38bdf8;">依現場確認（試算時間僅供參考）</strong>
 </div>
 <div style="margin-top:6px;font-size:0.88rem;color:#fde68a;">
-              👷 預估作業安排（現場確認）：<span id="ac-crew-output">【A方案：指定時段機電專車】空調技術人員＋LOTO 斷電掛牌＋電腦板防水措施依現場確認</span>
+              👷 預估作業安排（現場確認）：<span id="ac-crew-output">【指定時間方案：指定時段機電專車】空調技術人員＋LOTO 斷電掛牌＋電腦板防水措施依現場確認</span>
 </div>
 <details class="mobile-result-details" open><summary>查看完整費用與作業明細</summary><p id="ac-summary-text" style="margin-top:10px;font-size:0.84rem;color:#cbd5e1;background:rgba(7,13,25,0.6);padding:8px 12px;border-radius:8px;"></p></details>
 <p style="margin-top:8px;font-size:0.82rem;color:#6ee7b7;font-weight:700;">
@@ -368,7 +368,7 @@
 </ol>
 </div>
 </section>
-<!-- 第三區塊：📊 5 大冷氣空調機型結構、常見痛點與 A/B 雙軌收費總表 -->
+<!-- 第三區塊：📊 5 大冷氣空調機型結構、常見痛點與 兩種施工時間收費總表 -->
 <section aria-labelledby="ac-spec-heading" style="margin-bottom:40px;">
 <div class="stage1-note stage1-pending"><strong>各機型維持原包套，四台團購僅限家用分離式</strong><p>四台計價與鄰居團購僅適用家用分離式冷氣。分離式單獨派車採四台包套；吊隱式 FCU／四方吹採三台包套、箱型機採兩台包套、AHU 採單座專案，各機型依對應方案計價。冷氣與水塔、冷卻水塔合併詢價時，各依原包套及單價加總。團購與施工安排請先聯絡確認。</p></div>
 <h2 class="section-title" id="ac-spec-heading">📊 5 大冷氣空調機型清洗規格與專案包套收費總表</h2>
@@ -379,8 +379,8 @@
 <tr>
 <th>冷氣空調機型</th>
 <th>適用案場與機電清洗重點</th>
-<th>A方案：指定時段／假日夜間專車包套</th>
-<th>B方案：平日彈性併單專車包套</th>
+<th>指定時間方案：指定時段／假日夜間專車包套</th>
+<th>平日順路方案：平日彈性併單專車包套</th>
 <th>超出包套台數的單台加價</th>
 </tr>
 </thead>
@@ -390,28 +390,28 @@
 <td>社區公設（健身房/閱覽室）、辦公室、住戶團購｜拆洗風鼓葉輪、蒸發器鰭片與排水疏通</td>
 <td><strong>NT$ 12,500 起</strong><br/><span style="font-size:0.8rem;color:#94a3b8;">（含 4 台內精洗包套）</span></td>
 <td><strong>NT$ 10,000 起</strong><br/><span style="font-size:0.8rem;color:#34d399;">（含 4 台內精洗包套）</span></td>
-<td>A方案 <strong>+$2,200 / 台</strong><br/>B方案 <strong>+$1,800 / 台</strong></td>
+<td>指定時間方案 <strong>+$2,200 / 台</strong><br/>平日順路方案 <strong>+$1,800 / 台</strong></td>
 </tr>
 <tr>
 <td><strong>2. 吊隱式冷氣 / 冰水送風機 (FCU)</strong></td>
 <td>天花板隱藏式、商辦、飯店、豪宅｜維修孔拆洗風車、鰭片藥洗、集水盤果凍淤泥抽除</td>
 <td><strong>NT$ 13,000 起</strong><br/><span style="font-size:0.8rem;color:#94a3b8;">（含 3 台內精洗包套）</span></td>
 <td><strong>NT$ 10,500 起</strong><br/><span style="font-size:0.8rem;color:#34d399;">（含 3 台內精洗包套）</span></td>
-<td>A方案 <strong>+$3,200 / 台</strong><br/>B方案 <strong>+$2,800 / 台</strong></td>
+<td>指定時間方案 <strong>+$3,200 / 台</strong><br/>平日順路方案 <strong>+$2,800 / 台</strong></td>
 </tr>
 <tr>
 <td><strong>3. 四方吹嵌入式卡式冷氣</strong></td>
 <td>辦公室、連鎖門市、餐廳、診所、大樓大廳｜四方出風面板拆洗、內建排水泵與浮球清潔</td>
 <td><strong>NT$ 13,500 起</strong><br/><span style="font-size:0.8rem;color:#94a3b8;">（含 3 台內精洗包套）</span></td>
 <td><strong>NT$ 11,000 起</strong><br/><span style="font-size:0.8rem;color:#34d399;">（含 3 台內精洗包套）</span></td>
-<td>A方案 <strong>+$4,000 / 台</strong><br/>B方案 <strong>+$3,500 / 台</strong></td>
+<td>指定時間方案 <strong>+$4,000 / 台</strong><br/>平日順路方案 <strong>+$3,500 / 台</strong></td>
 </tr>
 <tr>
 <td><strong>4. 落地箱型冷氣（氣冷/水冷櫃機）</strong></td>
 <td>大型餐廳、賣場、廠房作業區｜大型排管蒸發器高壓藥洗、雙風鼓除垢與水路點檢</td>
 <td><strong>NT$ 13,500 起</strong><br/><span style="font-size:0.8rem;color:#94a3b8;">（含 2 台內精洗包套）</span></td>
 <td><strong>NT$ 11,000 起</strong><br/><span style="font-size:0.8rem;color:#34d399;">（含 2 台內精洗包套）</span></td>
-<td>A方案 <strong>+$4,500 / 台</strong><br/>B方案 <strong>+$3,800 / 台</strong></td>
+<td>指定時間方案 <strong>+$4,500 / 台</strong><br/>平日順路方案 <strong>+$3,800 / 台</strong></td>
 </tr>
 <tr>
 <td><strong>5. 大型中央空調箱 (AHU)</strong></td>
@@ -486,7 +486,7 @@
 </a>
 </div>
 <script src="assets/pricing-config.js?v=20261108"></script>
-<script src="assets/cad-engine.js?v=cards-20261108"></script>
+<script src="assets/cad-engine.js?v=plain-20261108"></script>
 <section id="hs-analytics-choice" aria-label="網站分析選擇">
 <p>允許 Google Analytics 分析瀏覽與入口點擊，協助改善網站？不同意也能正常估價與聯絡。</p>
 <details><summary>了解更多</summary>

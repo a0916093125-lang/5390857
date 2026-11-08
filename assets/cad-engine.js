@@ -2,8 +2,8 @@
  * 皓盛有限公司 (5390857.com) - 雙引擎試算與 A4 單頁智慧鎖定報價核心系統 (v21.1 雙專家滿分完全體正式版)
  * 涵蓋模組：
  * 1. Before/After 清洗前後視覺對比拉桿（Pointer Events ＋ 鍵盤無障礙 A11y ＋ rAF 節流與失焦保護）
- * 2. 社區大樓自來水塔 A/B 雙軌試算器 ＋ 跨頁雙向記憶與無汙染帶入報價單生成器 (localStorage + pageshow/storage)
- * 3. 商用空調冷卻水塔（10RT~500RT+）A/B 雙軌試算器 ＋ 跨頁雙向記憶與無汙染帶入報價單生成器
+ * 2. 社區大樓自來水塔 兩種施工時間試算器 ＋ 跨頁雙向記憶與無汙染帶入報價單生成器 (localStorage + pageshow/storage)
+ * 3. 商用空調冷卻水塔（10RT~500RT+）兩種施工時間試算器 ＋ 跨頁雙向記憶與無汙染帶入報價單生成器
  * 4. 線上立即估價 (quote.html)：
  *    - 涵蓋紅藍軍 v11.0 全部 8 項資安、會計大寫、跨類別加購隔離與離線 A4 沙盒量測修復
  *    - 升級 [自來水塔專家 W1]：修正 10 噸內選 FRP 組合式水塔或多棟不鏽鋼塔時，報價單誤印「入槽 RC 水池」之材質文字矛盾
@@ -492,7 +492,7 @@
     });
   }
 
-  /* 2. 第一引擎：自來水塔噸數費用與停水工時 A/B 雙軌試算器 */
+  /* 2. 第一引擎：自來水塔噸數費用與停水工時 兩種施工時間試算器 */
   function initWaterTankCalculator() {
     const form = document.getElementById("water-tank-calc-form");
     if (!form) return;
@@ -578,8 +578,8 @@
       let basePrice = isPriority ? 13000 : 10500;
       let hours = "2.5 ~ 3.0 小時";
       let crewMode = isPriority
-        ? "【A方案：指定時段專車】依進入方式與空間條件確認人員、資格、監視、通風及氣體測定；保險與實際配置於進場前核對"
-        : "【B方案：平日彈性併單】平日順路時段；依進入方式與空間條件確認人員、資格、監視、通風及氣體測定，保險與實際配置於進場前核對";
+        ? "【指定時間方案：指定時段專車】依進入方式與空間條件確認人員、資格、監視、通風及氣體測定；保險與實際配置於進場前核對"
+        : "【平日順路方案：平日彈性併單】平日順路時段；依進入方式與空間條件確認人員、資格、監視、通風及氣體測定，保險與實際配置於進場前核對";
 
       if (tonVal <= 10) {
         if (matVal === "stainless") {
@@ -663,8 +663,8 @@
       }
 
       const scheduleLabel = isPriority
-        ? "A方案：指定時段專車專案（作業資格及檢查項目待確認）"
-        : "B方案：平日彈性併單特惠檔期（由皓盛安排順路時段施作）";
+        ? "指定時間方案：指定時段專車專案（作業資格及檢查項目待確認）"
+        : "平日順路方案：平日彈性併單特惠檔期（由皓盛安排順路時段施作）";
 
       if (outPrice) {
         outPrice.textContent = "NT$ " + basePrice.toLocaleString() + " ~ " + maxPrice.toLocaleString() + " 元（" + taxNote + "）";
@@ -791,7 +791,7 @@
     }
   }
 
-  /* 3. 第二引擎：商用空調冷卻水塔（10RT~500RT+）A/B 雙軌排程與閥件試算器 */
+  /* 3. 第二引擎：商用空調冷卻水塔（10RT~500RT+）兩種施工時間排程與閥件試算器 */
   function initCoolingTowerCalculator() {
     const form = document.getElementById("cooling-tower-calc-form");
     if (!form) return;
@@ -878,8 +878,8 @@
       let basePrice = isPriority ? 13000 : 10500;
       let hours = "2.5 ~ 3.5 小時";
       let crewMode = isPriority
-        ? "【A方案：指定時段專車】技術人員（配置與資格於派工前確認）＋風機斷電上鎖(LOTO)戒護＋風機電流與軸承點檢"
-        : "【B方案：平日彈性併單】由本公司安排平日順路時段進場，同享技術人員（配置與資格於派工前確認）＋風機電流點檢";
+        ? "【指定時間方案：指定時段專車】技術人員（配置與資格於派工前確認）＋風機斷電上鎖(LOTO)戒護＋風機電流與軸承點檢"
+        : "【平日順路方案：平日彈性併單】由本公司安排平日順路時段進場，同享技術人員（配置與資格於派工前確認）＋風機電流點檢";
 
       if (rtVal <= 50) {
         basePrice = isPriority ? 7000 : 5500;
@@ -891,8 +891,8 @@
         basePrice = isPriority ? 23000 : 17500;
         hours = "3.5 ~ 4.5 小時";
         crewMode = isPriority
-          ? "【A方案：大型塔高處/入塔配置待確認】入塔人員、監視與安全措施依現場評估＋可洽詢風機馬達絕緣、減速齒輪箱/皮帶與Y型過濾器點檢"
-          : "【B方案：平日併單配置待確認】入塔人員、監視與安全措施依現場評估＋可洽詢風機馬達電流、減速齒輪箱/皮帶與Y型過濾器點檢";
+          ? "【指定時間方案：大型塔高處/入塔配置待確認】入塔人員、監視與安全措施依現場評估＋可洽詢風機馬達絕緣、減速齒輪箱/皮帶與Y型過濾器點檢"
+          : "【平日順路方案：平日併單配置待確認】入塔人員、監視與安全措施依現場評估＋可洽詢風機馬達電流、減速齒輪箱/皮帶與Y型過濾器點檢";
       } else {
         basePrice = isPriority ? 27000 : 24000;
         hours = "4.0 ~ 5.5 小時（雙機高壓水刀與工業吸塵同步施作）";
@@ -967,8 +967,8 @@
       }
 
       const scheduleLabel = isPriority
-        ? "A方案：指定時段專車專案（含職安戒護＋空調機電深度點檢）"
-        : "B方案：平日彈性併單特惠檔期（由皓盛安排平日順路時段施作）";
+        ? "指定時間方案：指定時段專車專案（含職安戒護＋空調機電深度點檢）"
+        : "平日順路方案：平日彈性併單特惠檔期（由皓盛安排平日順路時段施作）";
 
       if (outPrice) {
         outPrice.textContent = "NT$ " + basePrice.toLocaleString() + " ~ " + maxPrice.toLocaleString() + " 元（" + taxNote + "）";
@@ -1087,7 +1087,7 @@
   }
 
 
-  /* 3B. 新增引擎：冷氣與商用中央空調（四方吹/吊隱FCU/大型AHU/分離式）A/B 雙軌包套試算器 (v21.1) */
+  /* 3B. 新增引擎：冷氣與商用中央空調（四方吹/吊隱FCU/大型AHU/分離式）兩種施工時間包套試算器 (v21.1) */
   function initAcCleaningCalculator() {
     const form = document.getElementById("ac-cleaning-calc-form");
     if (!form) return;
@@ -1183,8 +1183,8 @@
         hours = "6.0 ~ 8.0 小時（機電技術人員全天駐場精洗）";
       }
       crewMode = isPriority
-        ? "【A方案：指定時段／假日夜間機電專車】空調技術人員（配置與資格於派工前確認）＋LOTO 斷電掛牌＋電腦板防水保護（依設備現況確認）"
-        : "【B方案：平日彈性併單機電專車】由本公司安排平日順路時段機電技術人員施作，同享電腦板防水保護＋集水盤疏通";
+        ? "【指定時間方案：指定時段／假日夜間機電專車】空調技術人員（配置與資格於派工前確認）＋LOTO 斷電掛牌＋電腦板防水保護（依設備現況確認）"
+        : "【平日順路方案：平日彈性併單機電專車】由本公司安排平日順路時段機電技術人員施作，同享電腦板防水保護＋集水盤疏通";
 
       const addons = ["可洽詢：LOTO斷電與電腦機板防水罩保護＋集水盤果凍淤泥抽除與排水管疏通＋出風溫差(ΔT)與運轉電流實測"];
       if (chkDrain && chkDrain.checked) {
@@ -1592,7 +1592,7 @@
       else if (qtyNum === 3) discountFactor = 0.88;
       else if (qtyNum >= 4) discountFactor = 0.85;
 
-      // 每一檔位 (tier_std / tier_mid / tier_heavy) 均嚴格遞增，並隨 A方案 / B方案 動態切換
+      // 每一檔位 (tier_std / tier_mid / tier_heavy) 均嚴格遞增，並隨 指定時間方案 / 平日順路方案 動態切換
       let lowPrice = Math.round((isPriority ? tierCfg.minA : tierCfg.minB) * qtyNum * discountFactor);
       let highPrice = Math.round((isPriority ? tierCfg.maxA : tierCfg.maxB) * qtyNum * discountFactor);
 
@@ -1630,10 +1630,10 @@
       }
       if (outCrew) {
         outCrew.textContent = isPriority
-          ? "【A方案：指定時段檢修專車】技術人員（配置與資格於派工前確認）＋LOTO斷電掛牌＋日本NSK/原廠級料件＋電流絕緣簽認報告（料件與後續服務條件另行確認）"
+          ? "【指定時間方案：指定時段檢修專車】技術人員（配置與資格於派工前確認）＋LOTO斷電掛牌＋日本NSK/原廠級料件＋電流絕緣簽認報告（料件與後續服務條件另行確認）"
           : (isAddonClean
             ? "【清洗客戶同日順修特惠】由駐場機電技術人員趁排空或拆機時同步檢修（免收 $2,500 單獨查修出工費！）"
-            : "【B方案：平日彈性檢修排程】技術人員（配置與資格於派工前確認）＋工業級標準新品料件＋運轉測試（後續服務條件另行確認）");
+            : "【平日順路方案：平日彈性檢修排程】技術人員（配置與資格於派工前確認）＋工業級標準新品料件＋運轉測試（後續服務條件另行確認）");
       }
 
       const targetCategory = isAddonClean ? (specCfg.comboCleanCat || "water_tank") : "mpv_repair";
@@ -1721,7 +1721,7 @@
     }
   }
 
-  /* 4. 第三引擎：A/B 雙軌線上立即估價 (quote.html - 內建 A4 PDF 排版 智慧動態縮放鎖定) */
+  /* 4. 第三引擎：兩種施工時間線上立即估價 (quote.html - 內建 A4 PDF 排版 智慧動態縮放鎖定) */
   function syncMpvTierLabels(specSelect, tierSelect) {
     if (!specSelect || !tierSelect || !tierSelect.options) return;
     const cfg = MPV_SPEC_MAP[specSelect.value];
@@ -1978,7 +1978,7 @@
       renderQuotation(false);
       if (showNotification) {
         const planHint = (draft.scheduleMode === "weekday_35")
-          ? "（已同步列出 A/B 雙軌方案與您選擇的 B方案平日併單特惠）"
+          ? "（已同步列出 兩種施工時間方案與您選擇的 平日順路方案平日併單特惠）"
           : "";
         showToast("✓ 已成功載入您剛才儲存的試算與報價規格！" + planHint);
       }
@@ -2409,7 +2409,7 @@
             : "工業級 90% TCCA 氯錠（用途與標示待確認）（25公斤大桶裝｜配送條件待確認）",
           spec: isWithTankTruck
             ? "依原合併方案報價；實際產品用途、配送方式及承運條件待確認，不表示可用於飲用水設備"
-            : "單購 A 方案每桶 $3,200／B 方案每桶 $2,680；產品標示、用途、安全資料及配送條件另行確認",
+            : "單購 指定時間方案每桶 $3,200／平日順路方案每桶 $2,680；產品標示、用途、安全資料及配送條件另行確認",
           unit: shopQty + " 桶(25kg)",
           priceA: (isWithTankTruck ? 2680 : 3200) * shopQty,
           priceB: 2680 * shopQty
@@ -2518,11 +2518,11 @@
             "<th style='width:33%;'>工程與機電檢修項目</th>" +
             "<th style='width:32%;'>施工規格與職安配置說明</th>" +
             "<th style='width:7%;'>單位</th>" +
-            "<th class='num-col' style='width:11.5%;'>A方案：指定時段專車</th>" +
-            "<th class='num-col' style='width:11.5%;'>B方案：平日併單</th>" +
+            "<th class='num-col' style='width:11.5%;'>指定時間方案：指定時段專車</th>" +
+            "<th class='num-col' style='width:11.5%;'>平日順路方案：平日併單</th>" +
             "</tr>";
         } else {
-          const singleTitle = (displayMode === "only_a") ? "A方案：指定時段專車項目金額" : "B方案：平日併單項目金額";
+          const singleTitle = (displayMode === "only_a") ? "指定時間方案：指定時段專車項目金額" : "平日順路方案：平日併單項目金額";
           outThead.innerHTML = "<tr>" +
             "<th style='width:6%;'>項次</th>" +
             "<th style='width:36%;'>工程與機電檢修項目</th>" +
@@ -2572,14 +2572,14 @@
           outSummaryArea.innerHTML =
             "<div class='qp-total-grid'>" +
               "<div class='qp-plan-card'>" +
-                "<div class='qp-plan-title'>★ A方案：指定時段專車專案（可指定日期/急件）</div>" +
+                "<div class='qp-plan-title'>★ 指定時間方案：指定時段專車專案（可指定日期/急件）</div>" +
                 "<div style='font-size:0.8rem;color:#475569;'>未稅小計：NT$ " + subA.toLocaleString() +
                 (includeTax ? (" ＋ 5%營業稅：NT$ " + taxA.toLocaleString()) : "（未稅，開發票另加5%）") + "</div>" +
                 "<div class='qp-plan-price'>總計 NT$ " + totalA.toLocaleString() + " 元" + (includeTax ? "（含稅）" : "（未稅）") + "</div>" +
                 "<div style='font-size:0.78rem;color:#334155;font-weight:700;'>大寫：" + escapeHtml(toTaiwaneseUpperCurrency(totalA)) + "</div>" +
               "</div>" +
               "<div class='qp-plan-card' style='border-color:#0284c7;background:#f0f9ff;'>" +
-                "<div class='qp-plan-title' style='color:#0369a1;'>⚡ B方案：平日彈性順路併單特惠（現省 NT$ " + savedDiff.toLocaleString() + " 元）</div>" +
+                "<div class='qp-plan-title' style='color:#0369a1;'>⚡ 平日順路方案：平日彈性順路併單特惠（現省 NT$ " + savedDiff.toLocaleString() + " 元）</div>" +
                 "<div style='font-size:0.8rem;color:#475569;'>未稅小計：NT$ " + subB.toLocaleString() +
                 (includeTax ? (" ＋ 5%營業稅：NT$ " + taxB.toLocaleString()) : "（未稅，開發票另加5%）") + "</div>" +
                 "<div class='qp-plan-price' style='color:#0284c7;'>總計 NT$ " + totalB.toLocaleString() + " 元" + (includeTax ? "（含稅）" : "（未稅）") + "</div>" +
@@ -2592,8 +2592,8 @@
           const tax = isA ? taxA : taxB;
           const tot = isA ? totalA : totalB;
           const planTitle = isA
-            ? "★ 目前選擇【A方案：指定時段專車專案】"
-            : "⚡ 目前選擇【B方案：平日彈性順路併單特惠檔期】";
+            ? "★ 目前選擇【指定時間方案：指定時段專車專案】"
+            : "⚡ 目前選擇【平日順路方案：平日彈性順路併單特惠檔期】";
           outSummaryArea.innerHTML =
             "<div class='qp-plan-card' style='border-width:1.5px;'>" +
               "<div class='qp-plan-title'>" + escapeHtml(planTitle) + "</div>" +
@@ -2624,8 +2624,8 @@
         if (displayMode === "ab_compare") {
           outDecisionArea.innerHTML =
             "<div style='font-weight:900;color:#0f172a;margin-bottom:4px;font-size:0.84rem;'>【方案選擇與備註】</div>" +
-            "<div style='margin-bottom:3px;font-size:0.8rem;'>□ 選擇 <strong>A方案（指定專車：NT$ " + totalA.toLocaleString() + "）</strong>，預計日期：" + escapeHtml(docYear) + "年____月____日</div>" +
-            "<div style='margin-bottom:8px;font-size:0.8rem;'>□ 選擇 <strong>B方案（平日併單：NT$ " + totalB.toLocaleString() + "）</strong>，可洽詢平日排程</div>" +
+            "<div style='margin-bottom:3px;font-size:0.8rem;'>□ 選擇 <strong>指定時間方案（指定專車：NT$ " + totalA.toLocaleString() + "）</strong>，預計日期：" + escapeHtml(docYear) + "年____月____日</div>" +
+            "<div style='margin-bottom:8px;font-size:0.8rem;'>□ 選擇 <strong>平日順路方案（平日併單：NT$ " + totalB.toLocaleString() + "）</strong>，可洽詢平日排程</div>" +
             "<div style='margin-top:8px;border-top:1px solid #94a3b8;padding-top:6px;font-size:0.8rem;'>需求備註：____________________ 日期：____/____/____</div>";
         } else {
           const chosenTot = (displayMode === "only_a") ? totalA : totalB;
@@ -2691,8 +2691,8 @@
       }).join("\n");
 
       const priceText = (displayMode === "ab_compare")
-        ? ("★ A方案（指定專車）：NT$ " + totalA.toLocaleString() + (includeTax ? " (含5%稅)" : " (未稅)") +
-           "\n⚡ B方案（平日併單）：NT$ " + totalB.toLocaleString() + (includeTax ? " (含5%稅，現省$" + savedDiff.toLocaleString() + ")" : " (未稅，現省$" + savedDiff.toLocaleString() + ")"))
+        ? ("★ 指定時間方案（指定專車）：NT$ " + totalA.toLocaleString() + (includeTax ? " (含5%稅)" : " (未稅)") +
+           "\n⚡ 平日順路方案（平日併單）：NT$ " + totalB.toLocaleString() + (includeTax ? " (含5%稅，現省$" + savedDiff.toLocaleString() + ")" : " (未稅，現省$" + savedDiff.toLocaleString() + ")"))
         : ("報價總金額：NT$ " + ((displayMode === "only_a") ? totalA : totalB).toLocaleString() + (includeTax ? " (含5%營業稅)" : " (未稅)"));
 
       return "📄 報價參考編號（非公司流水號）：" + docNo + " [計算參考:" + verifyHash + "]" +
