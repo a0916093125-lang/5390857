@@ -68,7 +68,7 @@ window.HS_PRICING_CONFIG = {
       shippedPrice: 3200,
       withServiceTruckPrice: 2680,
       sellHardwareOnly: true,
-      note: "沿用單購 $3,200／合併方案 $2,680 試算。庫存、產品標示、安全資料、用途及配送承運條件須另行確認，不可逕用於飲用水儲水設備。"
+      note: "單購每桶 $3,200／搭配工程每桶 $2,680，合併交付省運費。庫存、產品標示、安全資料、用途及配送承運條件須另行確認，不可逕用於飲用水儲水設備。"
     }
   },
   addons: {
@@ -80,7 +80,7 @@ window.HS_PRICING_CONFIG = {
     ctSprinklerAddon: { priceA: 6000,  priceB: 4500 },
     tecoInverter:     { priceA: 4500,  priceB: 4200 },
     sgsLabTest:       { priceA: 3500,  priceB: 3000 },
-    chlorine25kg:     { priceA: 3200,  priceB: 2680 },
+    chlorine25kg:     { standalonePrice: 3200, withServicePrice: 2680 },
     acDrainPump:      { priceA: 2500,  priceB: 2200, standaloneA: 3500, standaloneB: 3500 },
     acOutdoorWash:    { priceA: 2000,  priceB: 1600 },
     acSteamOzone:     { priceA: 1800,  priceB: 1500 },
