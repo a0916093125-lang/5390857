@@ -2797,6 +2797,12 @@ window.hsPendingPrice = function () { return ''; };
         clearCustomerFields();
         if (!loadQuoteDraft()) clearVisibleDraft();
         else renderQuotation(false);
+      } else {
+        // Clear browser-restored customer values on a newly opened document too.
+        if (elClientName) elClientName.value = "";
+        if (elContactPerson) elContactPerson.value = "";
+        if (elClientAddr && ["", "台北市 / 新北市", "桃園市 / 新竹縣市", "其他外縣市專案"].indexOf(elClientAddr.value) === -1) elClientAddr.value = "";
+        renderQuotation(false);
       }
     });
     window.addEventListener("storage", function (e) {
