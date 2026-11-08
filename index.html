@@ -200,6 +200,8 @@
 <style id="hs-action-flow">
 .hero-cta-primary-row{grid-template-columns:1fr;max-width:520px}.service-flow-note{font-size:.86rem;line-height:1.7;color:#b9c8dc;margin:10px 0}.service-related-link{font-size:.88rem;line-height:1.8;margin:14px 0;color:#a7c9db}.service-related-link a{color:inherit;text-decoration:underline}.service-related-link summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:6px}.service-related-link summary:before{content:"＋"}.service-related-link[open] summary:before{content:"－"}.quote-actions{margin:20px 0;padding:20px;border:1px solid #334155;border-radius:12px;background:#0f172a}.quote-actions h2{font-size:1.1rem;margin:0 0 14px;color:#f1f5f9}.quote-actions .btn-group{display:flex;flex-direction:column;gap:12px}.quote-more-actions summary{cursor:pointer;min-height:44px;padding:12px 0;color:#bae6fd}.quote-more-actions button{margin:8px 0}.quote-actions :focus-visible{outline:3px solid #38bdf8;outline-offset:3px}@media(min-width:861px){.mobile-sticky-bar{display:flex!important;left:auto;right:20px;bottom:20px;background:transparent;border:0;padding:0;backdrop-filter:none;width:auto}.mobile-sticky-bar>.btn:not(.btn-line){display:none}.mobile-sticky-bar>.btn-line{width:160px;box-shadow:0 8px 24px #0005;display:flex;flex-direction:column;align-items:center;gap:3px}.mobile-sticky-bar>.btn-line span{display:block;white-space:nowrap}.mobile-sticky-bar>.btn-line .sticky-btn-sub{font-size:.75rem}.nav-link-cta{display:none!important}}@media(max-width:860px){.nav-link-cta{display:none!important}}@media print{.quote-actions,.mobile-sticky-bar{display:none!important}}
 </style>
+<link rel="stylesheet" href="assets/mobile-ux.css?v=20261108-1"/>
+<script defer src="assets/mobile-ux.js?v=20261108-1"></script>
 </head>
 <body>
 
@@ -222,7 +224,8 @@
 <span>皓盛有限公司 HAO SHENG CO., LTD.</span>
 <span class="brand-sub">商用空調年度維保・全台清洗專案・北部機電維修</span>
 </a>
-<nav aria-label="主導航選單" class="nav-links">
+<button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation">服務選單 <span aria-hidden="true">☰</span></button>
+<nav id="site-navigation" aria-label="主導航選單" class="nav-links">
 <a class="nav-link active" href="index.html">企業工程總覽</a>
 <a class="nav-link" href="index.html#annual-maintenance">商用空調年度維保</a>
 <a class="nav-link" href="cooling-tower.html">❄️ 洗冷卻水塔試算</a>
@@ -668,6 +671,7 @@
 
 </body>
 </html>
+
 
 
 

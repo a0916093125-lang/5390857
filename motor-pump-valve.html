@@ -165,6 +165,8 @@
 <style id="hs-action-flow">
 .hero-cta-primary-row{grid-template-columns:1fr;max-width:520px}.service-flow-note{font-size:.86rem;line-height:1.7;color:#b9c8dc;margin:10px 0}.service-related-link{font-size:.88rem;line-height:1.8;margin:14px 0;color:#a7c9db}.service-related-link a{color:inherit;text-decoration:underline}.service-related-link summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:6px}.service-related-link summary:before{content:"＋"}.service-related-link[open] summary:before{content:"－"}.quote-actions{margin:20px 0;padding:20px;border:1px solid #334155;border-radius:12px;background:#0f172a}.quote-actions h2{font-size:1.1rem;margin:0 0 14px;color:#f1f5f9}.quote-actions .btn-group{display:flex;flex-direction:column;gap:12px}.quote-more-actions summary{cursor:pointer;min-height:44px;padding:12px 0;color:#bae6fd}.quote-more-actions button{margin:8px 0}.quote-actions :focus-visible{outline:3px solid #38bdf8;outline-offset:3px}@media(min-width:861px){.mobile-sticky-bar{display:flex!important;left:auto;right:20px;bottom:20px;background:transparent;border:0;padding:0;backdrop-filter:none;width:auto}.mobile-sticky-bar>.btn:not(.btn-line){display:none}.mobile-sticky-bar>.btn-line{width:160px;box-shadow:0 8px 24px #0005;display:flex;flex-direction:column;align-items:center;gap:3px}.mobile-sticky-bar>.btn-line span{display:block;white-space:nowrap}.mobile-sticky-bar>.btn-line .sticky-btn-sub{font-size:.75rem}.nav-link-cta{display:none!important}}@media(max-width:860px){.nav-link-cta{display:none!important}}@media print{.quote-actions,.mobile-sticky-bar{display:none!important}}
 </style>
+<link rel="stylesheet" href="assets/mobile-ux.css?v=20261108-1"/>
+<script defer src="assets/mobile-ux.js?v=20261108-1"></script>
 </head>
 <body>
 
@@ -187,7 +189,8 @@
 <span>皓盛有限公司 HAO SHENG CO., LTD.</span>
 <span class="brand-sub">商用空調年度維保・全台清洗專案・北部機電維修</span>
 </a>
-<nav aria-label="主導航選單" class="nav-links">
+<button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation">服務選單 <span aria-hidden="true">☰</span></button>
+<nav id="site-navigation" aria-label="主導航選單" class="nav-links">
 <a class="nav-link" href="index.html">企業工程總覽</a>
 <a class="nav-link" href="index.html#annual-maintenance">商用空調年度維保</a>
 <a class="nav-link" href="cooling-tower.html">❄️ 洗冷卻水塔試算</a>
@@ -201,10 +204,7 @@
 <p class="nav-swipe-hint">左右滑動選單，查看更多服務 →</p>
 </div>
 </header>
-<main class="container"><div class="stage1-note no-print"><strong>服務條件以個案確認為準</strong><p>本頁提供服務介紹與費用參考；報價依客戶填寫的資料產生，若現場條件不同，施工前由雙方確認調整。人員配置、使用料件、檢查測項、施工與交付時間、驗收、發票及保固條件，須於承接前逐項確認；不以本頁作合規或成果保證。</p></div>
-<div class="stage1-scope">大型空調、冷卻水塔與自來水塔清洗提供全台專案評估；北部服務雙北、桃園、新竹以北。中南部以大型案場為主，其他需求可個別洽詢。</div>
-<!-- 第一區塊：雙欄旗艦首屏 (Hero Section) -->
-<section aria-label="機電檢修！機電馬達、空調風鼓軸承、幫浦與蝶閥逆止閥搶修核心宣言" class="hero-section hero-flagship">
+<main class="container"><section aria-label="機電檢修！機電馬達、空調風鼓軸承、幫浦與蝶閥逆止閥搶修核心宣言" class="hero-section hero-flagship">
 <div class="hero-split-grid">
 <div class="hero-copy-col">
 <div class="hero-badge-row">
@@ -264,7 +264,10 @@
 </div>
 </aside>
 </div>
-</section>
+</section><details class="mobile-service-note stage1-note no-print" open><summary>服務條件以個案確認為準</summary><p>本頁提供服務介紹與費用參考；報價依客戶填寫的資料產生，若現場條件不同，施工前由雙方確認調整。人員配置、使用料件、檢查測項、施工與交付時間、驗收、發票及保固條件，須於承接前逐項確認；不以本頁作合規或成果保證。</p></details>
+<div class="stage1-scope">大型空調、冷卻水塔與自來水塔清洗提供全台專案評估；北部服務雙北、桃園、新竹以北。中南部以大型案場為主，其他需求可個別洽詢。</div>
+<!-- 第一區塊：雙欄旗艦首屏 (Hero Section) -->
+
 
 <!-- 第二區塊：🧮 「機電檢修！」6 大類機電馬達・風鼓軸承・泵浦閥件即時試算器 -->
 <section aria-labelledby="mpv-calc-heading" class="grid-2" id="mpv-calc-section">
@@ -364,7 +367,7 @@
 <div style="margin-top:6px;font-size:0.88rem;color:#6ee7b7;">
 👷 預估作業安排（現場確認）：<span id="mpv-crew-output">【A方案：指定時段檢修專車】機電技術人員＋LOTO斷電驗電掛牌＋三用電錶/鉤錶/絕緣阻抗實測＋保固條件另確認</span>
 </div>
-<p id="mpv-summary-text" style="margin-top:10px;font-size:0.84rem;color:#cbd5e1;background:rgba(7,13,25,0.6);padding:8px 12px;border-radius:8px;"></p>
+<details class="mobile-result-details" open><summary>查看完整費用與作業明細</summary><p id="mpv-summary-text" style="margin-top:10px;font-size:0.84rem;color:#cbd5e1;background:rgba(7,13,25,0.6);padding:8px 12px;border-radius:8px;"></p></details>
 <p style="margin-top:8px;font-size:0.82rem;color:#fde68a;font-weight:700;">
 💡 皓盛收費確認原則：(1) 單獨叫修基本出工檢測保底價 $2,000~$2,500 起/趟（確認委修直接折抵併入工程款；搭配清洗同日順修享 0 元免出車檢測費）；(2) 現場確認馬力噸數與拆裝難度後先報明價，經業主同意才動工，施工範圍與費用須先確認！
 </p>
@@ -619,6 +622,7 @@
 
 </body>
 </html>
+
 
 
 

@@ -1,0 +1,46 @@
+/* Mobile enhancement; existing content, pricing and print layout are unchanged. */
+.mobile-menu-toggle { display:none; }
+.mobile-service-note summary,.mobile-result-details summary { cursor:pointer; min-height:44px; line-height:1.6; padding:10px 0; font-weight:700; }
+.mobile-service-note { margin-block:16px; }
+.mobile-service-note summary { color:#dce8f2; }
+.mobile-result-details { margin-top:12px; color:#cbd5e1; font-size:15px; }
+@media screen {
+ .toast-msg { width:max-content; max-width:min(560px,calc(100vw - 32px)); border-radius:12px; line-height:1.55; font-size:15px; overflow-wrap:anywhere; pointer-events:none; }
+}
+@media screen and (max-width:860px) {
+ html { scroll-padding-top:100px; scroll-padding-bottom:100px; }
+ .site-header { backdrop-filter:none; background:#0f172a; }
+ .mobile-enhanced .nav-container { display:grid; grid-template-columns:minmax(0,1fr) auto; padding:10px 16px; gap:8px; }
+ .mobile-enhanced .brand-logo { font-size:17px; line-height:1.5; }
+ .mobile-enhanced .brand-logo>span:first-child { max-width:100%; }
+ .mobile-enhanced .brand-sub { font-size:12px; }
+ .mobile-enhanced .mobile-menu-toggle { display:flex; align-items:center; justify-content:center; gap:8px; min-height:44px; padding:8px 12px; border:1px solid #47627c; border-radius:8px; color:#e2e8f0; background:#18253e; font:inherit; font-size:14px; }
+ .mobile-enhanced .nav-links { display:none; grid-column:1 / -1; }
+ .mobile-enhanced .nav-links.is-open { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; overflow-y:auto; overflow-x:hidden; max-height:60vh; max-height:60dvh; padding:8px 0; }
+ .mobile-enhanced .nav-link { white-space:normal; text-align:left; justify-content:flex-start; line-height:1.5; padding:10px; min-height:48px; font-size:14px; }
+ .mobile-enhanced .nav-swipe-hint { display:none; }
+ .hero-bento-panel { backdrop-filter:none; -webkit-backdrop-filter:none; }
+ .mobile-service-note { padding:8px 16px; }
+ .mobile-service-note:not([open]) { margin-block:12px; }
+ .mobile-service-note p { font-size:15px; }
+ .calc-result-box { padding:16px; }
+ .mobile-result-details p { font-size:15px!important; line-height:1.75; }
+ .toast-msg { width:calc(100vw - 32px); top:calc(12px + env(safe-area-inset-top,0px)); padding:12px 16px; }
+ .mobile-enhanced.is-editing .mobile-sticky-bar { visibility:hidden; pointer-events:none; }
+ [id$="heading"] { scroll-margin-top:12px; }
+}
+@media screen and (max-width:400px) {
+ .container { padding-inline:12px; }
+ .card { padding:18px 14px; }
+ .calc-result-box { padding:14px 10px; }
+ .hero-section { padding:22px 16px; }
+ .hero-bento-panel { padding:14px; }
+ .mobile-enhanced .brand-sub { display:none; }
+ .mobile-enhanced .brand-logo { font-size:16px; }
+ .mobile-enhanced .mobile-menu-toggle { padding-inline:9px; }
+}
+@media print {
+ .mobile-menu-toggle { display:none!important; }
+ .mobile-result-details>summary { display:none; }
+ .mobile-result-details>*:not(summary) { display:block!important; }
+}
