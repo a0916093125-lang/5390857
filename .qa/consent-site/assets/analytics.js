@@ -141,7 +141,7 @@
   if (settings) settings.addEventListener('click', function () {
     const panel = document.getElementById('hs-analytics-choice');
     panel.hidden = false;
-    panel.scrollIntoView({block:'nearest'});
+    panel.scrollIntoView({block:'center'});
     panel.querySelector('[data-analytics-choice]').focus();
   });
   const notice = document.getElementById('hs-analytics-choice');
