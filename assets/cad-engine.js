@@ -213,6 +213,17 @@ window.hsPendingPrice = function () { return ''; };
   function loadQuoteDraft() {
     if (draftWriteFailed && isFreshQuoteDraft(memoryDraftFallback)) return memoryDraftFallback;
     try {
+      // Clean every legacy key independently, including when the current key is already safe.
+      [DRAFT_STORAGE_KEY].concat(LEGACY_STORAGE_KEYS).forEach(function (key) {
+        try {
+          const rawDraft = localStorage.getItem(key);
+          if (!rawDraft) return;
+          const oldDraft = JSON.parse(rawDraft);
+          if (oldDraft && typeof oldDraft === "object" && PRIVATE_DRAFT_FIELDS.some(function (field) {
+            return Object.prototype.hasOwnProperty.call(oldDraft, field);
+          })) localStorage.setItem(key, JSON.stringify(specificationOnly(oldDraft)));
+        } catch (e) {}
+      });
       let raw = localStorage.getItem(DRAFT_STORAGE_KEY);
       if (!raw) {
         for (let i = 0; i < LEGACY_STORAGE_KEYS.length; i++) {
@@ -2904,7 +2915,7 @@ window.hsPendingPrice = function () { return ''; };
           displayMode: params.get("dmode") || "ab_compare",
           serviceCategory: params.get("cat") || "water_tank",
           // Clear omitted identity fields instead of borrowing a different customer's stored draft.
-          // Legacy links remain readable; all newly generated links omit these fields.
+          // Legacy identity query parameters are ignored; only specifications are imported.
           // Ignore customer fields in legacy URLs too; recipients enter their own details.
           customName: "",
           customPrice: "0"
