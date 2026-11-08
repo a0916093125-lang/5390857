@@ -22,8 +22,7 @@
 <meta name="twitter:title" content="家用與商用冷氣清洗包套｜皓盛有限公司"/>
 <meta name="twitter:description" content="家用分離式冷氣清洗採四台包套；三台以下仍以四台計價，未使用的台數可轉給隔壁鄰居家，一起湊成團購。四台團購僅限家用分離式，其他機型依各自包套計價。北部服務雙北、桃園、新竹以北，大型空調清洗可洽詢全台專案。"/>
 <link href="assets/style.css?v=20261108" rel="stylesheet"/>
-<script type="application/ld+json">
-{
+<script type="application/ld+json">{
   "@context": "https://schema.org",
   "@graph": [
     {
@@ -55,7 +54,7 @@
       }
     },
     {
-      "@type": "Product",
+      "@type": "Service",
       "@id": "https://5390857.com/ac-cleaning.html#product",
       "name": "皓盛有限公司商用四方吹、吊隱式FCU、大型空調箱AHU與分離式冷氣機電級深層拆洗專案",
       "description": "家用分離式冷氣清洗採四台包套；三台以下仍以四台計價，未使用的台數可轉給隔壁鄰居家，一起湊成團購。四台團購僅限家用分離式，其他機型依各自包套計價。北部服務雙北、桃園、新竹以北，大型空調清洗可洽詢全台專案。",
@@ -64,14 +63,6 @@
         "name": "皓盛有限公司"
       },
       "sku": "HS-AC-CLEAN-005",
-      "offers": {
-        "@type": "AggregateOffer",
-        "url": "https://5390857.com/ac-cleaning.html",
-        "priceCurrency": "TWD",
-        "lowPrice": "1800",
-        "highPrice": "35000",
-        "offerCount": "8"
-      },
       "provider": {
         "@type": "LocalBusiness",
         "@id": "https://5390857.com/#organization",
@@ -160,8 +151,7 @@
       ]
     }
   ]
-}
-</script>
+}</script>
 <link rel="stylesheet" href="assets/stage1-preview.css?v=20261108-mobile-nav"/>
 <style id="hs-action-flow">
 .hero-cta-primary-row{grid-template-columns:1fr;max-width:520px}.service-flow-note{font-size:.86rem;line-height:1.7;color:#b9c8dc;margin:10px 0}.service-related-link{font-size:.88rem;line-height:1.8;margin:14px 0;color:#a7c9db}.service-related-link a{color:inherit;text-decoration:underline}.service-related-link summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:6px}.service-related-link summary:before{content:"＋"}.service-related-link[open] summary:before{content:"－"}.quote-actions{margin:20px 0;padding:20px;border:1px solid #334155;border-radius:12px;background:#0f172a}.quote-actions h2{font-size:1.1rem;margin:0 0 14px;color:#f1f5f9}.quote-actions .btn-group{display:flex;flex-direction:column;gap:12px}.quote-more-actions summary{cursor:pointer;min-height:44px;padding:12px 0;color:#bae6fd}.quote-more-actions button{margin:8px 0}.quote-actions :focus-visible{outline:3px solid #38bdf8;outline-offset:3px}@media(min-width:861px){.mobile-sticky-bar{display:flex!important;left:auto;right:20px;bottom:20px;background:transparent;border:0;padding:0;backdrop-filter:none;width:auto}.mobile-sticky-bar>.btn:not(.btn-line){display:none}.mobile-sticky-bar>.btn-line{width:160px;box-shadow:0 8px 24px #0005;display:flex;flex-direction:column;align-items:center;gap:3px}.mobile-sticky-bar>.btn-line span{display:block;white-space:nowrap}.mobile-sticky-bar>.btn-line .sticky-btn-sub{font-size:.75rem}.nav-link-cta{display:none!important}}@media(max-width:860px){.nav-link-cta{display:none!important}}@media print{.quote-actions,.mobile-sticky-bar{display:none!important}}
@@ -206,6 +196,8 @@
 <p class="nav-swipe-hint">左右滑動選單，查看更多服務 →</p>
 </div>
 </header>
+<p class="no-print" id="hs-estimate-loading" role="status">線上估價載入中；若持續未顯示選項，請重新整理或使用 LINE 詢價。</p>
+<noscript><p role="alert">線上估價需要啟用 JavaScript；無法使用時，請透過頁面聯絡方式提供規格詢價。</p></noscript>
 <main class="container"><section aria-label="冷氣與商用中央空調深層清洗保養核心宣言" class="hero-section hero-flagship">
 <div class="hero-split-grid">
 <div class="hero-copy-col">
@@ -315,7 +307,7 @@
 </label>
 <label class="calc-check-item">
 <input id="ac-chk-mpv-repair" type="checkbox"/>
-<span>⚡ 機電檢修：同日順修冷氣風鼓異音／馬達滾珠培林／室外機啟動電容或 FCU 電動二通閥（免$2,500檢測費｜指定時間方案+4,500 / 平日順路方案+3,500起）</span>
+<span>⚡ 機電檢修：同日順修冷氣風鼓異音／馬達滾珠培林／室外機啟動電容或 FCU 電動二通閥（檢測與出工費另確認｜指定時間方案+4,500 / 平日順路方案+3,500起）</span>
 </label>
 <label class="calc-check-item">
 <input id="ac-chk-outdoor" type="checkbox"/>
@@ -331,9 +323,9 @@
 </label>
 </div>
 </div>
-<div class="calc-result-box">
+<div class="calc-result-box" hidden>
 <div style="font-size:0.9rem;color:#a7f3d0;font-weight:700;">預估連工帶料費用區間（實際施工與檢查項目依機型及報價確認）：</div>
-<div class="price-highlight" id="ac-price-output">NT$ 13,500 ~ 15,930 元（未稅）</div>
+<div class="price-highlight" id="ac-price-output">請先選擇規格</div>
 <div style="margin-top:8px;font-size:0.95rem;color:#e2e8f0;">
               ⏱️ 預估施工工時：<strong id="ac-hours-output" style="color:#38bdf8;">依現場確認（試算時間僅供參考）</strong>
 </div>
@@ -351,7 +343,7 @@
 </div>
 <details class="service-related-link"><summary>其他設備也需要維修？</summary>
 <strong>⚡ 冷氣有啾啾異音、風鼓卡死、室外機不轉或空調箱（AHU）連座軸承磨損嗎？</strong><br/>
-皓盛<strong>「機電檢修！」機電搶修部</strong>提供分離式／吊隱式(FCU)風鼓馬達培林電容更換（$2,500~$11,000起）與<strong>大型空調箱(AHU)重型連座軸承傳動大修（$28,000~$38,000起/組）</strong>，洗冷氣同日順手修享<strong>免收 $2,500 出工檢測費</strong>！👉 <a href="motor-pump-valve.html" style="color:#38bdf8;font-weight:800;text-decoration:underline;">點此進入「機電檢修」機電搶修試算器 →</a>
+皓盛<strong>「機電檢修！」機電搶修部</strong>提供分離式／吊隱式(FCU)風鼓馬達培林電容更換（$2,500~$11,000起）與<strong>大型空調箱(AHU)重型連座軸承傳動大修（$28,000~$38,000起/組）</strong>，洗冷氣同日順手修享<strong>檢測與出工費另確認</strong>！👉 <a href="motor-pump-valve.html" style="color:#38bdf8;font-weight:800;text-decoration:underline;">點此進入「機電檢修」機電搶修試算器 →</a>
 </details>
 </form>
 </div>
@@ -446,8 +438,8 @@
 <div>
 <h3 style="color:#ffffff;margin-bottom:10px;">皓盛有限公司 (Hao Sheng Co., Ltd.)</h3>
 <p>統一編號：90221911｜負責人：李思遠</p>
-<p>【給水機電事業部】：社區大樓與商辦自來水塔清洗消毒、地下蓄水池清洗、水質檢測項目、範圍與費用依需求另行確認、Omron 61F-G2 液位開關與進水蝴蝶閥更換。</p>
-<p>【商空水系統事業部】：商用中央空調冷卻水塔清洗保養、良機與跨廠牌水塔散熱材更換、6吋~10吋齒輪式蝴蝶閥更新、東元 TECO F510 變頻器調校。</p>
+<p>【給水機電服務】：社區大樓與商辦自來水塔清洗消毒、地下蓄水池清洗、水質檢測項目、範圍與費用依需求另行確認、Omron 61F-G2 液位開關與進水蝴蝶閥更換。</p>
+<p>【商空水系統服務】：商用中央空調冷卻水塔清洗保養、良機與跨廠牌水塔散熱材更換、6吋~10吋齒輪式蝴蝶閥更新、東元 TECO F510 變頻器調校。</p>
 <p>【室內空調機電部】：商辦四方吹嵌入式冷氣、吊隱式送風機（FCU）、大型空調箱（AHU）、箱型機與社區公設／團購分離式冷氣深層拆洗、改善果凍淤泥滴水。</p>
 <p>【機電馬達與閥件搶修部（機電檢修！）】：分離式與吊隱式冷氣風鼓馬達培林電容、AHU 空調箱連座軸承大修、水塔播水頭減速機循環泵、揚水加壓馬達與 2"~10" 蝶閥無聲逆止閥搶修。</p>
 </div>
@@ -455,8 +447,8 @@
 <h3 style="color:#ffffff;margin-bottom:10px;">全站七大核心頁面快速導覽</h3>
 <ul style="list-style:none;line-height:2.0;">
 <li>▸ <a href="index.html">皓盛有限公司企業形象與工程實力總覽首頁</a></li>
-<li>▸ <a href="water-tank.html">給水機電事業部：社區大樓洗自來水塔試算器</a></li>
-<li>▸ <a href="cooling-tower.html">商空水系統事業部：空調冷卻水塔 RT 試算器</a></li>
+<li>▸ <a href="water-tank.html">給水機電服務：社區大樓洗自來水塔試算器</a></li>
+<li>▸ <a href="cooling-tower.html">商空水系統服務：空調冷卻水塔 RT 試算器</a></li>
 <li>▸ <a href="ac-cleaning.html">室內空調機電部：冷氣與中央空調清洗試算器</a></li>
 <li>▸ <a href="motor-pump-valve.html">機電檢修！機電馬達・風鼓軸承・泵浦閥件試算器</a></li>
 <li>▸ <a href="shop.html">機電嚴選商城：瑞林RP-258排水器安裝＆25kg氯錠採購</a></li>
@@ -464,7 +456,7 @@
 </ul>
 </div>
 <div>
-<h3 style="color:#ffffff;margin-bottom:10px;">直接聯繫工程總管（聯絡資訊）</h3>
+<h3 style="color:#ffffff;margin-bottom:10px;">直接聯繫服務窗口（聯絡資訊）</h3>
 <p>手機 / LINE ID：<a href="tel:0916093125" style="color:#34d399;font-weight:800;">0916-093-125</a>｜信箱：<a href="mailto:ssuyuan@kimo.com">ssuyuan@kimo.com</a></p>
 <p>Google 地標地址：<a href="https://www.google.com/maps/place/?q=place_id:ChIJ1duZi7GvQjQRUBaotvuDlVg" rel="noopener noreferrer" style="color:#38bdf8;font-weight:700;" target="_blank">11164 臺北市士林區社子里社正路45巷4弄2號 📍</a>（工商登記：1號1樓）</p>
 <p>服務範圍：台北市、新北市（交通費依案確認）、桃園市、新竹縣市及全台大型商場廠房專案</p>
@@ -486,7 +478,7 @@
 </a>
 </div>
 <script src="assets/pricing-config.js?v=20261108"></script>
-<script src="assets/cad-engine.js?v=plain-20261108"></script>
+<script src="assets/cad-engine.js?v=repair-20261108"></script>
 <section id="hs-analytics-choice" aria-label="網站分析選擇">
 <p>允許 Google Analytics 分析瀏覽與入口點擊，協助改善網站？不同意也能正常估價與聯絡。</p>
 <details><summary>了解更多</summary>

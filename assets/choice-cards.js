@@ -5,6 +5,8 @@ function initChoiceCards(){
  if(window.self!==window.top&&params.get('_preview')==='1')return;
  const form=document.querySelector('#water-tank-calc-form,#cooling-tower-calc-form,#ac-cleaning-calc-form,#mpv-calc-form,#shop-calc-form,#hs-quote-builder-form');
  if(!form)return;
+ if(!window.hsPendingPrice)return;
+ const loading=document.getElementById('hs-estimate-loading');if(loading)loading.hidden=true;
  const isQuote=form.id==='hs-quote-builder-form',selects=[...form.querySelectorAll('select')],states=new Map();
  function validImport(){
   if(!isQuote)return false;
@@ -120,6 +122,7 @@ function initChoiceCards(){
   const ready=!pending.length&&(!needs||entry.checked);
   gate.textContent=ready?'規格已選好，下方為依您選項產生的報價單。':('已確認 '+(active.length-pending.length)+'／'+active.length+' 項'+(needs&&!entry.checked?'，請確認是否全程不入槽。':'，完成後直接顯示報價單。'));
   if(!ready){completed=false;invalidate();return;}
+  const pendingPrice=window.hsPendingPrice?.();if(pendingPrice){completed=false;invalidate();gate.textContent=pendingPrice;return;}
   const first=!completed;completed=true;
   if(isQuote){result.hidden=false;quoteActions.hidden=false;const live=document.getElementById('qp-live-summary-bar');if(live)live.hidden=false;if(first&&user)result.scrollIntoView({behavior:'smooth',block:'start'});}
   else{invalidate();timer=setTimeout(()=>renderPreview(first&&user),180);}
@@ -145,3 +148,4 @@ function initChoiceCards(){
 }
 if(document.readyState==='complete')initChoiceCards();else document.addEventListener('DOMContentLoaded',initChoiceCards,{once:true});
 })();
+

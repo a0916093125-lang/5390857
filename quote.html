@@ -207,6 +207,8 @@
 <p class="nav-swipe-hint">左右滑動選單，查看更多服務 →</p>
 </div>
 </header>
+<p class="no-print" id="hs-estimate-loading" role="status">線上估價載入中；若持續未顯示選項，請重新整理或使用 LINE 詢價。</p>
+<noscript><p role="alert">線上估價需要啟用 JavaScript；無法使用時，請透過頁面聯絡方式提供規格詢價。</p></noscript>
 <main class="container">
 <section class="hero-section no-print">
 <span class="eyebrow-tag">A4 報價單・依填寫資料報價</span>
@@ -219,7 +221,7 @@
 <a class="service-related-link" href="cooling-tower.html">❄️ 回空調冷卻水塔試算器</a>
 </div>
 </section>
-<div class="stage1-note no-print"><strong>開放式白鐵水塔與入槽作業</strong><p>依水塔構造、是否入槽及現場危害，評估施工方式，並依適用法規安排受訓人員與安全措施。開放式白鐵水塔若確認全程不入槽，可按不入槽方式評估；如需入槽或現場條件未明，應先確認適用要求，不能僅以材質或「開放式」名稱判定免除。</p></div><div class="stage1-note no-print"><strong>估價說明</strong><p>家用分離式冷氣清洗採四台包套；三台以下仍以四台計價，未使用的台數可轉給隔壁鄰居家，一起湊成團購。</p><p>四台計價與鄰居團購僅適用家用分離式冷氣。分離式單獨派車原本即為四台包套；吊隱式 FCU／四方吹維持三台包套、箱型機維持兩台包套、AHU 維持單座專案，價格與公式不變。冷氣與水塔、冷卻水塔合併詢價時，各依原包套及單價加總。未新增團購分攤、混合機型或施作時間規定。</p><p>工業用氯錠的用途、許可及產品標示須先確認，不可直接套用於飲用水儲水設備；投藥須依產品標示、水質與現場條件由專業人員評估。</p></div>
+<div class="stage1-note no-print"><strong>開放式白鐵水塔與入槽作業</strong><p>依水塔構造、是否入槽及現場危害，評估施工方式，並依適用法規安排受訓人員與安全措施。開放式白鐵水塔若確認全程不入槽，可按不入槽方式評估；如需入槽或現場條件未明，應先確認適用要求，不能僅以材質或「開放式」名稱判定免除。</p></div><div class="stage1-note no-print"><strong>估價說明</strong><p>家用分離式冷氣清洗採四台包套；三台以下仍以四台計價，未使用的台數可轉給隔壁鄰居家，一起湊成團購。</p><p>四台計價與鄰居團購僅適用家用分離式冷氣。分離式單獨派車採四台包套；吊隱式 FCU／四方吹維持三台包套、箱型機維持兩台包套、AHU 維持單座專案，各機型依對應方案計價。冷氣與水塔、冷卻水塔合併詢價時，各依原包套及單價加總。團購與施工安排請先聯絡確認。</p><p>工業用氯錠的用途、許可及產品標示須先確認，不可直接套用於飲用水儲水設備；投藥須依產品標示、水質與現場條件由專業人員評估。</p></div>
 
 <section aria-label="報價單編輯與A4預覽區" class="quote-workspace-grid" id="qp-workspace-anchor" tabindex="-1">
 <aside class="card card-highlight quote-control-panel no-print">
@@ -273,15 +275,15 @@
 <div class="calc-form-group">
 <label class="calc-label" for="q-service-category">工程專案類別（支援單選或雙系統合購）</label>
 <select class="calc-select" id="q-service-category" style="border-color:#10b981;font-weight:700;">
-<option selected="" value="water_tank">💧 給水機電事業部：社區大樓／商辦「自來水塔與蓄水池清洗」</option>
-<option value="cooling_tower">❄️ 商空水系統事業部：商場／廠房「商用空調冷卻水塔清洗保養」</option>
+<option selected="" value="water_tank">💧 給水機電服務：社區大樓／商辦「自來水塔與蓄水池清洗」</option>
+<option value="cooling_tower">❄️ 商空水系統服務：商場／廠房「商用空調冷卻水塔清洗保養」</option>
 <option value="ac_cleaning">🌬️ 室內空調機電部：商辦／社區公設／廠房「冷氣與中央空調清洗保養」</option>
 <option value="mpv_repair">⚡ 機電馬達閥件部（會轉都會修！）：冷氣風鼓・空調箱連座軸承・水塔幫浦減速機・大口徑蝶閥逆止閥搶修</option>
 <option value="wt_ac">🏘️ 社區水塔＋公設冷氣（各依原包套及單價加總）</option>
 <option value="ct_ac">🏬 冷卻水塔＋室內空調（各依原包套及單價加總）</option>
 <option value="both">🏢 自來水塔 ＋ 空調冷卻水塔「雙塔系統同步維保專案」</option>
 <option value="all_three">🏛️ 全棟機電總包：自來水塔 ＋ 冷卻水塔 ＋ 室內冷氣空調（各依原包套及單價加總）</option>
-<option value="shop_chlorine">🪣 機電嚴選商城：單獨採購「25公斤 TCCA 氯錠（用途與標示待確認）」（方案報價 A:$3,200 / B:$2,680，配送待確認）</option>
+<option value="shop_chlorine">🪣 機電嚴選商城：單獨採購「25公斤 TCCA 氯錠（用途與標示待確認）」（價格與配送方式另行確認）</option>
 </select>
 </div>
 <div id="q-wt-group" style="background:rgba(14,165,233,0.08);border:1px solid rgba(56,189,248,0.3);border-radius:10px;padding:14px;margin-bottom:16px;">
@@ -367,7 +369,7 @@
 <div style="background:rgba(56,189,248,0.12);border:1px dashed rgba(56,189,248,0.55);border-radius:10px;padding:10px 12px;margin-bottom:12px;">
 <label class="calc-check-item" style="margin:0;background:transparent;border:none;padding:0;">
 <input id="q-chk-add-mpv" type="checkbox"/>
-<span style="color:#7dd3fc;font-weight:800;font-size:0.9rem;">⚡ 同日順手加修：「會轉都會修！」冷氣風鼓・空調箱軸承・水塔播水頭減速機・抽水馬達或蝶閥逆止閥（勾選展開 12 項搶修規格，享免 $2,500 檢測費！）</span>
+<span style="color:#7dd3fc;font-weight:800;font-size:0.9rem;">⚡ 同日順手加修：「會轉都會修！」冷氣風鼓・空調箱軸承・水塔播水頭減速機・抽水馬達或蝶閥逆止閥（勾選展開 12 項搶修規格，檢測與出工費另確認！）</span>
 </label>
 </div>
 <div id="q-mpv-group" style="display:none;background:rgba(56,189,248,0.09);border:1px solid rgba(56,189,248,0.4);border-radius:10px;padding:14px;margin-bottom:16px;">
@@ -377,7 +379,7 @@
 <select class="calc-select" id="q-mpv-spec">
 <option value="rp258_install">1A-1. Realise 瑞林 RP-258 蔽極式冷氣排水器：到府連工帶料安裝＋排水管疏通＋冷氣檢查需求（範圍待確認）（單獨到府 $3,500/組｜洗冷氣順換 $2,200~$2,500）</option>
 <option value="split_minor">1A. 分離式冷氣：啟動/運轉電容、導風板步進馬達、靜音排水器或軸套檢修（B:$2,500 / A:$3,500起/台）</option>
-<option selected="" value="split_major">1B. 分離式冷氣：室內外機 DC/AC 風扇馬達、貫流扇風鼓總成或日本 NSK 培林更換（B:$4,500 / A:$6,000起/台）</option>
+<option selected="" value="split_major">1B. 分離式冷氣：室內外機 DC/AC 風扇馬達、貫流扇風鼓總成或NSK（品牌與產地須確認） 培林更換（B:$4,500 / A:$6,000起/台）</option>
 <option value="fcu_repair">2A. 吊隱式送風機(FCU)／四方吹：多翼式離心風鼓、雙軸送風馬達培林或電動二通閥更新（B:$4,500 / A:$6,000起/台）</option>
 <option value="ahu_overhaul">2B. 大型空調箱(AHU)傳動大修：重型連座軸承(Pillow Block)＋皮帶輪對心＋三相送風馬達大修（B:$28,000 / A:$30,000起，區間$28,000~$38,000起/組）</option>
 <option value="ct_sprinkler">3A. 冷卻水塔旋轉播水頭總成更新：中小型塑鋼/鋁合金至工業級青銅/不鏽鋼散水頭（B:$4,500 / A:$6,000起，區間$4,500~$38,000起/組）</option>
@@ -402,9 +404,9 @@
 <label class="calc-label" for="q-mpv-qty">現場檢修數量 ／ 台數 ／ 處數</label>
 <select class="calc-select" id="q-mpv-qty">
 <option selected="" value="1">1 台 ／ 1 組 ／ 1 處（標準單件專車檢修）</option>
-<option value="2">2 台 ／ 2 組 ／ 2 處（同案場第 2 件起享同趟免重覆出車折減 10%）</option>
-<option value="3">3 台 ／ 3 組 ／ 3 處（同案場多件批次檢修折減 12%）</option>
-<option value="4">4 台 ／ 4 組 ／ 4 處（商場／社區全機房專案批次折減 15%）</option>
+<option value="2">2 台 ／ 2 組 ／ 2 處（多件費用請洽詢）</option>
+<option value="3">3 台 ／ 3 組 ／ 3 處（多件費用請洽詢）</option>
+<option value="4">4 台 ／ 4 組 ／ 4 處（多件費用請洽詢）</option>
 <option value="5">5 組／台（同一案場）</option>
 </select>
 </div>
@@ -442,7 +444,7 @@
 </label>
 <label class="calc-check-item">
 <input id="q-chk-chlorine-25kg" type="checkbox"/>
-<span>🪣 25公斤 TCCA 氯錠（用途與標示待確認）（方案報價 $3,200/桶｜合併方案 +$2,680/桶，配送待確認）</span>
+<span>🪣 25公斤 TCCA 氯錠（用途與標示待確認）（方案報價 價格待確認｜合併方案 價格待確認，配送待確認）</span>
 </label>
 <label class="calc-check-item">
 <input id="q-chk-ac-drain" type="checkbox"/>
@@ -494,7 +496,7 @@
 <div class="single-page-status-bar no-print">
 <span id="qp-single-page-status">A4 排版預覽；列印前請確認頁數、字級及內容完整性。</span>
 </div>
-<article aria-label="皓盛有限公司報價單A4預覽" class="quote-paper-sheet" data-density="normal" id="qp-paper-sheet">
+<article aria-label="皓盛有限公司報價單A4預覽" class="quote-paper-sheet" data-density="normal" id="qp-paper-sheet" hidden>
 <div class="qp-header">
 <div>
 <div class="qp-company-title">皓盛有限公司 HAO SHENG CO., LTD.</div>
@@ -580,8 +582,8 @@
 <div>
 <h3 style="color:#ffffff;margin-bottom:10px;">皓盛有限公司 (Hao Sheng Co., Ltd.)</h3>
 <p>統一編號：90221911｜負責人：李思遠</p>
-<p>【給水機電事業部】：社區大樓與商辦自來水塔清洗消毒、地下蓄水池清洗、水質檢測依設備需求與雙方確認、Omron 61F-G2 液位開關與進水蝴蝶閥更換。</p>
-<p>【商空水系統事業部】：商用中央空調冷卻水塔清洗保養、良機與跨廠牌水塔散熱材更換、6吋~10吋齒輪式蝴蝶閥更新、東元 TECO F510 變頻器調校。</p>
+<p>【給水機電服務】：社區大樓與商辦自來水塔清洗消毒、地下蓄水池清洗、水質檢測依設備需求與雙方確認、Omron 61F-G2 液位開關與進水蝴蝶閥更換。</p>
+<p>【商空水系統服務】：商用中央空調冷卻水塔清洗保養、良機與跨廠牌水塔散熱材更換、6吋~10吋齒輪式蝴蝶閥更新、東元 TECO F510 變頻器調校。</p>
 <p>【室內空調機電部】：商辦四方吹嵌入式冷氣、吊隱式送風機（FCU）、大型空調箱（AHU）、箱型機與社區公設／團購分離式冷氣深層拆洗、排水與滴水原因檢查。</p>
 <p>【機電馬達與閥件搶修部（會轉都會修！）】：分離式與吊隱式冷氣風鼓馬達培林電容、AHU 空調箱連座軸承大修、水塔播水頭減速機循環泵、揚水加壓馬達與 2"~10" 蝶閥無聲逆止閥搶修。</p>
 </div>
@@ -589,8 +591,8 @@
 <h3 style="color:#ffffff;margin-bottom:10px;">全站七大核心頁面快速導覽</h3>
 <ul style="list-style:none;line-height:2.0;">
 <li>▸ <a href="index.html">皓盛有限公司企業形象與工程實力總覽首頁</a></li>
-<li>▸ <a href="water-tank.html">給水機電事業部：社區大樓洗自來水塔試算器</a></li>
-<li>▸ <a href="cooling-tower.html">商空水系統事業部：空調冷卻水塔 RT 試算器</a></li>
+<li>▸ <a href="water-tank.html">給水機電服務：社區大樓洗自來水塔試算器</a></li>
+<li>▸ <a href="cooling-tower.html">商空水系統服務：空調冷卻水塔 RT 試算器</a></li>
 <li>▸ <a href="ac-cleaning.html">室內空調機電部：冷氣與中央空調清洗試算器</a></li>
 <li>▸ <a href="motor-pump-valve.html">會轉都會修！機電馬達・風鼓軸承・泵浦閥件試算器</a></li>
 <li>▸ <a href="shop.html">機電嚴選商城：瑞林RP-258排水器安裝＆25kg氯錠採購</a></li>
@@ -598,7 +600,7 @@
 </ul>
 </div>
 <div>
-<h3 style="color:#ffffff;margin-bottom:10px;">直接聯繫工程總管（聯絡資訊）</h3>
+<h3 style="color:#ffffff;margin-bottom:10px;">直接聯繫服務窗口（聯絡資訊）</h3>
 <p>手機 / LINE ID：<a href="tel:0916093125" style="color:#34d399;font-weight:800;">0916-093-125</a>｜信箱：<a href="mailto:ssuyuan@kimo.com">ssuyuan@kimo.com</a></p>
 <p>Google 地標地址：<a href="https://www.google.com/maps/place/?q=place_id:ChIJ1duZi7GvQjQRUBaotvuDlVg" rel="noopener noreferrer" style="color:#38bdf8;font-weight:700;" target="_blank">11164 臺北市士林區社子里社正路45巷4弄2號 📍</a>（工商登記：1號1樓）</p>
 <p>服務範圍：台北市、新北市（交通費依案件確認）、桃園市、新竹縣市及全台大型商場廠房專案</p>
@@ -620,7 +622,7 @@
 </a>
 </div>
 <script src="assets/pricing-config.js?v=20261108"></script>
-<script src="assets/cad-engine.js?v=plain-20261108"></script>
+<script src="assets/cad-engine.js?v=repair-20261108"></script>
 <section id="hs-analytics-choice" aria-label="網站分析選擇">
 <p>允許 Google Analytics 分析瀏覽與入口點擊，協助改善網站？不同意也能正常估價與聯絡。</p>
 <details><summary>了解更多</summary>

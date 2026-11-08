@@ -14,6 +14,13 @@
  *    - 升級 [冷卻水塔專家 C3]：200RT~500RT+ 大型冷卻水塔納入「減速齒輪箱(Gear Reducer)／多溝皮帶點檢」與「底盤吸水濾網及管路 Y 型過濾器清洗」
  */
 
+window.hsPendingPrice = function () {
+ const el=id=>document.getElementById(id), val=id=>el(id)?.value||'', checked=id=>!!(el(id)?.checked&&!el(id)?.disabled);
+ const cat=val('q-service-category'), mode=val('shop-item-select');
+ if(cat==='shop_chlorine'||/chlorine|both_shop_items/.test(mode)||['chk-wt-chlorine','ct-chk-chlorine','q-chk-chlorine-25kg'].some(checked)) return '氯錠價格與配送條件需由公司確認，暫不產生金額報價。請透過右下角 LINE 提供需求詢價。';
+ if((el('mpv-calc-form')&&Number(val('mpv-qty'))>1)||((cat==='mpv_repair'||checked('q-chk-add-mpv'))&&Number(val('q-mpv-qty'))>1&&!['rp258_standalone','both_shop_items'].includes(val('q-shop-mode')))) return '多件設備維修的數量優惠需由公司確認，暫不產生金額報價。請透過右下角 LINE 提供數量與規格詢價。';
+ return '';
+};
 (function () {
   "use strict";
 
@@ -568,6 +575,8 @@
     }
 
     function calculate(shouldPersistDraft, isJumpingToQuote) {
+      const pendingPrice = window.hsPendingPrice();
+      if(pendingPrice){ if(outPrice)outPrice.textContent=pendingPrice; if(outSummary)outSummary.textContent=pendingPrice; return pendingPrice; }
       const scheduleMode = scheduleSelect ? scheduleSelect.value : "priority_50";
       const isPriority = (scheduleMode !== "weekday_35");
       const tonVal = clampNumber(tonSelect ? tonSelect.value : 50, 10, 500, 50);
@@ -627,7 +636,7 @@
       if (chkWtPumpSeal && chkWtPumpSeal.checked) {
         const pumpPrice = isPriority ? 7500 : 5500;
         basePrice += pumpPrice;
-        addons.push("加購【會轉都會修】揚水／加壓馬達機械軸封漏水與培林異音順修 (+NT$" + pumpPrice.toLocaleString() + "起・免$2,500檢測費)");
+        addons.push("加購【會轉都會修】揚水／加壓馬達機械軸封漏水與培林異音順修 (+NT$" + pumpPrice.toLocaleString() + "起・檢測與出工費另確認)");
       }
       if (chkButterfly && chkButterfly.checked) {
         const bfPrice = isPriority ? 25000 : 22000;
@@ -868,6 +877,8 @@
     }
 
     function calcCoolingTower(shouldPersistDraft, isJumpingToQuote) {
+      const pendingPrice = window.hsPendingPrice();
+      if(pendingPrice){ if(outPrice)outPrice.textContent=pendingPrice; if(outSummary)outSummary.textContent=pendingPrice; return pendingPrice; }
       const scheduleMode = scheduleSelect ? scheduleSelect.value : "priority_50";
       const isPriority = (scheduleMode !== "weekday_35");
       const regionVal = regionSelect ? regionSelect.value : "台北市 / 新北市";
@@ -926,12 +937,12 @@
       if (chkCtSprinkler && chkCtSprinkler.checked) {
         const sprPrice = isPriority ? 6000 : 4500;
         basePrice += sprPrice;
-        addons.push("加購【會轉都會修】冷卻水塔旋轉播水頭(散水頭)總成順修更新 (+NT$" + sprPrice.toLocaleString() + "~38,000起・免$2,500檢測費)");
+        addons.push("加購【會轉都會修】冷卻水塔旋轉播水頭(散水頭)總成順修更新 (+NT$" + sprPrice.toLocaleString() + "~38,000起・檢測與出工費另確認)");
       }
       if (chkCtMotorReducer && chkCtMotorReducer.checked) {
         const motPrice = isPriority ? 12000 : 9000;
         basePrice += motPrice;
-        addons.push("加購【會轉都會修】散熱風機馬達／減速齒輪箱／循環泵軸封培林順修 (+NT$" + motPrice.toLocaleString() + "~98,000起・免$2,500檢測費)");
+        addons.push("加購【會轉都會修】散熱風機馬達／減速齒輪箱／循環泵軸封培林順修 (+NT$" + motPrice.toLocaleString() + "~98,000起・檢測與出工費另確認)");
       }
       if (chkButterfly && chkButterfly.checked) {
         const bfPrice = isPriority ? 25000 : 22000;
@@ -1134,6 +1145,8 @@
     }
 
     function calcAcCleaning(shouldPersistDraft, isJumpingToQuote) {
+      const pendingPrice = window.hsPendingPrice();
+      if(pendingPrice){ if(outPrice)outPrice.textContent=pendingPrice; if(outSummary)outSummary.textContent=pendingPrice; return pendingPrice; }
       const modeVal = scheduleSelect && scheduleSelect.value === "weekday_35" ? "weekday_35" : "priority_50";
       const isPriority = (modeVal === "priority_50");
       const regionVal = regionSelect ? regionSelect.value : "台北市 / 新北市";
@@ -1195,7 +1208,7 @@
       if (chkAcMpv && chkAcMpv.checked) {
         const mPrice = isPriority ? 4500 : 3500;
         basePrice += mPrice;
-        addons.push("加購【會轉都會修】冷氣風鼓異音／馬達滾珠培林／啟動電容或FCU二通閥順修 (+NT$" + mPrice.toLocaleString() + "起・免$2,500檢測費)");
+        addons.push("加購【會轉都會修】冷氣風鼓異音／馬達滾珠培林／啟動電容或FCU二通閥順修 (+NT$" + mPrice.toLocaleString() + "起・檢測與出工費另確認)");
       }
       if (chkOutdoor && chkOutdoor.checked) {
         const oPrice = isPriority ? 2000 : 1600;
@@ -1343,7 +1356,7 @@
       cat: "cat1_split_ac",
       comboCleanCat: "ac_cleaning",
       comboAcType: "split",
-      name: "分離式冷氣（室內外機）DC/AC 風扇馬達・貫流扇風鼓總成或日本 NSK 培林更換",
+      name: "分離式冷氣（室內外機）DC/AC 風扇馬達・貫流扇風鼓總成或NSK（品牌與產地須確認） 培林更換",
       spec: "拆機更換原廠規格室內/室外風扇馬達、貫流扇風鼓葉輪或NSK／SKF（品牌及實際產地依料件確認） 精密靜音滾珠軸承（培林），檢查異音與不轉跳機的原因",
       unitName: "台",
       tiers: {
@@ -1359,7 +1372,7 @@
       comboCleanCat: "ac_cleaning",
       comboAcType: "fcu",
       name: "商用吊隱式送風機(FCU)／四方吹 多翼式離心風鼓・雙軸送風馬達培林或電動二通閥更新",
-      spec: "天花板維修孔拆卸多翼式離心風鼓（松鼠籠風車）校正更新、雙軸馬達日本 NSK 培林更換、冷凝排水器或冰水電動二通閥驅動頭更新",
+      spec: "天花板維修孔拆卸多翼式離心風鼓（松鼠籠風車）校正更新、雙軸馬達NSK（品牌與產地須確認） 培林更換、冷凝排水器或冰水電動二通閥驅動頭更新",
       unitName: "台",
       tiers: {
         tier_std:   { minB: 4500, maxB: 5800, minA: 5500, maxA: 7000,  qB: 4500, qA: 6000,  label: "標準 200~600 CFM 送風機" },
@@ -1416,7 +1429,7 @@
       cat: "cat4_water_pump",
       comboCleanCat: "water_tank",
       name: "社區大樓揚水（抽水）馬達／頂樓恆壓加壓泵浦 耐磨碳化矽機械軸封與滾珠培林現場搶修",
-      spec: "關水洩壓拆解泵浦本體，換裝耐磨碳化矽(SiC)機械軸封處理漏水問題、更新日本 NSK 前後滾珠軸承處理異音問題，並點檢穩壓壓力桶與壓力開關",
+      spec: "關水洩壓拆解泵浦本體，換裝耐磨碳化矽(SiC)機械軸封處理漏水問題、更新NSK（品牌與產地須確認） 前後滾珠軸承處理異音問題，並點檢穩壓壓力桶與壓力開關",
       unitName: "台",
       tiers: {
         tier_std:   { minB: 5500, maxB: 7200,  minA: 6800,  maxA: 8800,  qB: 5500,  qA: 7500,  label: "標準 1~3HP 抽水/加壓馬達軸封培林" },
@@ -1443,7 +1456,7 @@
     valve_2_4: {
       cat: "cat5_valves",
       comboCleanCat: "water_tank",
-      name: "2吋~4吋 蝶閥／不鏽鋼無聲逆止閥（消除停泵水錘巨響）／高壓防震軟管／減壓閥抽換",
+      name: "2吋~4吋 蝶閥／不鏽鋼無聲逆止閥（水錘原因與改善方式另評估）／高壓防震軟管／減壓閥抽換",
       spec: "管路排空洩壓、舊閥拆卸、法蘭密封面除鏽清潔、換裝 規格待核對的 2吋~4吋蝶閥/無聲逆止閥/防震軟管、更新 EPDM 墊片與 SUS304 不鏽鋼螺栓及復水耐壓測試（級距 $11,000~$15,000 起/處）",
       unitName: "處",
       tiers: {
@@ -1576,6 +1589,8 @@
     }
 
     function calcMpv(shouldPersistDraft, isJumpingToQuote) {
+      const pendingPrice = window.hsPendingPrice();
+      if(pendingPrice){ if(outPrice)outPrice.textContent=pendingPrice; if(outSummary)outSummary.textContent=pendingPrice; return pendingPrice; }
       syncMpvTierLabels(subSpecSelect, scaleTierSelect);
       const modeVal = scheduleSelect ? scheduleSelect.value : "priority_50";
       const isAddonClean = (modeVal === "addon_with_clean") || Boolean(chkComboClean && chkComboClean.checked);
@@ -1598,8 +1613,8 @@
 
       const addons = [
         isAddonClean
-          ? "同日搭配清洗保養順修特惠：免收 $2,500 單獨查修出工底價（自動合併清洗＋維修同單報價）"
-          : "含機電技術人員到場儀器診斷（單獨叫修基本出工檢測保底 $2,000~$2,500 起/趟，確認委修全額併入折抵）"
+          ? "同日搭配清洗保養順修特惠：檢測與出工費另確認（自動合併清洗＋維修同單報價）"
+          : "含機電技術人員到場儀器診斷（單獨叫修基本出工檢測保底 $2,000~$2,500 起/趟，是否折抵工程款須先確認）"
       ];
 
       if (chkElec && chkElec.checked) {
@@ -1630,9 +1645,9 @@
       }
       if (outCrew) {
         outCrew.textContent = isPriority
-          ? "【指定時間方案：指定時段檢修專車】技術人員（配置與資格於派工前確認）＋LOTO斷電掛牌＋日本NSK/原廠級料件＋電流絕緣簽認報告（料件與後續服務條件另行確認）"
+          ? "【指定時間方案：指定時段檢修專車】技術人員（配置與資格於派工前確認）＋LOTO斷電掛牌＋料件品牌與規格須確認＋電流絕緣簽認報告（料件與後續服務條件另行確認）"
           : (isAddonClean
-            ? "【清洗客戶同日順修特惠】由駐場機電技術人員趁排空或拆機時同步檢修（免收 $2,500 單獨查修出工費！）"
+            ? "【清洗客戶同日順修特惠】由駐場機電技術人員趁排空或拆機時同步檢修（檢測與出工費另確認！）"
             : "【平日順路方案：平日彈性檢修排程】技術人員（配置與資格於派工前確認）＋工業級標準新品料件＋運轉測試（後續服務條件另行確認）");
       }
 
@@ -2078,6 +2093,15 @@
 
       // 同步管控專屬加購項，防止純自來水塔報價單混入冷卻塔散熱材/變頻器費用
       syncAddonAvailability(cat);
+      const pendingPrice = window.hsPendingPrice();
+      if(pendingPrice){
+        [outThead,outTbody,outSummaryArea,outComplianceArea,outDecisionArea].forEach(e=>{if(e)e.replaceChildren();});
+        if(outSummaryArea)outSummaryArea.textContent=pendingPrice;
+        if(paperSheet)paperSheet.hidden=true;
+        const live=document.getElementById('qp-live-summary-text');if(live)live.textContent=pendingPrice;
+        return pendingPrice;
+      }
+
 
       const clientName = (elClientName && elClientName.value.trim()) ? elClientName.value.trim() : "貴社區管理委員會 ／ 貴公司廠務部";
       const contactPerson = (elContactPerson && elContactPerson.value.trim()) ? elContactPerson.value.trim() : "總幹事 ／ 廠務主管 鈞啟";
@@ -2293,7 +2317,7 @@
 
         items.push({
           title: prefixTag + mCfg.name + "（" + tCfg.label + "｜基準級距 " + mCfg.rangeLabel + "）",
-          spec: mCfg.spec + (isMpvStandalone ? "" : "｜與清洗保養工程同日施作，享免收 $2,500 單獨查修出工底價"),
+          spec: mCfg.spec + (isMpvStandalone ? "" : "｜與清洗保養工程同日施作，檢測與出工費另確認"),
           unit: mQty + " " + mCfg.unitName,
           priceA: pA,
           priceB: pB
@@ -2301,8 +2325,8 @@
 
         if (isMpvStandalone) {
           items.push({
-            title: "【專案包含】機電技術人員儀器查修 ＋ 三相電流／絕緣阻抗實測驗收（範圍待確認）",
-            spec: "確認委修直接免除 $2,500 單獨出工檢測費｜含 LOTO 斷電掛牌、三用電錶/鉤錶/高阻計實測；後續服務條件另行確認",
+            title: "【另行洽詢】機電技術人員儀器查修 ＋ 三相電流／絕緣阻抗實測驗收（範圍待確認）",
+            spec: "檢測與出工費另確認｜含 LOTO 斷電掛牌、三用電錶/鉤錶/高阻計實測；後續服務條件另行確認",
             unit: "1 式",
             priceA: 0,
             priceB: 0,
@@ -2351,7 +2375,7 @@
       if (isCtActive && chkQCtSprinkler && chkQCtSprinkler.checked && !(isMpvActive && elMpvSpec && elMpvSpec.value === "ct_sprinkler")) {
         items.push({
           title: "【會轉都會修・清洗同日順修特惠】冷卻水塔旋轉播水頭（散水頭）總成更新（級距 $4,500~$38,000起）",
-          spec: "與冷卻水塔保養同日施作免收 $2,500 單獨查修出工底價｜拆除中心軸承卡死舊散水頭、換裝全新旋轉播水頭總成並校正散水管水平角度",
+          spec: "與冷卻水塔保養同日施作檢測與出工費另確認｜拆除中心軸承卡死舊散水頭、換裝全新旋轉播水頭總成並校正散水管水平角度",
           unit: "1 組",
           priceA: 6000,
           priceB: 4500
@@ -2453,7 +2477,7 @@
       }
       if ((isWtActive || isCtActive || isMpvActive) && chkValve24 && chkValve24.checked && !(isMpvActive && elMpvSpec && elMpvSpec.value === "valve_2_4")) {
         items.push({
-          title: "2吋~4吋 蝶閥／不鏽鋼無聲逆止閥（消除停泵水錘）／防震軟管抽換（級距 $11,000~$15,000起）",
+          title: "2吋~4吋 蝶閥／不鏽鋼無聲逆止閥（水錘原因與改善方式另評估）／防震軟管抽換（級距 $11,000~$15,000起）",
           spec: "含管路排空洩壓、舊閥拆卸、規格待核對的閥體、EPDM墊片與SUS304不鏽鋼螺栓換裝試壓",
           unit: "1 處",
           priceA: 12500,
@@ -2502,7 +2526,7 @@
       // 輔助格式化單價（正數與負數折讓優雅顯示）
       function formatItemPrice(val, isFreeGift) {
         if (isFreeGift) {
-          return "<span style='color:#16a34a;font-weight:900;'>範圍待確認</span>";
+          return "<span style='color:#16a34a;font-weight:900;'>另行洽詢，未計入本報價</span>";
         }
         if (val < 0) {
           return "<span style='color:#dc2626;font-weight:800;'>- NT$ " + Math.abs(val).toLocaleString() + "</span>";
@@ -3106,6 +3130,7 @@
 
     if (btnPrintPdf) {
       btnPrintPdf.addEventListener("click", function () {
+        if(window.hsPendingPrice()){showToast(window.hsPendingPrice());return;}
         isPrintButtonTriggering = true;
         renderQuotation(true);
         applyPrintDocumentTitle();
@@ -3250,6 +3275,8 @@
     const btnLine = document.getElementById("btn-shop-line");
 
     function calcShop() {
+      const pendingPrice = window.hsPendingPrice();
+      if(pendingPrice){ if(outPrice)outPrice.textContent=pendingPrice; if(outSummary)outSummary.textContent=pendingPrice; return pendingPrice; }
       const mode = itemSelect ? itemSelect.value : "rp258_standalone";
       const reg = regionSelect ? regionSelect.value : "台北市 / 新北市";
       const qty = clampNumber(qtySelect ? qtySelect.value : 1, 1, 20, 1);

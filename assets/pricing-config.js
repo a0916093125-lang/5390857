@@ -67,8 +67,6 @@ window.HS_PRICING_CONFIG = {
       name: "25公斤 TCCA 氯錠（原設定規格，實際用途與標示待確認）",
       shippedPrice: 3200,
       withServiceTruckPrice: 2680,
-      costBase: 2000,
-      freightBase: 500,
       sellHardwareOnly: true,
       note: "沿用單購 $3,200／合併方案 $2,680 試算。庫存、產品標示、安全資料、用途及配送承運條件須另行確認，不可逕用於飲用水儲水設備。"
     }
@@ -90,3 +88,4 @@ window.HS_PRICING_CONFIG = {
     mpvUrgent24H:     { priceA: 4500,  priceB: 3500 }
   }
 };
+
