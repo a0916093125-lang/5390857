@@ -36,7 +36,7 @@
  .calc-result-box { padding:14px 10px; }
  .hero-section { padding:22px 16px; }
  .hero-bento-panel { padding:14px; }
- .mobile-enhanced .brand-sub { display:none; }
+ .mobile-enhanced .brand-sub { display:block; }
  .mobile-enhanced .brand-logo { font-size:16px; }
  .mobile-enhanced .mobile-menu-toggle { padding-inline:9px; }
 }
@@ -45,3 +45,8 @@
  .mobile-result-details>summary { display:none; }
  .mobile-result-details>*:not(summary) { display:block!important; }
 }
+
+
+.brand-area { display:block; font-size:12px; line-height:1.6; font-weight:400; color:var(--text-muted,#a5b1c4); }
+.brand-sub { white-space:normal; line-height:1.6; }
+@media screen and (max-width:600px) { .brand-logo { min-width:0; } .brand-sub,.brand-area { font-size:11px; max-width:100%; overflow-wrap:anywhere; } }

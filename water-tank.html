@@ -28,7 +28,7 @@
   "@graph": [
     {
       "@type": "WebApplication",
-      "name": "社區大樓洗自來水塔 A/B 雙軌費用試算與停水安排說明",
+      "name": "自來水塔清洗線上估價與停水安排說明",
       "url": "https://5390857.com/water-tank.html",
       "applicationCategory": "UtilitiesApplication",
       "operatingSystem": "All",
@@ -189,7 +189,7 @@
 <div class="nav-container">
 <a class="brand-logo" href="index.html">
 <span>皓盛有限公司 <span class="brand-english">HAO SHENG CO., LTD.</span></span>
-<span class="brand-sub">商用空調年度維保・全台清洗專案・北部機電維修</span>
+<span class="brand-sub">商用空調保養維修｜冷卻水塔・自來水塔清洗</span><span class="brand-area">北部設備維修・大型冷卻水塔全台服務</span>
 </a>
 <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation">服務選單 <span aria-hidden="true">☰</span></button>
 <nav id="site-navigation" aria-label="主導航選單" class="nav-links">
@@ -274,14 +274,14 @@
 <section aria-labelledby="calc-heading" class="grid-2">
 <div class="card card-highlight">
 <p class="section-sub">未列出的容量區間或特殊水池，請提供容量、照片與進場條件另行估價，勿套用相鄰級距。</p>
-<h2 class="section-title" id="calc-heading">🧮 自來水塔清洗費用 A/B 雙軌試算器</h2>
-<p class="section-sub">可自由切換「A方案：指定時段專車」與「B方案：平日彈性順路併單」，即時計算連工帶料預估區間：</p>
+<h2 class="section-title" id="calc-heading">🧮 自來水塔清洗｜選擇施工時間，立即估價</h2>
+<p class="section-sub">指定時間需先確認能否安排；平日順路由公司安排施工時段。選好規格，下方會顯示報價單。</p>
 <form id="water-tank-calc-form" onsubmit="return false;">
 <div class="calc-form-group">
-<label class="calc-label" for="calc-schedule-mode">1. 選擇排程方案（A方案專車指定時段 vs B方案平日順路併單特惠）</label>
+<label class="calc-label" for="calc-schedule-mode">1. 選擇施工時間</label>
 <select class="calc-select" id="calc-schedule-mode" style="border-color:#38bdf8;font-weight:700;">
-<option selected="" value="priority_50">★ A方案：指定時段專車專案（施工安全措施與機電檢查範圍依現場確認｜華廈13,000 / 標準社區23,000 / 大型27,000起）</option>
-<option value="weekday_35">⚡ B方案：平日彈性併單特惠檔期（由本公司安排平日順路時段施作｜華廈10,500 / 標準社區17,500 / 大型24,000起）</option>
+<option selected="" value="priority_50">★ 指定時間方案：指定時段專車專案（施工安全措施與機電檢查範圍依現場確認｜華廈13,000 / 標準社區23,000 / 大型27,000起）</option>
+<option value="weekday_35">⚡ 平日順路方案：平日彈性併單特惠檔期（由本公司安排平日順路時段施作｜華廈10,500 / 標準社區17,500 / 大型24,000起）</option>
 </select>
 </div>
 <div class="calc-form-group">
@@ -326,15 +326,15 @@
 </label>
 <label class="calc-check-item">
 <input id="chk-wt-valve24" type="checkbox"/>
-<span>🔧 2吋~4吋 蝶閥／不鏽鋼無聲逆止閥（水錘原因與改善方式另評估）／防震軟管抽換（$11,000~$15,000起/處｜A方案+12,500 / B方案+11,000）</span>
+<span>🔧 2吋~4吋 蝶閥／不鏽鋼無聲逆止閥（水錘原因與改善方式另評估）／防震軟管抽換（$11,000~$15,000起/處｜指定時間方案+12,500 / 平日順路方案+11,000）</span>
 </label>
 <label class="calc-check-item">
 <input id="chk-wt-pump-seal" type="checkbox"/>
-<span>⚡ 機電檢修：揚水（抽水）／加壓馬達機械軸封漏水與培林異音順修（免$2,500檢測費｜A方案+7,500 / B方案+5,500起）</span>
+<span>⚡ 機電檢修：揚水（抽水）／加壓馬達機械軸封漏水與培林異音順修（免$2,500檢測費｜指定時間方案+7,500 / 平日順路方案+5,500起）</span>
 </label>
 <label class="calc-check-item">
 <input id="chk-butterfly-valve" type="checkbox"/>
-<span>6吋~10吋 大口徑齒輪式蝴蝶閥／無聲逆止閥抽換（$22,000 ~ $32,000 起 / 處｜A方案+25,000 / B方案+22,000）</span>
+<span>6吋~10吋 大口徑齒輪式蝴蝶閥／無聲逆止閥抽換（$22,000 ~ $32,000 起 / 處｜指定時間方案+25,000 / 平日順路方案+22,000）</span>
 </label>
 <label class="calc-check-item">
 <input id="chk-level" type="checkbox"/>
@@ -365,7 +365,7 @@
               ⏱️ 停水安排：<strong id="calc-hours-output" style="color:#38bdf8;">依現場確認（試算時間僅供參考）</strong>
 </div>
 <div style="margin-top:6px;font-size:0.88rem;color:#fde68a;">
-              👷 預估作業安排（現場確認）：<span id="calc-crew-output">【A方案：指定時段專車】依進入方式與空間條件確認人員、資格、監視、通風及氣體測定；保險與實際配置於進場前核對</span>
+              👷 預估作業安排（現場確認）：<span id="calc-crew-output">【指定時間方案：指定時段專車】依進入方式與空間條件確認人員、資格、監視、通風及氣體測定；保險與實際配置於進場前核對</span>
 </div>
 <details class="mobile-result-details" open><summary>查看完整費用與作業明細</summary><p id="calc-summary-text" style="margin-top:10px;font-size:0.84rem;color:#cbd5e1;background:rgba(7,13,25,0.6);padding:8px 12px;border-radius:8px;"></p></details>
 <p style="margin-top:8px;font-size:0.82rem;color:#6ee7b7;font-weight:700;">
@@ -455,7 +455,7 @@
 </a>
 </div>
 <script src="assets/pricing-config.js?v=20261108"></script>
-<script src="assets/cad-engine.js?v=cards-20261108"></script>
+<script src="assets/cad-engine.js?v=plain-20261108"></script>
 <section id="hs-analytics-choice" aria-label="網站分析選擇">
 <p>允許 Google Analytics 分析瀏覽與入口點擊，協助改善網站？不同意也能正常估價與聯絡。</p>
 <details><summary>了解更多</summary>
@@ -525,6 +525,7 @@
 <script defer src="assets/choice-cards.js?v=20261108-1"></script>
 </body>
 </html>
+
 
 
 
