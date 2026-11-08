@@ -43,5 +43,9 @@ for(const qs of ['cat=shop_chlorine','cat=water_tank&chl=1','cat=mpv_repair&mpvq
 }
  await c.close();});
 await test(engine+' missing scripts never show sample price',async()=>{const c=await setup(390);await c.route('**/*.js*',r=>r.abort());const p=await c.newPage();for(const name of ['water-tank','ac-cleaning','quote']){await p.goto(ORIGIN+'/'+name+'.html');assert(await p.locator('#hs-estimate-loading').isVisible());if(name==='quote')assert(await p.locator('#qp-paper-sheet').isHidden());else assert(await p.locator('.calc-result-box').isHidden());}await c.close();});
+await test(engine+' preserved deep link blocks pending and recovers',async()=>{const c=await setup(390),p=await c.newPage();
+ const good='from=share&dmode=ab_compare&tax=0&cat=water_tank&ton=50&mat=concrete&pools=0';
+ for(const q of [good+'&cl25=1',good+'&cl25=1&_preview=1','from=share&dmode=ab_compare&tax=0&cat=mpv_repair&mpvspec=split_major&mpvtier=tier_std&mpvqty=2']){await p.goto(ORIGIN+'/quote.html?'+q);assert(await p.evaluate(()=>!!window.hsPendingPrice()));assert.equal(await p.locator('#qp-table-tbody tr').count(),0);}
+ await p.goto(ORIGIN+'/quote.html?'+good);assert(await p.locator('#qp-paper-sheet').isVisible());await p.locator('#q-chk-chlorine-25kg').check();assert(await p.locator('#qp-paper-sheet').isHidden());assert.equal(await p.locator('#qp-table-tbody tr').count(),0);await p.locator('#q-chk-chlorine-25kg').uncheck();assert(await p.locator('#qp-paper-sheet').isVisible());assert(await p.locator('#qp-table-tbody tr').count()>0);await c.close();});
 await browser.close();}console.log(JSON.stringify(report.tests));if(report.tests.some(x=>!x.passed))process.exitCode=1;})().catch(async e=>{report.error=String(e.stack);fs.writeFileSync('choice-audit.json',JSON.stringify(report,null,2));if(browser)await browser.close();process.exitCode=1;});
 
