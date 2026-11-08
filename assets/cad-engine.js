@@ -14,7 +14,7 @@
  *    - 升級 [冷卻水塔專家 C3]：200RT~500RT+ 大型冷卻水塔納入「減速齒輪箱(Gear Reducer)／多溝皮帶點檢」與「底盤吸水濾網及管路 Y 型過濾器清洗」
  */
 
-// Pricing policy confirmed by the owner: chlorine standalone 3200, with work 2680; repair quantities >=2 are 10% off all repair units.
+// Pricing policy confirmed by the owner: chlorine product 2900 + 500 shipping per bucket, cooling-tower cleaning delivery 2900; repair quantities >=2 are 10% off all repair units.
 window.hsPendingPrice = function () { return ''; };
 (function () {
   "use strict";
@@ -673,8 +673,8 @@ window.hsPendingPrice = function () { return ''; };
         addons.push("水質送驗需求（實驗室、測項與安排另確認）(+NT$" + sgsPrice.toLocaleString() + ")");
       }
       if (chkWtChlorine && chkWtChlorine.checked) {
-        basePrice += 2680;
-        addons.push("順載 25公斤大桶裝 90% TCCA 氯錠（用途與標示待確認）（搭配工程 +NT$2,680/桶，合併交付省運費；用途與承運條件須確認）");
+        basePrice += (chkCool && chkCool.checked) ? 2900 : 3400;
+        addons.push("順載 25公斤大桶裝 90% TCCA 氯錠（用途與標示待確認）（商品 NT$2,900／桶，運費 NT$500／桶；僅搭配空調冷卻水塔清洗免運）");
       }
       if (chkCool && chkCool.checked) {
         const coolPrice = isPriority ? 7000 : 5500;
@@ -984,8 +984,8 @@ window.hsPendingPrice = function () { return ''; };
         addons.push("水質送驗需求（實驗室、測項與安排另確認） (+NT$" + sgsPrice.toLocaleString() + ")");
       }
       if (chkCtChlorine && chkCtChlorine.checked) {
-        basePrice += 2680;
-        addons.push("順載 25公斤大桶裝 90% TCCA 氯錠（用途與標示待確認）（搭配工程 +NT$2,680/桶，合併交付省運費；用途與承運條件須確認）");
+        basePrice += 2900;
+        addons.push("順載 25公斤大桶裝 90% TCCA 氯錠（用途與標示待確認）（商品 NT$2,900／桶，運費 NT$500／桶；僅搭配空調冷卻水塔清洗免運）");
       }
 
       let maxPrice = Math.round(basePrice * 1.18);
@@ -2406,10 +2406,10 @@ window.hsPendingPrice = function () { return ''; };
       if (cat === "shop_chlorine") {
         items.push({
           title: "工業級 90% TCCA 氯錠（用途與標示待確認）（25 公斤原裝密封大桶）",
-          spec: "25kg TCCA 氯錠單購每桶 $3,200；實際標示、用途、安全資料及承運條件待確認，不可逕用於飲用水設備",
+          spec: "25kg TCCA 氯錠單購每桶 $3,400（商品 $2,900＋運費 $500／桶）；實際標示、用途、安全資料及承運條件待確認，不可逕用於飲用水設備",
           unit: shopQty + " 桶(25kg)",
-          priceA: 3200 * shopQty,
-          priceB: 3200 * shopQty
+          priceA: 3400 * shopQty,
+          priceB: 3400 * shopQty
         });
         items.push({
           title: "【洽詢項目】水系統與藥劑使用條件評估",
@@ -2421,17 +2421,17 @@ window.hsPendingPrice = function () { return ''; };
         });
       }
       if (cat !== "shop_chlorine" && chkChlorine25kg && chkChlorine25kg.checked) {
-        const isWithTankTruck = isWtActive || isCtActive || isAcActive || isMpvActive;
+        const isWithTankTruck = isCtActive;
         items.push({
           title: isWithTankTruck
-            ? "【搭配工程合併交付】工業級 90% TCCA 氯錠（用途與標示待確認）（25公斤大桶裝）"
-            : "工業級 90% TCCA 氯錠（用途與標示待確認）（25公斤大桶裝｜配送條件待確認）",
+            ? "【搭配空調冷卻水塔清洗免運】工業級 90% TCCA 氯錠（用途與標示待確認）（25公斤大桶裝）"
+            : "工業級 90% TCCA 氯錠（用途與標示待確認）（25公斤大桶裝｜每桶商品 $2,900＋運費 $500）",
           spec: isWithTankTruck
-            ? "搭配工程每桶 $2,680，合併交付節省運費；產品用途及承運條件須確認，不表示可用於飲用水設備"
-            : "單購每桶 $3,200，不因排程改變；產品標示、用途、安全資料及配送條件另行確認",
+            ? "搭配空調冷卻水塔清洗每桶 $2,900，免運費；產品用途及承運條件須確認，不表示可用於飲用水設備"
+            : "單購每桶 $3,400（商品 $2,900＋運費 $500／桶），不因排程改變；產品標示、用途、安全資料及配送條件另行確認",
           unit: shopQty + " 桶(25kg)",
-          priceA: (isWithTankTruck ? 2680 : 3200) * shopQty,
-          priceB: (isWithTankTruck ? 2680 : 3200) * shopQty
+          priceA: (isWithTankTruck ? 2900 : 3400) * shopQty,
+          priceB: (isWithTankTruck ? 2900 : 3400) * shopQty
         });
       }
       if (isAcActive && chkAcDrain && chkAcDrain.checked && !(isMpvActive && elMpvSpec && elMpvSpec.value === "rp258_install")) {
@@ -3309,36 +3309,36 @@ window.hsPendingPrice = function () { return ''; };
         bonusStr = "冷氣排水與排水器問題須先查明原因；施工範圍及後續服務條件另行確認。";
         itemTitle = "冷氣深層拆洗包套 ＋ 順換瑞林 RP-258 排水器（" + qty + " 組・已折抵出車費）";
       } else if (mode === "chlorine_only") {
-        let tot = 3200 * qty;
+        let tot = 3400 * qty;
         if (includeTax) tot = Math.round(tot * 1.05);
-        priceStr = "NT$ " + tot.toLocaleString() + " 元（" + (includeTax ? "含 5% 營業稅" : "未稅") + "｜配送方式與費用另行確認）";
+        priceStr = "NT$ " + tot.toLocaleString() + " 元（" + (includeTax ? "含 5% 營業稅" : "未稅") + "｜含每桶運費 $500）";
         deliveryStr = "25kg 氯錠交付評估；庫存、包裝、交付地點、配送方式與承運條件均待確認";
-        bonusStr = "單購每桶 $3,200；搭配工程合併交付每桶 $2,680，節省運費。產品用途及承運條件仍須確認。";
+        bonusStr = "單購每桶 $3,400（商品 $2,900＋運費 $500／桶）；搭配空調冷卻水塔清洗每桶 $2,900，免運費。產品用途及承運條件仍須確認。";
         itemTitle = "單買 25 公斤大桶裝 90% TCCA 氯錠（用途與標示待確認）（共 " + qty + " 桶・配送另行確認）";
       } else if (mode === "chlorine_with_ct") {
-        let baseB = 10500 + (2680 * qty);
-        let baseA = 13000 + (2680 * qty);
+        let baseB = 10500 + (2900 * qty);
+        let baseA = 13000 + (2900 * qty);
         if (includeTax) {
           baseB = Math.round(baseB * 1.05);
           baseA = Math.round(baseA * 1.05);
         }
         priceStr = "平日併單 NT$ " + baseB.toLocaleString() + " ／ 指定專車 NT$ " + baseA.toLocaleString() + "（含 100RT 水塔清洗＋" + qty + "桶氯錠，配送待確認）";
-        deliveryStr = "冷卻水塔清洗與 25kg 氯錠合併方案報價；產品用途及配送條件須分別確認（氯錠每桶 $2,680）";
+        deliveryStr = "冷卻水塔清洗與 25kg 氯錠合併方案報價；產品用途及配送條件須分別確認（氯錠每桶 $2,900，搭配冷卻水塔清洗免運）";
         bonusStr = "藥劑用途、標示、水質及現場條件須先確認，不提供僅依 RT 噸數推定的投藥量。";
         itemTitle = "商用空調冷卻水塔清洗保養 ＋ 合併方案加購 25kg 氯錠（用途與標示待確認）（" + qty + " 桶）";
       } else if (mode === "chlorine_with_wt") {
-        let baseB = 17500 + (2680 * qty);
-        let baseA = 23000 + (2680 * qty);
+        let baseB = 17500 + (3400 * qty);
+        let baseA = 23000 + (3400 * qty);
         if (includeTax) {
           baseB = Math.round(baseB * 1.05);
           baseA = Math.round(baseA * 1.05);
         }
         priceStr = "平日併單 NT$ " + baseB.toLocaleString() + " ／ 指定專車 NT$ " + baseA.toLocaleString() + "（含標準社區洗水塔＋" + qty + "桶氯錠，配送待確認）";
-        deliveryStr = "水池清洗與氯錠分開評估用途；每桶 $2,680 的合併方案，不表示適用於飲用水儲水設備，實際配送待確認";
+        deliveryStr = "水池清洗與氯錠分開評估用途；每桶 $3,400（商品 $2,900＋運費 $500／桶），此方案不享冷卻水塔清洗免運，不表示適用於飲用水儲水設備，實際配送待確認";
         bonusStr = "工業用氯錠不可直接套用於飲用水儲水設備，產品用途與交付條件須先確認。";
         itemTitle = "社區大樓自來水塔清洗消毒 ＋ 合併方案加購 25kg 氯錠（用途與標示待確認）（" + qty + " 桶）";
       } else {
-        let tot = (3500 * qty) + (2680 * qty);
+        let tot = (3500 * qty) + (3400 * qty);
         if (includeTax) tot = Math.round(tot * 1.05);
         priceStr = "NT$ " + tot.toLocaleString() + " 元（" + (includeTax ? "含 5% 營業稅" : "未稅") + "｜RP-258 到府安裝＋順載 25kg 氯錠，配送待確認）";
         deliveryStr = "RP-258 安裝與 25kg 氯錠合併方案報價；設備適配、施工範圍與藥劑配送條件須分別確認";
