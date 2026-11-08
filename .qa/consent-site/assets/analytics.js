@@ -8,7 +8,7 @@
     '/motor-pump-valve.html': 'equipment_repair', '/shop.html': 'shop'
   };
   const current = pages[location.pathname];
-  let active = false;
+  let active = false, activeUntil = 0;
   // Versioned, expiring choices. Never interpret legacy page-local grants as consent.
   const VETO = 'hs_analytics_denied';
   let expiryTimer;
@@ -81,11 +81,12 @@
   }
   function tag() { window.dataLayer.push(arguments); }
   function event(name, extra) {
-    if (!active || !allowed()) return;
+    if (!active || Date.now() >= activeUntil || !allowed()) return;
     tag('event', name, Object.assign({send_to: ID}, safeFields(), extra || {}));
   }
-  function start() {
+  function start(expires) {
     if (active || !allowed()) return;
+    activeUntil = expires || Date.now() + TTL;
     active = true;
     window['ga-disable-' + ID] = false;
     window.dataLayer = window.dataLayer || [];
@@ -107,7 +108,7 @@
     veto(value === 'denied');
     clearTimeout(expiryTimer);
     if (value === 'denied' && !remote && channel) { try { channel.postMessage('denied'); } catch (_) {} }
-    if (value === 'granted') { start(); expireAt(saved ? saved.expires : Date.now() + TTL); }
+    if (value === 'granted') { const expires = saved ? saved.expires : Date.now() + TTL; start(expires); expireAt(expires); }
     else {
       active = false; window['ga-disable-' + ID] = true;
       // Remove first-party GA cookies at known site scopes. No outbound consent ping.
@@ -137,7 +138,7 @@
   const notice = document.getElementById('hs-analytics-choice');
   const previous = stored();
   if (notice) notice.hidden = !!previous;
-  if (previous && previous.choice === 'granted') { start(); expireAt(previous.expires); }
+  if (previous && previous.choice === 'granted') { start(previous.expires); expireAt(previous.expires); }
   if (channel) channel.onmessage = function (e) { if (e.data === 'denied') choose('denied', true); };
   // Other tabs revoke collection promptly; consent is not a business lead.
   window.addEventListener('storage', function (e) { if ((e.key === KEY && (!parse(e.newValue) || parse(e.newValue).choice === 'denied')) || e.key === null) choose('denied', true); });
@@ -151,6 +152,9 @@
       if (document.querySelector('script[src*="googletagmanager.com/gtag/js"]')) location.reload();
       if (notice) notice.hidden = !!latest;
     }
+  });
+  document.addEventListener('visibilitychange', function () {
+    if (active && Date.now() >= activeUntil) expireAt(activeUntil);
   });
   document.addEventListener('click', function (e) {
     const target = e.target.closest && e.target.closest('a[href],button[id]');
