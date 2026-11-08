@@ -2,6 +2,7 @@
 
 <html lang="zh-Hant-TW">
 <head>
+<meta name="referrer" content="no-referrer"/>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <meta content="#080e1c" name="theme-color"/>
@@ -447,7 +448,7 @@
 <div class="meo-map-viewport">
 <!-- 模式 1：Google Maps 官方嵌入式地圖 -->
 <div id="meo-pane-gmap" style="width:100%;height:100%;min-height:380px;">
-<iframe allowfullscreen="" class="meo-map-iframe" id="meo-gmap-iframe" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=%E7%9A%93%E7%9B%9B%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8+%E8%87%BA%E5%8C%97%E5%B8%82%E5%A3%AB%E6%9E%97%E5%8D%80%E7%A4%BE%E6%AD%A3%E8%B7%AF45%E5%B7%B74%E5%BC%842%E8%99%9F&amp;hl=zh-TW&amp;z=16&amp;output=embed" title="皓盛有限公司 Google 地圖官方地標（11164 臺北市士林區社子里社正路45巷4弄2號）">
+<iframe allowfullscreen="" class="meo-map-iframe" id="meo-gmap-iframe" loading="lazy" referrerpolicy="no-referrer" src="https://maps.google.com/maps?q=%E7%9A%93%E7%9B%9B%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8+%E8%87%BA%E5%8C%97%E5%B8%82%E5%A3%AB%E6%9E%97%E5%8D%80%E7%A4%BE%E6%AD%A3%E8%B7%AF45%E5%B7%B74%E5%BC%842%E8%99%9F&amp;hl=zh-TW&amp;z=16&amp;output=embed" title="皓盛有限公司 Google 地圖官方地標（11164 臺北市士林區社子里社正路45巷4弄2號）">
 </iframe>
 </div>
 <!-- 模式 2：高對比雙北桃竹工程派工時效雷達 SVG 圖（支援點擊切換與無外網環境自動保底） -->
@@ -587,6 +588,17 @@
 </div>
 <script src="assets/pricing-config.js?v=20261108"></script>
 <script src="assets/cad-engine.js?v=20261108"></script>
+<section id="hs-analytics-choice" aria-label="網站分析選擇" style="margin:24px auto;padding:16px;max-width:1100px;border:1px solid #64748b;border-radius:12px">
+<p>網站分析選擇：同意後，皓盛會使用 Google Analytics Cookie 統計一般頁面與電話、LINE、服務及估價入口的點擊，協助改善網站。Google 會處理瀏覽器、裝置及網路連線資訊；本網站不把報價內容、姓名、電話、地址或完整來源網址傳入分析。不載入報價頁的分析，也不統計含查詢參數或片段的頁面。不同意不影響估價與聯絡功能。</p>
+<p>同意僅適用於目前這一頁；進入其他頁面須重新選擇。不同意的選擇會盡可能保存在這個瀏覽器，可隨時按「分析設定」變更。Google 分析 Cookie 設定期限為 180 天。<a href="https://policies.google.com/technologies/partner-sites?hl=zh-TW" target="_blank" rel="noopener noreferrer">Google 如何使用資料</a></p>
+<button type="button" data-analytics-choice="denied">不同意分析</button>
+<button type="button" data-analytics-choice="granted">同意分析</button>
+</section>
+<p style="text-align:center"><button id="hs-analytics-settings" type="button">分析設定</button></p>
+<style>@media print {#hs-analytics-choice,#hs-analytics-settings{display:none!important}}</style>
+<script defer src="assets/analytics.js?v=20261108"></script>
+
+
 </body>
 </html>
 
