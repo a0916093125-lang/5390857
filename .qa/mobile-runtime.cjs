@@ -12,6 +12,13 @@ if(width<=860){
 assert(await p.locator('#site-navigation').isHidden());
 await p.locator('.mobile-menu-toggle').click();assert(await p.locator('#site-navigation').isVisible());
 await p.keyboard.press('Escape');assert(await p.locator('#site-navigation').isHidden());
+await p.locator('.mobile-menu-toggle').click();
+await p.locator('#site-navigation a[href="index.html#annual-maintenance"]').click();
+await p.waitForURL('**/index.html#annual-maintenance');assert(await p.locator('#site-navigation').isHidden());
+await p.goto(ORIGIN+'/'+name+'.html');
+await p.setViewportSize({width:1280,height:900});assert(await p.locator('#site-navigation').isVisible());
+await p.setViewportSize({width,height:width<500?844:900});await p.waitForTimeout(100);assert(await p.locator('#site-navigation').isHidden());
+
 await p.locator('.mobile-menu-toggle').click();await p.locator('.mobile-menu-toggle').click();assert(await p.locator('#site-navigation').isHidden());
 if(!['index','quote'].includes(name)) {const r=await p.locator('h1').boundingBox();assert(r.y<844,'service title below first screen');}
 const d=p.locator('.mobile-service-note').first();if(await d.count()){assert(!(await d.getAttribute('open')));await d.locator('summary').click();assert(await d.locator('p').first().isVisible());await d.locator('summary').click();}

@@ -8,6 +8,7 @@
  .toast-msg { width:max-content; max-width:min(560px,calc(100vw - 32px)); border-radius:12px; line-height:1.55; font-size:15px; overflow-wrap:anywhere; pointer-events:none; }
 }
 @media screen and (max-width:860px) {
+ .mobile-enhanced .brand-english { display:none; }
  html { scroll-padding-top:100px; scroll-padding-bottom:100px; }
  .site-header { backdrop-filter:none; background:#0f172a; }
  .mobile-enhanced .nav-container { display:grid; grid-template-columns:minmax(0,1fr) auto; padding:10px 16px; gap:8px; }
