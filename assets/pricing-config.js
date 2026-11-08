@@ -46,7 +46,7 @@ window.HS_PRICING_CONFIG = {
     }
   },
   acCleaning: {
-    split:    { pkgA: 12500, pkgB: 10000, unitA: 2200, unitB: 1800, inc: "含 4 台內", name: "壁掛分離式冷氣" },
+    split:    { pkgA: 12500, pkgB: 10000, unitA: 12500 / 4, unitB: 10000 / 4, inc: "含 4 台內", name: "壁掛分離式冷氣" },
     fcu:      { pkgA: 13000, pkgB: 10500, unitA: 3200, unitB: 2800, inc: "含 3 台內", name: "吊隱式冷氣／冰水送風機(FCU)" },
     cassette: { pkgA: 13500, pkgB: 11000, unitA: 4000, unitB: 3500, inc: "含 3 台內", name: "四方吹嵌入式卡式冷氣" },
     package:  { pkgA: 13500, pkgB: 11000, unitA: 4500, unitB: 3800, inc: "含 2 台內", name: "落地箱型冷氣(氣冷/水冷櫃機)" },
