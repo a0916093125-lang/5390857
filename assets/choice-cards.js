@@ -145,3 +145,4 @@ function initChoiceCards(){
 }
 if(document.readyState==='complete')initChoiceCards();else document.addEventListener('DOMContentLoaded',initChoiceCards,{once:true});
 })();
+

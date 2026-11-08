@@ -17,3 +17,4 @@
  document.addEventListener('focusin',e=>{if(mobile.matches&&editable(e.target))root.classList.add('is-editing');});
  document.addEventListener('focusout',()=>setTimeout(()=>{if(!editable(document.activeElement))root.classList.remove('is-editing');},0));
 })();
+

@@ -22,3 +22,4 @@
 @media screen and (max-width:480px) { .hs-choice-grid { gap:8px; } .hs-choice-card { padding:12px 10px; font-size:15px; } .hs-choice-card:has(input:checked) { padding:11px 9px; } .hs-inline-paper .quote-paper-sheet { padding:14px 10px; } }
 @media screen and (max-width:350px) { .hs-choice-grid { grid-template-columns:1fr; } }
 @media print { .hs-choice-progress,.hs-choice-warning,.hs-choice-control,.hs-entry-check,.hs-quote-render-frame,.hs-inline-quote { display:none!important; } }
+

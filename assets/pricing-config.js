@@ -90,3 +90,4 @@ window.HS_PRICING_CONFIG = {
     mpvUrgent24H:     { priceA: 4500,  priceB: 3500 }
   }
 };
+

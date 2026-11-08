@@ -2628,3 +2628,4 @@ h1.main-title {
 /* Accessible small-print contrast and non-color link identification. */
 .site-footer p[style*="color:#64748b"] { color: #94a3b8 !important; }
 #hs-analytics-choice a { text-decoration: underline; text-underline-offset: 0.15em; }
+
