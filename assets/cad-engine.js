@@ -637,7 +637,7 @@
       }
       if (chkWtChlorine && chkWtChlorine.checked) {
         basePrice += 2680;
-        addons.push("順載 25公斤大桶裝 90% TCCA 氯錠（用途與標示待確認）（原合併方案試算 +NT$2,680/桶；用途、交付方式與費用待確認）");
+        addons.push("順載 25公斤大桶裝 90% TCCA 氯錠（用途與標示待確認）（原合併方案報價 +NT$2,680/桶；用途、交付方式與費用待確認）");
       }
       if (chkCool && chkCool.checked) {
         const coolPrice = isPriority ? 7000 : 5500;
@@ -942,7 +942,7 @@
       }
       if (chkCtChlorine && chkCtChlorine.checked) {
         basePrice += 2680;
-        addons.push("順載 25公斤大桶裝 90% TCCA 氯錠（用途與標示待確認）（原合併方案試算 +NT$2,680/桶；用途、交付方式與費用待確認）");
+        addons.push("順載 25公斤大桶裝 90% TCCA 氯錠（用途與標示待確認）（原合併方案報價 +NT$2,680/桶；用途、交付方式與費用待確認）");
       }
 
       let maxPrice = Math.round(basePrice * 1.18);
@@ -1292,15 +1292,15 @@
       cat: "cat1_split_ac",
       comboCleanCat: "ac_cleaning",
       comboAcType: "split",
-      name: "Realise 瑞林 RP-258 分離式冷氣自動排水器（馬達規格待核對）連工帶料到府安裝＋排水管疏通＋全室冷氣檢查項目待確認",
-      spec: "只賣到府安裝服務（不單售裸機）：換裝規格待核對 瑞林 RP-258 蔽極式馬達噪音規格待核對排水器（葉輪規格待核對、揚程待核對、保護功能待核對）、高壓打通 2 分排水管果凍淤泥，並檢查項目待確認全室冷氣出風溫差(ΔT)與電容電流（當場加洗冷氣順換現折 $1,000！）",
+      name: "Realise 瑞林 RP-258 冷氣排水器到府安裝＋排水管疏通（設備適配及檢查範圍於施工前確認）",
+      spec: "到府安裝服務（不單售裸機）：依設備適配更換瑞林 RP-258 排水器並疏通排水管；產品性能、管路範圍與冷氣檢查項目於施工前確認。與冷氣清洗同日順換的價格依所選方案計算。",
       unitName: "組",
       tiers: {
-        tier_std:   { minB: 3500, maxB: 3500, minA: 3500, maxA: 3500, qB: 3500, qA: 3500, label: "標準單台到府連工帶料安裝＋通管＋冷氣健檢" },
+        tier_std:   { minB: 3500, maxB: 3500, minA: 3500, maxA: 3500, qB: 3500, qA: 3500, label: "標準單台到府安裝＋通管；冷氣檢查範圍施工前確認" },
         tier_mid:   { minB: 3500, maxB: 4200, minA: 3500, maxA: 4500, qB: 3500, qA: 4200, label: "挑高天花板／長距離明管重拉配電安裝" },
         tier_heavy: { minB: 4200, maxB: 4800, minA: 4500, maxA: 5200, qB: 4500, qA: 5000, label: "大型落地箱型／多台冷氣共用大水量排水工程" }
       },
-      rangeLabel: "NT$ 3,500 起 / 組（含通排水管＋全室冷氣檢查項目待確認）",
+      rangeLabel: "NT$ 3,500 起 / 組（排水管疏通及檢查範圍於施工前確認）",
       hours: "1.0 ~ 1.5 小時"
     },
     split_minor: {
@@ -1323,7 +1323,7 @@
       comboCleanCat: "ac_cleaning",
       comboAcType: "split",
       name: "分離式冷氣（室內外機）DC/AC 風扇馬達・貫流扇風鼓總成或日本 NSK 培林更換",
-      spec: "拆機更換原廠規格室內/室外風扇馬達、貫流扇風鼓葉輪或日本 NSK/SKF 精密靜音滾珠軸承（培林），檢查異音與不轉跳機的原因",
+      spec: "拆機更換原廠規格室內/室外風扇馬達、貫流扇風鼓葉輪或NSK／SKF（品牌及實際產地依料件確認） 精密靜音滾珠軸承（培林），檢查異音與不轉跳機的原因",
       unitName: "台",
       tiers: {
         tier_std:   { minB: 4500, maxB: 5800, minA: 5500, maxA: 7000,  qB: 4500, qA: 6000,  label: "標準 2.8~5.0kW 機種" },
@@ -1555,6 +1555,7 @@
     }
 
     function calcMpv(shouldPersistDraft, isJumpingToQuote) {
+      syncMpvTierLabels(subSpecSelect, scaleTierSelect);
       const modeVal = scheduleSelect ? scheduleSelect.value : "priority_50";
       const isAddonClean = (modeVal === "addon_with_clean") || Boolean(chkComboClean && chkComboClean.checked);
       const isPriority = (modeVal === "priority_50");
@@ -1696,6 +1697,16 @@
   }
 
   /* 4. 第三引擎：A/B 雙軌線上立即估價 (quote.html - 內建 A4 PDF 排版 智慧動態縮放鎖定) */
+  function syncMpvTierLabels(specSelect, tierSelect) {
+    if (!specSelect || !tierSelect || !tierSelect.options) return;
+    const cfg = MPV_SPEC_MAP[specSelect.value];
+    if (!cfg) return;
+    Array.from(tierSelect.options).forEach(function (option) {
+      const tier = cfg.tiers[option.value];
+      if (tier) option.textContent = tier.label + "｜單件未稅 A: NT$ " + tier.qA.toLocaleString() + " / B: NT$ " + tier.qB.toLocaleString();
+    });
+  }
+
   function initQuoteGenerator() {
     const form = document.getElementById("hs-quote-builder-form");
     if (!form) return;
@@ -1996,6 +2007,7 @@
     }
 
     function renderQuotation(shouldPersist) {
+      syncMpvTierLabels(elMpvSpec, elMpvTier);
       const displayMode = elDisplayMode ? elDisplayMode.value : "ab_compare";
       const cat = elCategory ? elCategory.value : "water_tank";
       const isWtActive = (cat === "water_tank" || cat === "both" || cat === "wt_ac" || cat === "all_three");
@@ -2180,7 +2192,7 @@
         if (ctCount === 1) {
           items.push({
             title: "雙座並聯冷卻水塔分批隔離輪洗作業費（共 2 座）",
-            spec: "透過進出水蝴蝶閥單塔隔離輪洗，維持主機降載運轉不斷冷氣",
+            spec: "依閥件隔離、剩餘散熱容量與運轉負載評估分塔輪洗；停機及降載安排須於施工前確認，不保證供冷不中斷",
             unit: "1 式",
             priceA: 4500,
             priceB: 3800
@@ -2350,7 +2362,7 @@
       if (cat === "shop_chlorine") {
         items.push({
           title: "工業級 90% TCCA 氯錠（用途與標示待確認）（25 公斤原裝密封大桶）",
-          spec: "沿用 25kg TCCA 原規格與價格試算；實際標示、用途、安全資料及承運條件待確認，不可逕用於飲用水設備",
+          spec: "25kg TCCA 氯錠加購報價；實際標示、用途、安全資料及承運條件待確認，不可逕用於飲用水設備",
           unit: shopQty + " 桶(25kg)",
           priceA: 3200 * shopQty,
           priceB: 2680 * shopQty
@@ -2371,8 +2383,8 @@
             ? "【水塔工程合併方案特惠】工業級 90% TCCA 氯錠（用途與標示待確認）（25公斤大桶裝）"
             : "工業級 90% TCCA 氯錠（用途與標示待確認）（25公斤大桶裝｜配送條件待確認）",
           spec: isWithTankTruck
-            ? "依原合併方案試算；實際產品用途、配送方式及承運條件待確認，不表示可用於飲用水設備"
-            : "沿用原方案 A 每桶 $3,200／B 每桶 $2,680 試算；產品標示、用途、安全資料及配送條件另行確認",
+            ? "依原合併方案報價；實際產品用途、配送方式及承運條件待確認，不表示可用於飲用水設備"
+            : "單購 A 方案每桶 $3,200／B 方案每桶 $2,680；產品標示、用途、安全資料及配送條件另行確認",
           unit: shopQty + " 桶(25kg)",
           priceA: (isWithTankTruck ? 2680 : 3200) * shopQty,
           priceB: 2680 * shopQty
@@ -2380,8 +2392,8 @@
       }
       if (isAcActive && chkAcDrain && chkAcDrain.checked && !(isMpvActive && elMpvSpec && elMpvSpec.value === "rp258_install")) {
         items.push({
-          title: "【洗冷氣同日順換現折 $1,000】Realise 瑞林 RP-258 重型蔽極式冷氣自動排水器換新＋排水管高壓疏通",
-          spec: "原單獨到府安裝價 $3,500，搭配洗冷氣同日順換現折 $1,000！換裝 規格待核對 瑞林 RP-258 蔽極式馬達排水器（葉輪規格待核對、35dB噪音規格待核對）並高壓打通排水管果凍淤泥",
+          title: "【洗冷氣同日順換現折 $1,000】Realise 瑞林 RP-258 冷氣自動排水器換新＋排水管高壓疏通",
+          spec: "單獨到府安裝價 $3,500；冷氣清洗同日順換依所選方案計價。更換瑞林 RP-258 排水器並疏通排水管，設備適配、產品性能與施工範圍於施工前確認。",
           unit: (shopMode === "rp258_with_ac" ? shopQty : 1) + " 組",
           priceA: 2500 * (shopMode === "rp258_with_ac" ? shopQty : 1),
           priceB: 2200 * (shopMode === "rp258_with_ac" ? shopQty : 1)
@@ -3236,10 +3248,10 @@
       } else if (mode === "chlorine_only") {
         let tot = 3200 * qty;
         if (includeTax) tot = Math.round(tot * 1.05);
-        priceStr = "NT$ " + tot.toLocaleString() + " 元（" + (includeTax ? "含 5% 營業稅" : "未稅") + "｜已含每桶 $500 貨運宅配費）";
-        deliveryStr = "25kg 原規格配送試算；庫存、包裝、交付地點、配送方式與承運條件均待確認";
-        bonusStr = "原設定單購 $3,200、合併方案 $2,680，每桶價差 $520；此為方案價差，不視為已確認的運費或可承運保證。";
-        itemTitle = "單買 25 公斤大桶裝 90% TCCA 氯錠（用途與標示待確認）（共 " + qty + " 桶・含貨運宅配）";
+        priceStr = "NT$ " + tot.toLocaleString() + " 元（" + (includeTax ? "含 5% 營業稅" : "未稅") + "｜配送方式與費用另行確認）";
+        deliveryStr = "25kg 氯錠交付評估；庫存、包裝、交付地點、配送方式與承運條件均待確認";
+        bonusStr = "單購報價 $3,200、合併方案 $2,680，每桶價差 $520；此為方案價差，不視為已確認的運費或可承運保證。";
+        itemTitle = "單買 25 公斤大桶裝 90% TCCA 氯錠（用途與標示待確認）（共 " + qty + " 桶・配送另行確認）";
       } else if (mode === "chlorine_with_ct") {
         let baseB = 10500 + (2680 * qty);
         let baseA = 13000 + (2680 * qty);
@@ -3248,7 +3260,7 @@
           baseA = Math.round(baseA * 1.05);
         }
         priceStr = "平日併單 NT$ " + baseB.toLocaleString() + " ／ 指定專車 NT$ " + baseA.toLocaleString() + "（含 100RT 水塔清洗＋" + qty + "桶氯錠，配送待確認）";
-        deliveryStr = "冷卻水塔清洗與 25kg 氯錠合併方案試算；產品用途及配送條件須分別確認（氯錠沿用每桶 $2,680）";
+        deliveryStr = "冷卻水塔清洗與 25kg 氯錠合併方案報價；產品用途及配送條件須分別確認（氯錠每桶 $2,680）";
         bonusStr = "藥劑用途、標示、水質及現場條件須先確認，不提供僅依 RT 噸數推定的投藥量。";
         itemTitle = "商用空調冷卻水塔清洗保養 ＋ 合併方案加購 25kg 氯錠（用途與標示待確認）（" + qty + " 桶）";
       } else if (mode === "chlorine_with_wt") {
@@ -3259,14 +3271,14 @@
           baseA = Math.round(baseA * 1.05);
         }
         priceStr = "平日併單 NT$ " + baseB.toLocaleString() + " ／ 指定專車 NT$ " + baseA.toLocaleString() + "（含標準社區洗水塔＋" + qty + "桶氯錠，配送待確認）";
-        deliveryStr = "水池清洗與氯錠分開評估用途；沿用每桶 $2,680 的合併試算，不表示適用於飲用水儲水設備，實際配送待確認";
+        deliveryStr = "水池清洗與氯錠分開評估用途；每桶 $2,680 的合併方案，不表示適用於飲用水儲水設備，實際配送待確認";
         bonusStr = "工業用氯錠不可直接套用於飲用水儲水設備，產品用途與交付條件須先確認。";
         itemTitle = "社區大樓自來水塔清洗消毒 ＋ 合併方案加購 25kg 氯錠（用途與標示待確認）（" + qty + " 桶）";
       } else {
         let tot = (3500 * qty) + (2680 * qty);
         if (includeTax) tot = Math.round(tot * 1.05);
         priceStr = "NT$ " + tot.toLocaleString() + " 元（" + (includeTax ? "含 5% 營業稅" : "未稅") + "｜RP-258 到府安裝＋順載 25kg 氯錠，配送待確認）";
-        deliveryStr = "RP-258 安裝與 25kg 氯錠合併方案試算；設備適配、施工範圍與藥劑配送條件須分別確認";
+        deliveryStr = "RP-258 安裝與 25kg 氯錠合併方案報價；設備適配、施工範圍與藥劑配送條件須分別確認";
         bonusStr = "可一併洽詢冷氣排水與水系統需求；實際診斷、服務範圍及費用須另行確認。";
         itemTitle = "瑞林 RP-258 冷氣排水器到府安裝 ＋ 合併方案順載 25kg 氯錠（用途與標示待確認）（各 " + qty + " 組/桶）";
       }

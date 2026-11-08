@@ -27,7 +27,7 @@
   "@graph": [
     {
       "@type": "WebApplication",
-      "name": "社區大樓洗自來水塔 A/B 雙軌費用與停水工時即時試算器",
+      "name": "社區大樓洗自來水塔 A/B 雙軌費用試算與停水安排說明",
       "url": "https://5390857.com/water-tank.html",
       "applicationCategory": "UtilitiesApplication",
       "operatingSystem": "All",
@@ -121,7 +121,7 @@
           "name": "社區大樓洗水塔要停水多久？洗完會有漂白水臭味或水龍頭空氣阻塞（馬達空轉）嗎？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "皓盛採用依設備與排水條件安排抽排，停水、施工與復水時間須依容量、排水條件及現場確認。消毒程序須依產品標示與現場條件確認，完工排空注水後可另確認以儀器／試劑實測 3 項水質指標：餘氯、酸鹼值（pH）與總溶解固體量（TDS）；判讀須依適用標準，三項測值不能單獨證明飲用水安全，依現場檢測結果與適用規範確認後續處理；復水時並由機電技術人員執行公共管路排氣（Air Bleeding），確認管路排氣與馬達運轉狀態。"
+            "text": "皓盛依設備與排水條件安排抽排，停水、施工與復水時間須依容量、排水條件及現場確認。消毒程序須依產品標示與現場條件確認，完工排空注水後可另確認以儀器／試劑實測 3 項水質指標：餘氯、酸鹼值（pH）與總溶解固體量（TDS）；判讀須依適用標準，三項測值不能單獨證明飲用水安全，依現場檢測結果與適用規範確認後續處理；復水時並由機電技術人員執行公共管路排氣（Air Bleeding），確認管路排氣與馬達運轉狀態。"
           }
         },
         {
@@ -199,7 +199,7 @@
 <div class="hero-cta-stack">
 <div class="hero-cta-primary-row">
 <a class="btn btn-primary hero-btn-main" href="#calc-heading">
-                🧮 立即試算洗自來水塔費用與停水工時 ↓
+                🧮 立即試算洗自來水塔費用 ↓
               </a>
 <a class="btn btn-amber-glass hero-btn-main" href="quote.html?from=water-tank&amp;cat=water_tank#qp-workspace-anchor">
                 📄 產出「報價單」
@@ -265,7 +265,8 @@
 <div class="stage1-note"><strong>水質檢測說明</strong><p>餘氯、pH 與 TDS 僅為現場水質指標，不能單憑這三項判定可安全飲用。飲用水安全仍須依適用規範與合格實驗室檢驗結果評估。</p><p>工業用氯錠的用途、許可及產品標示須先確認，不可直接套用於飲用水儲水設備；投藥須依產品標示、水質與現場條件由專業人員評估。</p></div>
 <section aria-labelledby="calc-heading" class="grid-2">
 <div class="card card-highlight">
-<h2 class="section-title" id="calc-heading">🧮 自來水塔清洗費用＆停水工時 A/B 雙軌試算器</h2>
+<p class="section-sub">未列出的容量區間或特殊水池，請提供容量、照片與進場條件另行估價，勿套用相鄰級距。</p>
+<h2 class="section-title" id="calc-heading">🧮 自來水塔清洗費用 A/B 雙軌試算器</h2>
 <p class="section-sub">可自由切換「A方案：指定時段專車」與「B方案：平日彈性順路併單」，即時計算連工帶料預估區間：</p>
 <form id="water-tank-calc-form" onsubmit="return false;">
 <div class="calc-form-group">
@@ -317,7 +318,7 @@
 </label>
 <label class="calc-check-item">
 <input id="chk-wt-valve24" type="checkbox"/>
-<span>🔧 2吋~4吋 蝶閥／不鏽鋼無聲逆止閥(消除水錘)／防震軟管抽換（$11,000~$15,000起/處｜A方案+12,500 / B方案+11,000）</span>
+<span>🔧 2吋~4吋 蝶閥／不鏽鋼無聲逆止閥（水錘原因與改善方式另評估）／防震軟管抽換（$11,000~$15,000起/處｜A方案+12,500 / B方案+11,000）</span>
 </label>
 <label class="calc-check-item">
 <input id="chk-wt-pump-seal" type="checkbox"/>
@@ -353,7 +354,7 @@
 <div style="font-size:0.9rem;color:#a7f3d0;font-weight:700;">預估連工帶料總包費用區間（清洗、消毒程序、安全措施及機電檢查範圍依現場確認）：</div>
 <div class="price-highlight" id="calc-price-output">NT$ 13,000 ~ 15,340 元（未稅）</div>
 <div style="margin-top:8px;font-size:0.95rem;color:#e2e8f0;">
-              ⏱️ 預估停水工時：<strong id="calc-hours-output" style="color:#38bdf8;">依現場確認（試算時間僅供參考）</strong>
+              ⏱️ 停水安排：<strong id="calc-hours-output" style="color:#38bdf8;">依現場確認（試算時間僅供參考）</strong>
 </div>
 <div style="margin-top:6px;font-size:0.88rem;color:#fde68a;">
               👷 預估作業安排（現場確認）：<span id="calc-crew-output">【A方案：指定時段專車】依進入方式與空間條件確認人員、資格、監視、通風及氣體測定；保險與實際配置於進場前核對</span>
@@ -378,12 +379,12 @@
 </form>
 </div>
 <div class="card">
-<h2 class="section-title">🔧 為什麼管委會洗水塔都指定皓盛機電團隊？</h2>
+<h2 class="section-title">🔧 自來水塔清洗與機電安全作業流程</h2>
 <p class="section-sub">水塔清洗應先確認機電隔離、進入方式與安全條件，降低馬達空轉、誤觸控制設備與淹水等風險。皓盛由具備實戰機電工程背景的李思遠團隊親自施作：</p>
 <ol style="padding-left:20px;line-height:1.9;color:#e2e8f0;">
 <li><strong>入槽條件、氣體測定與通風確認</strong>：入池前確認進入方式及空間風險，依適用規範配置人員、監視、通風與氣體測定，降低作業風險。</li>
-<li><strong>施工前機電保護切換</strong>：先將地下室揚水泵浦與頂樓加壓馬達控制盤切至「手動/停止（OFF）」，避免抽水期間馬達無水空轉燒毀軸封。</li>
-<li><strong>雙機高速排空與淤泥抽除</strong>：使用大口徑沉水泵浦快速排空餘水，將停水時間壓縮至最短。</li>
+<li><strong>施工前機電保護切換</strong>：由具資格人員依設備確認停水、停機與能源隔離，執行必要的上鎖、掛牌及安全確認後作業；不得以手動模式代替能源隔離。</li>
+<li><strong>排空與淤泥抽除</strong>：依容量、排水條件與現場環境安排抽排設備及施工順序，停水與復水時間於施工前確認。</li>
 <li><strong>高壓水刀除垢與消毒程序評估</strong>：針對池壁生物膜、鐵鏽水垢與死角進行高壓水刀沖洗，清潔消毒程序須依產品標示與現場條件確認，完工排空注水後可另確認以儀器／試劑實測 3 項水質指標：餘氯、酸鹼值（pH）與總溶解固體量（TDS）；判讀須依適用標準，三項測值不能單獨證明飲用水安全，依現場檢測結果與適用規範確認後續處理；若學校、廠房或管委會需第三方公信力報告，亦可勾選代客無菌採樣送驗 SGS 實驗室（大腸桿菌群／總菌落數）。</li>
 <li><strong>Omron 61F-G2 液位開關與進水蝴蝶閥檢查（範圍及費用先確認）</strong>：檢查範圍及費用確認後，檢查上水塔高低水位與共用接地電極棒（E1/E2/E3）及地下受水池防無水空轉保護迴路是否因水垢絕緣或鏽蝕短路，並確認 2吋～10吋蝴蝶閥與球閥止水密合。</li>
 <li><strong>排氣復歸與前後對比照片驗收</strong>：注水後執行管路排氣、復歸自動控制盤，並交付完整「清洗前後對比照片報告」供管委會公告住戶。</li>
@@ -399,7 +400,7 @@
 </div>
 <div class="faq-item">
 <div class="faq-q">Q2：社區大樓洗水塔要停水多久？洗完會有漂白水臭味或水龍頭空氣阻塞（馬達空轉）嗎？</div>
-<div class="faq-a">皓盛採用依設備與排水條件安排抽排，停水、施工與復水時間須依容量、排水條件及現場確認。消毒程序須依產品標示與現場條件確認，完工排空注水後<strong>可另確認以儀器／試劑實測 3 項水質指標：餘氯、酸鹼值（pH）與總溶解固體量（TDS）；判讀須依適用標準，三項測值不能單獨證明飲用水安全</strong>，依現場檢測結果與適用規範確認後續處理；復水時並由機電技術人員執行公共管路排氣（Air Bleeding），確認管路排氣與馬達運轉狀態。</div>
+<div class="faq-a">皓盛依設備與排水條件安排抽排，停水、施工與復水時間須依容量、排水條件及現場確認。消毒程序須依產品標示與現場條件確認，完工排空注水後<strong>可另確認以儀器／試劑實測 3 項水質指標：餘氯、酸鹼值（pH）與總溶解固體量（TDS）；判讀須依適用標準，三項測值不能單獨證明飲用水安全</strong>，依現場檢測結果與適用規範確認後續處理；復水時並由機電技術人員執行公共管路排氣（Air Bleeding），確認管路排氣與馬達運轉狀態。</div>
 </div>
 <div class="faq-item">
 <div class="faq-q">Q3：為什麼有些大樓洗完水塔後會發生「不會進水」或「半夜水塔溢水淹水」？</div>
@@ -462,7 +463,7 @@
 </a>
 </div>
 <script src="assets/pricing-config.js?v=20261108"></script>
-<script src="assets/cad-engine.js?v=20261108"></script>
+<script src="assets/cad-engine.js?v=text-audit-20261108"></script>
 <section id="hs-analytics-choice" aria-label="網站分析選擇" style="margin:24px auto;padding:16px;max-width:1100px;border:1px solid #64748b;border-radius:12px">
 <p>網站分析選擇：同意後，皓盛會使用 Google Analytics Cookie 統計一般頁面與電話、LINE、服務及估價入口的點擊，協助改善網站。Google 會處理瀏覽器、裝置及網路連線資訊；本網站不把報價內容、姓名、電話、地址或完整來源網址傳入分析。不載入報價頁的分析，也不統計含查詢參數或片段的頁面。不同意不影響估價與聯絡功能。</p>
 <p>同意僅適用於目前這一頁；進入其他頁面須重新選擇。不同意的選擇會盡可能保存在這個瀏覽器，可隨時按「分析設定」變更。Google 分析 Cookie 設定期限為 180 天。<a href="https://policies.google.com/technologies/partner-sites?hl=zh-TW" target="_blank" rel="noopener noreferrer">Google 如何使用資料</a></p>
