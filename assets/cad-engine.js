@@ -1774,12 +1774,14 @@
       // Conservative content-density hint, not a promise of exact page count.
       // Keep all text and readable font sizes; compact only vertical whitespace.
       const contentLength = String(paperSheet.textContent || "").replace(/\s/g, "").length;
-      const compact = itemCount >= 4 || contentLength > 1500 || extraTextLength > 180;
-      paperSheet.setAttribute("data-print-layout", compact ? "compact" : "standard");
+      const compact = itemCount >= 8 || contentLength > 2300 || extraTextLength > 300;
+      const roomy = itemCount <= 3 && contentLength <= 1400 && extraTextLength <= 100;
+      const layout = compact ? "compact" : (roomy ? "roomy" : "standard");
+      paperSheet.setAttribute("data-print-layout", layout);
       document.documentElement.style.setProperty("--qp-print-zoom", "1");
       paperSheet.style.setProperty("--qp-print-zoom", "1");
       if (statusText) {
-        statusText.textContent = "A4 排版預覽：目前共 " + itemCount + " 個工項，採" + (compact ? "緊湊間距" : "標準間距") + "優先排入一頁；維持可讀字級，內容較多時自動分頁，請確認列印預覽。";
+        statusText.textContent = "A4 排版預覽：目前共 " + itemCount + " 個工項，採" + (compact ? "緊湊間距" : (roomy ? "較大字級與舒適間距" : "標準間距")) + "優先排入一頁；維持可讀字級，內容較多時自動分頁，請確認列印預覽。";
       }
     }
 

@@ -2593,3 +2593,33 @@ h1.main-title {
     padding-top: 5px !important; gap: 8px !important;
   }
 }
+
+
+/* Short estimates use spare paper for legibility, never scale or crop the page.
+   Selection is conservative; browsers retain natural pagination if content wraps. */
+@media print {
+  body.quote-print-page .quote-paper-sheet[data-print-layout="roomy"] .qp-company-sub,
+  body.quote-print-page .quote-paper-sheet[data-print-layout="roomy"] .qp-meta-grid,
+  body.quote-print-page .quote-paper-sheet[data-print-layout="roomy"] .qp-table th,
+  body.quote-print-page .quote-paper-sheet[data-print-layout="roomy"] .qp-table td {
+    font-size: 10pt !important; line-height: 1.4 !important;
+  }
+  body.quote-print-page .quote-paper-sheet[data-print-layout="roomy"] .qp-table th,
+  body.quote-print-page .quote-paper-sheet[data-print-layout="roomy"] .qp-table td {
+    padding: 6px 5px !important;
+  }
+  body.quote-print-page .quote-paper-sheet[data-print-layout="roomy"] .qp-compliance-box,
+  body.quote-print-page .quote-paper-sheet[data-print-layout="roomy"] .qp-stamp-box div {
+    font-size: 9.5pt !important; line-height: 1.4 !important;
+  }
+  body.quote-print-page .quote-paper-sheet[data-print-layout="roomy"] .qp-header,
+  body.quote-print-page .quote-paper-sheet[data-print-layout="roomy"] .qp-meta-grid,
+  body.quote-print-page .quote-paper-sheet[data-print-layout="roomy"] .qp-table-wrap,
+  body.quote-print-page .quote-paper-sheet[data-print-layout="roomy"] .qp-summary-box,
+  body.quote-print-page .quote-paper-sheet[data-print-layout="roomy"] .qp-compliance-box {
+    margin-bottom: 10px !important;
+  }
+  body.quote-print-page .quote-paper-sheet[data-print-layout="roomy"] .qp-plan-card {
+    padding: 8px 10px !important;
+  }
+}
