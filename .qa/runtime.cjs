@@ -7,7 +7,7 @@ const report={engine:'Chromium in isolated GitHub Actions (not physical device)'
 const ui=`<section id="hs-analytics-choice"><button data-analytics-choice="granted">Allow</button><button data-analytics-choice="denied">Deny</button></section><button id="hs-analytics-settings">Settings</button><a id="test-phone" href="tel:000000000">phone</a><a id="test-line" href="https://line.me/test">line</a><a id="test-quote" href="/quote.html">quote</a><a id="test-service" href="/water-tank.html">service</a><script src="/assets/analytics.js"></script>`;
 let browser;
 async function setup(options={}) {
- const context=await browser.newContext({serviceWorkers:'block'});const log=[];
+ const context=await browser.newContext({serviceWorkers:'block'});const log=[];report.requests.push({contextOptions:options,log});
  if(options.gpc)await context.addInitScript(()=>Object.defineProperty(navigator,'globalPrivacyControl',{value:true}));
  if(options.stale)await context.addInitScript(()=>localStorage.setItem('hs_analytics_consent_v1','granted'));
  await context.route('**/*',async route=>{
@@ -16,7 +16,7 @@ async function setup(options={}) {
    let p=u.pathname==='/'?'index.html':u.pathname.slice(1);
    if(p==='assets/analytics.js')return route.fulfill({contentType:'application/javascript',body:candidate});
    const file=path.resolve(root,p);if(!file.startsWith(root+path.sep)||!fs.existsSync(file)||!fs.statSync(file).isFile())return route.fulfill({status:404,body:''});
-   let body=fs.readFileSync(file);if(p.endsWith('.html'))body=body.toString().replace('<head>','<head><meta name="referrer" content="no-referrer">').replace('</body>',ui+'</body>');
+   let body=fs.readFileSync(file);if(p.endsWith('.html'))body=body.toString().replace('<head>','<head><meta name="referrer" content="no-referrer">').replace(/referrerpolicy="no-referrer-when-downgrade"/gi,'referrerpolicy="no-referrer"').replace('</body>',ui+'</body>');
    return route.fulfill({contentType:p.endsWith('.html')?'text/html':p.endsWith('.js')?'application/javascript':p.endsWith('.css')?'text/css':'application/octet-stream',body});
   }
   const rec={url:req.url(),method:req.method(),body:req.postData(),referer:headers.referer||'',kind:'blocked'};log.push(rec);
@@ -35,7 +35,7 @@ async function test(name,fn){let passed=false;try{await fn();passed=true;}finall
 (async()=>{browser=await chromium.launch();
 for(const [name,url,opts] of [['no consent','/',{}],['query excluded','/?name='+marker,{}],['hash excluded','/#'+marker,{}],['quote excluded','/quote.html?name='+marker,{}],['quote clean excluded','/quote.html',{}],['unknown excluded','/not-known.html',{}],['GPC excluded','/',{gpc:true}],['stale grant ignored','/',{stale:true}]])await test(name,async()=>{
  const {context,log}=await setup(opts);const p=await context.newPage();await p.goto(ORIGIN+url);if(!['no consent','stale grant ignored','unknown excluded'].includes(name))await p.locator('[data-analytics-choice="granted"]').click();await p.waitForTimeout(1800);assert.equal(log.filter(r=>r.kind==='runtime'||r.kind==='collection').length,0);validate(log);report.requests.push({test:name,log});await context.close();});
-await test('unsafe referrer excluded',async()=>{const {context,log}=await setup();const p=await context.newPage();await p.goto(ORIGIN+'/',{referer:ORIGIN+'/quote.html?name='+marker});await p.locator('[data-analytics-choice="granted"]').click();await p.waitForTimeout(1800);assert.equal(log.length,0);await context.close();});
+await test('unsafe referrer excluded',async()=>{const {context,log}=await setup();const p=await context.newPage();await p.goto(ORIGIN+'/',{referer:ORIGIN+'/quote.html?name='+marker});await p.locator('[data-analytics-choice="granted"]').click();await p.waitForTimeout(1800);assert.equal(log.filter(r=>r.kind!=='blocked').length,0);validate(log);await context.close();});
 await test('runtime explicit consent + fixed fields + all clicks',async()=>{
  const {context,log}=await setup();const p=await context.newPage();await p.goto(ORIGIN+'/');await p.evaluate(m=>{document.title=m;document.addEventListener('click',e=>{if(e.target.closest('a'))e.preventDefault();});},marker);await p.locator('[data-analytics-choice="granted"]').click();await p.waitForTimeout(5000);assert(report.googleScriptLoaded,'Google runtime not loaded');
  for(const id of ['test-phone','test-line','test-quote','test-service'])await p.locator('#'+id).click();await p.waitForTimeout(5000);
