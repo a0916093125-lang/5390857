@@ -36,7 +36,8 @@ function initChoiceCards(){
  const safety=document.createElement('label');safety.className='calc-check-item hs-entry-check';safety.hidden=true;
  const entry=document.createElement('input');entry.type='checkbox';entry.id='hs-confirm-no-entry';
  const entryText=document.createElement('span');entryText.textContent='我已確認這個 10 噸內白鐵水塔是開放式，且施工全程不入槽。未確認或需要入槽，請先詢問，不套用此價格。';safety.append(entry,entryText);const material=document.getElementById(isQuote?'q-wt-material':'calc-material');if(material)material.closest('.calc-form-group').after(safety);else form.append(safety);
- let preview=null,paper=null,openLink=null,frame=null,generation=0,timer=null,lastUrl='',completed=false;
+ let preview=null,paper=null,openLink=null,frame=null,generation=0,timer=null,lastUrl='',completed=false,lastExtras='';
+ const extrasSignature=()=>[...form.querySelectorAll('input[type=checkbox]')].map(c=>c.id+':'+c.checked).join('|');
  if(!isQuote){
   result.hidden=true;
   preview=document.createElement('section');preview.className='hs-inline-quote no-print';preview.hidden=true;preview.id='hs-inline-quote';
@@ -113,7 +114,7 @@ function initChoiceCards(){
   });document.body.append(frame);
  }
  function refresh(user){
-  states.forEach(build);
+  states.forEach(build);lastExtras=extrasSignature();
   const active=activeStates(),pending=active.filter(st=>st.confirmed!==st.select.value);
   const needs=needsEntry();safety.hidden=!needs;
   const ready=!pending.length&&(!needs||entry.checked);
@@ -132,7 +133,7 @@ function initChoiceCards(){
   // Engine listeners run first, so dependent option lists and visibility are current.
   refresh(true);
  });
- window.addEventListener('storage',()=>{setTimeout(()=>{states.forEach(sync);const mismatch=activeStates().some(st=>st.confirmed!==st.select.value);if(mismatch){completed=false;invalidate();gate.textContent='其他頁面的規格已變更，請重新確認此頁選項。';}},0);});
+ window.addEventListener('storage',()=>{setTimeout(()=>{states.forEach(sync);const mismatch=activeStates().some(st=>st.confirmed!==st.select.value)||lastExtras!==extrasSignature();if(mismatch){states.forEach(st=>st.confirmed=null);entry.checked=false;refresh(false);gate.textContent='其他頁面的規格或選配已變更，請重新確認此頁選項。';}},0);});
  window.addEventListener('pageshow',e=>{if(e.persisted)refresh(false);});
  if(isQuote){
   const load=document.getElementById('btn-q-load-draft');if(load)load.addEventListener('click',()=>{states.forEach(st=>{st.confirmed=null;});entry.checked=false;refresh(false);});
