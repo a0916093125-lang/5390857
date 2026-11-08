@@ -141,6 +141,17 @@
   if (channel) channel.onmessage = function (e) { if (e.data === 'denied') choose('denied', true); };
   // Other tabs revoke collection promptly; consent is not a business lead.
   window.addEventListener('storage', function (e) { if ((e.key === KEY && (!parse(e.newValue) || parse(e.newValue).choice === 'denied')) || e.key === null) choose('denied', true); });
+  // A back/forward cache restore must not revive withdrawn or expired consent.
+  window.addEventListener('pageshow', function (e) {
+    if (!e.persisted) return;
+    const latest = stored();
+    if (!latest || latest.choice !== 'granted') {
+      active = false; window['ga-disable-' + ID] = true;
+      clearTimeout(expiryTimer);
+      if (document.querySelector('script[src*="googletagmanager.com/gtag/js"]')) location.reload();
+      if (notice) notice.hidden = !!latest;
+    }
+  });
   document.addEventListener('click', function (e) {
     const target = e.target.closest && e.target.closest('a[href],button[id]');
     if (!target) return;
