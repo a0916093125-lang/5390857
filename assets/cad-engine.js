@@ -86,7 +86,7 @@
     if (stateObj.chkValve24) q.set("v24", "1");
     if (stateObj.chkMpvElec) q.set("mpvelec", "1");
     if (stateObj.chkMpvUrgent) q.set("mpvurg", "1");
-    if (Number(stateObj.customPrice) !== 0) q.set("custp", String(stateObj.customPrice));
+    // Public quotes never accept client-supplied price adjustments.
     q.set("tax", stateObj.chkTax ? "1" : "0");
     const quoteBase = window.location && /^https?:$/.test(window.location.protocol)
       ? window.location.origin + window.location.pathname
@@ -99,8 +99,7 @@
     "hs_5390857_quote_draft_v10",
     "hs_5390857_quote_draft_v8"
   ];
-  const CUSTOM_PRICE_MIN = -500000;
-  const CUSTOM_PRICE_MAX = 5000000;
+  const DRAFT_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
   const A4_SAFE_HEIGHT_PX = 985;
   const A4_PRINTABLE_WIDTH_PX = 733; // A4 794px 扣除左右各 8mm (約 30.2px * 2) 列印邊界後之真實可用寬度
 
@@ -180,7 +179,22 @@
 
   let memoryDraftFallback = null;
 
-  /* 跨頁草稿讀取（支援記憶體保底 memoryDraftFallback，即使無痕模式或 WebView 封鎖 localStorage 亦 可用性須依瀏覽器驗證） */
+  // Only remove this site's known quote draft keys, never unrelated browser data.
+  function clearQuoteDraft() {
+    memoryDraftFallback = null;
+    [DRAFT_STORAGE_KEY].concat(LEGACY_STORAGE_KEYS).forEach(function (key) {
+      try { localStorage.removeItem(key); } catch (e) {}
+    });
+  }
+
+  function isFreshQuoteDraft(draft) {
+    if (!draft || typeof draft !== "object" || Array.isArray(draft)) return false;
+    const savedAt = Number(draft.updatedAt);
+    const age = Date.now() - savedAt;
+    return Number.isFinite(savedAt) && savedAt > 0 && age >= 0 && age <= DRAFT_MAX_AGE_MS;
+  }
+
+  /* Expire saved drafts after seven days without an update. */
   function loadQuoteDraft() {
     try {
       let raw = localStorage.getItem(DRAFT_STORAGE_KEY);
@@ -190,14 +204,19 @@
           if (raw) break;
         }
       }
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
-          memoryDraftFallback = Object.assign({}, memoryDraftFallback || {}, parsed);
-          return memoryDraftFallback;
-        }
+      if (!raw) {
+        memoryDraftFallback = null;
+        return null;
       }
+      const parsed = JSON.parse(raw);
+      if (!isFreshQuoteDraft(parsed)) {
+        clearQuoteDraft();
+        return null;
+      }
+      memoryDraftFallback = Object.assign({}, parsed);
+      return memoryDraftFallback;
     } catch (e) {}
+    if (!isFreshQuoteDraft(memoryDraftFallback)) memoryDraftFallback = null;
     return memoryDraftFallback;
   }
 
@@ -1734,8 +1753,6 @@
     const chkMpvElec = document.getElementById("q-chk-mpv-elec");
     const chkMpvUrgent = document.getElementById("q-chk-mpv-urgent");
 
-    const elCustomName = document.getElementById("q-custom-name");
-    const elCustomPrice = document.getElementById("q-custom-price");
     const elTaxMode = document.getElementById("q-tax-mode");
 
     // 右側 A4 報價單預覽 DOM
@@ -1753,8 +1770,11 @@
     const btnPrintPdf = document.getElementById("btn-q-print");
     const btnCopyLine = document.getElementById("btn-q-line");
     const btnLoadDraft = document.getElementById("btn-q-load-draft");
+    const btnClearDraft = document.getElementById("btn-q-clear-draft");
 
-    // 初始化預設日期與報價單號
+    // Each new page creates a reference, not an authenticated company sequence.
+    const generatedReference = "HS-" + Date.now().toString(36).toUpperCase() + "-" + Math.random().toString(36).slice(2, 7).toUpperCase();
+    // 初始化預設日期與報價參考編號
     const now = new Date();
     const yyyy = String(now.getFullYear());
     const mm = String(now.getMonth() + 1).padStart(2, "0");
@@ -1763,7 +1783,7 @@
       elDocDate.value = yyyy + "-" + mm + "-" + dd;
     }
     if (elDocNo && !elDocNo.value) {
-      elDocNo.value = "HS-" + yyyy + mm + dd + "-01";
+      elDocNo.value = generatedReference;
     }
 
     // Keep readable A4 typography. Long estimates may span pages; never shrink or clip content.
@@ -1828,7 +1848,7 @@
       }
     }
 
-    function applyStoredDraft(showNotification, fromParamVal) {
+    function applyStoredDraft(showNotification, fromParamVal, restoreDocumentIdentity) {
       const draft = loadQuoteDraft();
       if (!draft) {
         if (showNotification) showToast("目前尚無跨頁試算紀錄，已為您維持預設標準規格！");
@@ -1876,10 +1896,10 @@
       } else if (draft.region && elClientAddr && fromParamVal) {
         elClientAddr.value = String(draft.region);
       }
-      if (draft.docNo && elDocNo) {
+      if (restoreDocumentIdentity && draft.docNo && elDocNo) {
         elDocNo.value = String(draft.docNo);
       }
-      if (draft.docDate && elDocDate) {
+      if (restoreDocumentIdentity && draft.docDate && elDocDate) {
         elDocDate.value = String(draft.docDate);
       }
 
@@ -1914,12 +1934,7 @@
       if (chkMpvElec && draft.chkMpvElec !== undefined) chkMpvElec.checked = Boolean(draft.chkMpvElec);
       if (chkMpvUrgent && draft.chkMpvUrgent !== undefined) chkMpvUrgent.checked = Boolean(draft.chkMpvUrgent);
 
-      if (elCustomName && draft.customName !== undefined) {
-        elCustomName.value = String(draft.customName);
-      }
-      if (elCustomPrice && draft.customPrice !== undefined) {
-        elCustomPrice.value = String(draft.customPrice);
-      }
+
       if (elTaxMode && draft.chkTax !== undefined) {
         setSelectValueSafely(elTaxMode, draft.chkTax ? "include_5" : "exclude_5", "include_5");
       }
@@ -1972,8 +1987,8 @@
         chkValve24: Boolean(chkValve24 && chkValve24.checked),
         chkMpvElec: Boolean(chkMpvElec && chkMpvElec.checked),
         chkMpvUrgent: Boolean(chkMpvUrgent && chkMpvUrgent.checked),
-        customName: elCustomName ? elCustomName.value.trim() : "",
-        customPrice: elCustomPrice ? elCustomPrice.value : "0",
+        customName: "",
+        customPrice: "0",
         chkTax: (elTaxMode ? elTaxMode.value : "include_5") === "include_5"
       };
       saveQuoteDraft(snapshot);
@@ -2030,7 +2045,7 @@
       const clientName = (elClientName && elClientName.value.trim()) ? elClientName.value.trim() : "貴社區管理委員會 ／ 貴公司廠務部";
       const contactPerson = (elContactPerson && elContactPerson.value.trim()) ? elContactPerson.value.trim() : "總幹事 ／ 廠務主管 鈞啟";
       const clientAddr = (elClientAddr && elClientAddr.value.trim()) ? elClientAddr.value.trim() : "台北市 / 新北市";
-      const docNo = (elDocNo && elDocNo.value.trim()) ? elDocNo.value.trim() : ("HS-" + yyyy + mm + dd + "-01");
+      const docNo = (elDocNo && elDocNo.value.trim()) ? elDocNo.value.trim() : generatedReference;
       const docDate = (elDocDate && elDocDate.value.trim()) ? elDocDate.value.trim() : (yyyy + "-" + mm + "-" + dd);
       const docYear = /^\d{4}/.test(docDate) ? docDate.slice(0, 4) : yyyy;
 
@@ -2427,50 +2442,8 @@
         });
       }
 
-      // 4. 自訂追加項目或專案折讓（A/B 雙方案與單一方案獨立判定折讓上限提示）
-      let baseSubA = 0;
-      let baseSubB = 0;
-      items.forEach(function (it) {
-        baseSubA += it.priceA;
-        baseSubB += it.priceB;
-      });
-
-      const rawCustomPrice = elCustomPrice ? elCustomPrice.value : "0";
-      const customPriceVal = clampNumber(rawCustomPrice, CUSTOM_PRICE_MIN, CUSTOM_PRICE_MAX, 0);
-      let customPriceA = customPriceVal;
-      let customPriceB = customPriceVal;
-      let isCappedA = false;
-      let isCappedB = false;
-
-      if (customPriceVal < 0) {
-        if (Math.abs(customPriceVal) > baseSubA) {
-          customPriceA = -baseSubA;
-          isCappedA = true;
-        }
-        if (Math.abs(customPriceVal) > baseSubB) {
-          customPriceB = -baseSubB;
-          isCappedB = true;
-        }
-      }
-
-      const isDiscountCappedForMode = (displayMode === "only_a")
-        ? isCappedA
-        : ((displayMode === "only_b") ? isCappedB : (isCappedA || isCappedB));
-
-      const customNameVal = (elCustomName && elCustomName.value.trim())
-        ? elCustomName.value.trim()
-        : (customPriceVal < 0 ? "老客戶續約 ／ 管委會專案核定特別折讓" : "現場特殊管線改造 ／ 追加工程項目");
-
-      if (customPriceVal !== 0) {
-        const capHint = isDiscountCappedForMode ? "（已自動依工程小計上限折抵）" : "";
-        items.push({
-          title: customNameVal,
-          spec: (customPriceVal < 0 ? "老客戶續約或管委會專案核定特別折讓（直接扣抵工程小計）" : "依現場實際人孔高度、管徑或特殊動線追加項目") + capHint,
-          unit: "1 式",
-          priceA: customPriceA,
-          priceB: customPriceB
-        });
-      }
+      // Public prices are computed only from configured service selections.
+      // Special additions or discounts require separate confirmation with 皓盛.
 
       // 計算未稅小計、5%營業稅與含稅總計
       let subA = 0;
@@ -2512,7 +2485,7 @@
             "<th class='num-col' style='width:11.5%;'>B方案：平日併單</th>" +
             "</tr>";
         } else {
-          const singleTitle = (displayMode === "only_a") ? "A方案：指定時段專車單價" : "B方案：平日併單單價";
+          const singleTitle = (displayMode === "only_a") ? "A方案：指定時段專車項目金額" : "B方案：平日併單項目金額";
           outThead.innerHTML = "<tr>" +
             "<th style='width:6%;'>項次</th>" +
             "<th style='width:36%;'>工程與機電檢修項目</th>" +
@@ -2660,7 +2633,7 @@
       const shareUrl = buildShareableQuoteUrl(currentSnapshot);
 
       // 啟動智慧單頁 A4 動態縮放計算（傳入工項數與自訂文字總長度）
-      const extraTextLen = clientName.length + clientAddr.length + customNameVal.length;
+      const extraTextLen = clientName.length + clientAddr.length;
       autoFitSinglePagePDF(items.length, extraTextLen);
 
       // 回傳純文字摘要供 LINE 複製使用（附帶一鍵還原報價單連結與計算參考碼）
@@ -2685,7 +2658,7 @@
            "\n⚡ B方案（平日併單）：NT$ " + totalB.toLocaleString() + (includeTax ? " (含5%稅，現省$" + savedDiff.toLocaleString() + ")" : " (未稅，現省$" + savedDiff.toLocaleString() + ")"))
         : ("報價總金額：NT$ " + ((displayMode === "only_a") ? totalA : totalB).toLocaleString() + (includeTax ? " (含5%營業稅)" : " (未稅)"));
 
-      return "📄 報價單號：" + docNo + " [計算參考:" + verifyHash + "]" +
+      return "📄 報價參考編號（非公司流水號）：" + docNo + " [計算參考:" + verifyHash + "]" +
         "\n🏢 客戶寶號：" + clientName + "（" + contactPerson + "）" +
         "\n📍 案場位置：" + clientAddr +
         "\n-------------------------\n" +
@@ -2730,17 +2703,37 @@
       });
     });
 
-    // 跨分頁 storage 與 bfcache pageshow 即時同步保護
+    function clearVisibleDraft() {
+      if (renderRafId !== null) cancelAnimationFrame(renderRafId);
+      renderRafId = null;
+      isComposing = false;
+      form.reset();
+      if (elClientName) elClientName.value = "";
+      if (elContactPerson) elContactPerson.value = "";
+      if (elClientAddr) elClientAddr.value = "";
+      if (elDocNo) elDocNo.value = generatedReference;
+      if (elDocDate) elDocDate.value = yyyy + "-" + mm + "-" + dd;
+      renderQuotation(false);
+    }
+    if (btnClearDraft) {
+      btnClearDraft.addEventListener("click", function () {
+        clearQuoteDraft();
+        clearVisibleDraft();
+        showToast("已清除此瀏覽器保存的報價草稿與目前客戶資料；已下載或傳送的文件不受影響。");
+      });
+    }
+
+    // Clear stale on-screen customer data as well as storage after removal/expiry.
     window.addEventListener("pageshow", function (e) {
-      if (e && e.persisted && loadQuoteDraft()) {
-        applyStoredDraft(false, "");
+      if (e && e.persisted) {
+        if (loadQuoteDraft()) applyStoredDraft(false, "");
+        else clearVisibleDraft();
       }
     });
     window.addEventListener("storage", function (e) {
-      if (!e || e.key === DRAFT_STORAGE_KEY || e.key === null) {
-        if (loadQuoteDraft()) {
-          applyStoredDraft(false, "");
-        }
+      if (!e || e.key === DRAFT_STORAGE_KEY || e.key === null || LEGACY_STORAGE_KEYS.indexOf(e.key) !== -1) {
+        if (loadQuoteDraft()) applyStoredDraft(false, "");
+        else clearVisibleDraft();
       }
     });
 
@@ -2857,9 +2850,8 @@
           clientName: params.get("cname") || "貴社區管理委員會 ／ 貴公司廠務部",
           contactPerson: params.get("cperson") || "總幹事 ／ 廠務主管 鈞啟",
           clientAddr: params.get("caddr") || "台北市 / 新北市",
-          customName: params.get("custn") || (Number(params.get("custp")) < 0
-            ? "自訂折讓（名稱請另填）" : "自訂追加（名稱請另填）"),
-          customPrice: params.get("custp") || "0"
+          customName: "",
+          customPrice: "0"
         };
         if (params.get("ton")) urlPatch.wtTonnage = params.get("ton");
         if (params.get("mat")) urlPatch.wtMaterial = params.get("mat");
@@ -3044,6 +3036,13 @@
       applyStoredDraft(Boolean(fromParamVal), fromParamVal);
     } else {
       renderQuotation(false);
+    }
+
+    if (btnLoadDraft) {
+      btnLoadDraft.addEventListener("click", function () {
+        applyStoredDraft(true, "", true);
+        showToast("已載入儲存草稿（含原日期與參考編號），請確認是否適用本次報價。");
+      });
     }
 
     // 若從試算器跳轉而來，自動收合已選好的重複規格欄並將視線聚焦至報價單工作台

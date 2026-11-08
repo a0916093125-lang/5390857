@@ -70,8 +70,7 @@
         "priceCurrency": "TWD",
         "lowPrice": "3000",
         "highPrice": "68000",
-        "offerCount": "15",
-        "priceValidUntil": "2027-12-31"
+        "offerCount": "15"
       },
       "provider": {
         "@type": "LocalBusiness",
@@ -216,9 +215,10 @@
 <input class="calc-input" id="q-client-addr" placeholder="例如：新北市板橋區..." type="text" value="台北市 / 新北市"/>
 </div>
 </div>
+<button class="btn btn-outline" id="btn-q-load-draft" type="button">延續已儲存草稿（含原日期與參考編號）</button>
 <div class="grid-2" style="gap:12px;margin-bottom:16px;">
 <div>
-<label class="calc-label" for="q-doc-no">報價單編號</label>
+<label class="calc-label" for="q-doc-no">報價參考編號（非公司流水號）</label>
 <input class="calc-input" id="q-doc-no" type="text" value=""/>
 </div>
 <div>
@@ -450,21 +450,9 @@
 </div>
 </div>
 </div>
-<div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.35);border-radius:10px;padding:14px;margin-bottom:16px;">
-<div style="font-weight:800;color:#fbbf24;font-size:0.92rem;margin-bottom:10px;">4. ✍️ 現場自訂追加項目或老客戶折讓（選填，負數為折讓）</div>
-<div class="quote-custom-pair">
-<div>
-<label class="calc-label" for="q-custom-name" style="font-size:0.84rem;color:#cbd5e1;">自訂追加或折讓項目名稱</label>
-<input class="calc-input" id="q-custom-name" placeholder="例如：更換頂樓白鐵人孔蓋 ／ 老客戶專案折讓" type="text" value=""/>
-</div>
-<div>
-<label class="calc-label" for="q-custom-price" style="font-size:0.84rem;color:#cbd5e1;">金額（元，折讓請填負數如 -1000）</label>
-<input class="calc-input" id="q-custom-price" placeholder="0" step="500" type="number" value="0"/>
-</div>
-</div>
-</div>
+<p class="quote-custom-policy">特殊追加或折讓請與皓盛另行確認，公開報價單不接受自行輸入的調價。</p>
 <div class="calc-form-group">
-<label class="calc-label" for="q-tax-mode">5. 統一發票 5% 營業稅計算方式</label>
+<label class="calc-label" for="q-tax-mode">4. 統一發票 5% 營業稅計算方式</label>
 <select class="calc-select" id="q-tax-mode">
 <option selected="" value="include_5">✓ 自動外加 5% 營業稅並列出含稅總價（管委會/商場報帳標準）</option>
 <option value="exclude_5">僅顯示未稅金額（於備註欄註明開立統一發票另加 5% 營業稅）</option>
@@ -480,9 +468,10 @@
 <button aria-describedby="quote-share-privacy-note" class="btn btn-outline" id="btn-q-share-url" style="width:100%;border-color:rgba(56,189,248,0.5);color:#7dd3fc;" type="button">
               🔗 複製規格與金額連結（不含客戶資料）
             </button>
+<button class="btn btn-outline" id="btn-q-clear-draft" type="button" style="width:100%;" aria-describedby="quote-share-privacy-note">清除此瀏覽器的草稿與客戶資料</button>
 </div>
 <div id="quote-share-fallback" hidden><label class="calc-label" for="quote-share-link-value">請手動複製此規格與金額連結</label><textarea class="calc-input" id="quote-share-link-value" readonly rows="3" aria-describedby="quote-share-privacy-note"></textarea></div>
-<p id="quote-share-privacy-note" style="font-size:0.82rem;color:#cbd5e1;line-height:1.65;margin:10px 0;">還原連結只帶入規格與金額，不含客戶名稱、聯絡人、案場地址或自訂項目名稱；收件者需另填。這些欄位仍保留於本機草稿及列印內容。「複製報價單文字」仍含客戶資料，傳送前請確認收件者。</p>
+<p id="quote-share-privacy-note" style="font-size:0.82rem;color:#cbd5e1;line-height:1.65;margin:10px 0;">還原連結只帶入規格與金額，不含客戶名稱、聯絡人、案場地址或自訂項目名稱；收件者需另填。這些欄位仍保留於本機草稿及列印內容。本機草稿於最後更新 7 天後再次開啟時清除；共用裝置使用後請按「清除此瀏覽器的草稿與客戶資料」。此操作不會刪除已下載或傳送的文件。「複製報價單文字」仍含客戶資料，傳送前請確認收件者。</p>
 <div aria-live="polite" class="qp-live-summary-bar no-print" id="qp-live-summary-bar">
 <span id="qp-live-summary-text">已選 <strong>2</strong> 項｜即時計算 A/B 雙軌總價中...</span>
 <button class="qp-live-jump-btn" id="btn-qp-live-jump" type="button">預覽 A4 報價單 ↓</button>
@@ -513,8 +502,8 @@
 <span class="qp-meta-val" id="qp-out-client">貴社區管理委員會 ／ 貴公司廠務部</span>
 </div>
 <div class="qp-meta-row">
-<span class="qp-meta-label">單號／日期：</span>
-<span class="qp-meta-val"><span id="qp-out-docno">HS-20261101-01</span> ｜ <span id="qp-out-date">2026-11-01（報價單）</span></span>
+<span class="qp-meta-label">參考編號／日期：</span>
+<span class="qp-meta-val"><span id="qp-out-docno">待產生</span> ｜ <span id="qp-out-date">待產生</span></span>
 </div>
 <div class="qp-meta-row">
 <span class="qp-meta-label">聯 絡 人：</span>
@@ -587,7 +576,7 @@
 <div>
 <h3 style="color:#ffffff;margin-bottom:10px;">皓盛有限公司 (Hao Sheng Co., Ltd.)</h3>
 <p>統一編號：90221911｜負責人：李思遠</p>
-<p>【給水機電事業部】：社區大樓與商辦自來水塔清洗消毒、地下蓄水池清洗、完工現場 3 項驗水（餘氯/pH/TDS）、Omron 61F-G2 液位開關與進水蝴蝶閥更換。</p>
+<p>【給水機電事業部】：社區大樓與商辦自來水塔清洗消毒、地下蓄水池清洗、水質檢測依設備需求與雙方確認、Omron 61F-G2 液位開關與進水蝴蝶閥更換。</p>
 <p>【商空水系統事業部】：商用中央空調冷卻水塔清洗保養、良機與跨廠牌水塔散熱材更換、6吋~10吋齒輪式蝴蝶閥更新、東元 TECO F510 變頻器調校。</p>
 <p>【室內空調機電部】：商辦四方吹嵌入式冷氣、吊隱式送風機（FCU）、大型空調箱（AHU）、箱型機與社區公設／團購分離式冷氣深層拆洗、排水與滴水原因檢查。</p>
 <p>【機電馬達與閥件搶修部（會轉都會修！）】：分離式與吊隱式冷氣風鼓馬達培林電容、AHU 空調箱連座軸承大修、水塔播水頭減速機循環泵、揚水加壓馬達與 2"~10" 蝶閥無聲逆止閥搶修。</p>
@@ -630,7 +619,7 @@
 </a>
 </div>
 <script src="assets/pricing-config.js?v=20261108"></script>
-<script src="assets/cad-engine.js?v=20261108-quotation"></script>
+<script src="assets/cad-engine.js?v=quote-risk-20261108-20261108-quotation"></script>
 <section id="hs-analytics-choice" aria-label="網站分析選擇" style="margin:24px auto;padding:16px;max-width:1100px;border:1px solid #64748b;border-radius:12px">
 <p>網站分析選擇：同意後，皓盛會使用 Google Analytics Cookie 統計一般頁面與電話、LINE、服務及估價入口的點擊，協助改善網站。Google 會處理瀏覽器、裝置及網路連線資訊；本網站不把報價內容、姓名、電話、地址或完整來源網址傳入分析。不載入報價頁的分析，也不統計含查詢參數或片段的頁面。不同意不影響估價與聯絡功能。</p>
 <p>同意僅適用於目前這一頁；進入其他頁面須重新選擇。不同意的選擇會盡可能保存在這個瀏覽器，可隨時按「分析設定」變更。Google 分析 Cookie 設定期限為 180 天。<a href="https://policies.google.com/technologies/partner-sites?hl=zh-TW" target="_blank" rel="noopener noreferrer">Google 如何使用資料</a></p>

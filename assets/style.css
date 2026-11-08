@@ -584,7 +584,7 @@ h1.main-title {
 
 .qp-doc-type {
   display: inline-block;
-  background: #0284c7;
+  background: #0369a1;
   color: #ffffff;
   font-weight: 900;
   font-size: 1.05rem;
@@ -2623,3 +2623,8 @@ h1.main-title {
     padding: 8px 10px !important;
   }
 }
+
+
+/* Accessible small-print contrast and non-color link identification. */
+.site-footer p[style*="color:#64748b"] { color: #94a3b8 !important; }
+#hs-analytics-choice a { text-decoration: underline; text-underline-offset: 0.15em; }
