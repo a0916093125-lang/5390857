@@ -672,10 +672,40 @@ Realise 瑞林 RP-258 冷氣自動排水器「到府換裝＋管路疏通＋空�
 @media(max-width:860px){.hs-analytics-settings-wrap{padding-bottom:calc(160px + env(safe-area-inset-bottom));margin-bottom:0}}
 @media print{#hs-analytics-choice,#hs-analytics-settings,.hs-analytics-settings-wrap{display:none!important}}
 </style>
-<script defer src="assets/analytics.js?v=consent-remember-20261108"></script>
+<script>
+// Privacy controls stay usable even when analytics scripts are blocked.
+(function () {
+  var panel = document.getElementById('hs-analytics-choice');
+  var settings = document.getElementById('hs-analytics-settings');
+  if (!panel || !settings) return;
+  panel.querySelectorAll('[data-analytics-choice]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      panel.hidden = true;
+      // A refusal must remain effective even if the optional analytics file was blocked.
+      if (button.getAttribute('data-analytics-choice') === 'denied') {
+        window['ga-disable-G-DXSNKRSPBE'] = true;
+        var now = Date.now(), expires = now + 15552000000;
+        try { localStorage.setItem('hs_analytics_consent_v2', JSON.stringify({choice:'denied',chosenAt:now,expires:expires})); } catch (_) {}
+        try { sessionStorage.setItem('hs_analytics_denied', String(expires)); } catch (_) {}
+        try { document.cookie = 'hs_analytics_denied=' + expires + '; Max-Age=15552000; path=/; SameSite=Lax; Secure'; } catch (_) {}
+        try { var channel = new BroadcastChannel('hs-analytics-consent-v1'); channel.postMessage('denied'); channel.close(); } catch (_) {}
+      }
+      var details = panel.querySelector('details');
+      if (details) details.open = false;
+    });
+  });
+  settings.addEventListener('click', function () {
+    panel.hidden = false;
+    panel.scrollIntoView({block:'nearest'});
+    panel.querySelector('[data-analytics-choice]').focus();
+  });
+})();
+</script>
+<script defer src="assets/analytics.js?v=consent-collapse-20261108"></script>
 
 
 </body>
 </html>
+
 
 
