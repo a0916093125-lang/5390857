@@ -33,6 +33,7 @@ function initChoiceCards(){
  const root=document.documentElement;root.classList.add('hs-choice-enhanced');form.classList.add('hs-choice-form');
  const result=isQuote?document.getElementById('qp-paper-sheet'):form.querySelector('.calc-result-box');
  const quoteActions=isQuote?document.getElementById('quote-actions'):null;
+ const layoutStatus=isQuote?document.getElementById('qp-layout-status'):null;
  const gate=document.createElement('p');gate.className='hs-choice-progress';gate.setAttribute('role','status');gate.textContent='請逐項點選符合案場的規格，完成後下方直接顯示報價單。';form.prepend(gate);
  const warning=document.createElement('p');warning.className='hs-choice-warning';warning.textContent='選配預設不勾選，請依本次需求選取。不確定或未列出的規格，請用右下角 LINE 傳照片詢問，勿套用相近選項。';form.prepend(warning);
  const safety=document.createElement('label');safety.className='calc-check-item hs-entry-check';safety.hidden=true;
@@ -94,7 +95,7 @@ function initChoiceCards(){
  }
  function invalidate(){
   generation++;clearTimeout(timer);if(frame){frame.remove();frame=null;}
-  if(preview)preview.hidden=true;if(isQuote){result.hidden=true;quoteActions.hidden=true;const live=document.getElementById('qp-live-summary-bar');if(live)live.hidden=true;}
+  if(preview)preview.hidden=true;if(isQuote){result.hidden=true;quoteActions.hidden=true;if(layoutStatus)layoutStatus.hidden=true;const live=document.getElementById('qp-live-summary-bar');if(live)live.hidden=true;}
  }
  function renderPreview(scroll){
   const detail={};form.dispatchEvent(new CustomEvent('hs:quote-request',{detail}));
@@ -124,7 +125,7 @@ function initChoiceCards(){
   if(!ready){completed=false;invalidate();return;}
   const pendingPrice=window.hsPendingPrice?.();if(pendingPrice){completed=false;invalidate();gate.textContent=pendingPrice;return;}
   const first=!completed;completed=true;
-  if(isQuote){result.hidden=false;quoteActions.hidden=false;const live=document.getElementById('qp-live-summary-bar');if(live)live.hidden=false;if(first&&user)result.scrollIntoView({behavior:'smooth',block:'start'});}
+  if(isQuote){result.hidden=false;quoteActions.hidden=false;if(layoutStatus)layoutStatus.hidden=false;const live=document.getElementById('qp-live-summary-bar');if(live)live.hidden=false;if(first&&user)result.scrollIntoView({behavior:'smooth',block:'start'});}
   else{invalidate();timer=setTimeout(()=>renderPreview(first&&user),180);}
  }
  form.addEventListener('change',e=>{

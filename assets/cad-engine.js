@@ -2287,7 +2287,7 @@ window.hsPendingPrice = function () { return ''; };
         });
         if (extraCnt > 0) {
           items.push({
-            title: acCfg.name + "同案場追加清洗台數（追加 " + extraCnt + " 台量販優惠）",
+            title: acCfg.name + "同案場追加清洗台數（追加 " + extraCnt + " 台）",
             spec: "同趟工程車連續施作追加台數（每台 A:$" + acCfg.unitA.toLocaleString() + " / B:$" + acCfg.unitB.toLocaleString() + "）",
             unit: extraCnt + " 台",
             priceA: extraCnt * acCfg.unitA,
