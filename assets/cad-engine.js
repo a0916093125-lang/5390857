@@ -434,9 +434,11 @@ window.hsPendingPrice = function () { return ''; };
  function initBeforeAfterSlider() {
  const sliders = document.querySelectorAll(".js-ba-slider");
  sliders.forEach(function (slider) {
+ if (slider.dataset.baBound === "true") return;
  const beforeLayer = slider.querySelector(".ba-before");
  const handle = slider.querySelector(".ba-handle");
  if (!beforeLayer || !handle) return;
+ slider.dataset.baBound = "true";
 
  let isDragging = false;
  let currentPct = 50;
