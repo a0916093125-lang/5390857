@@ -1,11 +1,11 @@
 /* ==========================================================================
-   皓盛有限公司 (5390857.com) - 原生輕量級建築機電滾動穿越視窗樣式表 v25.0
-   零影片負擔・原生 CSS3 Grid/Flexbox・支援 prefers-reduced-motion 無障礙模式
+   皓盛有限公司 (5390857.com) - 原生 3D 沉浸式建築機電滾動穿越視窗樣式表 v26.0
+   HTML5 Canvas 60fps 3D 隧道・Z 軸景深縮放・全螢幕劇場切換・雙端 RWD Sticky 防破版
    ========================================================================== */
 
 .mep-world-section {
   position: relative;
-  padding: 48px 0;
+  padding: 52px 0;
   border-top: 1px solid #1e354b;
 }
 
@@ -18,10 +18,17 @@
   margin-bottom: 28px;
 }
 
+.mep-world-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
 .mep-world-tabs {
   display: inline-flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   background: #0b1526;
   border: 1px solid #243c54;
   border-radius: 10px;
@@ -51,23 +58,92 @@
   background: rgba(14, 165, 233, 0.18);
   border-color: #38bdf8;
   color: #f8fafc;
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.22);
+}
+
+.mep-theater-btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 15px;
+  border-radius: 10px;
+  border: 1px solid rgba(94, 234, 212, 0.45);
+  background: linear-gradient(135deg, rgba(13, 30, 52, 0.95) 0%, rgba(8, 20, 38, 0.95) 100%);
+  color: #5eead4;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mep-theater-btn:hover {
+  border-color: #38bdf8;
+  color: #f8fafc;
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.28);
+}
+
+.mep-theater-btn[aria-pressed="true"] {
+  background: rgba(14, 165, 233, 0.24);
+  border-color: #38bdf8;
+  color: #ffffff;
 }
 
 .mep-world-grid {
   display: grid;
-  grid-template-columns: 1.08fr 0.92fr;
+  grid-template-columns: 1.12fr 0.88fr;
   gap: 28px;
   align-items: start;
 }
 
 .mep-stage-sticky {
   position: sticky;
-  top: 104px;
-  background: linear-gradient(160deg, #0d182b 0%, #070e1b 100%);
+  top: 96px;
+  z-index: 15;
+  background: linear-gradient(160deg, #0d182b 0%, #060b16 100%);
   border: 1px solid #29435c;
   border-radius: 16px;
+  padding: 18px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 22px 54px rgba(0, 0, 0, 0.6);
+  transition: padding 0.3s ease, border-color 0.3s ease;
+}
+
+/* 沉浸全寬劇場模式 (Theater Mode) */
+.mep-world-section.is-theater-mode .mep-world-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.mep-world-section.is-theater-mode .mep-stage-sticky {
+  top: 78px;
   padding: 20px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 20px 50px rgba(0, 0, 0, 0.5);
+  border-color: rgba(56, 189, 248, 0.55);
+}
+
+.mep-world-section.is-theater-mode .mep-visual-viewport {
+  min-height: 490px;
+}
+
+.mep-world-section.is-theater-mode .mep-scene-img-wrap,
+.mep-world-section.is-theater-mode .mep-hvac-diagram,
+.mep-world-section.is-theater-mode .ba-slider-wrap {
+  height: 365px !important;
+  min-height: 365px !important;
+}
+
+.mep-world-section.is-theater-mode .mep-story-track {
+  position: relative;
+  z-index: 20;
+  max-width: 680px;
+  margin: -120px auto 0;
+  padding: 0 16px;
+}
+
+.mep-world-section.is-theater-mode .mep-story-step {
+  background: rgba(11, 22, 40, 0.84);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 .mep-telemetry-bar {
@@ -76,22 +152,52 @@
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-  padding-bottom: 14px;
-  margin-bottom: 16px;
+  padding-bottom: 12px;
+  margin-bottom: 14px;
   border-bottom: 1px solid rgba(148, 163, 184, 0.16);
   font-family: var(--font-mono, monospace);
   font-size: 12px;
   color: #94a3b8;
 }
 
+.mep-telemetry-left,
+.mep-telemetry-right {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.mep-hud-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 10px #34d399;
+}
+
 .mep-telemetry-zone {
   color: #5eead4;
   font-weight: 800;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
+}
+
+.mep-hud-metric {
+  background: rgba(15, 27, 46, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.24);
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 11px;
+  color: #94a3b8;
+  font-variant-numeric: tabular-nums;
+}
+
+.mep-hud-metric strong {
+  color: #e0f2fe;
 }
 
 .mep-progress-track {
-  width: 110px;
+  width: 96px;
   height: 6px;
   background: #16263d;
   border-radius: 999px;
@@ -102,12 +208,12 @@
   height: 100%;
   width: 25%;
   background: linear-gradient(90deg, #38bdf8 0%, #34d399 100%);
-  transition: width 0.12s linear;
+  transition: width 0.08s linear;
 }
 
 .mep-stage-split {
   display: grid;
-  grid-template-columns: 190px minmax(0, 1fr);
+  grid-template-columns: 184px minmax(0, 1fr);
   gap: 16px;
   align-items: stretch;
 }
@@ -134,6 +240,11 @@
   transition: opacity 0.25s ease;
 }
 
+.mep-svg-zone:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: 2px;
+}
+
 .mep-svg-zone rect.zone-bg {
   transition: fill 0.25s ease, stroke 0.25s ease;
 }
@@ -150,40 +261,112 @@
 }
 
 .mep-camera-lens {
-  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.14s linear;
   pointer-events: none;
 }
 
+/* 3D 視覺主視窗：底層 Canvas + 前景 Z 軸透視層疊 */
 .mep-visual-viewport {
   position: relative;
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid #28425c;
-  background: #070d19;
-  min-height: 340px;
+  background: #050a14;
+  min-height: 365px;
+  perspective: 1100px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
+}
+
+.mep-3d-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.mep-canvas-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: radial-gradient(circle at 50% 42%, transparent 28%, rgba(5, 10, 20, 0.72) 100%);
+  pointer-events: none;
+}
+
+.mep-viewport-hud {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+  font-family: var(--font-mono, monospace);
+}
+
+.mep-hud-pill {
+  background: rgba(6, 12, 24, 0.84);
+  border: 1px solid rgba(94, 234, 212, 0.45);
+  color: #5eead4;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+}
+
+.mep-hud-spec {
+  background: rgba(6, 12, 24, 0.78);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  color: #cbd5e1;
+  font-size: 10.5px;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.mep-scene-stack {
+  position: relative;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  min-height: 365px;
+  display: grid;
+  grid-template-areas: "stack";
 }
 
 .mep-scene-pane {
-  display: none;
+  grid-area: stack;
+  display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 100%;
   height: 100%;
-  flex: 1;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(0, 14px, -90px) scale(0.94);
+  transition: opacity 0.42s cubic-bezier(0.16, 1, 0.3, 1), transform 0.48s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.42s ease;
+  will-change: opacity, transform;
 }
 
 .mep-scene-pane.is-active {
-  display: flex;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0) scale(1);
 }
 
 .mep-scene-img-wrap {
   position: relative;
   width: 100%;
-  height: 235px;
+  height: 245px;
   overflow: hidden;
-  background: #091326;
+  background: transparent;
 }
 
 .mep-scene-img {
@@ -191,25 +374,38 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  opacity: 0.84;
+  mix-blend-mode: lighten;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+}
+
+.mep-scene-pane.is-active .mep-scene-img {
+  transform: scale(var(--mep-zoom-scale, 1.03));
 }
 
 .mep-scene-tag {
   position: absolute;
   top: 12px;
   left: 12px;
-  background: rgba(8, 14, 28, 0.88);
-  border: 1px solid rgba(56, 189, 248, 0.45);
+  z-index: 5;
+  background: rgba(8, 14, 28, 0.9);
+  border: 1px solid rgba(56, 189, 248, 0.5);
   color: #e0f2fe;
   font-size: 12px;
   font-weight: 700;
   padding: 4px 10px;
   border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
 }
 
 .mep-scene-caption {
+  position: relative;
+  z-index: 5;
   padding: 14px 16px;
-  background: #0b1628;
-  border-top: 1px solid #1e334a;
+  background: rgba(9, 18, 34, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(56, 189, 248, 0.24);
 }
 
 .mep-scene-caption strong {
@@ -227,9 +423,9 @@
 }
 
 .mep-hvac-diagram {
-  height: 235px;
-  padding: 18px;
-  background: radial-gradient(circle at 80% 20%, rgba(14, 165, 233, 0.16), transparent 60%), #081223;
+  height: 245px;
+  padding: 42px 16px 14px;
+  background: transparent;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
@@ -237,31 +433,33 @@
 }
 
 .mep-hvac-box {
-  background: rgba(15, 26, 46, 0.9);
-  border: 1px solid #27425e;
+  background: rgba(11, 21, 38, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(56, 189, 248, 0.35);
   border-radius: 8px;
-  padding: 12px;
+  padding: 11px 12px;
 }
 
 .mep-hvac-box span {
   display: block;
   font-family: var(--font-mono, monospace);
-  font-size: 11px;
+  font-size: 10.5px;
   color: #5eead4;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .mep-hvac-box strong {
   display: block;
-  font-size: 14px;
+  font-size: 13.5px;
   color: #f1f5f9;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .mep-hvac-box small {
   display: block;
-  font-size: 12px;
-  color: #9fb2cc;
+  font-size: 11.8px;
+  color: #cbd5e1;
   line-height: 1.45;
 }
 
@@ -276,18 +474,19 @@
   border-radius: 14px;
   background: #0f1b2e;
   border: 1px solid #243c54;
-  transition: border-color 0.22s ease, background 0.22s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
   scroll-margin-top: 128px;
 }
 
 .mep-story-step.is-active {
   border-color: #38bdf8;
   background: linear-gradient(180deg, #13253e 0%, #0f1b2e 100%);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.42), 0 0 0 1px rgba(56, 189, 248, 0.2);
 }
 
 .mep-step-meta {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 8px;
@@ -376,13 +575,20 @@
 .zone-dot-sky     { background: #38bdf8; }
 .zone-dot-violet  { background: #a78bfa; }
 
+/* 平板與手機雙端 RWD Sticky 鎖定體驗升級（修復原本手機滑動看不見舞台變化的問題） */
 @media (max-width: 960px) {
   .mep-world-grid {
     grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
   }
   .mep-stage-sticky {
-    position: relative;
-    top: 0;
+    position: sticky;
+    top: 66px;
+    z-index: 25;
+    padding: 12px;
+  }
+  .mep-story-step {
+    scroll-margin-top: 390px;
   }
 }
 
@@ -393,19 +599,67 @@
   .mep-Tower-svg-box {
     display: none;
   }
+  .mep-telemetry-bar {
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    font-size: 11px;
+  }
+  .mep-hud-metric:nth-of-type(2) {
+    display: none;
+  }
+  .mep-visual-viewport,
+  .mep-scene-stack {
+    min-height: 270px;
+  }
+  .mep-scene-img-wrap,
+  .ba-slider-wrap.js-ba-slider {
+    height: 175px !important;
+    min-height: 175px !important;
+  }
   .mep-hvac-diagram {
     grid-template-columns: minmax(0, 1fr);
-    height: auto;
+    height: 175px;
+    padding: 32px 10px 8px;
+    overflow-y: auto;
+    gap: 6px;
+  }
+  .mep-hvac-box {
+    padding: 8px 10px;
+  }
+  .mep-hvac-box small {
+    display: none;
+  }
+  .mep-viewport-hud .mep-hud-spec {
+    display: none;
+  }
+  .mep-scene-caption {
+    padding: 10px 12px;
+  }
+  .mep-scene-caption strong {
+    font-size: 14px;
+  }
+  .mep-scene-caption p {
+    font-size: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   .mep-story-step {
-    padding: 20px;
+    padding: 18px;
+    scroll-margin-top: 335px;
+  }
+  .mep-theater-btn {
+    display: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .mep-camera-lens,
   .mep-progress-fill,
-  .mep-story-step {
+  .mep-story-step,
+  .mep-scene-pane,
+  .mep-scene-img {
     transition: none !important;
   }
 }

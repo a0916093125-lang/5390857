@@ -32,7 +32,7 @@
 <link href="assets/style.css?v=20261113" rel="stylesheet"/>
 <link href="assets/stage1-preview.css?v=20261113" rel="stylesheet"/>
 <link href="assets/mobile-ux.css?v=20261113" rel="stylesheet"/>
-<link href="assets/mep-scroll-world.css?v=20261113" rel="stylesheet"/>
+<link href="assets/mep-scroll-world.css?v=20261114" rel="stylesheet"/>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -216,28 +216,38 @@
     </div>
   </section>
 
-  <!-- 原生輕量級建築機電滾動穿越舞台 (Scroll-Driven MEP World) -->
-  <section id="mep-scroll-world" aria-labelledby="mep-world-heading" class="mep-world-section">
+  <!-- 原生 3D 沉浸式建築機電滾動穿越舞台 (Scroll-Driven 3D MEP World v26.0) -->
+  <section id="mep-scroll-world" aria-labelledby="mep-world-heading" class="mep-world-section" data-view-mode="split">
     <div class="mep-world-header">
       <div class="stage1-section-head" style="margin-bottom:0;">
-        <p class="stage1-eyebrow">BUILDING MEP INSPECTION WORLD</p>
-        <h2 id="mep-world-heading" style="font-size:28px;color:#f3f7fc;margin:0 0 10px;">從頂樓散熱水塔到地下室蓄水池，全系統滾動巡檢</h2>
-        <p style="margin:0;">向下滾動或點選樓層標籤，檢視各樓層設備維保重點、案場實拍紀錄與清洗前後對比。</p>
+        <p class="stage1-eyebrow">3D SCROLL-DRIVEN MEP INSPECTION WORLD</p>
+        <h2 id="mep-world-heading" style="font-size:28px;color:#f3f7fc;margin:0 0 10px;">從頂樓散熱水塔到地下室蓄水池，3D 縱深滾動巡檢</h2>
+        <p style="margin:0;">向下滾動滑鼠或點選樓層標籤，跟隨 3D 透視鏡頭垂直穿越各樓層機電核心、檢視案場實拍與清洗前後拉桿對比。</p>
       </div>
-      <div class="mep-world-tabs" role="tablist" aria-label="建築樓層機電系統切換">
-        <button class="mep-world-tab" type="button" role="tab" aria-selected="true">RF 頂樓冷卻塔</button>
-        <button class="mep-world-tab" type="button" role="tab" aria-selected="false">3F-12F 商空冷氣</button>
-        <button class="mep-world-tab" type="button" role="tab" aria-selected="false">MECH 馬達泵閥</button>
-        <button class="mep-world-tab" type="button" role="tab" aria-selected="false">B2 蓄水池對比</button>
+      <div class="mep-world-controls">
+        <div class="mep-world-tabs" role="tablist" aria-label="建築樓層機電系統切換">
+          <button class="mep-world-tab" type="button" role="tab" aria-selected="true" data-zone-index="0">RF 頂樓冷卻塔</button>
+          <button class="mep-world-tab" type="button" role="tab" aria-selected="false" data-zone-index="1">3F-12F 商空冷氣</button>
+          <button class="mep-world-tab" type="button" role="tab" aria-selected="false" data-zone-index="2">MECH 馬達泵閥</button>
+          <button class="mep-world-tab" type="button" role="tab" aria-selected="false" data-zone-index="3">B2 蓄水池對比</button>
+        </div>
+        <button id="mep-theater-toggle" class="mep-theater-btn" type="button" aria-pressed="false" title="切換全寬沉浸劇場模式與雙欄檢視">
+          <svg class="ui-icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+          <span id="mep-theater-label">沉浸劇場展開</span>
+        </button>
       </div>
     </div>
 
     <div class="mep-world-grid">
       <div class="mep-stage-sticky">
         <div class="mep-telemetry-bar">
-          <span>SECTION: <strong id="mep-active-zone-label" class="mep-telemetry-zone">RF / COOLING TOWER</strong></span>
-          <div style="display:flex;align-items:center;gap:8px;">
-            <span>DEPTH</span>
+          <div class="mep-telemetry-left">
+            <span class="mep-hud-dot" aria-hidden="true"></span>
+            <span>ZONE: <strong id="mep-active-zone-label" class="mep-telemetry-zone">RF / COOLING TOWER</strong></span>
+          </div>
+          <div class="mep-telemetry-right">
+            <span class="mep-hud-metric">ELEV <strong id="mep-hud-elevation">+42.0m RF</strong></span>
+            <span class="mep-hud-metric">FRAME <strong id="mep-hud-frame">001 / 180</strong></span>
             <div class="mep-progress-track" aria-hidden="true"><div id="mep-scroll-progress-fill" class="mep-progress-fill"></div></div>
           </div>
         </div>
@@ -249,7 +259,7 @@
               <line class="mep-flow-pipe" x1="146" y1="36" x2="146" y2="324" stroke="#38bdf8" stroke-width="2.2"/>
               <line class="mep-flow-pipe" x1="34" y1="54" x2="34" y2="318" stroke="#34d399" stroke-width="1.8"/>
 
-              <g class="mep-svg-zone is-active">
+              <g class="mep-svg-zone is-active" data-zone-index="0" role="button" tabindex="0" aria-label="切換至 RF 頂樓冷卻水塔">
                 <rect class="zone-bg" x="22" y="18" width="136" height="74" rx="7" fill="rgba(15,27,46,0.8)" stroke="#334e68"/>
                 <text x="32" y="38" fill="#5eead4" font-size="10" font-weight="800">RF ROOFTOP</text>
                 <circle cx="90" cy="60" r="16" fill="none" stroke="#38bdf8" stroke-width="1.6"/>
@@ -257,14 +267,14 @@
                 <text x="32" y="82" fill="#cbd5e1" font-size="10">冷卻水塔・播水頭</text>
               </g>
 
-              <g class="mep-svg-zone">
+              <g class="mep-svg-zone" data-zone-index="1" role="button" tabindex="0" aria-label="切換至 3F-12F 商空冷氣與空調箱">
                 <rect class="zone-bg" x="22" y="104" width="136" height="74" rx="7" fill="rgba(15,27,46,0.8)" stroke="#334e68"/>
                 <text x="32" y="124" fill="#5eead4" font-size="10" font-weight="800">3F-12F OFFICE</text>
                 <rect x="68" y="132" width="44" height="24" rx="4" fill="none" stroke="#7dd3fc" stroke-width="1.5"/>
                 <text x="32" y="168" fill="#cbd5e1" font-size="10">空調箱・四方吹FCU</text>
               </g>
 
-              <g class="mep-svg-zone">
+              <g class="mep-svg-zone" data-zone-index="2" role="button" tabindex="0" aria-label="切換至 MECH 機房馬達軸承與大口徑蝶閥">
                 <rect class="zone-bg" x="22" y="190" width="136" height="74" rx="7" fill="rgba(15,27,46,0.8)" stroke="#334e68"/>
                 <text x="32" y="210" fill="#5eead4" font-size="10" font-weight="800">MECH ROOM</text>
                 <circle cx="76" cy="232" r="11" fill="none" stroke="#fbbf24" stroke-width="1.6"/>
@@ -272,7 +282,7 @@
                 <text x="32" y="254" fill="#cbd5e1" font-size="10">馬達軸承・大蝶閥</text>
               </g>
 
-              <g class="mep-svg-zone">
+              <g class="mep-svg-zone" data-zone-index="3" role="button" tabindex="0" aria-label="切換至 B2 地下室 RC 蓄水池清洗對比">
                 <rect class="zone-bg" x="22" y="276" width="136" height="66" rx="7" fill="rgba(15,27,46,0.8)" stroke="#334e68"/>
                 <text x="32" y="295" fill="#5eead4" font-size="10" font-weight="800">B2 RESERVOIR</text>
                 <path d="M58 314c10-5 22 5 32 0s22-5 32 0" fill="none" stroke="#34d399" stroke-width="1.8"/>
@@ -286,69 +296,82 @@
           </div>
 
           <div class="mep-visual-viewport">
-            <div class="mep-scene-pane is-active">
-              <div class="mep-scene-img-wrap">
-                <img class="mep-scene-img" src="assets/project-cooling-tower.webp" width="800" height="500" loading="lazy" decoding="async" alt="商用空調冷卻水塔現場保養與管路閥件檢視"/>
-                <span class="mep-scene-tag">01 / 頂樓散熱水系統</span>
-              </div>
-              <div class="mep-scene-caption">
-                <strong>大型空調與冷卻水塔清洗保養</strong>
-                <p>執行風機斷電掛牌（LOTO）、散水頭疏通、散熱材定壓沖洗與底盤吸泥；中南部大型案場可洽詢全台排程。</p>
-              </div>
+            <!-- 底層 60fps HTML5 Canvas 3D 機電透視穿越隧道＆序列幀雙棲渲染器 -->
+            <canvas id="mep-3d-canvas" class="mep-3d-canvas" aria-hidden="true"></canvas>
+            <div class="mep-canvas-vignette" aria-hidden="true"></div>
+
+            <!-- 頂部 HUD 鏡頭遙測浮水印 -->
+            <div class="mep-viewport-hud" aria-hidden="true">
+              <span id="mep-hud-cam-mode" class="mep-hud-pill">3D CAD TUNNEL + LIVE PHOTO</span>
+              <span id="mep-hud-telemetry-spec" class="mep-hud-spec">LOTO ISOLATED / 30 FPS LERP</span>
             </div>
 
-            <div class="mep-scene-pane">
-              <div class="mep-hvac-diagram">
-                <div class="mep-hvac-box">
-                  <span>COMMERCIAL AHU / FCU</span>
-                  <strong>商辦與廠房年度維保</strong>
-                  <small>依設備清單、運轉時數與停機條件規劃定期清洗與點檢紀錄</small>
+            <!-- 4 幕 Z 軸景深縮放交疊實拍與動態圖層 -->
+            <div class="mep-scene-stack">
+              <div class="mep-scene-pane is-active" data-scene-index="0">
+                <div class="mep-scene-img-wrap">
+                  <img class="mep-scene-img" src="assets/project-cooling-tower.webp" width="800" height="500" loading="lazy" decoding="async" alt="商用空調冷卻水塔現場保養與管路閥件檢視"/>
+                  <span class="mep-scene-tag">01 / 頂樓散熱水系統 (RF +42.0m)</span>
                 </div>
-                <div class="mep-hvac-box">
-                  <span>DRAINAGE &amp; LOTO</span>
-                  <strong>機板防護與排水疏通</strong>
-                  <small>施工前確認斷電與機板防護，清除集水盤生物膜並檢查排水器</small>
-                </div>
-                <div class="mep-hvac-box" style="grid-column: 1 / -1;">
-                  <span>SPLIT AC 4-UNIT PACKAGE</span>
-                  <strong>家用分離式四台包套（可與隔壁鄰居團購）</strong>
-                  <small>未滿四台以四台計價；四方吹、吊隱式 FCU、箱型機與 AHU 依各自包套方案計價</small>
+                <div class="mep-scene-caption">
+                  <strong>大型空調與冷卻水塔清洗保養</strong>
+                  <p>執行風機斷電掛牌（LOTO）、散水頭疏通、散熱材定壓沖洗與底盤吸泥；中南部大型案場可洽詢全台排程。</p>
                 </div>
               </div>
-              <div class="mep-scene-caption">
-                <strong>室內空調末端與年度契約評估</strong>
-                <p>涵蓋四方吹、吊隱式送風機、大型空調箱與分離式包套；零件更換與故障維修另行確認。</p>
-              </div>
-            </div>
 
-            <div class="mep-scene-pane">
-              <div class="mep-scene-img-wrap">
-                <img class="mep-scene-img" src="assets/project-motor-pump.webp" width="800" height="500" loading="lazy" decoding="async" alt="機房馬達泵浦軸承與管路閥件檢修實景"/>
-                <span class="mep-scene-tag">03 / 北部旋轉機電與閥件</span>
+              <div class="mep-scene-pane" data-scene-index="1">
+                <div class="mep-hvac-diagram">
+                  <div class="mep-hvac-box">
+                    <span>COMMERCIAL AHU / FCU</span>
+                    <strong>商辦與廠房年度維保</strong>
+                    <small>依設備清單、運轉時數與停機條件規劃定期清洗與點檢紀錄</small>
+                  </div>
+                  <div class="mep-hvac-box">
+                    <span>DRAINAGE &amp; LOTO</span>
+                    <strong>機板防護與排水疏通</strong>
+                    <small>施工前確認斷電與機板防護，清除集水盤生物膜並檢查排水器</small>
+                  </div>
+                  <div class="mep-hvac-box" style="grid-column: 1 / -1;">
+                    <span>SPLIT AC 4-UNIT PACKAGE</span>
+                    <strong>家用分離式四台包套（可與隔壁鄰居團購）</strong>
+                    <small>未滿四台以四台計價；四方吹、吊隱式 FCU、箱型機與 AHU 依各自包套方案計價</small>
+                  </div>
+                </div>
+                <div class="mep-scene-caption">
+                  <strong>室內空調末端與年度契約評估</strong>
+                  <p>涵蓋四方吹、吊隱式送風機、大型空調箱與分離式包套；背景即時演算冰水盤管與四方吹氣流場。</p>
+                </div>
               </div>
-              <div class="mep-scene-caption">
-                <strong>馬達、風機、泵浦與 2"~10" 蝶閥檢修</strong>
-                <p>服務雙北、桃園、新竹以北。先確認異音、漏水或水錘原因，同項設備維修達兩件享全部維修件數九折。</p>
-              </div>
-            </div>
 
-            <div class="mep-scene-pane">
-              <div class="ba-slider-wrap" style="height:235px;min-height:235px;border:0;border-radius:0;" tabindex="0" role="slider" aria-label="蓄水池清洗前後實拍對比拉桿（左右拖曳或按方向鍵檢視）" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
-                <div class="ba-layer ba-after">
-                  <img class="ba-photo" src="assets/ba-after.webp" width="1000" height="610" loading="lazy" decoding="async" alt="蓄水池高壓沖洗後之潔淨池壁實拍"/>
+              <div class="mep-scene-pane" data-scene-index="2">
+                <div class="mep-scene-img-wrap">
+                  <img class="mep-scene-img" src="assets/project-motor-pump.webp" width="800" height="500" loading="lazy" decoding="async" alt="機房馬達泵浦軸承與管路閥件檢修實景"/>
+                  <span class="mep-scene-tag">03 / 北部旋轉機電與閥件 (B1 -4.5m)</span>
                 </div>
-                <div class="ba-layer ba-before">
-                  <img class="ba-photo" src="assets/ba-before.webp" width="1000" height="610" loading="lazy" decoding="async" alt="蓄水池清洗前底部沉積鐵鏽黃泥實拍"/>
-                </div>
-                <span class="ba-badge ba-badge-before">清洗前現況</span>
-                <span class="ba-badge ba-badge-after">清洗後實拍</span>
-                <div class="ba-handle" aria-hidden="true">
-                  <div class="ba-handle-circle">↔</div>
+                <div class="mep-scene-caption">
+                  <strong>馬達、風機、泵浦與 2"~10" 蝶閥檢修</strong>
+                  <p>服務雙北、桃園、新竹以北。先確認異音、漏水或水錘原因，同項設備維修達兩件享全部維修件數九折。</p>
                 </div>
               </div>
-              <div class="mep-scene-caption">
-                <strong>自來水塔與蓄水池清洗（左右拖曳上方拉桿對比）</strong>
-                <p>依水塔構造、是否入槽與現場危害評估安全配置；完工交付清洗前後對比照片供管委會與業主查驗。</p>
+
+              <div class="mep-scene-pane" data-scene-index="3">
+                <div class="ba-slider-wrap js-ba-slider" style="height:245px;min-height:245px;border:0;border-radius:0;" tabindex="0" role="slider" aria-label="蓄水池清洗前後實拍對比拉桿（左右拖曳或按方向鍵檢視）" aria-valuemin="5" aria-valuemax="95" aria-valuenow="50">
+                  <div class="ba-layer ba-after">
+                    <img class="ba-photo" src="assets/ba-after.webp" width="1000" height="610" loading="lazy" decoding="async" alt="蓄水池高壓沖洗後之潔淨池壁實拍"/>
+                  </div>
+                  <div class="ba-layer ba-before">
+                    <img class="ba-photo" src="assets/ba-before.webp" width="1000" height="610" loading="lazy" decoding="async" alt="蓄水池清洗前底部沉積鐵鏽黃泥實拍"/>
+                  </div>
+                  <span class="ba-badge ba-badge-before">清洗前現況</span>
+                  <span class="ba-badge ba-badge-after">清洗後實拍</span>
+                  <div class="ba-handle" aria-hidden="true">
+                    <div class="ba-handle-circle">↔</div>
+                  </div>
+                </div>
+                <div class="mep-scene-caption">
+                  <strong>自來水塔與蓄水池清洗（左右拖曳上方拉桿對比）</strong>
+                  <p>依水塔構造、是否入槽與現場危害評估安全配置；完工交付清洗前後對比照片供管委會與業主查驗。</p>
+                </div>
               </div>
             </div>
           </div>
@@ -356,7 +379,7 @@
       </div>
 
       <div class="mep-story-track">
-        <article class="mep-story-step is-active">
+        <article class="mep-story-step is-active" data-step-index="0">
           <div class="mep-step-meta">
             <span class="mep-step-code">01 / ROOFTOP COOLING</span>
             <span class="mep-step-price">平日 NT$ 5,500 起 ｜ 專車 NT$ 7,000 起</span>
@@ -371,7 +394,7 @@
           <a class="mep-step-link" href="cooling-tower.html">進入冷卻水塔清洗試算與規格頁 →</a>
         </article>
 
-        <article class="mep-story-step">
+        <article class="mep-story-step" data-step-index="1">
           <div class="mep-step-meta">
             <span class="mep-step-code">02 / COMMERCIAL &amp; SPLIT AC</span>
             <span class="mep-step-price">平日 NT$ 10,000 起 ｜ 專車 NT$ 12,500 起</span>
@@ -386,7 +409,7 @@
           <a class="mep-step-link" href="ac-cleaning.html">進入冷氣清洗與年度維保說明頁 →</a>
         </article>
 
-        <article class="mep-story-step">
+        <article class="mep-story-step" data-step-index="2">
           <div class="mep-step-meta">
             <span class="mep-step-code">03 / NORTHERN MEP REPAIR</span>
             <span class="mep-step-price">檢修 NT$ 2,500 起 ｜ 同項滿 2 件 9 折</span>
@@ -401,7 +424,7 @@
           <a class="mep-step-link" href="motor-pump-valve.html">進入馬達泵浦與閥件檢修試算頁 →</a>
         </article>
 
-        <article class="mep-story-step">
+        <article class="mep-story-step" data-step-index="3">
           <div class="mep-step-meta">
             <span class="mep-step-code">04 / WATER RESERVOIR</span>
             <span class="mep-step-price">小塔 NT$ 3,800 起 ｜ 華廈雙池 NT$ 10,500 起</span>
@@ -784,7 +807,7 @@
 
 <script src="assets/pricing-config.js?v=20261113"></script>
 <script src="assets/cad-engine.js?v=20261113"></script>
-<script defer src="assets/mep-scroll-world.js?v=20261113"></script>
+<script defer src="assets/mep-scroll-world.js?v=20261114"></script>
 
 <section id="hs-analytics-choice" aria-label="網站分析選擇">
   <p>允許 Google Analytics 分析瀏覽與入口點擊，協助改善網站？不同意也能正常估價與聯絡。</p>
