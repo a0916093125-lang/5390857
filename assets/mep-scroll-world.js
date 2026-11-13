@@ -1,10 +1,9 @@
 /**
- * 皓盛有限公司 (5390857.com) - 全棟空調與水系統立體縱深巡檢引擎 v28.0
+ * 皓盛有限公司 (5390857.com) - 全棟空調與水系統立體縱深巡檢引擎 v29.0
  * 效能與視覺升級重點：
  * 1. 按需渲染 (Render-on-Demand)：僅在滾動進度實際變化時啟動 requestAnimationFrame，手指停下自動休眠 (0% GPU 閒置耗電)
  * 2. 零 Layout Thrashing：於 resize 時預先快取舞台絕對座標，scroll 事件僅讀取 window.scrollY，手機滑動極致順暢
- * 3. 廢除舊版蜘蛛網同心圓，升級為「Apple Pro 級黑曜石建築透視光稜走廊 (Architectural Volumetric Light & Prism)」
- *    預先快取漸層物件，零每幀記憶體配置 (Zero GC Pressure)
+ * 3. 徹底移除右側垂直剖面 SVG 圖層與每幀 DOM 屬性更新，畫面完全置中對稱
  * 4. 雙棲支援：放入真實 WebP 序列幀時自動啟用併發佇列載入並無縫接管渲染
  */
 (function () {
@@ -24,8 +23,6 @@
 
     const steps = Array.from(section.querySelectorAll(".mep-story-step"));
     const tabs = Array.from(section.querySelectorAll(".mep-world-tab"));
-    const svgZones = Array.from(section.querySelectorAll(".mep-svg-zone"));
-    const cameraLens = document.getElementById("mep-camera-lens");
 
     const zoneLabel = document.getElementById("mep-active-zone-label");
     const progressFill = document.getElementById("mep-scroll-progress-fill");
@@ -47,27 +44,26 @@
     const zoneMeta = [
       {
         title: "頂樓・大型冷卻水塔清洗",
-        primaryColor: [56, 189, 248],   // 冰水青藍
-        secondaryColor: [45, 212, 191]  // 湖水翠綠
+        primaryColor: [56, 189, 248],
+        secondaryColor: [45, 212, 191]
       },
       {
         title: "3F–12F・商用空調與冷氣保養",
-        primaryColor: [14, 165, 233],   // 空調純藍
-        secondaryColor: [125, 211, 252] // 銀白冷光
+        primaryColor: [14, 165, 233],
+        secondaryColor: [125, 211, 252]
       },
       {
         title: "機房・馬達水泵與大口徑蝶閥",
-        primaryColor: [245, 158, 11],   // 工業琥珀金
-        secondaryColor: [56, 189, 248]  // 機電冷藍
+        primaryColor: [245, 158, 11],
+        secondaryColor: [56, 189, 248]
       },
       {
         title: "地下室・自來水塔與蓄水池清洗",
-        primaryColor: [16, 185, 129],   // 潔淨水質綠
-        secondaryColor: [94, 234, 212]  // 透亮水光青
+        primaryColor: [16, 185, 129],
+        secondaryColor: [94, 234, 212]
       }
     ];
 
-    // 預先生成 28 顆微距景深懸浮光點 (Bokeh Motes)
     const bokehMotes = [];
     for (let i = 0; i < 28; i++) {
       bokehMotes.push({
@@ -83,13 +79,11 @@
     let currentRatio = 0;
     let rafId = null;
 
-    // 預先快取舞台座標與漸層物件，避免 scroll 期間觸發 reflow 或配置記憶體
     let cachedStageTop = 0;
     let cachedMaxScroll = 1;
     let cachedBgGrad = null;
     let cachedCoreGlow = null;
 
-    // WebP 序列幀快取
     const sequenceFrames = new Array(CONFIG.totalFrames);
     let sequenceAvailable = false;
     let loadedCount = 0;
@@ -194,7 +188,6 @@
       const parent = canvas.parentElement;
       if (!parent) return;
       const rect = parent.getBoundingClientRect();
-      // 手機端鎖定 dpr <= 1.5 大幅減輕填充率負擔，桌機鎖定 <= 2
       const maxDpr = isMobile ? 1.5 : 2;
       const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
       const w = Math.max(280, Math.floor(rect.width * dpr));
@@ -202,7 +195,7 @@
       if (canvas.width !== w || canvas.height !== h) {
         canvas.width = w;
         canvas.height = h;
-        const cx = isMobile ? w * 0.5 : w * 0.54;
+        const cx = w * 0.5;
         const cy = isMobile ? h * 0.34 : h * 0.48;
         rebuildGradients(w, h, cx, cy);
       }
@@ -222,12 +215,11 @@
       ];
     }
 
-    // Apple Pro 級「黑曜石建築光稜立體空間 (Architectural Volumetric Light & Prism)」渲染器
     function drawArchitecturalPrismWorld(ratio) {
       if (!ctx || !canvas) return;
       const w = canvas.width;
       const h = canvas.height;
-      const cx = isMobile ? w * 0.5 : w * 0.54;
+      const cx = w * 0.5;
       const cy = isMobile ? h * 0.34 : h * 0.48;
 
       if (!cachedBgGrad || !cachedCoreGlow) {
@@ -242,13 +234,11 @@
       const rgbMain = lerpColor(zCurr.primaryColor, zNext.primaryColor, zFrac);
       const rgbSub = lerpColor(zCurr.secondaryColor, zNext.secondaryColor, zFrac);
 
-      // 1. 黑曜石深海漸層底圖 + 中心體積光暈
       ctx.fillStyle = cachedBgGrad;
       ctx.fillRect(0, 0, w, h);
       ctx.fillStyle = cachedCoreGlow;
       ctx.fillRect(0, 0, w, h);
 
-      // 2. 建築透視天地格柵走廊 (Architectural Perspective Floor & Ceiling Planes)
       const horizonSpan = w * 0.16;
       const gridCols = 6;
       ctx.lineWidth = Math.max(1, w * 0.0011);
@@ -258,16 +248,13 @@
         const normX = c / gridCols;
         const nearX = cx + normX * w * 0.85;
         const farX = cx + normX * horizonSpan;
-        // 頂部天幕結構線
         ctx.moveTo(farX, cy - h * 0.06);
         ctx.lineTo(nearX, 0);
-        // 底部地坪結構線
         ctx.moveTo(farX, cy + h * 0.06);
         ctx.lineTo(nearX, h);
       }
       ctx.stroke();
 
-      // 3. 推進式 3D 建築光稜門框 (Volumetric Architectural Portals - 圓角倒角門廊與流體光束)
       const portalCount = 9;
       const travel = (ratio * 4.0) % 1;
       const maxPortalW = Math.max(w, h) * 1.05;
@@ -285,7 +272,6 @@
         const chamfer = Math.min(pw, ph) * 0.14;
         const alpha = Math.sin(depth * Math.PI) * 0.52;
 
-        // 建築八角倒角門廊外框
         ctx.strokeStyle = "rgba(" + rgbMain[0] + "," + rgbMain[1] + "," + rgbMain[2] + "," + alpha.toFixed(3) + ")";
         ctx.lineWidth = Math.max(1, 2.6 * pScale);
         ctx.beginPath();
@@ -300,7 +286,6 @@
         ctx.closePath();
         ctx.stroke();
 
-        // 門廊兩側高光導流光帶 (Accent Light Pillars)
         const pillarAlpha = alpha * 0.95;
         ctx.strokeStyle = "rgba(" + rgbSub[0] + "," + rgbSub[1] + "," + rgbSub[2] + "," + pillarAlpha.toFixed(3) + ")";
         ctx.lineWidth = Math.max(1.5, 4.2 * pScale);
@@ -312,7 +297,6 @@
         ctx.lineTo(x0 + pw, cy + pillarLen);
         ctx.stroke();
 
-        // 頂部與底部建築橫樑光條
         if (i % 2 === 0) {
           const beamLen = pw * 0.22;
           ctx.strokeStyle = "rgba(251, 191, 36, " + (alpha * 0.65).toFixed(3) + ")";
@@ -326,7 +310,6 @@
         }
       }
 
-      // 4. 景深微距懸浮光點 (Bokeh Light Motes)
       for (let m = 0; m < bokehMotes.length; m++) {
         const mote = bokehMotes[m];
         const mDepth = (mote.zOffset + ratio * 3.2) % 1;
@@ -386,10 +369,6 @@
         btn.setAttribute("tabindex", i === clamped ? "0" : "-1");
       });
 
-      svgZones.forEach(function (g, i) {
-        g.classList.toggle("is-active", i === clamped);
-      });
-
       if (zoneLabel) {
         zoneLabel.textContent = zoneMeta[clamped].title;
       }
@@ -398,13 +377,6 @@
     function updateTelemetry(ratio) {
       if (progressFill) {
         progressFill.style.width = Math.max(8, Math.round(ratio * 100)) + "%";
-      }
-      if (!reducedMotion) {
-        section.style.setProperty("--mep-pipe-offset", String(-Math.round(ratio * 180)));
-      }
-      if (cameraLens) {
-        const continuousY = (ratio * 258).toFixed(1);
-        cameraLens.setAttribute("transform", "translate(0, " + continuousY + ")");
       }
     }
 
@@ -429,7 +401,6 @@
       }
     }
 
-    // 零 Layout Thrashing 的極速滾動處理器
     function onScroll() {
       const scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
       const scrolled = Math.max(0, Math.min(cachedMaxScroll, scrollY - cachedStageTop));
@@ -484,18 +455,6 @@
           const prev = (idx - 1 + tabs.length) % tabs.length;
           tabs[prev].focus();
           jumpToZone(prev);
-        }
-      });
-    });
-
-    svgZones.forEach(function (zoneEl, idx) {
-      zoneEl.addEventListener("click", function () {
-        jumpToZone(idx);
-      });
-      zoneEl.addEventListener("keydown", function (e) {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          jumpToZone(idx);
         }
       });
     });

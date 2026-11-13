@@ -1,6 +1,6 @@
 /* ==========================================================================
-   皓盛有限公司 (5390857.com) - 全棟空調與水系統立體縱深巡檢視窗樣式表 v28.0
-   極致絲滑零卡頓架構：移除重度 GPU Filter 模糊合成、預快取光影塗層、100dvh Sticky 鎖定
+   皓盛有限公司 (5390857.com) - 全棟空調與水系統立體縱深巡檢視窗樣式表 v29.0
+   極致絲滑零卡頓架構：移除右側剖面小框、對稱雙欄卡片、預快取光影塗層、100dvh Sticky 鎖定
    ========================================================================== */
 
 .mep-world-bleed {
@@ -153,7 +153,7 @@
   background: linear-gradient(90deg, #38bdf8, #34d399);
 }
 
-/* 頂部乾淨中文導覽狀態列（完全移除無關英文遙測代號） */
+/* 頂部乾淨中文導覽狀態列 */
 .mep-top-hud {
   position: absolute;
   top: 74px;
@@ -236,59 +236,6 @@
   color: #ffffff;
 }
 
-/* 右側大樓樓層快速切換圖（全中文標示） */
-.mep-tower-hud {
-  position: absolute;
-  right: clamp(14px, 2.5vw, 32px);
-  top: 52%;
-  transform: translateY(-50%);
-  z-index: 14;
-  width: 172px;
-  padding: 12px 10px;
-  border-radius: 14px;
-  background: rgba(7, 14, 28, 0.94);
-  border: 1px solid rgba(56, 189, 248, 0.3);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
-}
-
-.mep-tower-hud-title {
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  color: #94a3b8;
-  text-align: center;
-  margin-bottom: 8px;
-}
-
-.mep-building-svg {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.mep-svg-zone {
-  cursor: pointer;
-}
-
-.mep-svg-zone rect.zone-bg {
-  transition: fill 0.2s ease, stroke 0.2s ease;
-}
-
-.mep-svg-zone.is-active rect.zone-bg {
-  fill: rgba(56, 189, 248, 0.22);
-  stroke: #38bdf8;
-  stroke-width: 2;
-}
-
-.mep-flow-pipe {
-  stroke-dasharray: 6 5;
-  stroke-dashoffset: var(--mep-pipe-offset, 0);
-}
-
-.mep-camera-lens {
-  pointer-events: none;
-}
-
 /* 底部樓層快速切換膠囊列 */
 .mep-bottom-dock {
   position: absolute;
@@ -333,7 +280,7 @@
   color: #ffffff;
 }
 
-/* SEO / GEO 語意化服務卡片圖層 */
+/* SEO / GEO 語意化服務卡片圖層（左右完全對稱平衡） */
 .mep-narrative-layer {
   position: relative;
   z-index: 6;
@@ -358,10 +305,9 @@
 
 .mep-story-step[data-align="right"] {
   justify-content: flex-end;
-  padding-right: clamp(206px, 17vw, 240px);
 }
 
-/* 高質感金屬光澤深海卡片（不使用耗能的 Filter，手機滑動零掉幀） */
+/* 高質感金屬光澤深海卡片 */
 .mep-story-card {
   width: min(465px, 100%);
   padding: 22px 24px;
@@ -412,7 +358,7 @@
   font-weight: 700;
 }
 
-/* 第 2 幕商空空調系統服務格柵（純中文） */
+/* 第 2 幕商空空調系統服務格柵 */
 .mep-hvac-mini-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -550,16 +496,6 @@
 .zone-dot-emerald { background: #34d399; }
 .zone-dot-sky     { background: #38bdf8; }
 .zone-dot-violet  { background: #a78bfa; }
-
-@media (max-width: 1024px) {
-  .mep-tower-hud {
-    display: none;
-  }
-  .mep-story-step[data-align="right"] {
-    justify-content: flex-end;
-    padding-right: clamp(16px, 4vw, 32px);
-  }
-}
 
 @media (max-width: 768px) {
   .mep-scroll-stage {
