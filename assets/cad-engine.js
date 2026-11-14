@@ -355,7 +355,7 @@ window.hsPendingPrice = function () { return ''; };
  }
 
  if (syncCopied) {
- showToast("✓ 已自動複製完整報價內容！正在為您開啟 LINE...");
+ showToast("已自動複製完整報價內容！正在為您開啟 LINE...");
  } else {
  showToast("正在為您開啟 LINE 客服專線 0916-093-125...");
  }
@@ -2002,7 +2002,7 @@ window.hsPendingPrice = function () { return ''; };
  const planHint = (draft.scheduleMode === "weekday_35")
  ? "（已同步列出 兩種施工時間方案與您選擇的 平日順路方案平日併單特惠）"
  : "";
- showToast("✓ 已成功載入您剛才儲存的試算與報價規格！" + planHint);
+ showToast("已成功載入您剛才儲存的試算與報價規格！" + planHint);
  }
  }
 
@@ -2737,7 +2737,7 @@ window.hsPendingPrice = function () { return ''; };
  lineItemsText +
  "\n-------------------------\n" +
  priceText +
- (cat === "ac_cleaning" ? "\n✓ 人員、作業方式、範圍與後續服務條件須另行確認" : "\n✓ 人員資格、職安訓練、戒護配置與保險文件，須依實際工程及派工另行核對") +
+ (cat === "ac_cleaning" ? "\n人員、作業方式、範圍與後續服務條件須另行確認" : "\n人員資格、職安訓練、戒護配置與保險文件，須依實際工程及派工另行核對") +
  "\n依客戶填寫的資料報價；若現場條件不同，施工前由雙方確認調整。" +
  "\n還原規格與金額（不含客戶資料及自訂項目名稱）：\n" + shareUrl;
  }
@@ -2894,7 +2894,7 @@ window.hsPendingPrice = function () { return ''; };
  else if (curCat === "cooling_tower") catShort = "商用冷卻水塔與傳動閥件規格";
  else if (curCat === "water_tank") catShort = "自來水塔與給水閥件規格";
  lblToggleSpecs.textContent = collapsed
- ? ("✓ 3. 已自動帶入您剛才選好的" + catShort + "（點此展開微調規格 ▸）")
+ ? ("3. 已自動帶入您剛才選好的" + catShort + "（點此展開微調規格 ▸）")
  : "3. 工程規格與機電加購明細（點此收合規格選單 ▾）";
  }
  }
@@ -3181,7 +3181,7 @@ window.hsPendingPrice = function () { return ''; };
  if (copyConfirmed) return;
  copyConfirmed = true;
  if (manualBox) manualBox.hidden = true;
- showToast("✓ 已複製規格與金額連結；不含客戶資料及自訂項目名稱，開啟後請另填。");
+ showToast("已複製規格與金額連結；不含客戶資料及自訂項目名稱，開啟後請另填。");
  }
  function showManualCopy() {
  if (copyConfirmed) return;

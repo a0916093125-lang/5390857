@@ -16,4 +16,8 @@
  const editable=e=>e&&e.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]),textarea,select');
  document.addEventListener('focusin',e=>{if(mobile.matches&&editable(e.target))root.classList.add('is-editing');});
  document.addEventListener('focusout',()=>setTimeout(()=>{if(!editable(document.activeElement))root.classList.remove('is-editing');},0));
+
+ if('serviceWorker' in navigator && location.protocol === 'https:'){
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js').catch(()=>{});},{once:true});
+ }
 })();

@@ -9,7 +9,7 @@
 
   const CONFIG = {
     version: "25.0",
-    lastUpdated: "2026-11-13",
+    lastUpdated: "2026-11-14",
     company: {
       name: "皓盛有限公司",
       enName: "HAO SHENG CO., LTD.",
