@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hs-5390857-static-v20261114v31';
+const CACHE_NAME = 'hs-5390857-static-v20261114v32';
 const PRECACHE_URLS = [
   '/',
   '/index.html',
@@ -10,16 +10,16 @@ const PRECACHE_URLS = [
   '/quote.html',
   '/llms.txt',
   '/ucp.json',
-  '/assets/style.css?v=20261114v31',
-  '/assets/stage1-preview.css?v=20261114v31',
-  '/assets/mobile-ux.css?v=20261114v31',
-  '/assets/choice-cards.css?v=20261114v31',
-  '/assets/mep-scroll-world.css?v=20261114v31',
-  '/assets/pricing-config.js?v=20261114v31',
-  '/assets/cad-engine.js?v=20261114v31',
-  '/assets/choice-cards.js?v=20261114v31',
-  '/assets/mobile-ux.js?v=20261114v31',
-  '/assets/mep-scroll-world.js?v=20261114v31',
+  '/assets/style.css?v=20261114v32',
+  '/assets/stage1-preview.css?v=20261114v32',
+  '/assets/mobile-ux.css?v=20261114v32',
+  '/assets/choice-cards.css?v=20261114v32',
+  '/assets/mep-scroll-world.css?v=20261114v32',
+  '/assets/pricing-config.js?v=20261114v32',
+  '/assets/cad-engine.js?v=20261114v32',
+  '/assets/choice-cards.js?v=20261114v32',
+  '/assets/mobile-ux.js?v=20261114v32',
+  '/assets/mep-scroll-world.js?v=20261114v32',
   '/assets/favicon.svg'
 ];
 

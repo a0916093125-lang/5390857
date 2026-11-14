@@ -1221,6 +1221,7 @@
       } else if (st.track === "water_tank") {
         const tonVal = st.specVal === "10_ss" ? "10" : st.specVal;
         const matVal = st.specVal === "10_ss" ? "stainless" : "concrete";
+        if (st.specVal === "10_ss") q.set("noentry", "1");
         q.set("cat", "water_tank");
         q.set("ton", tonVal);
         q.set("mat", matVal);
@@ -1263,9 +1264,11 @@
           q.set("addmpv", "1");
           q.set("mpvspec", "rp258_install");
           q.set("mpvtier", "tier_std");
+          q.set("mpvqty", "1");
           draftPatch.chkAddMpv = true;
           draftPatch.mpvSpec = "rp258_install";
           draftPatch.mpvTier = "tier_std";
+          draftPatch.mpvQty = "1";
         }
       }
 

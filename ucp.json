@@ -1,5 +1,5 @@
 {
-  "ucp_version": "2026-01-11",
+  "ucp_version": "2026-03-19",
   "protocol": "Universal Commerce Protocol (UCP)",
   "merchant": {
     "id": "tw-ban-90221911",
@@ -269,6 +269,39 @@
     "線上試算與報價單依填寫資料產生，不代表已完成預約或契約成立；現場條件不同時於施工前由雙方確認調整。",
     "是否適用局限空間作業規定，須依水塔構造、是否入槽及現場危害評估，不以白鐵材質或開放式名稱直接判定免除。",
     "現場餘氯、pH、TDS 僅為水質指標，不能單獨證明飲用水安全。",
-    "技術人員個人證照不等同公司取得特定特許行業登記，須依工程性質於承接前核對。"
+    "技術人員個人證照不等同公司取得特定特許行業登記，須依工程性質於承接前核對。",
+    "25kg 90% TCCA 氯錠僅供工業冷卻水循環系統水質處理耗材詢價（非環境衛生用藥、非飲用水處理藥劑），下單前須核對產品標示、SDS 安全資料表、合法用途及危險品承運條件。"
+  ],
+  "diagnostic_symptom_routing": [
+    {
+      "symptom": "室內機冷氣滴水、出風口漏水、排水管果凍淤泥堵塞或排水器異音故障",
+      "recommended_sku": "HS-RP258-INSTALL",
+      "url": "https://5390857.com/shop.html#rp258-install",
+      "pricing_summary": "瑞林 RP-258 到府換裝＋高壓疏通排水管 NT$3,500／組；搭配冷氣深層拆洗同日順換現折 $1,000 起（平日 +$2,200／專車 +$2,500）。"
+    },
+    {
+      "symptom": "家用分離式冷氣發霉異味、不夠冷，且單戶未滿 4 台想找鄰居湊團購",
+      "recommended_sku": "HS-AC-PACKAGE",
+      "url": "https://5390857.com/ac-cleaning.html",
+      "pricing_summary": "家用分離式 4 台內包套：平日順路 NT$10,000／指定專車 NT$12,500；未滿 4 台仍以 4 台計價，剩餘台數可轉給隔壁鄰居一起湊團購。"
+    },
+    {
+      "symptom": "社區抽水馬達／加壓馬達尖銳培林異音、軸封滴水漏水、馬達轉不停或不啟動",
+      "recommended_sku": "HS-MPV-REPAIR",
+      "url": "https://5390857.com/motor-pump-valve.html",
+      "pricing_summary": "北部常態服務；揚水／加壓馬達耐磨碳化矽機械軸封與培林搶修平日 NT$5,500 起（專車 NT$7,500 起），同項設備滿 2 件享 9 折。"
+    },
+    {
+      "symptom": "商場廠房冰水主機跳高壓、散熱水塔散水頭卡死不轉、散熱膠片結垢",
+      "recommended_sku": "HS-CT-CLEAN",
+      "url": "https://5390857.com/cooling-tower.html",
+      "pricing_summary": "全台大型專案評估；冷卻水塔清洗平日 NT$5,500 起（60~150RT 平日 NT$10,500 起），搭配清洗加購 25kg 工業冷卻水處理用氯錠享 NT$2,900／桶免運。"
+    },
+    {
+      "symptom": "社區大樓定期洗水塔、地下室蓄水池黃泥鐵鏽沉積、水塔溢水或浮球／61F-G2 故障",
+      "recommended_sku": "HS-WT-CLEAN",
+      "url": "https://5390857.com/water-tank.html",
+      "pricing_summary": "10噸內開放式白鐵單塔（全程不入槽）平日 NT$3,800 起；20~50噸華廈上下雙池平日 NT$10,500 起；60~120噸大樓雙池平日 NT$17,500 起。"
+    }
   ]
 }

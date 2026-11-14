@@ -40,6 +40,9 @@ if (applicable(el)) r[key] = options(id);
 rules.share = r;
 }
 const r = rules[from];
+if (from === 'share' && r && r.mpvqty && !params.get('mpvqty')) {
+  return Object.entries(r).every(([key, allowed]) => key === 'mpvqty' ? true : allowed.includes(params.get(key)));
+}
 return !!r && Object.entries(r).every(([key, allowed]) => allowed.includes(params.get(key)));
 }
 const forwarded = validImport();
@@ -89,9 +92,23 @@ preview = document.createElement('section');
 preview.className = 'hs-inline-quote no-print';
 preview.hidden = true;
 preview.id = 'hs-inline-quote';
-preview.innerHTML = '<h2>您的報價單</h2><p class="hs-preview-note">客戶資料尚待填寫，施工條件與排程須另行確認；手機可逐項查看明細。需要加購可回上方選取，不會自動預約、列印或傳送。</p><div class="hs-inline-paper"></div><a class="btn btn-primary hs-open-quote">填寫客戶資料／下載 PDF／LINE 確認</a><p class="hs-preview-status" role="status"></p>';
+preview.innerHTML = '<h2>您的報價單</h2><p class="hs-preview-note">客戶資料尚待填寫，施工條件與排程須另行確認；手機可逐項查看明細。需要加購可回上方選取，不會自動預約、列印或傳送。</p><div class="hs-inline-paper"></div><div class="btn-group" style="margin-top:12px;"><a class="btn btn-primary hs-open-quote">填寫客戶資料／下載 PDF／LINE 確認</a><button type="button" class="btn btn-outline hs-copy-subshare" style="border-color:rgba(94,234,212,0.5);color:#6ee7b7;">複製鄰居湊團購／管委會分享連結</button></div><p class="hs-preview-status" role="status"></p>';
 paper = preview.querySelector('.hs-inline-paper');
 openLink = preview.querySelector('.hs-open-quote');
+const copyShareBtn = preview.querySelector('.hs-copy-subshare');
+if (copyShareBtn) {
+  copyShareBtn.addEventListener('click', () => {
+    const shareHref = openLink && openLink.href ? openLink.href : location.href;
+    const doneMsg = '已複製本方案報價分享連結（不含個資，傳給鄰居湊團購或委員點開即可直接檢視報價單）！';
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(shareHref).then(() => {
+        preview.querySelector('.hs-preview-status').textContent = doneMsg;
+      }).catch(() => {});
+    } else {
+      preview.querySelector('.hs-preview-status').textContent = '分享連結：' + shareHref;
+    }
+  });
+}
 const grid = form.closest('section.grid-2');
 if (grid) grid.after(preview);
 else form.after(preview);

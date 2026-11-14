@@ -44,7 +44,7 @@ if (stateObj.acQty) q.set("acqty", stateObj.acQty);
 if (stateObj.chkAddMpv) q.set("addmpv", "1");
 if (stateObj.mpvSpec) q.set("mpvspec", stateObj.mpvSpec);
 if (stateObj.mpvTier) q.set("mpvtier", stateObj.mpvTier);
-if (stateObj.mpvQty) q.set("mpvqty", stateObj.mpvQty);
+if (stateObj.mpvQty || stateObj.chkAddMpv || stateObj.serviceCategory === "mpv_repair") q.set("mpvqty", stateObj.mpvQty || "1");
 if (stateObj.chkPvcValve) q.set("pvc", "1");
 if (stateObj.chkLevel) q.set("lvl", "1");
 if (stateObj.chkButterfly) q.set("bf", "1");
@@ -65,6 +65,8 @@ if (stateObj.chkValve24) q.set("v24", "1");
 if (stateObj.chkMpvElec) q.set("mpvelec", "1");
 if (stateObj.chkMpvUrgent) q.set("mpvurg", "1");
 q.set("tax", stateObj.chkTax ? "1" : "0");
+const noEntryEl = typeof document !== "undefined" ? document.getElementById("hs-confirm-no-entry") : null;
+if (noEntryEl && noEntryEl.checked) q.set("noentry", "1");
 const quoteBase = window.location && /^https?:$/.test(window.location.protocol)
 ? window.location.origin + window.location.pathname
 : "quote.html";
