@@ -96,3 +96,34 @@ html { scroll-padding-top: 180px; }
 .hero-cta-primary-row{grid-template-columns:1fr;max-width:520px}.service-flow-note{font-size:.86rem;line-height:1.7;color:#b9c8dc;margin:10px 0}.service-related-link{font-size:.88rem;line-height:1.8;margin:14px 0;color:#a7c9db}.service-related-link a{color:inherit;text-decoration:underline}.service-related-link summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:6px}.service-related-link summary:before{content:"＋"}.service-related-link[open] summary:before{content:"－"}.quote-actions{margin:20px 0;padding:20px;border:1px solid #334155;border-radius:12px;background:#0f172a}.quote-actions h2{font-size:1.1rem;margin:0 0 14px;color:#f1f5f9}.quote-actions .btn-group{display:flex;flex-direction:column;gap:12px}.quote-more-actions summary{cursor:pointer;min-height:44px;padding:12px 0;color:#bae6fd}.quote-more-actions button{margin:8px 0}.quote-actions :focus-visible{outline:3px solid #38bdf8;outline-offset:3px}@media(min-width:861px){.mobile-sticky-bar{display:flex!important;left:auto;right:20px;bottom:20px;background:transparent;border:0;padding:0;backdrop-filter:none;width:auto}.mobile-sticky-bar>.btn:not(.btn-line){display:none}.mobile-sticky-bar>.btn-line{width:160px;box-shadow:0 8px 24px #0005;display:flex;flex-direction:column;align-items:center;gap:3px}.mobile-sticky-bar>.btn-line span{display:block;white-space:nowrap}.mobile-sticky-bar>.btn-line .sticky-btn-sub{font-size:.75rem}.nav-link-cta{display:none!important}}@media(max-width:860px){.nav-link-cta{display:none!important}}@media print{.quote-actions,.mobile-sticky-bar{display:none!important}}
 .service-answer-guide{margin:32px 0;padding:20px;border:1px solid #334155;border-radius:16px;background:#0f172a;line-height:1.8}.service-answer-guide p{color:#cbd5e1}.service-answer-guide h3{font-size:1rem;margin:18px 0 4px}.service-answer-guide a{color:#7dd3fc;text-decoration:underline}.service-answer-guide summary{cursor:pointer;min-height:44px;display:flex;align-items:center;color:#e2e8f0}.service-answer-guide :focus-visible{outline:3px solid #38bdf8;outline-offset:3px}@media(max-width:480px){.service-answer-guide{padding:16px}}@media print{.service-answer-guide{display:none}}
 #hs-analytics-choice{box-sizing:border-box;margin:20px auto;padding:16px;width:calc(100% - 32px);max-width:720px;border:1px solid #64748b;border-radius:12px;background:#0f172a;color:#f1f5f9;font-size:14px;line-height:1.6}#hs-analytics-choice[hidden]{display:none!important}#hs-analytics-choice p{margin:0 0 10px}#hs-analytics-choice summary{cursor:pointer;padding:10px 0;color:#bae6fd;min-height:44px;box-sizing:border-box}#hs-analytics-choice details p{margin-top:8px}#hs-analytics-choice a{color:#bae6fd;text-decoration:underline}.hs-analytics-actions{display:flex;gap:12px;margin-top:8px}#hs-analytics-choice button,#hs-analytics-settings{font:inherit;min-height:44px;padding:10px 16px;border:1px solid #94a3b8;border-radius:8px;background:#1e293b;color:#f8fafc;cursor:pointer}#hs-analytics-choice button{flex:1}#hs-analytics-settings{background:transparent;border:0;border-radius:0;color:#94a3b8;font-size:13px;text-decoration:underline;text-underline-offset:3px}#hs-analytics-choice :focus-visible,#hs-analytics-settings:focus-visible{outline:3px solid #38bdf8;outline-offset:3px}@media(max-width:860px){.hs-analytics-settings-wrap{padding-bottom:calc(160px + env(safe-area-inset-bottom));margin-bottom:0}}@media print{#hs-analytics-choice,#hs-analytics-settings,.hs-analytics-settings-wrap{display:none!important}}
+
+
+/* Google Modern Web Guidance 1.0: Cross-Document View Transitions & Content Visibility */
+@view-transition {
+  navigation: auto;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.22s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+}
+@media screen {
+  html {
+    scroll-padding-top: calc(var(--hs-header-offset, 96px) + 18px);
+  }
+  .stage1-section:not(:first-of-type),
+  .faq-section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 540px;
+  }
+}
+@media print {
+  .stage1-section,
+  .faq-section {
+    content-visibility: visible !important;
+    contain-intrinsic-size: none !important;
+  }
+}

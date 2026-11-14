@@ -2421,6 +2421,7 @@ serviceCategory: params.get("cat") || "water_tank",
 customName: "",
 customPrice: "0"
 };
+if (params.get("reg")) urlPatch.region = params.get("reg");
 if (params.get("ton")) urlPatch.wtTonnage = params.get("ton");
 if (params.get("mat")) urlPatch.wtMaterial = params.get("mat");
 if (params.get("pools") !== null) urlPatch.wtPoolCount = params.get("pools");

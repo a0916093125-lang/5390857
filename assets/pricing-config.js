@@ -339,7 +339,38 @@ chkAcDrain: false, chkAcRepair: false, chkAcOutdoor: false, chkAcSteam: false,
 chkValve24: false, chkMpvElec: false, chkMpvUrgent: false,
 includeTax: p.get("tax") !== null ? p.get("tax") === "1" : true
 };
-if (from === "water-tank") {
+if (from === "share") {
+st.cat = p.get("cat") || "water_tank";
+st.wtTon = clampNum(p.get("ton") || 120, 10, 500, 120);
+st.wtMat = p.get("mat") || "concrete";
+st.wtPools = clampNum(p.get("pools") || 0, 0, 2, 0);
+st.ctRt = clampNum(p.get("rt") || 100, 10, 1000, 100);
+st.ctType = p.get("type") || "open_round";
+st.ctCount = clampNum(p.get("cnt") || 0, 0, 2, 0);
+st.acType = p.get("actype") || "cassette";
+st.acQty = p.get("acqty") || "base";
+st.chkAddMpv = p.get("addmpv") === "1";
+st.mpvSpec = p.get("mpvspec") || "split_major";
+st.mpvTier = p.get("mpvtier") || "tier_std";
+st.mpvQty = clampNum(p.get("mpvqty") || 1, 1, 10, 1);
+st.shopMode = p.get("shopmode") || "";
+st.shopQty = clampNum(p.get("shopqty") || 1, 1, 20, 1);
+st.chkPvc = p.get("pvc") === "1";
+st.chkLevel = p.get("lvl") === "1";
+st.chkButterfly = p.get("bf") === "1";
+st.chkFill = p.get("fill") === "1";
+st.chkCtSprinkler = p.get("ctspr") === "1";
+st.chkInverter = p.get("inv") === "1";
+st.chkSgs = p.get("sgs") === "1";
+st.chkChlorine25kg = p.get("cl25") === "1";
+st.chkAcDrain = p.get("acdrain") === "1";
+st.chkAcRepair = p.get("acrepair") === "1";
+st.chkAcOutdoor = p.get("acout") === "1";
+st.chkAcSteam = p.get("acsteam") === "1";
+st.chkValve24 = p.get("v24") === "1";
+st.chkMpvElec = p.get("mpvelec") === "1";
+st.chkMpvUrgent = p.get("mpvurg") === "1";
+} else if (from === "water-tank") {
 st.wtTon = clampNum(p.get("ton") || 120, 10, 500, 120);
 st.wtMat = p.get("mat") || "concrete";
 st.wtPools = clampNum(p.get("pools") || 0, 0, 2, 0);

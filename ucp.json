@@ -1,0 +1,274 @@
+{
+  "ucp_version": "2026-01-11",
+  "protocol": "Universal Commerce Protocol (UCP)",
+  "merchant": {
+    "id": "tw-ban-90221911",
+    "legal_name": "皓盛有限公司",
+    "english_name": "Hao Sheng Co., Ltd.",
+    "tax_id": "90221911",
+    "representative": "李思遠",
+    "domain": "https://5390857.com",
+    "currency": "TWD",
+    "tax_policy": "All base prices are TWD before 5% VAT unless specified; 5% VAT invoice available upon confirmation.",
+    "contact": {
+      "telephone": "+886-916-093-125",
+      "line_id": "0916093125",
+      "line_url": "https://line.me/ti/p/~0916093125",
+      "email": "ssuyuan@kimo.com",
+      "registered_address": "11164 臺北市士林區社子里社正路45巷4弄1號1樓"
+    },
+    "service_coverage": {
+      "regular_mep_and_cleaning": [
+        "臺北市",
+        "新北市",
+        "桃園市",
+        "新竹市",
+        "新竹縣"
+      ],
+      "nationwide_project_assessment": "全台大型商用空調、冷卻水塔與自來水塔蓄水池清洗專案評估"
+    }
+  },
+  "capabilities": [
+    {
+      "type": "catalog.discovery",
+      "endpoint": "https://5390857.com/ucp.json",
+      "llms_summary": "https://5390857.com/llms.txt"
+    },
+    {
+      "type": "quote.interactive_builder",
+      "endpoint": "https://5390857.com/quote.html",
+      "method": "GET",
+      "supported_query_params": [
+        "from",
+        "dmode",
+        "cat",
+        "reg",
+        "ton",
+        "mat",
+        "pools",
+        "rt",
+        "type",
+        "cnt",
+        "actype",
+        "acqty",
+        "addmpv",
+        "mpvspec",
+        "mpvtier",
+        "mpvqty",
+        "shopmode",
+        "shopqty",
+        "cl25",
+        "acdrain",
+        "tax"
+      ],
+      "note": "Generates a non-binding A4 engineering quotation preview based on user inputs; final scope, safety setup, and schedule require mutual confirmation before work."
+    },
+    {
+      "type": "fulfillment.DualTrackScheduling",
+      "plans": {
+        "plan_A_designated": "指定時間方案：依業主指定日期／休館時段專車調度",
+        "plan_B_weekday_route": "平日順路方案：週一至週五彈性順路併單優惠價"
+      }
+    }
+  ],
+  "catalog": [
+    {
+      "id": "HS-CT-CLEAN",
+      "category": "cooling_tower",
+      "name": "商用空調冷卻水塔清洗保養",
+      "url": "https://5390857.com/cooling-tower.html",
+      "coverage": "全台大型專案評估／北部常態服務",
+      "tiers": [
+        {
+          "scale": "50RT 以內開放式圓塔",
+          "price_plan_A": 7000,
+          "price_plan_B": 5500
+        },
+        {
+          "scale": "60~150RT 空調冷卻水塔",
+          "price_plan_A": 13000,
+          "price_plan_B": 10500
+        },
+        {
+          "scale": "200~350RT 大型冷卻水塔",
+          "price_plan_A": 23000,
+          "price_plan_B": 17500
+        },
+        {
+          "scale": "350~500RT+ 特大型冷卻水塔",
+          "price_plan_A": 27000,
+          "price_plan_B": 24000
+        }
+      ],
+      "surcharges": {
+        "open_square_tower": {
+          "plan_A": 1500,
+          "plan_B": 1000
+        },
+        "closed_circuit_tower": {
+          "plan_A": 3000,
+          "plan_B": 2500
+        },
+        "two_towers_rotation": {
+          "plan_A": 4500,
+          "plan_B": 3800
+        },
+        "three_plus_towers_rotation": {
+          "plan_A": 9000,
+          "plan_B": 7500
+        }
+      }
+    },
+    {
+      "id": "HS-AC-PACKAGE",
+      "category": "ac_cleaning",
+      "name": "商用空調年度維保與冷氣包套深層拆洗",
+      "url": "https://5390857.com/ac-cleaning.html",
+      "coverage": "雙北、桃園、新竹以北（大型商用維保可專案洽談）",
+      "rules": "家用分離式冷氣採四台包套，三台以下仍以四台計價，未使用台數可轉給隔壁鄰居團購；不適用於商用其他機型。",
+      "tiers": [
+        {
+          "model": "壁掛分離式冷氣 (含4台內包套)",
+          "price_plan_A": 12500,
+          "price_plan_B": 10000,
+          "extra_unit_A": 3125,
+          "extra_unit_B": 2500
+        },
+        {
+          "model": "吊隱式送風機 FCU (含3台內包套)",
+          "price_plan_A": 13000,
+          "price_plan_B": 10500,
+          "extra_unit_A": 3200,
+          "extra_unit_B": 2800
+        },
+        {
+          "model": "四方吹嵌入式卡式冷氣 (含3台內包套)",
+          "price_plan_A": 13500,
+          "price_plan_B": 11000,
+          "extra_unit_A": 4000,
+          "extra_unit_B": 3500
+        },
+        {
+          "model": "落地箱型冷氣 (含2台內包套)",
+          "price_plan_A": 13500,
+          "price_plan_B": 11000,
+          "extra_unit_A": 4500,
+          "extra_unit_B": 3800
+        },
+        {
+          "model": "大型中央空調箱 AHU (單座專案)",
+          "price_plan_A": 15000,
+          "price_plan_B": 12500,
+          "extra_unit_A": 8500,
+          "extra_unit_B": 7500
+        }
+      ]
+    },
+    {
+      "id": "HS-MPV-REPAIR",
+      "category": "mpv_repair",
+      "name": "北部馬達、風機、水泵與大口徑閥件檢修",
+      "url": "https://5390857.com/motor-pump-valve.html",
+      "coverage": "雙北、桃園、新竹以北",
+      "discount_rule": "同項設備維修達 2 件以上，該維修項目全件數享 9 折（不套用 RP-258 單獨安裝、清洗費或其他加購品）。",
+      "representative_tiers": [
+        {
+          "item": "分離式冷氣電容／步進馬達／軸套檢修",
+          "std_plan_A": 3500,
+          "std_plan_B": 2500
+        },
+        {
+          "item": "分離式／吊隱式 FCU 風鼓馬達與培林更換",
+          "std_plan_A": 6000,
+          "std_plan_B": 4500
+        },
+        {
+          "item": "大型中央空調箱 AHU 連座軸承與皮帶對心大修",
+          "std_plan_A": 30000,
+          "std_plan_B": 28000
+        },
+        {
+          "item": "社區揚水／加壓馬達碳化矽機械軸封與培林搶修",
+          "std_plan_A": 7500,
+          "std_plan_B": 5500
+        },
+        {
+          "item": "2吋~4吋 蝶閥／不鏽鋼無聲逆止閥／軟管抽換",
+          "std_plan_A": 12000,
+          "std_plan_B": 11000
+        },
+        {
+          "item": "6吋~10吋 大口徑齒輪式蝴蝶閥／逆止閥吊裝抽換",
+          "std_plan_A": 24500,
+          "std_plan_B": 22000
+        }
+      ]
+    },
+    {
+      "id": "HS-WT-CLEAN",
+      "category": "water_tank",
+      "name": "全台自來水塔與地下室蓄水池清洗",
+      "url": "https://5390857.com/water-tank.html",
+      "coverage": "全台服務（依案場條件與入槽安全規範評估）",
+      "tiers": [
+        {
+          "scale": "10噸內開放式白鐵單塔（限確認全程不入槽）",
+          "price_plan_A": 4600,
+          "price_plan_B": 3800
+        },
+        {
+          "scale": "10噸內需入槽／FRP／RC 或 20~50噸單棟上下水池",
+          "price_plan_A": 13000,
+          "price_plan_B": 10500
+        },
+        {
+          "scale": "60~120噸標準社區大樓上下水池",
+          "price_plan_A": 23000,
+          "price_plan_B": 17500
+        },
+        {
+          "scale": "150~250噸以上大型社區與商場雙池",
+          "price_plan_A": 27000,
+          "price_plan_B": 24000
+        }
+      ]
+    },
+    {
+      "id": "HS-RP258-INSTALL",
+      "sku": "HS-RP258-INSTALL",
+      "category": "shop_service",
+      "name": "Realise 瑞林 RP-258 分離式冷氣自動排水器到府換裝＋排水管疏通專案",
+      "url": "https://5390857.com/shop.html#rp258-install",
+      "sell_hardware_only": false,
+      "pricing": {
+        "standalone_install_A": 3500,
+        "standalone_install_B": 3500,
+        "combo_with_ac_cleaning_A": 2500,
+        "combo_with_ac_cleaning_B": 2200
+      },
+      "note": "只提供連工帶料到府服務，不單售裸機；產品規格、設備相容性與冷氣檢查範圍於施工前確認。"
+    },
+    {
+      "id": "HS-TCCA90-25KG",
+      "sku": "HS-TCCA90-25KG",
+      "category": "shop_chemical",
+      "name": "工業級 90% TCCA 氯錠（25公斤大桶裝｜用途與標示待確認）",
+      "url": "https://5390857.com/shop.html#chlorine-25kg",
+      "sell_hardware_only": true,
+      "pricing": {
+        "product_price_per_bucket": 2900,
+        "freight_per_bucket": 500,
+        "standalone_shipped_total_per_bucket": 3400,
+        "bundled_with_cooling_tower_cleaning_per_bucket": 2900,
+        "free_shipping_eligible_service": "cooling_tower"
+      },
+      "compliance_notice": "單購每桶商品 2,900 元另加運費 500 元（合計 3,400 元／桶）；僅搭配空調冷卻水塔清洗享每桶 2,900 元免運，其他服務不自動免運。工業用產品不可逕用於飲用水儲水設備，實際標示、SDS、用途與承運條件須先核對。"
+    }
+  ],
+  "safety_and_legal_disclaimers": [
+    "線上試算與報價單依填寫資料產生，不代表已完成預約或契約成立；現場條件不同時於施工前由雙方確認調整。",
+    "是否適用局限空間作業規定，須依水塔構造、是否入槽及現場危害評估，不以白鐵材質或開放式名稱直接判定免除。",
+    "現場餘氯、pH、TDS 僅為水質指標，不能單獨證明飲用水安全。",
+    "技術人員個人證照不等同公司取得特定特許行業登記，須依工程性質於承接前核對。"
+  ]
+}

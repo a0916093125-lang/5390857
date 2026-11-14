@@ -1,45 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://5390857.com/</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://5390857.com/water-tank.html</loc>
-    <lastmod>2026-11-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://5390857.com/assets/haosheng-share.png</image:loc>
+      <image:title>皓盛有限公司商用空調保養與冷卻水塔自來水塔清洗總覽</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://5390857.com/assets/project-cooling-tower.webp</image:loc>
+      <image:title>商用空調冷卻水塔現場保養與管路閥件檢視</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://5390857.com/assets/project-motor-pump.webp</image:loc>
+      <image:title>機房馬達泵浦軸承與管路閥件檢修實景</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://5390857.com/assets/ba-after.webp</image:loc>
+      <image:title>蓄水池高壓沖洗後潔淨池壁實拍</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://5390857.com/cooling-tower.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://5390857.com/assets/og-cooling-tower.jpg</image:loc>
+      <image:title>全台大型商用空調冷卻水塔清洗保養試算</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://5390857.com/ac-cleaning.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://5390857.com/assets/og-ac-cleaning.jpg</image:loc>
+      <image:title>商用空調年度保養與家用分離式冷氣四台團購清洗包套</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://5390857.com/motor-pump-valve.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://5390857.com/assets/og-motor-pump-valve.jpg</image:loc>
+      <image:title>北部馬達風機水泵軸承與大口徑蝴蝶閥檢修試算</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://5390857.com/water-tank.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://5390857.com/assets/og-water-tank.jpg</image:loc>
+      <image:title>全台自來水塔與地下室蓄水池清洗保養試算</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://5390857.com/shop.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://5390857.com/assets/og-shop.jpg</image:loc>
+      <image:title>瑞林 RP-258 冷氣自動排水器到府安裝與 25 公斤氯錠採購</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://5390857.com/quote.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.90</priority>
+    <image:image>
+      <image:loc>https://5390857.com/assets/og-quote.jpg</image:loc>
+      <image:title>皓盛有限公司線上立即估價與 A4 報價單系統</image:title>
+    </image:image>
   </url>
 </urlset>
