@@ -1,11 +1,10 @@
 /**
- * 皓盛有限公司 (5390857.com) - 全棟空調與水系統流體光影縱深巡檢引擎 v30.0
- * 視覺與效能核心：
- * 1. 「Apple Pro 級・深海流體絲綢光帶與無重力水分子散景 (Fluid Aurora Silk & Hydro-Bokeh)」
- *    徹底移除所有中心幾何消失點、直線網格與八角門框，改以立體流體波紋光帶與柔和景深水光斑呈現潔淨水質與順暢氣流意象。
- * 2. 按需渲染 (Render-on-Demand)：僅在滾動進度實際變化時啟動 requestAnimationFrame，手指停下自動休眠 (0% GPU 閒置耗電)。
- * 3. 零 Layout Thrashing：於 resize 時預先快取舞台絕對座標與底層漸層，scroll 事件僅讀取 window.scrollY，手機滑動極致順暢。
- * 4. 雙棲支援：放入真實 WebP 序列幀時自動啟用併發佇列載入並無縫接管渲染。
+ * 皓盛有限公司 (5390857.com) - 全棟空調與水系統立體縱深巡檢引擎 v29.0
+ * 效能與視覺升級重點：
+ * 1. 按需渲染 (Render-on-Demand)：僅在滾動進度實際變化時啟動 requestAnimationFrame，手指停下自動休眠 (0% GPU 閒置耗電)
+ * 2. 零 Layout Thrashing：於 resize 時預先快取舞台絕對座標，scroll 事件僅讀取 window.scrollY，手機滑動極致順暢
+ * 3. 徹底移除右側垂直剖面 SVG 圖層與每幀 DOM 屬性更新，畫面完全置中對稱
+ * 4. 雙棲支援：放入真實 WebP 序列幀時自動啟用併發佇列載入並無縫接管渲染
  */
 (function () {
   "use strict";
@@ -45,51 +44,33 @@
     const zoneMeta = [
       {
         title: "頂樓・大型冷卻水塔清洗",
-        primaryColor: [56, 189, 248],   // 冰水青藍
-        secondaryColor: [45, 212, 191], // 湖水翠綠
-        accentColor: [125, 211, 252]
+        primaryColor: [56, 189, 248],
+        secondaryColor: [45, 212, 191]
       },
       {
         title: "3F–12F・商用空調與冷氣保養",
-        primaryColor: [14, 165, 233],   // 空調純藍
-        secondaryColor: [99, 102, 241], // 深海靛藍
-        accentColor: [186, 230, 253]
+        primaryColor: [14, 165, 233],
+        secondaryColor: [125, 211, 252]
       },
       {
         title: "機房・馬達水泵與大口徑蝶閥",
-        primaryColor: [245, 158, 11],   // 暖琥珀金
-        secondaryColor: [14, 165, 233], // 機電冷藍
-        accentColor: [253, 230, 138]
+        primaryColor: [245, 158, 11],
+        secondaryColor: [56, 189, 248]
       },
       {
         title: "地下室・自來水塔與蓄水池清洗",
-        primaryColor: [16, 185, 129],   // 翡翠淨水綠
-        secondaryColor: [56, 189, 248], // 清澈水光藍
-        accentColor: [167, 243, 208]
+        primaryColor: [16, 185, 129],
+        secondaryColor: [94, 234, 212]
       }
     ];
 
-    // 預先定義 5 道立體流體絲綢光帶參數 (象徵水波與空調氣流，無任何中心消失點)
-    const silkRibbons = [
-      { yBase: 0.24, amp: 0.085, freq: 1.35, speed: 3.4, thickness: 0.16, phaseOffset: 0.0, alphaScale: 0.22 },
-      { yBase: 0.39, amp: 0.105, freq: 1.05, speed: -2.8, thickness: 0.20, phaseOffset: 1.7, alphaScale: 0.18 },
-      { yBase: 0.54, amp: 0.075, freq: 1.60, speed: 4.1, thickness: 0.14, phaseOffset: 3.1, alphaScale: 0.24 },
-      { yBase: 0.69, amp: 0.095, freq: 1.20, speed: -3.2, thickness: 0.18, phaseOffset: 4.5, alphaScale: 0.17 },
-      { yBase: 0.83, amp: 0.065, freq: 1.80, speed: 2.6, thickness: 0.13, phaseOffset: 5.4, alphaScale: 0.20 }
-    ];
-
-    // 預先生成 24 顆黃金比例微距景深水分子散景光斑 (遠、中、近三層柔和圓斑)
-    const hydroBokeh = [];
-    for (let i = 0; i < 24; i++) {
-      const layer = i % 3; // 0: 遠景小光點, 1: 中景柔光斑, 2: 近景大散景
-      hydroBokeh.push({
-        xBase: ((i * 37 + 13) % 100) / 100,
-        yBase: ((i * 61 + 29) % 100) / 100,
-        driftX: (i % 2 === 0 ? 1 : -1) * (0.04 + (i % 5) * 0.012),
-        parallaxY: 0.22 + layer * 0.19,
-        radius: layer === 0 ? (2.5 + (i % 3)) : (layer === 1 ? (7 + (i % 5) * 1.5) : (18 + (i % 4) * 4)),
-        baseAlpha: layer === 0 ? 0.38 : (layer === 1 ? 0.18 : 0.07),
-        useSecondary: i % 2 === 1
+    const bokehMotes = [];
+    for (let i = 0; i < 28; i++) {
+      bokehMotes.push({
+        xNorm: ((i * 61) % 100) / 100 - 0.5,
+        yNorm: ((i * 83) % 100) / 100 - 0.5,
+        zOffset: i / 28,
+        radius: 1.8 + (i % 4) * 1.1
       });
     }
 
@@ -101,6 +82,7 @@
     let cachedStageTop = 0;
     let cachedMaxScroll = 1;
     let cachedBgGrad = null;
+    let cachedCoreGlow = null;
 
     const sequenceFrames = new Array(CONFIG.totalFrames);
     let sequenceAvailable = false;
@@ -188,12 +170,17 @@
       cachedMaxScroll = Math.max(1, stage.offsetHeight - viewH);
     }
 
-    function rebuildBaseGradient(w, h) {
+    function rebuildGradients(w, h, cx, cy) {
       if (!ctx) return;
-      cachedBgGrad = ctx.createLinearGradient(0, 0, w * 0.35, h);
-      cachedBgGrad.addColorStop(0, "#030711");
-      cachedBgGrad.addColorStop(0.48, "#071122");
-      cachedBgGrad.addColorStop(1, "#03060d");
+      cachedBgGrad = ctx.createLinearGradient(0, 0, 0, h);
+      cachedBgGrad.addColorStop(0, "#050b16");
+      cachedBgGrad.addColorStop(0.5, "#081224");
+      cachedBgGrad.addColorStop(1, "#030710");
+
+      cachedCoreGlow = ctx.createRadialGradient(cx, cy, w * 0.01, cx, cy, Math.max(w, h) * 0.58);
+      cachedCoreGlow.addColorStop(0, "rgba(56, 189, 248, 0.22)");
+      cachedCoreGlow.addColorStop(0.45, "rgba(20, 83, 136, 0.08)");
+      cachedCoreGlow.addColorStop(1, "rgba(4, 8, 18, 0)");
     }
 
     function resizeCanvas() {
@@ -208,7 +195,9 @@
       if (canvas.width !== w || canvas.height !== h) {
         canvas.width = w;
         canvas.height = h;
-        rebuildBaseGradient(w, h);
+        const cx = w * 0.5;
+        const cy = isMobile ? h * 0.34 : h * 0.48;
+        rebuildGradients(w, h, cx, cy);
       }
       updateLayoutMetrics();
       scheduleRender();
@@ -226,14 +215,15 @@
       ];
     }
 
-    // Apple Pro 級「深海流體絲綢光帶與水分子散景 (Fluid Aurora Silk & Hydro-Bokeh)」渲染器
-    function drawFluidSilkWorld(ratio) {
+    function drawArchitecturalPrismWorld(ratio) {
       if (!ctx || !canvas) return;
       const w = canvas.width;
       const h = canvas.height;
+      const cx = w * 0.5;
+      const cy = isMobile ? h * 0.34 : h * 0.48;
 
-      if (!cachedBgGrad) {
-        rebuildBaseGradient(w, h);
+      if (!cachedBgGrad || !cachedCoreGlow) {
+        rebuildGradients(w, h, cx, cy);
       }
 
       const scaledZone = Math.max(0, Math.min(2.999, ratio * 3));
@@ -243,99 +233,93 @@
       const zNext = zoneMeta[Math.min(3, zIdx + 1)];
       const rgbMain = lerpColor(zCurr.primaryColor, zNext.primaryColor, zFrac);
       const rgbSub = lerpColor(zCurr.secondaryColor, zNext.secondaryColor, zFrac);
-      const rgbAcc = lerpColor(zCurr.accentColor, zNext.accentColor, zFrac);
 
-      // 1. 深海曜石底圖
       ctx.fillStyle = cachedBgGrad;
       ctx.fillRect(0, 0, w, h);
-
-      // 2. 雙核心無邊界極光環境柔光暈 (隨滾動在畫面兩側柔和漫射，完全無中心靶心感)
-      const orb1X = w * (0.24 + Math.sin(ratio * Math.PI * 1.6) * 0.14);
-      const orb1Y = h * (0.30 + Math.cos(ratio * Math.PI * 1.3) * 0.12);
-      const orb1R = Math.max(w, h) * 0.62;
-      const gradOrb1 = ctx.createRadialGradient(orb1X, orb1Y, 0, orb1X, orb1Y, orb1R);
-      gradOrb1.addColorStop(0, "rgba(" + rgbMain[0] + "," + rgbMain[1] + "," + rgbMain[2] + ", 0.18)");
-      gradOrb1.addColorStop(0.55, "rgba(" + rgbMain[0] + "," + rgbMain[1] + "," + rgbMain[2] + ", 0.05)");
-      gradOrb1.addColorStop(1, "rgba(3, 7, 17, 0)");
-      ctx.fillStyle = gradOrb1;
+      ctx.fillStyle = cachedCoreGlow;
       ctx.fillRect(0, 0, w, h);
 
-      const orb2X = w * (0.76 - Math.cos(ratio * Math.PI * 1.4) * 0.14);
-      const orb2Y = h * (0.68 - Math.sin(ratio * Math.PI * 1.5) * 0.12);
-      const orb2R = Math.max(w, h) * 0.58;
-      const gradOrb2 = ctx.createRadialGradient(orb2X, orb2Y, 0, orb2X, orb2Y, orb2R);
-      gradOrb2.addColorStop(0, "rgba(" + rgbSub[0] + "," + rgbSub[1] + "," + rgbSub[2] + ", 0.15)");
-      gradOrb2.addColorStop(0.55, "rgba(" + rgbSub[0] + "," + rgbSub[1] + "," + rgbSub[2] + ", 0.04)");
-      gradOrb2.addColorStop(1, "rgba(3, 7, 17, 0)");
-      ctx.fillStyle = gradOrb2;
-      ctx.fillRect(0, 0, w, h);
+      const horizonSpan = w * 0.16;
+      const gridCols = 6;
+      ctx.lineWidth = Math.max(1, w * 0.0011);
+      ctx.strokeStyle = "rgba(" + rgbMain[0] + "," + rgbMain[1] + "," + rgbMain[2] + ", 0.13)";
+      ctx.beginPath();
+      for (let c = -gridCols; c <= gridCols; c++) {
+        const normX = c / gridCols;
+        const nearX = cx + normX * w * 0.85;
+        const farX = cx + normX * horizonSpan;
+        ctx.moveTo(farX, cy - h * 0.06);
+        ctx.lineTo(nearX, 0);
+        ctx.moveTo(farX, cy + h * 0.06);
+        ctx.lineTo(nearX, h);
+      }
+      ctx.stroke();
 
-      // 3. 多層次立體流體絲綢光帶 (3D Flowing Hydro-Air Ribbons)
-      const stepX = Math.max(24, Math.floor(w / 28));
-      for (let r = 0; r < silkRibbons.length; r++) {
-        const rib = silkRibbons[r];
-        const phase = rib.phaseOffset + ratio * rib.speed;
-        const baseY = h * (rib.yBase - (ratio - 0.5) * 0.12 * ((r % 2 === 0) ? 1 : -1));
-        const ampY = h * rib.amp;
-        const thickY = h * rib.thickness;
-        const colorArr = (r % 2 === 0) ? rgbMain : rgbSub;
+      const portalCount = 9;
+      const travel = (ratio * 4.0) % 1;
+      const maxPortalW = Math.max(w, h) * 1.05;
+      const maxPortalH = Math.max(w, h) * 0.68;
 
-        const ribbonGrad = ctx.createLinearGradient(0, baseY - ampY, 0, baseY + ampY + thickY);
-        ribbonGrad.addColorStop(0, "rgba(" + colorArr[0] + "," + colorArr[1] + "," + colorArr[2] + "," + rib.alphaScale.toFixed(3) + ")");
-        ribbonGrad.addColorStop(0.5, "rgba(" + colorArr[0] + "," + colorArr[1] + "," + colorArr[2] + "," + (rib.alphaScale * 0.35).toFixed(3) + ")");
-        ribbonGrad.addColorStop(1, "rgba(3, 7, 17, 0)");
+      for (let i = 0; i < portalCount; i++) {
+        const depth = ((i + travel) / portalCount) % 1;
+        const pScale = Math.pow(depth, 2.25);
+        const pw = maxPortalW * pScale;
+        const ph = maxPortalH * pScale;
+        if (pw < 18) continue;
 
-        ctx.fillStyle = ribbonGrad;
+        const x0 = cx - pw * 0.5;
+        const y0 = cy - ph * 0.5;
+        const chamfer = Math.min(pw, ph) * 0.14;
+        const alpha = Math.sin(depth * Math.PI) * 0.52;
+
+        ctx.strokeStyle = "rgba(" + rgbMain[0] + "," + rgbMain[1] + "," + rgbMain[2] + "," + alpha.toFixed(3) + ")";
+        ctx.lineWidth = Math.max(1, 2.6 * pScale);
         ctx.beginPath();
-
-        // 上緣波浪曲線
-        for (let x = 0; x <= w + stepX; x += stepX) {
-          const nx = x / w;
-          const y = baseY +
-            Math.sin(nx * Math.PI * 2 * rib.freq + phase) * ampY +
-            Math.cos(nx * Math.PI * 3.1 - phase * 0.6) * (ampY * 0.35);
-          if (x === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-
-        // 下緣波浪包絡線，圍成絲綢立體切面
-        for (let x = w + stepX; x >= 0; x -= stepX) {
-          const nx = x / w;
-          const y = baseY + thickY +
-            Math.sin(nx * Math.PI * 2 * rib.freq + phase + 0.55) * (ampY * 0.82) +
-            Math.cos(nx * Math.PI * 2.4 - phase * 0.4) * (ampY * 0.4);
-          ctx.lineTo(x, y);
-        }
+        ctx.moveTo(x0 + chamfer, y0);
+        ctx.lineTo(x0 + pw - chamfer, y0);
+        ctx.lineTo(x0 + pw, y0 + chamfer);
+        ctx.lineTo(x0 + pw, y0 + ph - chamfer);
+        ctx.lineTo(x0 + pw - chamfer, y0 + ph);
+        ctx.lineTo(x0 + chamfer, y0 + ph);
+        ctx.lineTo(x0, y0 + ph - chamfer);
+        ctx.lineTo(x0, y0 + chamfer);
         ctx.closePath();
-        ctx.fill();
-
-        // 絲綢光帶頂部細緻高光稜線 (Crest Rim Light)
-        ctx.strokeStyle = "rgba(" + rgbAcc[0] + "," + rgbAcc[1] + "," + rgbAcc[2] + "," + (rib.alphaScale * 1.45).toFixed(3) + ")";
-        ctx.lineWidth = Math.max(1, (isMobile ? 1.2 : 1.8));
-        ctx.beginPath();
-        for (let x = 0; x <= w + stepX; x += stepX) {
-          const nx = x / w;
-          const y = baseY +
-            Math.sin(nx * Math.PI * 2 * rib.freq + phase) * ampY +
-            Math.cos(nx * Math.PI * 3.1 - phase * 0.6) * (ampY * 0.35);
-          if (x === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
         ctx.stroke();
+
+        const pillarAlpha = alpha * 0.95;
+        ctx.strokeStyle = "rgba(" + rgbSub[0] + "," + rgbSub[1] + "," + rgbSub[2] + "," + pillarAlpha.toFixed(3) + ")";
+        ctx.lineWidth = Math.max(1.5, 4.2 * pScale);
+        ctx.beginPath();
+        const pillarLen = ph * 0.24;
+        ctx.moveTo(x0, cy - pillarLen);
+        ctx.lineTo(x0, cy + pillarLen);
+        ctx.moveTo(x0 + pw, cy - pillarLen);
+        ctx.lineTo(x0 + pw, cy + pillarLen);
+        ctx.stroke();
+
+        if (i % 2 === 0) {
+          const beamLen = pw * 0.22;
+          ctx.strokeStyle = "rgba(251, 191, 36, " + (alpha * 0.65).toFixed(3) + ")";
+          ctx.lineWidth = Math.max(1.2, 3.0 * pScale);
+          ctx.beginPath();
+          ctx.moveTo(cx - beamLen, y0);
+          ctx.lineTo(cx + beamLen, y0);
+          ctx.moveTo(cx - beamLen, y0 + ph);
+          ctx.lineTo(cx + beamLen, y0 + ph);
+          ctx.stroke();
+        }
       }
 
-      // 4. 黃金比例微距景深水分子光斑 (Depth-of-Field Hydro Bokeh)
-      const dprScale = Math.min(w, h) / 720;
-      for (let b = 0; b < hydroBokeh.length; b++) {
-        const pt = hydroBokeh[b];
-        const bx = ((pt.xBase + Math.sin(ratio * Math.PI * 2 + b) * pt.driftX + 1) % 1) * w;
-        const by = ((pt.yBase - ratio * pt.parallaxY + 2) % 1) * h;
-        const br = Math.max(1.5, pt.radius * dprScale);
-        const cArr = pt.useSecondary ? rgbSub : rgbAcc;
-
-        ctx.fillStyle = "rgba(" + cArr[0] + "," + cArr[1] + "," + cArr[2] + "," + pt.baseAlpha.toFixed(3) + ")";
+      for (let m = 0; m < bokehMotes.length; m++) {
+        const mote = bokehMotes[m];
+        const mDepth = (mote.zOffset + ratio * 3.2) % 1;
+        const mScale = Math.pow(mDepth, 1.9);
+        const mx = cx + mote.xNorm * w * 1.15 * mScale;
+        const my = cy + mote.yNorm * h * 1.15 * mScale;
+        const mAlpha = Math.sin(mDepth * Math.PI) * 0.45;
+        ctx.fillStyle = "rgba(" + rgbSub[0] + "," + rgbSub[1] + "," + rgbSub[2] + "," + mAlpha.toFixed(3) + ")";
         ctx.beginPath();
-        ctx.arc(bx, by, br, 0, Math.PI * 2);
+        ctx.arc(mx, my, Math.max(1, mote.radius * mScale * 2.1), 0, Math.PI * 2);
         ctx.fill();
       }
     }
@@ -367,7 +351,7 @@
         }
       }
 
-      drawFluidSilkWorld(ratio);
+      drawArchitecturalPrismWorld(ratio);
     }
 
     function activateZone(idx) {
