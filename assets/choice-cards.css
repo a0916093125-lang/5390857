@@ -22,29 +22,23 @@
 @media screen and (max-width:480px) { .hs-choice-grid { gap:8px; } .hs-choice-card { padding:12px 10px; font-size:15px; } .hs-choice-card:has(input:checked) { padding:11px 9px; } .hs-inline-paper .quote-paper-sheet { padding:14px 10px; } }
 @media screen and (max-width:350px) { .hs-choice-grid { grid-template-columns:1fr; } }
 @media print { .hs-choice-progress,.hs-choice-warning,.hs-choice-control,.hs-entry-check,.hs-quote-render-frame,.hs-inline-quote { display:none!important; } }
-
-
-/* Fail closed before any script has loaded. */
 [hidden]{display:none!important}
-
-/* Mobile quotation: one unchanged data table, screen-only stacked item cards.
-   Desktop and print retain native table layout. Hidden headers remain accessible. */
 @media screen and (max-width: 700px) {
-  .quote-paper-sheet { min-width:0; max-width:100%; overflow-wrap:anywhere; }
-  .quote-paper-sheet .qp-table-wrap { overflow:visible; min-width:0; }
-  .quote-paper-sheet .qp-table { display:block; width:100%; min-width:0; border:0; }
-  .quote-paper-sheet .qp-table thead { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
-  .quote-paper-sheet .qp-table tbody { display:block; width:100%; }
-  .quote-paper-sheet .qp-table tbody tr { display:block; margin:0 0 16px; border:1px solid #94a3b8; border-radius:8px; overflow:hidden; background:#fff; }
-  .quote-paper-sheet .qp-table tbody td { display:block; box-sizing:border-box; width:100%; padding:10px 12px; border:0; border-bottom:1px solid #e2e8f0; font-size:15px; line-height:1.65; text-align:left; white-space:normal; overflow-wrap:anywhere; }
-  .quote-paper-sheet .qp-table tbody td::before { content:attr(data-column-label); display:block; font-size:12px; line-height:1.5; color:#475569; font-weight:600; margin-bottom:3px; }
-  .quote-paper-sheet .qp-table tbody td:first-child { background:#e0f2fe; color:#075985; font-weight:700; padding:7px 12px; }
-  .quote-paper-sheet .qp-table tbody td:first-child::before { display:inline; margin-right:8px; }
-  .quote-paper-sheet .qp-table tbody td:nth-child(2) { font-size:16px; }
-  .quote-paper-sheet .qp-table tbody td.num-col { color:#0f172a; background:#f0f9ff; font-size:18px; font-variant-numeric:tabular-nums; white-space:normal; text-align:left; }
-  .quote-paper-sheet .qp-table tbody td:last-child { border-bottom:0; }
-  .quote-paper-sheet .qp-meta-grid, .quote-paper-sheet .qp-total-grid, .quote-paper-sheet .qp-sign-grid { grid-template-columns:minmax(0,1fr); }
-  .quote-paper-sheet .qp-meta-row { flex-wrap:wrap; }
-  .quote-paper-sheet .qp-company-sub { overflow-wrap:anywhere; }
-  .quote-paper-sheet .qp-stamp-box { min-width:0; }
+.quote-paper-sheet { min-width:0; max-width:100%; overflow-wrap:anywhere; }
+.quote-paper-sheet .qp-table-wrap { overflow:visible; min-width:0; }
+.quote-paper-sheet .qp-table { display:block; width:100%; min-width:0; border:0; }
+.quote-paper-sheet .qp-table thead { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.quote-paper-sheet .qp-table tbody { display:block; width:100%; }
+.quote-paper-sheet .qp-table tbody tr { display:block; margin:0 0 16px; border:1px solid #94a3b8; border-radius:8px; overflow:hidden; background:#fff; }
+.quote-paper-sheet .qp-table tbody td { display:block; box-sizing:border-box; width:100%; padding:10px 12px; border:0; border-bottom:1px solid #e2e8f0; font-size:15px; line-height:1.65; text-align:left; white-space:normal; overflow-wrap:anywhere; }
+.quote-paper-sheet .qp-table tbody td::before { content:attr(data-column-label); display:block; font-size:12px; line-height:1.5; color:#475569; font-weight:600; margin-bottom:3px; }
+.quote-paper-sheet .qp-table tbody td:first-child { background:#e0f2fe; color:#075985; font-weight:700; padding:7px 12px; }
+.quote-paper-sheet .qp-table tbody td:first-child::before { display:inline; margin-right:8px; }
+.quote-paper-sheet .qp-table tbody td:nth-child(2) { font-size:16px; }
+.quote-paper-sheet .qp-table tbody td.num-col { color:#0f172a; background:#f0f9ff; font-size:18px; font-variant-numeric:tabular-nums; white-space:normal; text-align:left; }
+.quote-paper-sheet .qp-table tbody td:last-child { border-bottom:0; }
+.quote-paper-sheet .qp-meta-grid, .quote-paper-sheet .qp-total-grid, .quote-paper-sheet .qp-sign-grid { grid-template-columns:minmax(0,1fr); }
+.quote-paper-sheet .qp-meta-row { flex-wrap:wrap; }
+.quote-paper-sheet .qp-company-sub { overflow-wrap:anywhere; }
+.quote-paper-sheet .qp-stamp-box { min-width:0; }
 }
