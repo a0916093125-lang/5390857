@@ -1938,7 +1938,7 @@ priceA: 4500,
 priceB: 4200
 });
 }
-if (chkSgs && chkSgs.checked) {
+if ((isWtActive || isCtActive) && chkSgs && chkSgs.checked) {
 let sgsTitle = "水質送驗需求（實驗室、測項與安排另確認）";
 let sgsSpec = "採樣方法、檢驗項目、受託機構與報告形式須依用途先行確認；本試算不代表水質已合格或可直接飲用";
 if (cat === "cooling_tower" || cat === "ct_ac") {
