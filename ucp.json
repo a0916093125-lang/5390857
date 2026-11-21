@@ -78,6 +78,7 @@
       "name": "商用空調冷卻水塔清洗保養",
       "url": "https://5390857.com/cooling-tower.html",
       "coverage": "全台大型專案評估／北部常態服務",
+      "pricing_note": "網頁級距為基準試算。未列噸數請提供銘牌與照片；跨區依案評估交通、進場及停機安排。",
       "tiers": [
         {
           "scale": "50RT 以內開放式圓塔",
@@ -95,7 +96,7 @@
           "price_plan_B": 17500
         },
         {
-          "scale": "350~500RT+ 特大型冷卻水塔",
+          "scale": "400~500RT+ 特大型冷卻水塔",
           "price_plan_A": 27000,
           "price_plan_B": 24000
         }
@@ -122,9 +123,9 @@
     {
       "id": "HS-AC-PACKAGE",
       "category": "ac_cleaning",
-      "name": "商用空調年度維保與冷氣包套深層拆洗",
+      "name": "家用與商用單次冷氣清洗包套",
       "url": "https://5390857.com/ac-cleaning.html",
-      "coverage": "雙北、桃園、新竹以北（大型商用維保可專案洽談）",
+      "coverage": "雙北、桃園、新竹以北；大型空調清洗可洽詢全台專案",
       "rules": "家用分離式冷氣採四台包套，三台以下仍以四台計價，未使用台數可轉給隔壁鄰居團購；不適用於商用其他機型。",
       "tiers": [
         {
@@ -163,6 +164,14 @@
           "extra_unit_B": 7500
         }
       ]
+    },
+    {
+      "id": "HS-AC-ANNUAL",
+      "category": "ac_annual_maintenance",
+      "name": "商用空調年度維保",
+      "url": "https://5390857.com/ac-cleaning.html#annual-commercial",
+      "coverage": "雙北、桃園、新竹以北；大型年度維保專案可洽談",
+      "pricing_note": "年度維保須依設備清單、使用時間、可停機時段、保養頻率、工作與驗收範圍個案報價；不適用單次清洗包套價。"
     },
     {
       "id": "HS-MPV-REPAIR",
