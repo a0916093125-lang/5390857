@@ -1,0 +1,34 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "皓盛公開服務與價目",
+    "version": "1.0.0",
+    "description": "下載公開服務及價目 JSON 後，依 catalog 的 name、category、coverage 篩選。這是估價參考，不是即時報價、伺服器關鍵字查詢或交易 API；完整條件請看服務原頁。"
+  },
+  "servers": [
+    {
+      "url": "https://5390857.com"
+    }
+  ],
+  "paths": {
+    "/ucp.json": {
+      "get": {
+        "operationId": "getServiceCatalog",
+        "summary": "皓盛公開服務與價目",
+        "description": "下載公開服務及價目 JSON 後，依 catalog 的 name、category、coverage 篩選。這是估價參考，不是即時報價、伺服器關鍵字查詢或交易 API；完整條件請看服務原頁。",
+        "responses": {
+          "200": {
+            "description": "Public read-only JSON",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
