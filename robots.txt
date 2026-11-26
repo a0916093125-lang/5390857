@@ -24,4 +24,4 @@ Allow: /
 
 Sitemap: https://5390857.com/sitemap.xml
 # LLMs Context: https://5390857.com/llms.txt
-# UCP Discovery: https://5390857.com/.well-known/ucp
+# 皓盛公開服務與價目 (JSON): https://5390857.com/ucp.json

@@ -1,5 +1,7 @@
 # 皓盛有限公司 (Hao Sheng Co., Ltd.)
 
+Agent 唯讀查詢介面說明（OpenAPI）：https://5390857.com/openapi.json
+
 官方網站：https://5390857.com/
 公開服務與價目（JSON）：https://5390857.com/ucp.json
 公司統一編號：90221911 ｜ 負責人：李思遠
